@@ -1,9 +1,8 @@
 import axios from "axios";
 import dictionary from "../dictionary";
 
-const ACCESS_TOKEN = localStorage.getItem("@user");
-// const apiHost = dictionary.apiHost
-const apiHost = "localhost/wiki_farm_bk";
+const ACCESS_TOKEN = localStorage.getItem("projectm@user");
+const apiHost = dictionary.apiHost;
 
 const apiCall = async (endpoint, data) => {
   try {

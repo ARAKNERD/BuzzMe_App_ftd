@@ -2,12 +2,11 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  // SCHOOLS
-
   async fetchSchoolList(data) {
     let response = await apiCall("school/list", data);
     return response;
   },
+
 
   async createSchool(school_name,contact,email,address,district,region,lat,lng, date_registered,registered_by) {
     let data = {

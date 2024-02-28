@@ -1,14 +1,11 @@
 import React from 'react';
 import { AuthProvider } from './AuthContext';
-import { ClientProvider } from './ClientContext';
-import { PermissionProvider } from './PermissionContext';
-import { ProjectProvider } from './ProjectContext';
-import { RoleProvider } from './RoleContext';
-import { IssueLogProvider } from './IssueLogContext';
-import { RegionProvider } from './RegionContext';
 import { ThemeProvider } from './ThemeContext';
-import { TeamProvider } from './TeamContext';
 import { UserProvider } from './UserContext';
+import { ParentProvider } from './ParentContext';
+import { StudentProvider } from './StudentContext';
+import { SchoolProvider } from './SchoolContext';
+import { StudentGroupProvider } from './StudentGroupContext';
 
 
 const SuperProvider=(props)=>{
@@ -17,21 +14,16 @@ const SuperProvider=(props)=>{
             <ThemeProvider>
                <AuthProvider>
                  <UserProvider>
-                 <ProjectProvider>
-                  <ClientProvider>
-                    <PermissionProvider>
-                      <RoleProvider>
-                      <IssueLogProvider>
-                      <RegionProvider>
-                        <TeamProvider>
+                  <ParentProvider>
+                    <StudentProvider>
+                      <SchoolProvider>
+                      <StudentGroupProvider>
+                 
                      {props.children}
-                     </TeamProvider>
-                     </RegionProvider>
-                     </IssueLogProvider>
-                     </RoleProvider>
-                  </PermissionProvider>
-                  </ClientProvider>
-                 </ProjectProvider>
+                     </StudentGroupProvider>
+                     </SchoolProvider>
+                     </StudentProvider>
+                     </ParentProvider>
                  </UserProvider>
              </AuthProvider>
           </ThemeProvider>                         

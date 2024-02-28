@@ -6,9 +6,12 @@ import {
   Navigate,
 } from "react-router-dom";
 
+import ViewParents from "./Pages/Parents/ViewParents";
+import AddParent from "./Pages/Parents/AddParent";
+import SuperProvider from "./Context/SuperProvider";
 import Dashboard from "./Pages/Dashboard";
-import LoginPage from "./Pages/LoginPage";
-// import SuperProvider from "./Context/SuperProvider";
+import ViewStudents from "./Pages/students/ViewStudents";
+import AddStudent from "./Pages/students/AddStudent";
 import ViewSchool from './Pages/Schools/ViewSchool';
 import AddSchool from "./Pages/Schools/AddSchool";
 import UpdateSchool from "./Pages/Schools/UpdateSchool";
@@ -24,14 +27,13 @@ import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
 
 function App(props) {
   return (
-  //  <SuperProvider>
+    <SuperProvider>
+      <Router forceRefresh={false}>
+        <Switch>
+              <Route path="/" element={<Dashboard />} />
+              
 
-    <Router>
-      <Switch>
-      <Route path="/" element={<Dashboard />} />
-
-
-      {/* School routes */}
+              {/* School routes */}
         <Route path="/schools/view" element={<ViewSchool />} />
         <Route path="/schools/add" element={<AddSchool />} />
         <Route path="/schools/edit" element={<UpdateSchool />} />
@@ -55,12 +57,23 @@ function App(props) {
         <Route path="/rate/add" element={<AddChargeRate />} />
         <Route path="/rate/edit" element={<UpdateChargeRate />} />
       {/* End Charge rate routes */}
-      
 
-      </Switch>
-    </Router>
+      {/* Parents */}
+      <Route path="/parents" element={<ViewParents/>} />
+      <Route path="/parents/add" element={<AddParent/>} />
+      {/* End parent */}
 
-  //  </SuperProvider>
+      {/* Students */}
+      <Route path="/students" element={<ViewStudents/>} />
+      <Route path="/students/add" element={<AddStudent/>} />
+     {/* End student */}
+             
+
+         
+        </Switch>
+      </Router>
+    </SuperProvider>
+
   );
 }
 

@@ -122,10 +122,10 @@ const Sidebar = (props) => {
               </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <Link to="all-student.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    All Students
-                  </Link>
+                <Link className="nav-link" to="/students">
+                <i className="fas fa-angle-right" />
+                <span className="sidemenu-label">View Students</span>
+              </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="student-details.html" className="nav-link">
@@ -157,22 +157,16 @@ const Sidebar = (props) => {
               </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <Link to="all-parents.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    All Parents
-                  </Link>
+                <Link className="nav-link" to="/parents">
+                <i className="fas fa-angle-right" />
+                <span className="sidemenu-label">View Parents</span>
+              </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="parents-details.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Parents Details
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="add-parents.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add Parent
-                  </Link>
+                <Link className="nav-link" to="/parents/add">
+                <i className="fas fa-angle-right" />
+                <span className="sidemenu-label">Add Parent</span>
+              </Link>
                 </li>
               </ul>
             </li>
