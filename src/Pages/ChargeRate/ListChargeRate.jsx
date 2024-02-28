@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import AppContainer from '../../Components/Structure/AppContainer'
 import { Link } from 'react-router-dom'
-import ajaxSchool from '../../util/remote/ajaxSchool'
+import ajaxChargeRate from '../../util/remote/ajaxChargeRate'
 
-function ListContacts() {
-
-    const [contactList,setContactListing] = useState(false)
+function ListChargeRate() {
 
 
-    const listContact = async() =>{
-        const server_response = await ajaxSchool.fetchStudentContactList();
+    const [rateList,setRateListing] = useState(false)
+
+
+    const listChargeRates = async() =>{
+        const server_response = await ajaxChargeRate.fetchChargeRateList();
         if(server_response.status==="OK"){
-            setContactListing(false)
+            setRateListing(false)
         }
     }
 
     useEffect(() => {
-        listContact()
+        listChargeRates()
     }, [])
 
 
   return (
-    <AppContainer title="List Contacts">
-        <div className="card height-auto">
+    <AppContainer title="List Charge Rates">
+         <div className="card height-auto">
                     <div className="card-body">
                         <div className="heading-layout1">
                             <div className="item-title">
@@ -63,10 +64,8 @@ function ListContacts() {
                                                 <label className="form-check-label">ID</label>
                                             </div>
                                         </th>
-                                        <th>Student Name</th>
-                                        <th>Contact Name</th>
-                                        <th>Contact</th>
-                                        <th>Relationship</th>
+                                        <th>Charge Rate</th>
+                                        <th>Type</th>
 
                                         <th></th>
                                     </tr>
@@ -79,9 +78,6 @@ function ListContacts() {
                                                 <label className="form-check-label">#0021</label>
                                             </div>
                                         </td>
-                                        <td>Mark Willy</td>
-                                      
-                                        <td>Mark Willy</td>
                                         <td>Male</td>
                                         <td>Businessman</td>
                                         
@@ -94,7 +90,7 @@ function ListContacts() {
                                                 <div className="dropdown-menu dropdown-menu-right">
                                                     <Link className="dropdown-item" to="#"><i
                                                             className="fas fa-times text-orange-red"></i>Close</Link>
-                                                    <Link className="dropdown-item" to="/contacts/edit"><i
+                                                    <Link className="dropdown-item" to="/rate/edit"><i
                                                             className="fas fa-cogs text-dark-pastel-green"></i>Edit</Link>
                                                    
                                                 </div>
@@ -111,8 +107,7 @@ function ListContacts() {
                                         </td>
                                         <td className="text-center"><img src="img/figure/student2.png" alt="school"/></td>
                                         <td>Mark Willy</td>
-                                        <td>Male</td>
-                                        <td>Businessman</td>
+                                      
                                         
                                         <td>
                                             <div className="dropdown">
@@ -123,7 +118,7 @@ function ListContacts() {
                                                 <div className="dropdown-menu dropdown-menu-right">
                                                 <Link className="dropdown-item" to="#"><i
                                                             className="fas fa-times text-orange-red"></i>Close</Link>
-                                                    <Link className="dropdown-item" to="/contacts/edit"><i
+                                                    <Link className="dropdown-item" to="/rate/edit"><i
                                                             className="fas fa-cogs text-dark-pastel-green"></i>Edit</Link>
                                                 </div>
                                             </div>
@@ -140,4 +135,4 @@ function ListContacts() {
   )
 }
 
-export default ListContacts
+export default ListChargeRate

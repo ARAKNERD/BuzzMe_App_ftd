@@ -18,6 +18,9 @@ import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
 import ListContacts from "./Pages/Contacts/ListContacts";
 import AddContacts from "./Pages/Contacts/AddContacts";
 import UpdateContact from "./Pages/Contacts/UpdateContact";
+import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
+import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
+import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
 
 function App(props) {
   return (
@@ -38,14 +41,20 @@ function App(props) {
       <Route path="/schools/user/view" element={<ListSchoolUsers />} />
         <Route path="/schools/user/add" element={<AddSchoolUser />} />
         <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
-      {/* End school routes */}
+      {/* End School User routes */}
 
 
       {/* Student Contact routes */}
       <Route path="/contacts/view" element={<ListContacts />} />
         <Route path="/contacts/add" element={<AddContacts />} />
         <Route path="/contacts/edit" element={<UpdateContact />} />
-      {/* End school routes */}
+      {/* End Student Contact routes */}
+
+      {/* Charge rate routes */}
+      <Route path="/rate/view" element={<ListChargeRate />} />
+        <Route path="/rate/add" element={<AddChargeRate />} />
+        <Route path="/rate/edit" element={<UpdateChargeRate />} />
+      {/* End Charge rate routes */}
       
 
       </Switch>
