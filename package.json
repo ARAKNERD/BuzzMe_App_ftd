@@ -28,6 +28,7 @@
     "datatables.net": "^1.13.4",
     "draft-js": "^0.11.7",
     "export-to-csv": "^0.2.1",
+    "formik": "^2.4.5",
     "html2pdf.js": "^0.10.1",
     "jquery": "^3.6.4",
     "jspdf": "^2.5.1",

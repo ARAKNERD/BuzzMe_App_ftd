@@ -1,39 +1,42 @@
-import React from 'react'
+import React, { useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import { Formik,Form,Field,ErrorMessage } from "formik";
 import ajaxSchool from "../../util/remote/ajaxSchool";
 
+function AddSchool() {
+  const initialValues = {
+    schoolName:"",
+    contact:"",
+    email:"",
+    region:"",
+    district:"",
+    lat:"",
+    longitude:"",
+    address:""
+  }
 
-function AddSchoolUser() {
+  const handleSubmit = async(values, { setSubmitting }) => {
 
-    const initialValues = {
-        name:"",
-        password:"",
-        username:"",
-        // contact:"",
-      }
-    
-      const handleSubmit = async(values, { setSubmitting }) => {
-    
-        // const server_response = await ajaxSchool.createSchoolUser(school_name,contact,email,address,district,region,lat,lng, date_registered,registered_by);
-        // if(server_response.status==="OK"){
-    
-        // }
-        // Handle form submission logic here
-        console.log(values);
-        // You can make API calls or perform other actions as needed
-    
-        // After handling submission, you can reset the form or perform other actions
-        setSubmitting(false);
-    }
+    // const server_response = await ajaxSchool.createSchool(school_name,contact,email,address,district,region,lat,lng, date_registered,registered_by);
+    // if(server_response.status==="OK"){
+
+    // }
+    // Handle form submission logic here
+    console.log(values);
+    // You can make API calls or perform other actions as needed
+
+    // After handling submission, you can reset the form or perform other actions
+    setSubmitting(false);
+}
+
 
   return(
-    <AppContainer title="Add new school user">
+    <AppContainer title={"Add School"}>
     <div className="card height-auto">
                     <div className="card-body">
                         <div className="heading-layout1">
                             <div className="item-title">
-                                <h3>Add New School User</h3>
+                                <h3>Add New School</h3>
                             </div>
                          
                         </div>
@@ -44,25 +47,25 @@ function AddSchoolUser() {
 
                         <Form className="new-added-form">
                             <div className="row">
-                                <div className="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label>Name *</label>
+                                <div className="col-xl-6 col-lg-6 col-6 form-group">
+                                    <label>School Name *</label>
                                     <Field type="text"
-                                    name="name"
+                                    name="schoolName"
                                     // onChange={(e)=>}
                                     placeholder="" className="form-control"/>
                                 </div>
-                                {/* <div className="col-xl-6 col-lg-6 col-6 form-group">
+                                <div className="col-xl-6 col-lg-6 col-6 form-group">
                                     <label>Contact *</label>
                                     <Field type="text" 
                                     name={"contact"}
                                     placeholder="" className="form-control"/>
-                                </div> */}
-                               
-                                <div className="col-xl-12 col-lg-12 col-12 form-group">
-                                    <label>Username</label>
-                                    <Field type="text" placeholder="" name="username" className="form-control"/>
                                 </div>
-                                {/* <div className="col-xl-6 col-lg-6 col-6 form-group">
+                               
+                                <div className="col-xl-6 col-lg-6 col-6 form-group">
+                                    <label>E-Mail</label>
+                                    <Field type="email" placeholder="" name="email" className="form-control"/>
+                                </div>
+                                <div className="col-xl-6 col-lg-6 col-6 form-group">
                                     <label>Region *</label>
                                     <Field as="select" name="region" className="select2 form-control">
                                     <option value="">Please Select Region *</option>
@@ -82,8 +85,8 @@ function AddSchoolUser() {
                                         <option value="3">Kapchorwa</option>
                                     </Field>
                                    
-                                </div> */}
-                                {/* <div className="col-xl-6 col-lg-6 col-6 form-group">
+                                </div>
+                                <div className="col-xl-6 col-lg-6 col-6 form-group">
                                     <label>Address</label>
                                     <Field type="text" name="address" placeholder="" className="form-control"/>
                                 </div>
@@ -95,7 +98,7 @@ function AddSchoolUser() {
                                     <label>Longitude</label>
                                     <Field type="text" name="longitude" placeholder="" className="form-control"/>
                                 </div>
-                              */}
+                             
                                 {/* <div className="col-lg-6 col-12 form-group mg-t-30">
                                     <label className="text-dark-medium">Upload Student Photo (150px X 150px)</label>
                                     <input type="file" className="form-control-file"/>
@@ -111,8 +114,7 @@ function AddSchoolUser() {
                     </div>
                 </div>
                 </AppContainer>
-  
   )
 }
 
-export default AddSchoolUser
+export default AddSchool;
