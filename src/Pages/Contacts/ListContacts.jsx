@@ -46,7 +46,6 @@ function ListContacts() {
                                                 <label className="form-check-label">ID</label>
                                             </div>
                                         </th>
-                                        <th>Photo</th>
                                         <th>Student Name</th>
                                         <th>Contact Name</th>
                                         <th>Contact</th>
@@ -63,7 +62,8 @@ function ListContacts() {
                                                 <label className="form-check-label">#0021</label>
                                             </div>
                                         </td>
-                                        <td className="text-center"><img src="img/figure/student2.png" alt="school"/></td>
+                                        <td>Mark Willy</td>
+                                      
                                         <td>Mark Willy</td>
                                         <td>Male</td>
                                         <td>Businessman</td>
