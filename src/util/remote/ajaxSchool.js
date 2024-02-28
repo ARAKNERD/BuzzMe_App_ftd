@@ -118,4 +118,39 @@ export default {
     return response;
   },
 
+
+  // Contacts
+
+
+  async fetchStudentContactList(data) {
+    let response = await apiCall("contact/list", data);
+    return response;
+  },
+
+  async createStudentContact(contact_number,contact_name,student_id,relationship) {
+    let data = {
+      contact_number: contact_number,
+      contact_name: contact_name,
+      student_id: student_id,
+      relationship: relationship
+    };
+    let response = await apiCall("contact/add", data);
+
+    return response;
+  },
+
+  async updateStudentContact(contact_id,contact_number,contact_name,student_id,relationship) {
+    let data = {
+      contact_id: contact_id,
+      contact_number: contact_number,
+      contact_name: contact_name,
+      student_id: student_id,
+      relationship: relationship
+    };
+    let response = await apiCall("contact/update", data);
+
+    return response;
+  },
+
+
 }

@@ -15,6 +15,9 @@ import UpdateSchool from "./Pages/Schools/UpdateSchool";
 import ListSchoolUsers from "./Pages/SchoolUsers/ListSchoolUsers";
 import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
 import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
+import ListContacts from "./Pages/Contacts/ListContacts";
+import AddContacts from "./Pages/Contacts/AddContacts";
+import UpdateContact from "./Pages/Contacts/UpdateContact";
 
 function App(props) {
   return (
@@ -35,6 +38,13 @@ function App(props) {
       <Route path="/schools/user/view" element={<ListSchoolUsers />} />
         <Route path="/schools/user/add" element={<AddSchoolUser />} />
         <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
+      {/* End school routes */}
+
+
+      {/* Student Contact routes */}
+      <Route path="/contacts/view" element={<ListContacts />} />
+        <Route path="/contacts/add" element={<AddContacts />} />
+        <Route path="/contacts/edit" element={<UpdateContact />} />
       {/* End school routes */}
       
 
