@@ -39,7 +39,7 @@ export default function AppContainer(props) {
           {/* Sidebar Area End Here */}
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
-            <PageHeader title={"cliffed"} />
+            <PageHeader title={props.title} />
             {/* <PageHeader title={props.title} /> --------------------------------- */}
 
             {/* Breadcubs Area End Here */}
@@ -48,8 +48,8 @@ export default function AppContainer(props) {
             {/* Footer Area Start Here */}
             <footer className="footer-wrap-layout1">
               <div className="copyright">
-                © Copyrights <a href="#">akkhor</a> 2019. All rights reserved.
-                Designed by <a href="#">PsdBosS</a>
+                © Copyrights <a href="#">Buzz Me</a> 2024. All rights reserved.
+                {/* Designed by <a href="#">PsdBosS</a> */}
               </div>
             </footer>
             {/* Footer Area End Here */}

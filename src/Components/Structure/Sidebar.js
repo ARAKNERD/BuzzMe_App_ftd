@@ -25,13 +25,13 @@ const Sidebar = (props) => {
       <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
         <div className="mobile-sidebar-header d-md-none">
           <div className="header-logo">
-            <a href="index.html">
+            <Link to="index.html">
               <img
                 src="./assets/img/logo1.png"
                 alt="logo"
                 style={{width: "200px", height: "100px"}}
               />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="sidebar-menu-content">
@@ -39,28 +39,28 @@ const Sidebar = (props) => {
             <li
               className="nav-item sidebar-nav-item"
               onClick={(e) => toggleDropdown(e)}>
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
                 <i className="flaticon-dashboard" />
                 <span>Dashboard</span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="index.html" className="nav-link">
+                  <Link to="index.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Admin
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="index3.html" className="nav-link">
+                  <Link to="index3.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Students
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="index4.html" className="nav-link">
+                  <Link to="index4.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Parents
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -68,34 +68,58 @@ const Sidebar = (props) => {
             <li
               className="nav-item sidebar-nav-item"
               onClick={(e) => toggleDropdown(e)}>
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
+                <i className="flaticon-classmates" />
+                <span>Schools</span>
+              </Link>
+              <ul className="nav sub-group-menu">
+             
+                <li className="nav-item">
+                  <Link to="/schools/view" className="nav-link">
+                    <i className="fas fa-angle-right" />
+                    View Schools
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/schools/add" className="nav-link">
+                    <i className="fas fa-angle-right" />
+                    Add School
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            <li
+              className="nav-item sidebar-nav-item"
+              onClick={(e) => toggleDropdown(e)}>
+              <Link to="#" className="nav-link">
                 <i className="flaticon-classmates" />
                 <span>Students</span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="all-student.html" className="nav-link">
+                  <Link to="all-student.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     All Students
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="student-details.html" className="nav-link">
+                  <Link to="student-details.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Student Details
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="admit-form.html" className="nav-link">
+                  <Link to="admit-form.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Admission Form
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="student-promotion.html" className="nav-link">
+                  <Link to="student-promotion.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Student Promotion
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
@@ -103,175 +127,175 @@ const Sidebar = (props) => {
             <li
               className="nav-item sidebar-nav-item"
               onClick={(e) => toggleDropdown(e)}>
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
                 <i className="flaticon-couple" />
                 <span>Parents</span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="all-parents.html" className="nav-link">
+                  <Link to="all-parents.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     All Parents
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="parents-details.html" className="nav-link">
+                  <Link to="parents-details.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Parents Details
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="add-parents.html" className="nav-link">
+                  <Link to="add-parents.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Add Parent
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
 
             <li className="nav-item sidebar-nav-item">
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
                 <i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" />
                 <span>Class Group </span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="all-class.html" className="nav-link">
+                  <Link to="all-class.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     All Classes
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="add-class.html" className="nav-link">
+                  <Link to="add-class.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Add New Class
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a href="all-subject.html" className="nav-link">
+              <Link to="all-subject.html" className="nav-link">
                 <i className="flaticon-open-book" />
                 <span>Subject</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="class-routine.html" className="nav-link">
+              <Link to="class-routine.html" className="nav-link">
                 <i className="flaticon-calendar" />
                 <span>Class Routine</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="student-attendence.html" className="nav-link">
+              <Link to="student-attendence.html" className="nav-link">
                 <i className="flaticon-checklist" />
                 <span>Attendence</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item sidebar-nav-item">
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
                 <i className="flaticon-shopping-list" />
                 <span>Exam</span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="exam-schedule.html" className="nav-link">
+                  <Link to="exam-schedule.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Exam Schedule
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="exam-grade.html" className="nav-link">
+                  <Link to="exam-grade.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Exam Grades
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a href="transport.html" className="nav-link">
+              <Link to="transport.html" className="nav-link">
                 <i className="flaticon-bus-side-view" />
                 <span>Transport</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="hostel.html" className="nav-link">
+              <Link to="hostel.html" className="nav-link">
                 <i className="flaticon-bed" />
                 <span>Hostel</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="notice-board.html" className="nav-link">
+              <Link to="notice-board.html" className="nav-link">
                 <i className="flaticon-script" />
                 <span>Notice</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="messaging.html" className="nav-link">
+              <Link to="messaging.html" className="nav-link">
                 <i className="flaticon-chat" />
                 <span>Messeage</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item sidebar-nav-item">
-              <a href="#" className="nav-link">
+              <Link to="#" className="nav-link">
                 <i className="flaticon-menu-1" />
                 <span>UI Elements</span>
-              </a>
+              </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <a href="notification-alart.html" className="nav-link">
+                  <Link to="notification-alart.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Alart
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="button.html" className="nav-link">
+                  <Link to="button.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Button
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="grid.html" className="nav-link">
+                  <Link to="grid.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Grid
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="modal.html" className="nav-link">
+                  <Link to="modal.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Modal
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="progress-bar.html" className="nav-link">
+                  <Link to="progress-bar.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Progress Bar
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="ui-tab.html" className="nav-link">
+                  <Link to="ui-tab.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Tab
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a href="ui-widget.html" className="nav-link">
+                  <Link to="ui-widget.html" className="nav-link">
                     <i className="fas fa-angle-right" />
                     Widget
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             <li className="nav-item">
-              <a href="map.html" className="nav-link">
+              <Link to="map.html" className="nav-link">
                 <i className="flaticon-planet-earth" />
                 <span>Map</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-item">
-              <a href="account-settings.html" className="nav-link">
+              <Link to="account-settings.html" className="nav-link">
                 <i className="flaticon-settings" />
                 <span>Account</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

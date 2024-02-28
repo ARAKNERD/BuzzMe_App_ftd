@@ -6,7 +6,7 @@ const PageHeader = (props) => {
     <>
       {/* Breadcubs Area Start Here */}
       <div className="breadcrumbs-area">
-        {/* <h3>Admin Dashboard</h3> */}
+        <h3>{props.title}</h3>
         <ul>
           <li>
             <a href="index.html">Home</a>
