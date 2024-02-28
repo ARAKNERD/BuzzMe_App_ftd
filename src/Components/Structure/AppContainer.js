@@ -39,8 +39,8 @@ export default function AppContainer(props) {
           {/* Sidebar Area End Here */}
           <div className="dashboard-content-one">
             {/* Breadcubs Area Start Here */}
-            <PageHeader title={"cliffed"} />
-            {/* <PageHeader title={props.title} /> --------------------------------- */}
+            {/* <PageHeader title={"cliffed"} /> */}
+            <PageHeader title={props.title} />
 
             {/* Breadcubs Area End Here */}
             {props.children}
