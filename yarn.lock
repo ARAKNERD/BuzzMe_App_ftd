@@ -1939,15 +1939,15 @@
     prop-types "^15.7.2"
     react-is "^16.8.0 || ^17.0.0"
 
-"@mui/base@5.0.0-beta.37":
-  version "5.0.0-beta.37"
-  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-beta.37.tgz"
-  integrity sha512-/o3anbb+DeCng8jNsd3704XtmmLDZju1Fo8R2o7ugrVtPQ/QpcqddwKNzKPZwa0J5T8YNW3ZVuHyQgbTnQLisQ==
+"@mui/base@5.0.0-beta.36":
+  version "5.0.0-beta.36"
+  resolved "https://registry.npmjs.org/@mui/base/-/base-5.0.0-beta.36.tgz"
+  integrity sha512-6A8fYiXgjqTO6pgj31Hc8wm1M3rFYCxDRh09dBVk0L0W4cb2lnurRJa3cAyic6hHY+we1S58OdGYRbKmOsDpGQ==
   dependencies:
     "@babel/runtime" "^7.23.9"
     "@floating-ui/react-dom" "^2.0.8"
     "@mui/types" "^7.2.13"
-    "@mui/utils" "^5.15.11"
+    "@mui/utils" "^5.15.9"
     "@popperjs/core" "^2.11.8"
     clsx "^2.1.0"
     prop-types "^15.8.1"
@@ -1978,15 +1978,15 @@
     "@babel/runtime" "^7.23.9"
 
 "@mui/lab@^5.0.0-alpha.131", "@mui/lab@^5.0.0-alpha.72":
-  version "5.0.0-alpha.166"
-  resolved "https://registry.npmjs.org/@mui/lab/-/lab-5.0.0-alpha.166.tgz"
-  integrity sha512-a+0yorrgxLIgfKhShVKQk0/5CnB4KBhMQ64SvEB+CsvKAKKJzjIU43m2nMqdBbWzfnEuj6wR9vQ9kambdn3ZKA==
+  version "5.0.0-alpha.165"
+  resolved "https://registry.npmjs.org/@mui/lab/-/lab-5.0.0-alpha.165.tgz"
+  integrity sha512-8/zJStT10nh9yrAzLOPTICGhpf5YiGp/JpM0bdTP7u5AE+YT+X2u6QwMxuCrVeW8/WVLAPFg0vtzyfgPcN5T7g==
   dependencies:
     "@babel/runtime" "^7.23.9"
-    "@mui/base" "5.0.0-beta.37"
-    "@mui/system" "^5.15.11"
+    "@mui/base" "5.0.0-beta.36"
+    "@mui/system" "^5.15.9"
     "@mui/types" "^7.2.13"
-    "@mui/utils" "^5.15.11"
+    "@mui/utils" "^5.15.9"
     clsx "^2.1.0"
     prop-types "^15.8.1"
 
@@ -2028,15 +2028,15 @@
     prop-types "^15.8.1"
 
 "@mui/styles@^5.13.2", "@mui/styles@5.5.0":
-  version "5.15.11"
-  resolved "https://registry.npmjs.org/@mui/styles/-/styles-5.15.11.tgz"
-  integrity sha512-7TCs+0AGCtNaqBHhj0ZODYLnQjVrY9nG4PrT2bzIGIh3zvJxF7zY6IRiPyBFsKY1OjdVHjjYuan4U81QbdBrew==
+  version "5.15.10"
+  resolved "https://registry.npmjs.org/@mui/styles/-/styles-5.15.10.tgz"
+  integrity sha512-VUl9rCK89lkCZ+ctYv1hSCN9gBke9CfnXF9BtGPkw9jTxPkrW6fQQYep2wcHdzLORE3w96oq9BbSXDqrOnSEPA==
   dependencies:
     "@babel/runtime" "^7.23.9"
     "@emotion/hash" "^0.9.1"
-    "@mui/private-theming" "^5.15.11"
+    "@mui/private-theming" "^5.15.9"
     "@mui/types" "^7.2.13"
-    "@mui/utils" "^5.15.11"
+    "@mui/utils" "^5.15.9"
     clsx "^2.1.0"
     csstype "^3.1.3"
     hoist-non-react-statics "^3.3.2"
@@ -2050,7 +2050,7 @@
     jss-plugin-vendor-prefixer "^10.10.0"
     prop-types "^15.8.1"
 
-"@mui/system@^5.15.11", "@mui/system@^5.4.1":
+"@mui/system@^5.15.11", "@mui/system@^5.15.9", "@mui/system@^5.4.1":
   version "5.15.11"
   resolved "https://registry.npmjs.org/@mui/system/-/system-5.15.11.tgz"
   integrity sha512-9j35suLFq+MgJo5ktVSHPbkjDLRMBCV17NMBdEQurh6oWyGnLM4uhU4QGZZQ75o0vuhjJghOCA1jkO3+79wKsA==
@@ -2069,7 +2069,7 @@
   resolved "https://registry.npmjs.org/@mui/types/-/types-7.2.13.tgz"
   integrity sha512-qP9OgacN62s+l8rdDhSFRe05HWtLLJ5TGclC9I1+tQngbssu0m2dmFZs+Px53AcOs9fD7TbYd4gc9AXzVqO/+g==
 
-"@mui/utils@^5.14.16", "@mui/utils@^5.15.11":
+"@mui/utils@^5.14.16", "@mui/utils@^5.15.11", "@mui/utils@^5.15.9":
   version "5.15.11"
   resolved "https://registry.npmjs.org/@mui/utils/-/utils-5.15.11.tgz"
   integrity sha512-D6bwqprUa9Stf8ft0dcMqWyWDKEo7D+6pB1k8WajbqlYIRA8J8Kw9Ra7PSZKKePGBGWO+/xxrX1U8HpG/aXQCw==
@@ -4012,9 +4012,9 @@ bootstrap-icons@^1.10.4:
   integrity sha512-+3lpHrCw/it2/7lBL15VR0HEumaBss0+f/Lb6ZvHISn1mlK83jjFpooTLsMWbIjJMDjDjOExMsTxnXSIT4k4ww==
 
 bootstrap-table@^1.21.4:
-  version "1.22.3"
-  resolved "https://registry.npmjs.org/bootstrap-table/-/bootstrap-table-1.22.3.tgz"
-  integrity sha512-YWQTXzmZBX6P4y6YW2mHOxqIAYyLKld2WecHuKSyYamimUE4KZ9YUsmAroSoS2Us1bPYXFaM+JCeTt6X0iKW+g==
+  version "1.22.2"
+  resolved "https://registry.npmjs.org/bootstrap-table/-/bootstrap-table-1.22.2.tgz"
+  integrity sha512-ZjZGcEXm/N7N/wAykmANWKKV+U+7AxgoNuBwWLrKbvAGT8XXS2f0OCiFmuMwpkqg7pDbF+ff9bEf/lOAlxcF1w==
 
 bootstrap@^5.2.3:
   version "5.3.3"
@@ -9729,7 +9729,7 @@ react-scripts@5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-select@^5.7.2:
+react-select@^5.8.0:
   version "5.8.0"
   resolved "https://registry.npmjs.org/react-select/-/react-select-5.8.0.tgz"
   integrity sha512-TfjLDo58XrhP6VG5M/Mi56Us0Yt8X7xD6cDybC7yoRMUNm7BGO7qk8J0TLQOua/prb8vUOtsfnXZwfm30HGsAA==

@@ -88,7 +88,7 @@ function AddParent() {
                                 
                             </div>
                             <div className="mb-4">
-                                <input type="submit" style={{float:"right"}} className="btn btn-success" value="Save Parent Details"/>
+                            <input type="submit" style={{float:"right"}} className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark mr-auto ml-5" value="Save Parent Details"/>
                             </div>
 
                         </form>

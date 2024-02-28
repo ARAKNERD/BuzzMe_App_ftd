@@ -24,6 +24,8 @@ import UpdateContact from "./Pages/Contacts/UpdateContact";
 import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
 import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
 import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
+import AddGroup from "./Pages/StudentGroups/AddGroup";
+import ListGroups from "./Pages/StudentGroups/ListGroups";
 
 function App(props) {
   return (
@@ -66,6 +68,11 @@ function App(props) {
       {/* Students */}
       <Route path="/students" element={<ViewStudents/>} />
       <Route path="/students/add" element={<AddStudent/>} />
+     {/* End student */}
+
+     {/* Class Groups */}
+     <Route path="/class-groups" element={<ListGroups/>} />
+      <Route path="/class-groups/add" element={<AddGroup/>} />
      {/* End student */}
              
 

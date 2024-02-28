@@ -171,23 +171,23 @@ const Sidebar = (props) => {
               </ul>
             </li>
 
-            <li className="nav-item sidebar-nav-item">
+            <li className="nav-item sidebar-nav-item" onClick={(e) => toggleDropdown(e)}>
               <Link to="#" className="nav-link">
                 <i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" />
                 <span>Class Group </span>
               </Link>
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
-                  <Link to="all-class.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    All Classes
-                  </Link>
+                <Link className="nav-link" to="/class-groups">
+                <i className="fas fa-angle-right" />
+                <span className="sidemenu-label">View Class Groups</span>
+              </Link>
                 </li>
                 <li className="nav-item">
-                  <Link to="add-class.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add New Class
-                  </Link>
+                <Link className="nav-link" to="/class-groups/add">
+                <i className="fas fa-angle-right" />
+                <span className="sidemenu-label">Add Class Groups</span>
+              </Link>
                 </li>
               </ul>
             </li>
