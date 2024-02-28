@@ -12,6 +12,9 @@ import LoginPage from "./Pages/LoginPage";
 import ViewSchool from './Pages/Schools/ViewSchool';
 import AddSchool from "./Pages/Schools/AddSchool";
 import UpdateSchool from "./Pages/Schools/UpdateSchool";
+import ListSchoolUsers from "./Pages/SchoolUsers/ListSchoolUsers";
+import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
+import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
 
 function App(props) {
   return (
@@ -26,6 +29,12 @@ function App(props) {
         <Route path="/schools/view" element={<ViewSchool />} />
         <Route path="/schools/add" element={<AddSchool />} />
         <Route path="/schools/edit" element={<UpdateSchool />} />
+      {/* End school routes */}
+
+      {/* School User routes */}
+      <Route path="/schools/user/view" element={<ListSchoolUsers />} />
+        <Route path="/schools/user/add" element={<AddSchoolUser />} />
+        <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
       {/* End school routes */}
       
 
