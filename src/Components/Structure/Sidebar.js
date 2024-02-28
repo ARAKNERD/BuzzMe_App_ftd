@@ -94,6 +94,30 @@ const Sidebar = (props) => {
               onClick={(e) => toggleDropdown(e)}>
               <Link to="#" className="nav-link">
                 <i className="flaticon-classmates" />
+                <span>School Users</span>
+              </Link>
+              <ul className="nav sub-group-menu">
+             
+                <li className="nav-item">
+                  <Link to="/schools/user/view" className="nav-link">
+                    <i className="fas fa-angle-right" />
+                    View Schools Users
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/schools/user/add" className="nav-link">
+                    <i className="fas fa-angle-right" />
+                    Add School User
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            <li
+              className="nav-item sidebar-nav-item"
+              onClick={(e) => toggleDropdown(e)}>
+              <Link to="#" className="nav-link">
+                <i className="flaticon-classmates" />
                 <span>Students</span>
               </Link>
               <ul className="nav sub-group-menu">
