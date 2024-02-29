@@ -303,18 +303,7 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </li>
-            <li className="nav-item">
-              <Link to="map.html" className="nav-link">
-                <i className="flaticon-planet-earth" />
-                <span>Map</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="account-settings.html" className="nav-link">
-                <i className="flaticon-settings" />
-                <span>Account</span>
-              </Link>
-            </li>
+            
           </ul>
         </div>
       </div>

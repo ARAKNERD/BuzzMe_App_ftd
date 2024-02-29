@@ -1,7 +1,16 @@
 import React, {useContext, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import AuthContext from "../../Context/AuthContext";
 
 export default function Header(props) {
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    localStorage.removeItem("buzzMe@user");
+    navigate("/login");
+    window.location.reload();
+  };
   return (
     <>
       {/* Header Menu Area Start Here */}
@@ -73,7 +82,7 @@ export default function Header(props) {
                 data-toggle="dropdown"
                 aria-expanded="false">
                 <div className="admin-title">
-                  <h5 className="item-title">Stevne Zone</h5>
+                  <h5 className="item-title">{user.names}</h5>
                   <span>Admin</span>
                 </div>
                 <div className="admin-img">
@@ -82,7 +91,7 @@ export default function Header(props) {
               </a>
               <div className="dropdown-menu dropdown-menu-right">
                 <div className="item-header">
-                  <h6 className="item-title">Steven Zone</h6>
+                  <h6 className="item-title">{user.names}</h6>
                 </div>
                 <div className="item-content">
                   <ul className="settings-list">
@@ -92,29 +101,12 @@ export default function Header(props) {
                         My Profile
                       </a>
                     </li>
+                    
                     <li>
-                      <a href="#">
-                        <i className="flaticon-list" />
-                        Task
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="flaticon-chat-comment-oval-speech-bubble-with-text-lines" />
-                        Message
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <i className="flaticon-gear-loading" />
-                        Account Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a href="login.html">
+                      <Link onClick={onLogout}>
                         <i className="flaticon-turn-off" />
                         Log Out
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -259,31 +251,7 @@ export default function Header(props) {
                 </div>
               </div>
             </li>
-            <li className="navbar-item dropdown header-language">
-              <a
-                className="navbar-nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                <i className="fas fa-globe-americas" />
-                EN
-              </a>
-              <div className="dropdown-menu dropdown-menu-right">
-                <a className="dropdown-item" href="#">
-                  English
-                </a>
-                <a className="dropdown-item" href="#">
-                  Spanish
-                </a>
-                <a className="dropdown-item" href="#">
-                  Franchis
-                </a>
-                <a className="dropdown-item" href="#">
-                  Chiness
-                </a>
-              </div>
-            </li>
+            
           </ul>
         </div>
       </div>
