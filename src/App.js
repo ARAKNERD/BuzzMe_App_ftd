@@ -27,6 +27,9 @@ import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
 import AddGroup from "./Pages/StudentGroups/AddGroup";
 import ListGroups from "./Pages/StudentGroups/ListGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
+import ListAccount from "./Pages/Accounts/ListAccount";
+import AddAccount from "./Pages/Accounts/AddAccount";
+import ListBankTransactions from "./Pages/Bank/ListBankTransactions";
 
 function App(props) {
   return (
@@ -61,11 +64,19 @@ function App(props) {
         <Route path="/rate/edit" element={<UpdateChargeRate />} />
       {/* End Charge rate routes */}
 
-      {/* Charge rate routes */}
+      {/* MM Payments routes */}
       <Route path="/payments/mm/view" element={<ListMMPayments />} />
-        {/* <Route path="/rate/add" element={<AddChargeRate />} />
-        <Route path="/rate/edit" element={<UpdateChargeRate />} /> */}
-      {/* End Charge rate routes */}
+      {/* End MM Payments routes */}
+
+      {/* Bank routes */}
+      <Route path="/bank/view" element={<ListBankTransactions />} />
+      {/* End Bank routes */}
+
+
+      {/* Account routes */}
+      <Route path="/accounts/view" element={<ListAccount />} />
+        <Route path="/accounts/add" element={<AddAccount />} />
+      {/* End Account routes */}
 
       {/* Parents */}
       <Route path="/parents" element={<ViewParents/>} />
