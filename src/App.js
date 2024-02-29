@@ -26,6 +26,7 @@ import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
 import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
 import AddGroup from "./Pages/StudentGroups/AddGroup";
 import ListGroups from "./Pages/StudentGroups/ListGroups";
+import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 
 function App(props) {
   return (
@@ -58,6 +59,12 @@ function App(props) {
       <Route path="/rate/view" element={<ListChargeRate />} />
         <Route path="/rate/add" element={<AddChargeRate />} />
         <Route path="/rate/edit" element={<UpdateChargeRate />} />
+      {/* End Charge rate routes */}
+
+      {/* Charge rate routes */}
+      <Route path="/payments/mm/view" element={<ListMMPayments />} />
+        {/* <Route path="/rate/add" element={<AddChargeRate />} />
+        <Route path="/rate/edit" element={<UpdateChargeRate />} /> */}
       {/* End Charge rate routes */}
 
       {/* Parents */}
