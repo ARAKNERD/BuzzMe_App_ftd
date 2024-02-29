@@ -8,11 +8,7 @@ export const AuthConsumer = AuthContext.Consumer;
 
 export const AuthProvider = (props)=> {
 
-    // const [users, setUser] = useState({
-    //     username:"Andrew",
-    //     firstName:"Andre",
-    //     lastName:"Ssekirime"
-    // })
+    
     const [userId, setUserId] = useState(functions.sessionGuard());
     const [permissionLists, setPermissionList] = useState([]);
     const [user,setUser] = useState(false)
@@ -42,7 +38,7 @@ export const AuthProvider = (props)=> {
 
     const getUserInfo=async()=>{
        
-        const server_response = await ajaxUser.fetchSingleUser(userId); 
+        const server_response = await ajaxUser.fetchUserProfile(userId); 
 
         if(server_response.status==="OK")
         {  

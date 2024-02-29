@@ -7,7 +7,7 @@ export default {
       username: username,
       password: password,
     };
-    let response = await apiCall("login", data);
+    let response = await apiCall("user/login", data);
     return response;
   },
   async fetchUserList(data) {

@@ -15,18 +15,18 @@ export default {
 
   sessionGuard() {
     // const cookies = new Cookies();
-    if (!localStorage.getItem("@user")) {
+    if (!localStorage.getItem("buzzMe@user")) {
       //window.location='/login';
       return false;
     } else {
-      const access_token = localStorage.getItem("@user");
+      const access_token = localStorage.getItem("buzzMe@user");
       const decorded_token = this.parseJwt(access_token);
       return decorded_token["data"]["user_id"];
     }
   },
   readPermissions() {
-    if (localStorage.getItem("@user")) {
-      const access_token = localStorage.getItem("@user");
+    if (localStorage.getItem("buzzMe@user")) {
+      const access_token = localStorage.getItem("buzzMe@user");
       const decorded_token = this.parseJwt(access_token);
       return decorded_token["data"]["permissions"]["list"];
     } else {
@@ -34,8 +34,8 @@ export default {
     }
   },
   readUser() {
-    if (localStorage.getItem("@user")) {
-      const access_token = localStorage.getItem("@user");
+    if (localStorage.getItem("buzzMe@user")) {
+      const access_token = localStorage.getItem("buzzMe@user");
       const decorded_token = this.parseJwt(access_token);
       return decorded_token["data"];
     } else {
@@ -43,8 +43,8 @@ export default {
     }
   },
   checkSecureAccount() {
-    if (localStorage.getItem("@user")) {
-      const access_token = localStorage.getItem("@user");
+    if (localStorage.getItem("buzzMe@user")) {
+      const access_token = localStorage.getItem("buzzMe@user");
       const decorded_token = this.parseJwt(access_token);
       return decorded_token["data"]["secure"];
     } else {
