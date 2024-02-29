@@ -1,33 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import AppContainer from '../../Components/Structure/AppContainer'
-import ajaxAccounts from '../../util/remote/ajaxAccounts';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import ajaxBank from '../../util/remote/ajaxBank'
 
-function ListAccount() {
-
-
-    const [accountList,setAccountListing] = useState(false)
+function ListBankTransactions() {
 
 
-    const listAccount = async() =>{
-        const server_response = await ajaxAccounts.fetchAccount();
+    const [bankList,setBankListing] = useState(false)
+
+
+    const listTransactions = async() =>{
+        const server_response = await ajaxBank.fetchBankTransactions();
         if(server_response.status==="OK"){
-            setAccountListing(false)
+            setBankListing(false)
         }
     }
 
     useEffect(() => {
-        listAccount()
+        listTransactions()
     }, [])
 
 
   return (
-    <AppContainer title={"Accounts"}>
-        <div className="card height-auto">
+    <AppContainer title={"Bank Transactions"}>
+         <div className="card height-auto">
                     <div className="card-body">
                         <div className="heading-layout1">
                             <div className="item-title">
-                                <h3>All Accounts Data</h3>
+                                <h3>All Bank Transactions Data</h3>
                             </div>
                             <div className="dropdown">
                                 <Link className="dropdown-toggle" to="#" role="button" data-toggle="dropdown"
@@ -36,8 +36,8 @@ function ListAccount() {
                                 <div className="dropdown-menu dropdown-menu-right">
                                     <Link className="dropdown-item" to="#"><i
                                             className="fas fa-times text-orange-red"></i>Close</Link>
-                                    <Link className="dropdown-item" to="/contacts/add"><i
-                                            className="fas fa-cogs text-dark-pastel-green"></i>Add New Contact</Link>
+                                    {/* <Link className="dropdown-item" to="/contacts/add"><i
+                                            className="fas fa-cogs text-dark-pastel-green"></i>Add New Contact</Link> */}
                                     <Link className="dropdown-item" to="#"><i
                                             className="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
                                 </div>
@@ -64,10 +64,14 @@ function ListAccount() {
                                                 <label className="form-check-label">ID</label>
                                             </div>
                                         </th>
-                                        <th>Account Code</th>
-                                        <th>Description</th>
+                                        <th>Student Name</th>
+                                        <th>Cash In</th>
+                                        <th>Cash Out</th>
+                                        <th>Payment Method</th>
+                                        <th>mm_ref</th>
+                                        <th>Account</th>
 
-                                        <th></th>
+                                        {/* <th></th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -80,8 +84,11 @@ function ListAccount() {
                                         </td>
                                         <td>Male</td>
                                         <td>Businessman</td>
-                                        
-                                        <td>
+                                        <td>Male</td>
+                                        <td>Businessman</td>
+                                        <td>Male</td>
+                                        <td>Businessman</td>
+                                        {/* <td>
                                             <div className="dropdown">
                                                 <Link to="#" className="dropdown-toggle" data-toggle="dropdown"
                                                     aria-expanded="false">
@@ -95,7 +102,7 @@ function ListAccount() {
                                                    
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
 
                                     <tr>
@@ -107,9 +114,11 @@ function ListAccount() {
                                         </td>
                                         <td className="text-center"><img src="img/figure/student2.png" alt="school"/></td>
                                         <td>Mark Willy</td>
-                                      
+                                        <td>Male</td>
+                                        <td>Businessman</td> <td>Male</td>
+                                        <td>Businessman</td>
                                         
-                                        <td>
+                                        {/* <td>
                                             <div className="dropdown">
                                                 <Link to="#" className="dropdown-toggle" data-toggle="dropdown"
                                                     aria-expanded="false">
@@ -122,7 +131,7 @@ function ListAccount() {
                                                             className="fas fa-cogs text-dark-pastel-green"></i>Edit</Link>
                                                 </div>
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                    
                                     
@@ -135,4 +144,4 @@ function ListAccount() {
   )
 }
 
-export default ListAccount
+export default ListBankTransactions
