@@ -14,18 +14,18 @@ export const AuthProvider = (props)=> {
     const [user,setUser] = useState(false)
     
     useEffect(()=>{
-        getUserAccess();
         getUserInfo();
     }, [userId])
+
+    useEffect(()=>{
+        getUserAccess();
+    }, [user.role?.role_id])
     
 
 
     const getUserAccess=async()=>{
-        if(!userId)
-        {
-            return false
-        }
-        const server_response = await ajaxUser.getUserPermissionCodes(userId); 
+        
+        const server_response = await ajaxUser.getRolePermissionCodes(user.role?.role_id); 
       
         if(server_response.status==="OK")
         {  

@@ -47,7 +47,7 @@ export default {
     return response;
   },
 
-  async schoolCount(data) {
+  async fetchSchoolNumber(data) {
     let response = await apiCall("school/count", data);
     return response;
   },
