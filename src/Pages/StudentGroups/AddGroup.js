@@ -3,12 +3,10 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import { Toaster, toast } from 'react-hot-toast';
 import SchoolContext from "../../Context/SchoolContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
-import StudentGroupContext from "../../Context/StudentGroupContext";
 import Select from 'react-select'
 
 function AddGroup() {
     const {schoolList} = useContext(SchoolContext);
-    const {getGroupList} = useContext(StudentGroupContext);
     const [groupName,setGroupName] =useState("")
     const [school,setSchool] =useState("")
 
@@ -21,7 +19,6 @@ function AddGroup() {
             if(server_response.status==="OK"){
                 
                 toast.success(server_response.message)
-                getGroupList() 
                 resetForm();
             }
             else{

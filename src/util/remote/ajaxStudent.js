@@ -41,5 +41,15 @@ export default {
     let response = await apiCall("student/update", data);
 
     return response;
-  }
+  },
+
+  async fetchStudentNumber(school) 
+  {
+    let data = {
+        school: school
+    };
+    let response = await apiCall("student/list", data);
+
+    return response;
+  },
 };

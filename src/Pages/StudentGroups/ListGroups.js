@@ -4,11 +4,30 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { useContext } from "react";
 import { Link } from 'react-router-dom'
-import StudentGroupContext from "../../Context/StudentGroupContext";
+import AuthContext from "../../Context/AuthContext";
+import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 
 function ListGroups() {
 
-  const {groupList, getGroupList} = useContext(StudentGroupContext);
+  const [groupList, setGroupList] = useState(false)
+  const {user}  = useContext(AuthContext)
+  const [loading,setLoading] = useState(false)
+
+  const getGroups = async() =>{
+    setLoading(true);
+    const server_response = await ajaxStudentGroup.fetchGroupList(user.school_user?.school.school_id);
+    setLoading(false);
+    console.log(server_response)
+    if(server_response.status==="OK"){
+      setGroupList(server_response.details)
+    } 
+  }
+
+  useEffect(() => {
+    getGroups()
+  }, [user.school_user?.school.school_id])
+
+  
 
   return(
   <AppContainer title="Class Groups">
@@ -26,7 +45,7 @@ function ListGroups() {
                                         data-toggle="dropdown" aria-expanded="false">...</a>
                 
                                         <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={getGroupList} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                            <Link class="dropdown-item" onClick={getGroups} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
                                         </div>
                                     </div>
                         </div>

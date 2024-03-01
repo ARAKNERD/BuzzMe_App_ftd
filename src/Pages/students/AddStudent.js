@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import { Toaster, toast } from 'react-hot-toast';
 import StudentContext from "../../Context/StudentContext";
@@ -6,13 +6,15 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 import Select from 'react-select'
 import ParentContext from "../../Context/ParentContext";
 import SchoolContext from "../../Context/SchoolContext";
-import StudentGroupContext from "../../Context/StudentGroupContext";
+import AuthContext from "../../Context/AuthContext";
+import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 
 function AddStudent() {
     const {getStudentList} = useContext(StudentContext);
     const {parentList} = useContext(ParentContext);
     const {schoolList} = useContext(SchoolContext);
-    const {groupList} = useContext(StudentGroupContext);
+    const [groupList, setGroupList] = useState(false)
+    const {user}  = useContext(AuthContext)
     const [group,setGroup] =useState("")
     const [school,setSchool] =useState("")
     const [parent,setParent] =useState("")
@@ -45,6 +47,18 @@ function AddStudent() {
       setPassword("")
       setRegNo("")
   };
+
+  const getGroups = async() =>{
+    const server_response = await ajaxStudentGroup.fetchGroupList(user.school_user?.school?.school_id);
+  
+    if(server_response.status==="OK"){
+      setGroupList(server_response.details)
+    } 
+  }
+
+  useEffect(() => {
+    getGroups()
+  }, [user.school_user?.school?.school_id])
 
 
   return (

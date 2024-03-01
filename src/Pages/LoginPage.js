@@ -51,7 +51,7 @@ function Login() {
               <div className="form-group">
                 <label>Password</label>
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Enter password"
                   className="form-control"
                   value={pass} onChange={(e)=>setPass(e.target.value)}

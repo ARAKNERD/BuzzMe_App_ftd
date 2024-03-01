@@ -5,7 +5,6 @@ import { UserProvider } from './UserContext';
 import { ParentProvider } from './ParentContext';
 import { StudentProvider } from './StudentContext';
 import { SchoolProvider } from './SchoolContext';
-import { StudentGroupProvider } from './StudentGroupContext';
 
 
 const SuperProvider=(props)=>{
@@ -17,10 +16,8 @@ const SuperProvider=(props)=>{
                   <ParentProvider>
                     <StudentProvider>
                       <SchoolProvider>
-                      <StudentGroupProvider>
                  
                      {props.children}
-                     </StudentGroupProvider>
                      </SchoolProvider>
                      </StudentProvider>
                      </ParentProvider>

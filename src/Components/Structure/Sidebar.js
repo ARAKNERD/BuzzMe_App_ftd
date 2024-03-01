@@ -1,6 +1,6 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {RenderSecure} from "../../util/script/RenderSecure";
+import { RenderSecure } from "../../util/script/RenderSecure";
 
 const Sidebar = (props) => {
   const toggleDropdown = (e) => {
@@ -36,33 +36,12 @@ const Sidebar = (props) => {
         </div>
         <div className="sidebar-menu-content">
           <ul className="nav nav-sidebar-menu sidebar-toggle-view">
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
+
+            <li className="nav-item">
+              <Link to="/" className="nav-link">
                 <i className="flaticon-dashboard" />
                 <span>Dashboard</span>
               </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                  <Link to="index.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Admin
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="index3.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Students
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="index4.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Parents
-                  </Link>
-                </li>
-              </ul>
             </li>
 
             <li
@@ -171,6 +150,7 @@ const Sidebar = (props) => {
               </ul>
             </li>
 
+            <RenderSecure code="SCHOOL-USER-VIEW">
             <li className="nav-item sidebar-nav-item" onClick={(e) => toggleDropdown(e)}>
               <Link to="#" className="nav-link">
                 <i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" />
@@ -191,6 +171,7 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </li>
+            </RenderSecure>
             <li className="nav-item">
               <Link to="all-subject.html" className="nav-link">
                 <i className="flaticon-open-book" />
@@ -246,62 +227,6 @@ const Sidebar = (props) => {
                 <i className="flaticon-script" />
                 <span>Notice</span>
               </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="messaging.html" className="nav-link">
-                <i className="flaticon-chat" />
-                <span>Messeage</span>
-              </Link>
-            </li>
-            <li className="nav-item sidebar-nav-item">
-              <Link to="#" className="nav-link">
-                <i className="flaticon-menu-1" />
-                <span>UI Elements</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                  <Link to="notification-alart.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Alart
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="button.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Button
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="grid.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Grid
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="modal.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Modal
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="progress-bar.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Progress Bar
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="ui-tab.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Tab
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="ui-widget.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Widget
-                  </Link>
-                </li>
-              </ul>
             </li>
             
           </ul>

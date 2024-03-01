@@ -7,7 +7,7 @@ export default {
       username: username,
       password: password,
     };
-    let response = await apiCall("user/login", data);
+    let response = await apiCall("login", data);
     return response;
   },
   async fetchUserList(data) {
@@ -15,14 +15,16 @@ export default {
     return response;
   },
 
-  async getUserPermissionCodes(userId) {
+  async getRolePermissionCodes(role_id) {
     let data = {
-      user_id: userId,
-    };
+      role_id: role_id
+    }
 
-    let response = await apiCall("user/permission/codes", data);
+    let response = await apiCall("permission/list/role", data)
     return response;
+       
   },
+  
   async createUser(
     role_id,
     first_name,
