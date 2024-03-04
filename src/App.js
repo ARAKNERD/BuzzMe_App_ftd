@@ -13,7 +13,6 @@ import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
 import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
-import ViewSchool from './Pages/Schools/ViewSchool';
 import AddSchool from "./Pages/Schools/AddSchool";
 import UpdateSchool from "./Pages/Schools/UpdateSchool";
 import ListSchoolUsers from "./Pages/SchoolUsers/ListSchoolUsers";
@@ -31,6 +30,7 @@ import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import ListAccount from "./Pages/Accounts/ListAccount";
 import AddAccount from "./Pages/Accounts/AddAccount";
 import ListBankTransactions from "./Pages/Bank/ListBankTransactions";
+import ViewSchool from "./Pages/Schools/ViewSchool";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);

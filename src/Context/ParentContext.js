@@ -18,7 +18,6 @@ export const ParentProvider = (props)=> {
    const getParentList =async()=>{
 
       const server_response = await ajaxParent.fetchParentList(data);
-        console.log(server_response)
       if(server_response.status==="OK"){
          //store results
          setParentList(server_response.details);

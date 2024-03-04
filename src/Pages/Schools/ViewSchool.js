@@ -11,7 +11,7 @@ function ViewSchool() {
     const listSchools = async() =>{
         const server_response = await ajaxSchool.fetchSchoolList();
         if(server_response.status==="OK"){
-            setSchoolListing(false)
+            setSchoolListing(server_response.details)
         }
     }
 
@@ -23,12 +23,12 @@ function ViewSchool() {
 
   return( 
 
-    <AppContainer title={"School Users"}>
+    <AppContainer title={"Schools"}>
  <div className="card height-auto">
                     <div className="card-body">
                         <div className="heading-layout1">
                             <div className="item-title">
-                                <h3>All School Data</h3>
+                                <h3>All Schools</h3>
                             </div>
                             <div className="dropdown">
                                 <Link className="dropdown-toggle" to="#" role="button" data-toggle="dropdown"
@@ -59,17 +59,11 @@ function ViewSchool() {
                             <table className="table display data-table text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input checkAll"/>
-                                                <label className="form-check-label">ID</label>
-                                            </div>
-                                        </th>
-                                        <th>Photo</th>
-                                        <th>School Name</th>
-                                        <th>Address</th>
+                                        <th>No. </th>
+                                        <th>School Name</th>                                   
                                         <th>Phone</th>
                                         <th>E-mail</th>
+                                        <th>Address</th>
                                         <th>District</th>
                                         <th>Region</th>
 
@@ -77,20 +71,16 @@ function ViewSchool() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input"/>
-                                                <label className="form-check-label">#0021</label>
-                                            </div>
-                                        </td>
-                                        <td className="text-center"><img src="img/figure/student2.png" alt="school"/></td>
-                                        <td>Mark Willy</td>
-                                        <td>Male</td>
-                                        <td>Businessman</td>
-                                        <td>TA-107 Newyork</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td>
+                                {Array.isArray(schoolList) && schoolList.length > 0 ? (
+                      schoolList.map((item, key) => (
+                                    <tr key={key}>
+                                        <td>{key + 1}</td>
+                                        <td>{item.school_name}</td>
+                                        <td>{item.contact}</td>
+                                        <td>{item.email}</td>
+                                        <td>{item.address}</td>
+                                        <td>{item.district?.district_name}</td>
+                                        <td>{item.region?.region_name}</td>
                                         <td>
                                             <div className="dropdown">
                                                 <Link to="#" className="dropdown-toggle" data-toggle="dropdown"
@@ -98,8 +88,6 @@ function ViewSchool() {
                                                     <span className="flaticon-more-button-of-three-dots"></span>
                                                 </Link>
                                                 <div className="dropdown-menu dropdown-menu-right">
-                                                    <Link className="dropdown-item" to="#"><i
-                                                            className="fas fa-times text-orange-red"></i>Close</Link>
                                                     <Link className="dropdown-item" to="/schools/edit"><i
                                                             className="fas fa-cogs text-dark-pastel-green"></i>Edit</Link>
                                                    
@@ -107,36 +95,12 @@ function ViewSchool() {
                                             </div>
                                         </td>
                                     </tr>
-
-                                    <tr>
-                                        <td>
-                                            <div className="form-check">
-                                                <input type="checkbox" className="form-check-input"/>
-                                                <label className="form-check-label">#0021</label>
-                                            </div>
-                                        </td>
-                                        <td className="text-center"><img src="img/figure/student2.png" alt="school"/></td>
-                                        <td>Mark Willy</td>
-                                        <td>Male</td>
-                                        <td>Businessman</td>
-                                        <td>TA-107 Newyork</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td>
-                                        <td>
-                                            <div className="dropdown">
-                                                <Link to="#" className="dropdown-toggle" data-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    <span className="flaticon-more-button-of-three-dots"></span>
-                                                </Link>
-                                                <div className="dropdown-menu dropdown-menu-right">
-                                                <Link className="dropdown-item" to="#"><i
-                                                            className="fas fa-times text-orange-red"></i>Close</Link>
-                                                    <Link className="dropdown-item" to="/schools/edit"><i
-                                                            className="fas fa-cogs text-dark-pastel-green"></i>Edit</Link>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    ))
+                                    ): (
+                                      <tr>
+                                        <td colSpan="7" style={{textAlign:"center"}}>No schools registered yet.</td>
+                                      </tr>
+                                    )}
                                    
                                     
                                 </tbody>
