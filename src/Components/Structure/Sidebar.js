@@ -43,7 +43,7 @@ const Sidebar = (props) => {
                 <span>Dashboard</span>
               </Link>
             </li>
-
+            <RenderSecure code="ADMIN-VIEW">
             <li
               className="nav-item sidebar-nav-item"
               onClick={(e) => toggleDropdown(e)}>
@@ -67,7 +67,7 @@ const Sidebar = (props) => {
                 </li>
               </ul>
             </li>
-
+            </RenderSecure>
             <li
               className="nav-item sidebar-nav-item"
               onClick={(e) => toggleDropdown(e)}>
