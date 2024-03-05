@@ -66,7 +66,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="flaticon-classmates" />
+                  <i className="fa-solid fa-school" />
                   <span>Schools</span>
                 </Link>
                 <ul className="nav sub-group-menu">
@@ -91,7 +91,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="flaticon-classmates" />
+                  <i className="fa-solid fa-users" />
                   <span>School Users</span>
                 </Link>
                 <ul className="nav sub-group-menu">
@@ -110,56 +110,6 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-=======
-            <RenderSecure code="ADMIN-VIEW">
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-classmates" />
-                <span>Schools</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-             
-                <li className="nav-item">
-                  <Link to="/schools/view" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    View Schools
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/schools/add" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add School
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            </RenderSecure>
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-classmates" />
-                <span>School Users</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-             
-                <li className="nav-item">
-                  <Link to="/schools/user/view" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    View Schools Users
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/schools/user/add" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add School User
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
 
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li
