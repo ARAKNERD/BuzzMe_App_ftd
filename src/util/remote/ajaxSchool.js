@@ -8,26 +8,13 @@ export default {
   },
 
 
-  async createSchool(school_name,contact,email,address,district,region,lat,lng, date_registered,registered_by) {
-    let data = {
-      school_name: school_name,
-      contact: contact,
-      email: email,
-      address: address,
-      district: district,
-      region: region,
-      lat: lat,
-      lng: lng,
-      date_registered: date_registered,
-      registered_by: registered_by
-    };
+  async createSchool(data) {
     let response = await apiCall("school/add", data);
-
     return response;
   },
 
   async updateSchool(
-    school_id,school_name,contact,email,address,district,region,lat,lng, date_registered,registered_by
+    school_id,school_name,contact,email,address,district,region,lat,lng
   ) {
     let data = {
       school_id: school_id,
@@ -38,9 +25,7 @@ export default {
       district: district,
       region: region,
       lat: lat,
-      lng: lng,
-      date_registered: date_registered,
-      registered_by: registered_by
+      lng: lng
     };
     let response = await apiCall("school/update", data);
 

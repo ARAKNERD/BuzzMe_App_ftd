@@ -15,7 +15,7 @@ function ListGroups() {
 
   const getGroups = async() =>{
     setLoading(true);
-    const server_response = await ajaxStudentGroup.fetchGroupList(user.school_user?.school.school_id);
+    const server_response = await ajaxStudentGroup.fetchGroupList(user.school_user?.school?.school_id);
     setLoading(false);
     console.log(server_response)
     if(server_response.status==="OK"){
@@ -76,7 +76,7 @@ function ListGroups() {
                     )}
                   </tbody>
                 </table>
-                {!groupList && <Loader/>}
+                {loading && <Loader/>}
               </div>
             </div>
 			    </div>
