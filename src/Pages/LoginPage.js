@@ -20,6 +20,8 @@ function Login() {
     setLoading(true);
 
     var harshed_password = btoa(pass);
+    // var harshed_password = pass;
+
     const data = {
       username: username,
       password: harshed_password,
@@ -31,6 +33,7 @@ function Login() {
       localStorage.setItem("buzzMe@user", server_response.details);
       navigate("/");
       window.location.reload();
+
       setInfo(<Alert type="success" message={server_response.message} />);
     } else {
       setInfo(<Alert type="danger" message={server_response.message} />);
@@ -43,7 +46,7 @@ function Login() {
         <div className="login-page-content">
           <div className="login-box">
             <div className="item-logo">
-              <img stysrc="../../../assets/img/logo2.png" alt="logo" />
+              <img src={process.env.PUBLIC_URL + "/assets/img/logo2.png"} />
             </div>
             {loading && <Loader />}
             {info}

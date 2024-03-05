@@ -1,7 +1,7 @@
 import React from "react";
 import SystemModal from "../../Components/Common/SystemModal";
 
-function ViewStudentsContacts() {
+function ChangeStatus() {
   const RenderFooter = (controls) => {
     return (
       <>
@@ -28,11 +28,11 @@ function ViewStudentsContacts() {
         footer={RenderFooter}>
         {/* <Toaster /> */}
         <div className="" id="printablediv">
-          ViewStudentsContacts
+          ChangeStatus
         </div>
       </SystemModal>
     </div>
   );
 }
 
-export default ViewStudentsContacts;
+export default ChangeStatus;
