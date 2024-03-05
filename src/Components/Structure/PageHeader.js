@@ -9,7 +9,7 @@ const PageHeader = (props) => {
         <h3>{props.title}</h3>
         <ul>
           <li>
-            <a href="index.html">Home</a>
+            <a href="/">Home</a>
           </li>
           <li> {props.title}</li>
         </ul>

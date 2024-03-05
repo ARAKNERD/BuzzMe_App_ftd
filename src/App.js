@@ -5,6 +5,7 @@ import {
   Routes as Switch,
   Navigate,
 } from "react-router-dom";
+import "@fortawesome/fontawesome-free/css/all.css";
 
 import ViewParents from "./Pages/Parents/ViewParents";
 import AddParent from "./Pages/Parents/AddParent";
@@ -13,6 +14,7 @@ import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
 import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
+
 import AddSchool from "./Pages/Schools/AddSchool";
 import UpdateSchool from "./Pages/Schools/UpdateSchool";
 import ListSchoolUsers from "./Pages/SchoolUsers/ListSchoolUsers";
@@ -23,29 +25,36 @@ import AddContacts from "./Pages/Contacts/AddContacts";
 import UpdateContact from "./Pages/Contacts/UpdateContact";
 import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
 import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
-import ListChargeRate from "./Pages/ChargeRate/ListChargeRate";
+import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddGroup";
 import ListGroups from "./Pages/StudentGroups/ListGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import ListAccount from "./Pages/Accounts/ListAccount";
 import AddAccount from "./Pages/Accounts/AddAccount";
 import ListBankTransactions from "./Pages/Bank/ListBankTransactions";
+import functions from "./util/functions";
+import ActivateAccount from "./Pages/ActivateAccount";
+
 import ViewSchool from "./Pages/Schools/ViewSchool";
+
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
 
   function checkLogin() {
-    if (!window.localStorage.getItem("buzzMe@user")) {
-      setLoggedIn(false);
-    } else {
-      setLoggedIn(true);
-    }
+    // if (!window.localStorage.getItem("buzzMe@user")) {
+    //   setLoggedIn(false);
+    // } else {
+    //   setLoggedIn(true);
+    // }
   }
 
   useEffect(() => {
     checkLogin();
   }, []);
+
+  // const secure = functions.checkSecureAccount();
+  const secure = 1;
 
   return (
     <SuperProvider>
@@ -53,17 +62,40 @@ function App(props) {
         <Switch>
           {!loggedIn && (
             <>
-              <Route path="*" element={<LoginPage/>} />
+              <Route path="*" element={<LoginPage />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/" element={!loggedIn ? (<Navigate replace to="/login" />) : (<Dashboard />)}/>
+              <Route
+                path="/"
+                element={
+                  !loggedIn ? <Navigate replace to="/login" /> : <Dashboard />
+                }
+              />
+            </>
+          )}
+          {loggedIn && secure * 1 === 0 && (
+            <>
+              <Route path="/Activate/account" element={<ActivateAccount />} />
+              <Route
+                path="/"
+                element={<Navigate replace to="/Activate/account" />}
+              />
             </>
           )}
 
-          {loggedIn && (
+          {loggedIn && secure * 1 === 1 && (
             <>
+              <Route path="*" element={<Dashboard />} />
               <Route path="/" element={<Dashboard />} />
-              <Route path="/" element={!loggedIn ? (<Navigate replace to="/login" />) : (<Dashboard />)}/>
-              <Route path="/login" element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}/>
+              <Route
+                path="/"
+                element={
+                  !loggedIn ? <Navigate replace to="/login" /> : <Dashboard />
+                }
+              />
+              <Route
+                path="/login"
+                element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}
+              />
 
               {/* School routes */}
               <Route path="/schools/view" element={<ViewSchool />} />
@@ -84,9 +116,8 @@ function App(props) {
               {/* End Student Contact routes */}
 
               {/* Charge rate routes */}
-              <Route path="/rate/view" element={<ListChargeRate />} />
-              <Route path="/rate/add" element={<AddChargeRate />} />
-              <Route path="/rate/edit" element={<UpdateChargeRate />} />
+              <Route path="/rate/view" element={<ChargeRates />} />
+
               {/* End Charge rate routes */}
 
               {/* MM Payments routes */}
@@ -103,27 +134,24 @@ function App(props) {
               {/* End Account routes */}
 
               {/* Parents */}
-              <Route path="/parents" element={<ViewParents/>} />
-              <Route path="/parents/add" element={<AddParent/>} />
+              <Route path="/parents" element={<ViewParents />} />
+              <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
 
               {/* Students */}
-              <Route path="/students" element={<ViewStudents/>} />
-              <Route path="/students/add" element={<AddStudent/>} />
+              <Route path="/students" element={<ViewStudents />} />
+              <Route path="/students/add" element={<AddStudent />} />
               {/* End student */}
 
               {/* Class Groups */}
-              <Route path="/class-groups" element={<ListGroups/>} />
-              <Route path="/class-groups/add" element={<AddGroup/>} />
+              <Route path="/class-groups" element={<ListGroups />} />
+              <Route path="/class-groups/add" element={<AddGroup />} />
               {/* End class groups */}
-             
             </>
           )}
-         
         </Switch>
       </Router>
     </SuperProvider>
-
   );
 }
 
