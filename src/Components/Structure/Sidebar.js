@@ -190,6 +190,23 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/Districts/view" className="nav-link">
+                  <i className="fa-solid fa-location-dot" />
+                  <span>Districts</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/regions/view" className="nav-link">
+                  <i className="fa-solid fa-globe" />
+                  <span>regions</span>
+                </Link>
+              </li>
+            </RenderSecure>
+
             {/* <li className="nav-item">
               <Link to="all-subject.html" className="nav-link">
                 <i className="flaticon-open-book" />

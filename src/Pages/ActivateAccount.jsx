@@ -3,6 +3,8 @@ import {useNavigate} from "react-router-dom";
 import ajaxUser from "../util/remote/ajaxUser";
 import Loader from "../Components/Common/Loader";
 import Alert from "../Components/Common/Alert";
+import toast, {Toaster} from "react-hot-toast";
+import functions from "../util/functions";
 
 function ActivateAccount() {
   const navigate = useNavigate();
@@ -12,7 +14,7 @@ function ActivateAccount() {
   const [info, setInfo] = useState("");
   const [passView, setPassView] = useState(false);
   const [passView1, setPassView1] = useState(false);
-
+  const user_id = functions.sessionGuard();
   const togglePasswordVisibility = () => {
     setPassView(!passView);
   };
@@ -22,26 +24,35 @@ function ActivateAccount() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    const data = {Password: pass};
 
-    const server_response = await ajaxUser.loginUser(data);
-    setLoading(false);
+    if (pass === cpass) {
+      const hashedPassword = btoa(pass);
 
-    if (server_response.status === "OK") {
-      localStorage.setItem("buzzMe@user", server_response.details);
-      navigate("/");
-      window.location.reload();
-      setInfo(<Alert type="success" message={server_response.message} />);
+      const data = {account_id: user_id, secure_string: hashedPassword};
+
+      const server_response = await ajaxUser.ActivateUserAccount(data);
+      setLoading(true);
+      // //console.log(server_response);
+
+      if (server_response.status === "OK") {
+        setLoading(false);
+        localStorage.removeItem("buzzMe@user");
+        navigate("/");
+        window.location.reload();
+        toast.success(server_response.message);
+      } else {
+        setLoading(false);
+        toast.error(server_response.details.message);
+      }
     } else {
-      setInfo(<Alert type="danger" message={server_response.message} />);
+      toast.error("Passwords don't match");
     }
   };
-
   return (
     <div>
       <div className="login-page-wrap">
         <div className="login-page-content">
+          <Toaster />
           <div className="login-box">
             <div className="item-logo">
               <img src="../assets/img/logo2.png" alt="logo" />

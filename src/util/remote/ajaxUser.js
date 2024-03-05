@@ -6,6 +6,10 @@ export default {
     let response = await apiCall("login", data);
     return response;
   },
+  async ActivateUserAccount(data) {
+    let response = await apiCall("user/password/set", data);
+    return response;
+  },
   async fetchUserList(data) {
     let response = await apiCall("user/list", data);
     return response;

@@ -10,16 +10,19 @@ import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 
 function AddingStudent() {
   const {getStudentList} = useContext(StudentContext);
-  const {parentList} = useContext(ParentContext);
   const {schoolList} = useContext(SchoolContext);
+
   const [groupList, setGroupList] = useState(false);
   const {user} = useContext(AuthContext);
   const [group, setGroup] = useState("");
   const [school, setSchool] = useState("");
-  const [parent, setParent] = useState("");
   const [regNo, setRegNo] = useState("");
-  const [password, setPassword] = useState("");
+  const [dob, setDOb] = useState("");
+
   const [names, setNames] = useState("");
+
+  // var school_id = user.school_user ? school_user.school.school_id : "";
+  var school_id = 1;
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -27,11 +30,10 @@ function AddingStudent() {
     if (regNo.length > 0 || names.length > 0) {
       var data = {
         group: group,
-        school: school,
-        parent: parent,
+        school: school_id,
         reg_no: regNo,
-        password: password,
         names: names,
+        dob: dob,
       };
 
       const server_response = await ajaxStudent.createStudent(data);
@@ -49,7 +51,7 @@ function AddingStudent() {
 
   const resetForm = () => {
     setNames("");
-    setPassword("");
+
     setRegNo("");
   };
 
@@ -133,30 +135,14 @@ function AddingStudent() {
                       className="form-control"
                     />
                   </div>
-
-                  <div className="col-xl-6 col-lg-6 col-md-6">
-                    <label htmlFor="">Parent</label>
-                    <Select
-                      onChange={(e) => setParent(e.parent_id)}
-                      getOptionLabel={(option) => option.parent_name}
-                      getOptionValue={(option) => option.parent_id}
-                      isSearchable
-                      options={Array.isArray(parentList) ? parentList : []}
-                      value={
-                        Array.isArray(parentList) &&
-                        parentList.find((value) => value.parent_id === parent)
-                      }
-                    />
-                  </div>
-
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label htmlFor="">Password</label>
+                    <label>Date of birth</label>
                     <input
-                      type="password"
-                      value={password}
+                      type="text"
+                      value={dob}
                       style={{border: "1px solid grey"}}
-                      placeholder="student's intial pass code"
-                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="student's registration number"
+                      onChange={(e) => setDOb(e.target.value)}
                       className="form-control"
                     />
                   </div>

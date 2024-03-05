@@ -34,27 +34,28 @@ import AddAccount from "./Pages/Accounts/AddAccount";
 import ListBankTransactions from "./Pages/Bank/ListBankTransactions";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
-
 import ViewSchool from "./Pages/Schools/ViewSchool";
-
+import District from "./Pages/RegionDistrict/District";
+import Regions from "./Pages/RegionDistrict/Regions";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
 
   function checkLogin() {
-    // if (!window.localStorage.getItem("buzzMe@user")) {
-    //   setLoggedIn(false);
-    // } else {
-    //   setLoggedIn(true);
-    // }
+    if (!window.localStorage.getItem("buzzMe@user")) {
+      setLoggedIn(false);
+    } else {
+      setLoggedIn(true);
+    }
   }
 
   useEffect(() => {
     checkLogin();
   }, []);
 
-  // const secure = functions.checkSecureAccount();
-  const secure = 1;
+  const secure = functions.checkSecureAccount();
+  // const secure = 0;
+  console.log(secure);
 
   return (
     <SuperProvider>
@@ -92,60 +93,54 @@ function App(props) {
                   !loggedIn ? <Navigate replace to="/login" /> : <Dashboard />
                 }
               />
+              /regions/view
               <Route
                 path="/login"
                 element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}
               />
-
               {/* School routes */}
               <Route path="/schools/view" element={<ViewSchool />} />
               <Route path="/schools/add" element={<AddSchool />} />
               <Route path="/schools/edit" element={<UpdateSchool />} />
               {/* End school routes */}
-
               {/* School User routes */}
               <Route path="/schools/user/view" element={<ListSchoolUsers />} />
               <Route path="/schools/user/add" element={<AddSchoolUser />} />
               <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
               {/* End School User routes */}
-
               {/* Student Contact routes */}
               <Route path="/contacts/view" element={<ListContacts />} />
               <Route path="/contacts/add" element={<AddContacts />} />
               <Route path="/contacts/edit" element={<UpdateContact />} />
               {/* End Student Contact routes */}
-
               {/* Charge rate routes */}
               <Route path="/rate/view" element={<ChargeRates />} />
-
               {/* End Charge rate routes */}
-
               {/* MM Payments routes */}
               <Route path="/payments/mm/view" element={<ListMMPayments />} />
               {/* End MM Payments routes */}
-
               {/* Bank routes */}
               <Route path="/bank/view" element={<ListBankTransactions />} />
               {/* End Bank routes */}
-
               {/* Account routes */}
               <Route path="/accounts/view" element={<ListAccount />} />
               <Route path="/accounts/add" element={<AddAccount />} />
               {/* End Account routes */}
-
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />
               <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
-
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/students/add" element={<AddStudent />} />
               {/* End student */}
-
               {/* Class Groups */}
               <Route path="/class-groups" element={<ListGroups />} />
               <Route path="/class-groups/add" element={<AddGroup />} />
+              {/* End class groups */}
+              {/* districts and regions*/}
+              <Route path="/Districts/view" element={<District />} />
+              <Route path="/regions/view" element={<Regions />} />
               {/* End class groups */}
             </>
           )}
