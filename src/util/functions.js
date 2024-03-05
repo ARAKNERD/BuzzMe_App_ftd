@@ -48,7 +48,7 @@ export default {
       const decorded_token = this.parseJwt(access_token);
       return decorded_token["data"]["secure"];
     } else {
-      return "UNLOGGED";
+      return 0;
     }
   },
 

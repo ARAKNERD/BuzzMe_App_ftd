@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 
 export default function Header(props) {
-  const { user } = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
   const navigate = useNavigate();
 
   const onLogout = () => {
@@ -11,15 +11,27 @@ export default function Header(props) {
     navigate("/login");
     window.location.reload();
   };
+
+  function addSidebarToggleMobileListener() {
+    document
+      .querySelector(".sidebar-toggle-mobile")
+      .addEventListener("click", function () {
+        var wrapper = document.getElementById("wrapper");
+        wrapper.classList.toggle("sidebar-collapsed-mobile");
+        if (wrapper.classList.contains("sidebar-collapsed")) {
+          wrapper.classList.remove("sidebar-collapsed");
+        }
+      });
+  }
   return (
     <>
       {/* Header Menu Area Start Here */}
       <div className="navbar navbar-expand-md header-menu-one bg-light">
         <div className="nav-bar-header-one">
           <div className="header-logo">
-            <a href="index.html">
+            <a href="/">
               <img
-                src="./assets/img/logo.png"
+                src={process.env.PUBLIC_URL + "/assets/img/logo.png"}
                 alt="logo"
                 style={{width: "190px", height: "80px"}}
               />
@@ -42,15 +54,13 @@ export default function Header(props) {
             data-toggle="collapse"
             data-target="#mobile-navbar"
             aria-expanded="false"
-            // onClick={toggleSidebar}
-          >
+            onClick={props.toggleSidebar}>
             <i className="far fa-arrow-alt-circle-down" />
           </button>
           <button
             type="button"
             className="navbar-toggler sidebar-toggle-mobile"
-            // onClick={toggleSidebar}
-          >
+            onClick={addSidebarToggleMobileListener}>
             <i className="fas fa-bars" />
           </button>
         </div>
@@ -101,7 +111,7 @@ export default function Header(props) {
                         My Profile
                       </a>
                     </li>
-                    
+
                     <li>
                       <Link onClick={onLogout}>
                         <i className="flaticon-turn-off" />
@@ -251,7 +261,6 @@ export default function Header(props) {
                 </div>
               </div>
             </li>
-            
           </ul>
         </div>
       </div>

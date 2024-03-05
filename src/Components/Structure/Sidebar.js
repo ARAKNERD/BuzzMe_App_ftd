@@ -1,6 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import { RenderSecure } from "../../util/script/RenderSecure";
+import {RenderSecure} from "../../util/script/RenderSecure";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faAngleRight} from "@fortawesome/free-solid-svg-icons";
 
 const Sidebar = (props) => {
   const toggleDropdown = (e) => {
@@ -25,10 +27,10 @@ const Sidebar = (props) => {
       <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
         <div className="mobile-sidebar-header d-md-none">
           <div className="header-logo">
-            <Link to="index.html">
+            <Link to="/">
               <img
-                src="./assets/img/logo1.png"
-                alt="logo"
+                src={process.env.PUBLIC_URL + "/assets/img/logo.png"}
+                alt="Logo"
                 style={{width: "200px", height: "100px"}}
               />
             </Link>
@@ -36,7 +38,6 @@ const Sidebar = (props) => {
         </div>
         <div className="sidebar-menu-content">
           <ul className="nav nav-sidebar-menu sidebar-toggle-view">
-
             <li className="nav-item">
               <Link to="/" className="nav-link">
                 <i className="flaticon-dashboard" />
@@ -44,135 +45,159 @@ const Sidebar = (props) => {
               </Link>
             </li>
 
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-classmates" />
-                <span>Schools</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-             
-                <li className="nav-item">
-                  <Link to="/schools/view" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    View Schools
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/schools/add" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add School
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-classmates" />
-                <span>School Users</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-             
-                <li className="nav-item">
-                  <Link to="/schools/user/view" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    View Schools Users
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/schools/user/add" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add School User
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-classmates" />
-                <span>Students</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                <Link className="nav-link" to="/students">
-                <i className="fas fa-angle-right" />
-                <span className="sidemenu-label">View Students</span>
-              </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="student-details.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Student Details
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="admit-form.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Admission Form
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="student-promotion.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Student Promotion
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-couple" />
-                <span>Parents</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                <Link className="nav-link" to="/parents">
-                <i className="fas fa-angle-right" />
-                <span className="sidemenu-label">View Parents</span>
-              </Link>
-                </li>
-                <li className="nav-item">
-                <Link className="nav-link" to="/parents/add">
-                <i className="fas fa-angle-right" />
-                <span className="sidemenu-label">Add Parent</span>
-              </Link>
-                </li>
-              </ul>
-            </li>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/rate/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <span>charge Rates</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/accounts/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice" />
+                  <span>Account</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="flaticon-classmates" />
+                  <span>Schools</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="/schools/view" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      View Schools
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/schools/add" className="nav-link">
+                      <i className="fa fa-angle-right" />
+                      Add School
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
 
             <RenderSecure code="SCHOOL-USER-VIEW">
-            <li className="nav-item sidebar-nav-item" onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" />
-                <span>Class Group </span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                <Link className="nav-link" to="/class-groups">
-                <i className="fas fa-angle-right" />
-                <span className="sidemenu-label">View Class Groups</span>
-              </Link>
-                </li>
-                <li className="nav-item">
-                <Link className="nav-link" to="/class-groups/add">
-                <i className="fas fa-angle-right" />
-                <span className="sidemenu-label">Add Class Groups</span>
-              </Link>
-                </li>
-              </ul>
-            </li>
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="flaticon-classmates" />
+                  <span>School Users</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="/schools/user/view" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      View Schools Users
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/schools/user/add" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      Add School User
+                    </Link>
+                  </li>
+                </ul>
+              </li>
             </RenderSecure>
-            <li className="nav-item">
+
+            <RenderSecure code="SCHOOL-USER-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="flaticon-classmates" />
+                  <span>Students</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="/students/add" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      Add student
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/students">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Students</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="student-details.html" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      Student Details
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link to="student-promotion.html" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      Student Promotion
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
+
+            <RenderSecure code="SCHOOL-USER-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="flaticon-couple" />
+                  <span>Parents</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/parents">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Parents</span>
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
+
+            <RenderSecure code="SCHOOL-USER-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="flaticon-maths-class-materials-cross-of-a-pencil-and-a-ruler" />
+                  <span>Class Group </span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/class-groups">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Class Groups</span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/class-groups/add">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">Add Class Groups</span>
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
+
+            {/* <li className="nav-item">
               <Link to="all-subject.html" className="nav-link">
                 <i className="flaticon-open-book" />
                 <span>Subject</span>
@@ -198,13 +223,15 @@ const Sidebar = (props) => {
               <ul className="nav sub-group-menu">
                 <li className="nav-item">
                   <Link to="exam-schedule.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
+                   <FontAwesomeIcon icon={faAngleRight} />
+
                     Exam Schedule
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link to="exam-grade.html" className="nav-link">
-                    <i className="fas fa-angle-right" />
+                   <FontAwesomeIcon icon={faAngleRight} />
+
                     Exam Grades
                   </Link>
                 </li>
@@ -227,8 +254,7 @@ const Sidebar = (props) => {
                 <i className="flaticon-script" />
                 <span>Notice</span>
               </Link>
-            </li>
-            
+            </li> */}
           </ul>
         </div>
       </div>

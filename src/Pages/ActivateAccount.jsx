@@ -4,26 +4,27 @@ import ajaxUser from "../util/remote/ajaxUser";
 import Loader from "../Components/Common/Loader";
 import Alert from "../Components/Common/Alert";
 
-function Login() {
+function ActivateAccount() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
   const [pass, setPass] = useState("");
+  const [cpass, setCpass] = useState("");
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState("");
-  const [passView, setPassV] = useState(false);
+  const [passView, setPassView] = useState(false);
+  const [passView1, setPassView1] = useState(false);
+
   const togglePasswordVisibility = () => {
-    setPassV(!passView);
+    setPassView(!passView);
+  };
+  const togglePasswordVisibility1 = () => {
+    setPassView1(!passView1);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const data = {Password: pass};
 
-    var harshed_password = btoa(pass);
-    const data = {
-      username: username,
-      password: harshed_password,
-    };
     const server_response = await ajaxUser.loginUser(data);
     setLoading(false);
 
@@ -43,28 +44,17 @@ function Login() {
         <div className="login-page-content">
           <div className="login-box">
             <div className="item-logo">
-              <img stysrc="../../../assets/img/logo2.png" alt="logo" />
+              <img src="../assets/img/logo2.png" alt="logo" />
             </div>
             {loading && <Loader />}
             {info}
             <h2 className="text-center">
               {" "}
               <i>
-                Login to your Account <br /> To Continue
+                Activate Your Account <br /> To Continue
               </i>
             </h2>
             <form className="login-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Username</label>
-                <input
-                  type="text"
-                  placeholder="Enter username"
-                  className="form-control"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <i className="fas fa-user" />
-              </div>
               <div className="form-group">
                 <label>password</label>
                 <input
@@ -83,14 +73,31 @@ function Login() {
               </div>
 
               <div className="form-group">
+                <label>comfirm password</label>
+                <input
+                  type={passView1 ? "text" : "password"}
+                  placeholder="comfirm password"
+                  className="form-control"
+                  value={cpass}
+                  onChange={(e) => setCpass(e.target.value)}
+                />
+                <i
+                  className={
+                    passView1 ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"
+                  }
+                  onClick={togglePasswordVisibility1}
+                />
+              </div>
+
+              <div className="form-group">
                 {loading && (
                   <button type="submit" disabled className="login-btn">
-                    Signing in..
+                    Activation in progress ...
                   </button>
                 )}
                 {!loading && (
                   <button type="submit" className="login-btn">
-                    Login
+                    Activate Account
                   </button>
                 )}
               </div>
@@ -102,4 +109,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ActivateAccount;

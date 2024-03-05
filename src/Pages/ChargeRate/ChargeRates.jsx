@@ -1,37 +1,44 @@
 import React, {useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxAccounts from "../../util/remote/ajaxAccounts";
 import {Link} from "react-router-dom";
-import AddAccount from "./AddAccount";
+import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
+import AddChargeRate from "./AddChargeRate";
+import useStateCallback from "../../util/customHooks/useStateCallback";
+import UpdateChargeRate from "./UpdateChargeRate";
 
-function ListAccount() {
-  const [accountList, setAccountListing] = useState(false);
+function ChargeRates() {
+  const [rateList, setRateListing] = useState(false);
 
-  const listAccount = async () => {
-    const server_response = await ajaxAccounts.fetchAccount();
+  const listChargeRates = async () => {
+    const server_response = await ajaxChargeRate.fetchChargeRateList();
     if (server_response.status === "OK") {
-      setAccountListing(false);
+      setRateListing(false);
     }
   };
 
   useEffect(() => {
-    listAccount();
+    listChargeRates();
   }, []);
 
+  const [Chargeupdater, setChargeupdater] = useStateCallback(false);
+  const handle_modal_Updater = (id) => {
+    setChargeupdater(false, () =>
+      setChargeupdater(<UpdateChargeRate isOpen={true} id={id} />)
+    );
+  };
+
   return (
-    <AppContainer title={"Accounts Management "}>
+    <AppContainer title="List Charge Rates">
       <div className="row">
         <div className="col-lg-12 col-md-12">
-          <div className="card height-auto">
-            <AddAccount />
-          </div>
+          <AddChargeRate />
         </div>
         <div className="col-lg-12 col-md-12">
           <div className="card height-auto">
             <div className="card-body">
               <div className="heading-layout1">
                 <div className="item-title">
-                  <h3>All Accounts Data</h3>
+                  <h3>All charge rates</h3>
                 </div>
                 <div className="dropdown">
                   <Link
@@ -76,6 +83,7 @@ function ListAccount() {
                   </div>
                 </div>
               </form>
+              {Chargeupdater}
               <div className="table-responsive">
                 <table className="table display data-table text-nowrap">
                   <thead>
@@ -89,10 +97,10 @@ function ListAccount() {
                           <label className="form-check-label">ID</label>
                         </div>
                       </th>
-                      <th>Account Code</th>
-                      <th>Description</th>
+                      <th>Charge Rate</th>
+                      <th>Type</th>
 
-                      <th></th>
+                      <th>operations</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -120,7 +128,10 @@ function ListAccount() {
                               <i className="fas fa-times text-orange-red"></i>
                               Close
                             </Link>
-                            <Link className="dropdown-item" to="">
+                            <Link
+                              className="dropdown-item"
+                              to="#"
+                              onClick={() => handle_modal_Updater(1)}>
                               <i className="fas fa-cogs text-dark-pastel-green"></i>
                               Edit
                             </Link>
@@ -155,7 +166,10 @@ function ListAccount() {
                               <i className="fas fa-times text-orange-red"></i>
                               Close
                             </Link>
-                            <Link className="dropdown-item" to="/rate/edit">
+                            <Link
+                              className="dropdown-item"
+                              to="#"
+                              onClick={() => handle_modal_Updater(2)}>
                               <i className="fas fa-cogs text-dark-pastel-green"></i>
                               Edit
                             </Link>
@@ -174,4 +188,4 @@ function ListAccount() {
   );
 }
 
-export default ListAccount;
+export default ChargeRates;

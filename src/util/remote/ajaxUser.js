@@ -2,11 +2,7 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async loginUser(username, password) {
-    let data = {
-      username: username,
-      password: password,
-    };
+  async loginUser(data) {
     let response = await apiCall("login", data);
     return response;
   },
@@ -17,14 +13,13 @@ export default {
 
   async getRolePermissionCodes(role_id) {
     let data = {
-      role_id: role_id
-    }
+      role_id: role_id,
+    };
 
-    let response = await apiCall("permission/list/role", data)
+    let response = await apiCall("permission/list/role", data);
     return response;
-       
   },
-  
+
   async createUser(
     role_id,
     first_name,
