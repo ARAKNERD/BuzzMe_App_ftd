@@ -1,27 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxSchool from "../../util/remote/ajaxSchool";
 import SchoolContext from "../../Context/SchoolContext";
-import DistrictContext from "../../Context/DistrictContext";
 import RegionContext from "../../Context/RegionContext";
 import AdminContext from "../../Context/AdminContext";
 import Select from 'react-select'
 import { Toaster, toast } from 'react-hot-toast';
+import ajaxDistrict from "../../util/remote/ajaxDistrict";
 
 function AddSchool() {
 
     const {getSchoolList} = useContext(SchoolContext);
-    const {districtList} = useContext(DistrictContext);
     const {regionList} = useContext(RegionContext);
     const {adminList} = useContext(AdminContext);
     const [contact,setContact] =useState("")
+    const [districtList, setDistrictList] = useState(false)
     const [schoolName,setSchoolName] =useState("")
     const [email,setEmail] =useState("")
     const [address,setAddress] =useState("")
     const [district,setDistrict] =useState("")
     const [region,setRegion] =useState("")
-    const [lat,setLat] =useState("")
-    const [lng,setLng] =useState("")
     const [dateRegistered,setDateRegistered] =useState("")
     const [registeredBy,setRegisteredBy] =useState("")
 
@@ -32,11 +30,15 @@ function AddSchool() {
         address: address,
         district: district,
         region: region,
-        lat: lat,
-        lng: lng,
         date_registered: dateRegistered,
         registered_by: registeredBy
     };
+
+    const data2 = {
+        region: region
+    };
+
+    
 
     const handleAdd = async(e) =>{
         e.preventDefault()
@@ -58,15 +60,26 @@ function AddSchool() {
         }  
     }
 
+    const getDistrictList = async() =>{
+        const server_response = await ajaxDistrict.fetchDistrictListPerRegion(data2);
+        console.log(server_response)
+        if(server_response.status==="OK"){
+                
+            setDistrictList(server_response.details)
+        }
+    }
+
     const resetForm = () => {
       setSchoolName("")
       setContact("")
       setEmail("")
       setAddress("")
-      setLat("")
-      setLng("")
       setDateRegistered("")
     };
+
+    useEffect(() => {
+        getDistrictList()
+      }, [data2])
 
 
   return(
@@ -104,17 +117,6 @@ function AddSchool() {
                                     <input type="text" value={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
                                 </div>
                                 <div className="col-lg-6 col-12 form-group">
-                                    <label htmlFor="">District</label>
-                                    <Select
-                                            onChange={(e)=>setDistrict(e.district_id)}
-                                            getOptionLabel ={(option)=>option.district_name}
-                                            getOptionValue ={(option)=>option.district_id}
-                                            isSearchable
-                                            options={Array.isArray(districtList) ? districtList:[]}
-                                            value={Array.isArray(districtList) && districtList.find(( value ) => value.district_id===district)}
-                                        />
-                                </div>
-                                <div className="col-lg-6 col-12 form-group">
                                     <label htmlFor="">Region</label>
                                     <Select
                                             onChange={(e)=>setRegion(e.region_id)}
@@ -125,15 +127,18 @@ function AddSchool() {
                                             value={Array.isArray(regionList) && regionList.find(( value ) => value.region_id===region)}
                                         />
                                 </div>
-                                <div className="col-lg-6 col-12 form-group">
-                                    <label htmlFor="">Latitude co-ordinates</label>
-                                    <input type="text" value={lat} onChange={(e)=>setLat(e.target.value)} className="form-control"/>
-                                    
-                                </div>
-                                <div className="col-lg-6 col-12 form-group">
-                                    <label htmlFor="">Longitude co-ordinates</label>
-                                    <input type="text" value={lng} onChange={(e)=>setLng(e.target.value)} className="form-control"/>
-                                </div>
+                                {region ? (<div className="col-lg-6 col-12 form-group">
+                                    <label htmlFor="">District</label>
+                                    <Select
+                                            onChange={(e)=>setDistrict(e.district_id)}
+                                            getOptionLabel ={(option)=>option.district_name}
+                                            getOptionValue ={(option)=>option.district_id}
+                                            isSearchable
+                                            options={Array.isArray(districtList) ? districtList:[]}
+                                            value={Array.isArray(districtList) && districtList.find(( value ) => value.district_id===district)}
+                                        />
+                                </div>):""}
+                                
                                 <div className="col-lg-6 col-12 form-group">
                                     <label htmlFor="">Date Registered</label>
                                     <input type="date" value={dateRegistered} onChange={(e)=>setDateRegistered(e.target.value)} className="form-control"/>
@@ -153,7 +158,8 @@ function AddSchool() {
                                 
                             </div>
                             <div className="mb-4">
-                                <input type="submit" style={{float:"right"}} className="btn btn-success" value="Save School Details"/>
+                                <input type="submit" style={{float:"right"}} className="btn-fill-md text-light bg-dark-pastel-green" value="Save School Details"/>
+                                {/* <button type="button" class="btn-fill-md text-light bg-dark-pastel-green">Success</button> */}
                             </div>
 
                         </form>

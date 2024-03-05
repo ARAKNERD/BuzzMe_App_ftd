@@ -8,6 +8,12 @@ export default {
     return response;
   },
 
+  async fetchDistrictListPerRegion(data) 
+  {
+    let response = await apiCall("district/list/region", data);
+    return response;
+  },
+
   async createDistrict(data) 
   {
     let response = await apiCall("district/add", data);

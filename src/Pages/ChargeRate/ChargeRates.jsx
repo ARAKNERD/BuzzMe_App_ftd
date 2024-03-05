@@ -1,24 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import {Link} from "react-router-dom";
 import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 import AddChargeRate from "./AddChargeRate";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import UpdateChargeRate from "./UpdateChargeRate";
+import { Toaster, toast } from 'react-hot-toast';
+import RateContext from "../../Context/RateContext";
+
 
 function ChargeRates() {
-  const [rateList, setRateListing] = useState(false);
-
-  const listChargeRates = async () => {
-    const server_response = await ajaxChargeRate.fetchChargeRateList();
-    if (server_response.status === "OK") {
-      setRateListing(false);
-    }
-  };
-
-  useEffect(() => {
-    listChargeRates();
-  }, []);
+  const {rateList} = useContext(RateContext);
 
   const [Chargeupdater, setChargeupdater] = useStateCallback(false);
   const handle_modal_Updater = (id) => {
@@ -29,6 +21,10 @@ function ChargeRates() {
 
   return (
     <AppContainer title="List Charge Rates">
+      <Toaster
+            position="top-center"
+            reverseOrder={false}
+        />
       <div className="row">
         <div className="col-lg-12 col-md-12">
           <AddChargeRate />
@@ -89,13 +85,7 @@ function ChargeRates() {
                   <thead>
                     <tr>
                       <th>
-                        <div className="form-check">
-                          <input
-                            type="checkbox"
-                            className="form-check-input checkAll"
-                          />
-                          <label className="form-check-label">ID</label>
-                        </div>
+                        No.
                       </th>
                       <th>Charge Rate</th>
                       <th>Type</th>
@@ -104,15 +94,14 @@ function ChargeRates() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                  {Array.isArray(rateList) && rateList.length > 0 ? (
+                  rateList.map((item, key) => (
+                    <tr key={key}>
                       <td>
-                        <div className="form-check">
-                          <input type="checkbox" className="form-check-input" />
-                          <label className="form-check-label">#0021</label>
-                        </div>
+                        {key + 1}
                       </td>
-                      <td>Male</td>
-                      <td>Businessman</td>
+                      <td>{item.type}</td>
+                      <td>{item.rate}</td>
 
                       <td>
                         <div className="dropdown">
@@ -124,10 +113,6 @@ function ChargeRates() {
                             <span className="flaticon-more-button-of-three-dots"></span>
                           </Link>
                           <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="#">
-                              <i className="fas fa-times text-orange-red"></i>
-                              Close
-                            </Link>
                             <Link
                               className="dropdown-item"
                               to="#"
@@ -139,44 +124,14 @@ function ChargeRates() {
                         </div>
                       </td>
                     </tr>
-
-                    <tr>
-                      <td>
-                        <div className="form-check">
-                          <input type="checkbox" className="form-check-input" />
-                          <label className="form-check-label">#0021</label>
-                        </div>
-                      </td>
-                      <td className="text-center">
-                        <img src="img/figure/student2.png" alt="school" />
-                      </td>
-                      <td>Mark Willy</td>
-
-                      <td>
-                        <div className="dropdown">
-                          <Link
-                            to="#"
-                            className="dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                            <span className="flaticon-more-button-of-three-dots"></span>
-                          </Link>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="#">
-                              <i className="fas fa-times text-orange-red"></i>
-                              Close
-                            </Link>
-                            <Link
-                              className="dropdown-item"
-                              to="#"
-                              onClick={() => handle_modal_Updater(2)}>
-                              <i className="fas fa-cogs text-dark-pastel-green"></i>
-                              Edit
-                            </Link>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                     ))
+                     ) : (
+                       <tr>
+                         <td colSpan="2" style={{textAlign: "center"}}>
+                           No charge rates registered yet.
+                         </td>
+                       </tr>
+                     )}
                   </tbody>
                 </table>
               </div>
