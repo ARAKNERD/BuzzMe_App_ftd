@@ -8,6 +8,7 @@ import { SchoolProvider } from './SchoolContext';
 import { DistrictProvider } from './DistrictContext';
 import { RegionProvider } from './RegionContext';
 import { AdminProvider } from './AdminContext';
+import { RateProvider } from './RateContext';
 
 
 const SuperProvider=(props)=>{
@@ -22,8 +23,10 @@ const SuperProvider=(props)=>{
                         <DistrictProvider>
                           <RegionProvider>
                             <AdminProvider>
+                              <RateProvider>
                  
                             {props.children}
+                            </RateProvider>
                             </AdminProvider>
                           </RegionProvider>
                         </DistrictProvider>

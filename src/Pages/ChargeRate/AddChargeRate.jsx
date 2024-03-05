@@ -1,26 +1,46 @@
-import React from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
-import {Formik, Form, Field, ErrorMessage} from "formik";
+import React, { useContext, useState } from "react";
 import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
+import RateContext from "../../Context/RateContext";
+import { toast } from 'react-hot-toast';
+
 
 function AddChargeRate() {
-  const initialValues = {
-    rate: "",
-    type: "",
+
+  const [rate,setRate] =useState("")
+  const [type,setType] =useState("")
+  const {getRateList} = useContext(RateContext);
+
+
+  const data = {
+    rate: rate,
+    type: type,
   };
 
-  const handleSubmit = async (values, {setSubmitting}) => {
-    // const server_response = await ajaxChargeRate.createChargeRate(rate,type);
-    // if(server_response.status==="OK"){
+  const handleAdd = async(e) =>{
+    e.preventDefault()
 
-    // }
-    // Handle form submission logic here
-    console.log(values);
-    // You can make API calls or perform other actions as needed
+    if(rate.length>0 || type.length>0){
+        const server_response = await ajaxChargeRate.createChargeRate(data);
+        console.log(server_response)
+        if(server_response.status==="OK"){
+            
+            toast.success(server_response.message)
+            getRateList() 
+            resetForm();
+        }
+        else{
+            toast.error(server_response.message)
+        } 
+    }
+    else{
+        toast.error("Complete all fields and try again")
+    }  
+}
 
-    // After handling submission, you can reset the form or perform other actions
-    setSubmitting(false);
-  };
+const resetForm = () => {
+  setRate("")
+  setType("")
+};
 
   return (
     <div className="card height-auto">
@@ -30,45 +50,23 @@ function AddChargeRate() {
             <h3>Add New Rate</h3>
           </div>
         </div>
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-          <Form className="new-added-form">
-            <div className="row">
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
-                <label>Rate</label>
-                <Field
-                  type="text"
-                  name="rate"
-                  // onChange={(e)=>}
-                  placeholder=""
-                  className="form-control"
-                />
-              </div>
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
-                <label>Type *</label>
-                <Field as="select" name="type" className="select2 form-control">
-                  <option value="">Please Select A Type *</option>
-                </Field>
-              </div>
+        <form onSubmit={(e)=>handleAdd(e)} method="post" class="new-added-form" >
+                    <div className="row">
+                        <div className="col-lg-6 col-12 form-group">
+                            <label htmlFor="">Type</label>
+                            <input type="text" value={type} onChange={(e)=>setType(e.target.value)} className="form-control"/>
+                        </div>
+                        <div className="col-lg-6 col-12 form-group">
+                            <label htmlFor="">Rate</label>
+                            <input type="text" value={rate} onChange={(e)=>setRate(e.target.value)} className="form-control"/>
+                                    
+                        </div>
+                       </div>
+                      <div className="mb-4">
+                        <input type="submit" style={{float:"right"}} className="btn-fill-md text-light bg-dark-pastel-green" value="Save Charge Rate"/>   
+                      </div>
 
-              <div
-                className="col-12 form-group mg-t-8"
-                style={{float: "right"}}>
-                <button
-                  type="submit"
-                  style={{float: "right"}}
-                  className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark mr-auto ml-5">
-                  Save
-                </button>
-                <button
-                  type="reset"
-                  style={{float: "right"}}
-                  className="btn-fill-lg bg-blue-dark btn-hover-yellow">
-                  Reset
-                </button>
-              </div>
-            </div>
-          </Form>
-        </Formik>
+                        </form>
       </div>
     </div>
   );

@@ -44,22 +44,8 @@ const Sidebar = (props) => {
                 <span>Dashboard</span>
               </Link>
             </li>
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/rate/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
-                  <span>charge Rates</span>
-                </Link>
-              </li>
-            </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/accounts/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice" />
-                  <span>Account</span>
-                </Link>
-              </li>
-            </RenderSecure>
+            
+            
 
             <RenderSecure code="ADMIN-VIEW">
               <li
@@ -203,6 +189,23 @@ const Sidebar = (props) => {
                 <Link to="/regions/view" className="nav-link">
                   <i className="fa-solid fa-globe" />
                   <span>regions</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/rate/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <span>Charge Rates</span>
+                </Link>
+              </li>
+            </RenderSecure>
+
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/accounts/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice" />
+                  <span>Wallet Accounts</span>
                 </Link>
               </li>
             </RenderSecure>
