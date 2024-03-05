@@ -150,7 +150,16 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-            <RenderSecure code="SCHOOL-USER-VIEW">
+
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/class-groups" className="nav-link">
+                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <span>Class Group</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            {/* <RenderSecure code="SCHOOL-USER-VIEW">
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
@@ -175,7 +184,7 @@ const Sidebar = (props) => {
                   </li>
                 </ul>
               </li>
-            </RenderSecure>
+            </RenderSecure> */}
             <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/Districts/view" className="nav-link">

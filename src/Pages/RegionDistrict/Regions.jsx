@@ -1,16 +1,20 @@
 import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import {Link} from "react-router-dom";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
-import AddDistrict from "../../Components/DistrictRegion/AddDistrict";
+
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import DistrictContext from "../../Context/DistrictContext";
+
+import RegionContext from "../../Context/RegionContext";
+import AddRegion from "../../Components/DistrictRegion/AddRegion";
 function Regions() {
-  const {districtList} = useContext(DistrictContext);
-  const [AddDistricti, setAddDistricti] = useStateCallback(false);
+  const {regionList} = useContext(RegionContext);
+  console.log(regionList);
+
+  // handles the add region modal----------------------------------------
+  const [AddReg, SetAddRegion] = useStateCallback(false);
   const handle_district_add = (id) => {
-    setAddDistricti(false, () =>
-      setAddDistricti(<AddDistrict isOpen={true} id={id} />)
+    SetAddRegion(false, () =>
+      SetAddRegion(<AddRegion isOpen={true} id={id} />)
     );
   };
 
@@ -46,47 +50,32 @@ function Regions() {
                   </Link>
                 </div>
               </div>
-              <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
-                    <button
-                      type="submit"
-                      className="fw-btn-fill btn-gradient-yellow">
-                      SEARCH
-                    </button>
-                  </div>
-                </div>
-              </form>
-              {AddDistricti}
+
+              {AddReg}
               <div className="table-responsive">
                 <table className="table display data-table text-nowrap">
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>District Name</th>
-                      <th>Region</th>
-
-                      <th>operations</th>
+                      <th>Region Name</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>#1</td>
-                      <td>kampala</td>
-                      <td>central</td>
-                    </tr>
-                    <tr>
-                      <td>#2</td>
-                      <td>wakiso</td>
-                      <td>central</td>
-                    </tr>
+                    {Array.isArray(regionList) &&
+                      regionList.map((item, key) => (
+                        <tr key={key}>
+                          <td>#{item.region_id}</td>
+                          <td>{item.region_name}</td>
+                        </tr>
+                      ))}
+                    {!Array.isArray(regionList) && (
+                      <tr>
+                        <td colSpan={2} className="text-center text-info">
+                          {" "}
+                          no region available yet in the system
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

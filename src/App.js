@@ -26,8 +26,8 @@ import UpdateContact from "./Pages/Contacts/UpdateContact";
 import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
 import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
-import AddGroup from "./Pages/StudentGroups/AddGroup";
-import ListGroups from "./Pages/StudentGroups/ListGroups";
+import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
+import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import ListAccount from "./Pages/Accounts/ListAccount";
 import AddAccount from "./Pages/Accounts/AddAccount";
@@ -54,8 +54,6 @@ function App(props) {
   }, []);
 
   const secure = functions.checkSecureAccount();
-  // const secure = 0;
-  console.log(secure);
 
   return (
     <SuperProvider>
@@ -135,7 +133,7 @@ function App(props) {
               <Route path="/students/add" element={<AddStudent />} />
               {/* End student */}
               {/* Class Groups */}
-              <Route path="/class-groups" element={<ListGroups />} />
+              <Route path="/class-groups" element={<SchoolStudentGroups />} />
               <Route path="/class-groups/add" element={<AddGroup />} />
               {/* End class groups */}
               {/* districts and regions*/}
