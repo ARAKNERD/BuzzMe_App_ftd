@@ -13,9 +13,6 @@ function ImageModal(props) {
   const {getStudentList} = useContext(StudentContext);
   const {user} = useContext(AuthContext);
 
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
-
   const [groupList, setGroupList] = useState(false);
 
   const [group, setGroup] = useState("");
@@ -25,8 +22,7 @@ function ImageModal(props) {
   const [password, setPassword] = useState("");
   const [names, setNames] = useState("");
   const [dob, setDOb] = useState("");
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
+  var school_id = user.school_user ? user.school_user.school.school_id : "";
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -69,24 +65,17 @@ function ImageModal(props) {
   const RenderFooter = (controls) => {
     return (
       <>
-        <div className="col-4 form-group mg-t-8">
-          <button
-            style={{float: "right"}}
-            type="submit"
-            className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-            onClick={controls.close}>
-            Close
-          </button>
-        </div>
-
-        <div className="col-4 form-group mg-t-8">
-          <button
-            style={{float: "right"}}
-            type="submit"
-            className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
-            Save changes
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="btn-fill-lmd  radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green">
+          Save
+        </button>
+        <button
+          type="submit"
+          className="btn-fill-lmd radius-30 text-light shadow-red bg-red"
+          onClick={controls.close}>
+          Close
+        </button>
       </>
     );
   };

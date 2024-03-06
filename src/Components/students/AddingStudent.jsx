@@ -20,8 +20,7 @@ function AddingStudent() {
 
   const [names, setNames] = useState("");
 
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
+  var school_id = user.school_user ? user.school_user.school.school_id : "";
 
   const handleAdd = async (e) => {
     e.preventDefault();

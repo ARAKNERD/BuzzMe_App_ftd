@@ -23,10 +23,10 @@ import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
 import ListContacts from "./Pages/Contacts/ListContacts";
 import AddContacts from "./Pages/Contacts/AddContacts";
 import UpdateContact from "./Pages/Contacts/UpdateContact";
-import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
-import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
+// import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
+// import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
-import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
+// import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import ListAccount from "./Pages/Accounts/ListAccount";
@@ -145,7 +145,6 @@ function App(props) {
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
-              <Route path="/class-groups/add" element={<AddGroup />} />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />

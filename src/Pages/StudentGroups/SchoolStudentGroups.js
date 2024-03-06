@@ -1,30 +1,28 @@
 import React, {useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
-import {Link} from "react-router-dom";
+
 import AddStudentSchoolGroup from "./AddStudentSchoolGroup";
+import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
+import toast from "react-hot-toast";
 
 function SchoolStudentGroups() {
-  // const [groupList, setGroupList] = useState(false);
-  // const {user} = useContext(AuthContext);
-  // const [loading, setLoading] = useState(false);
+  const [studentGroups, setStudentGroups] = useState("");
 
-  // const getGroups = async () => {
-  //   setLoading(true);
-  //   const server_response = await ajaxStudentGroup.fetchGroupList(
-  //     user.school_user?.school?.school_id
-  //   );
-  //   setLoading(false);
-  //   console.log(server_response);
-  //   if (server_response.status === "OK") {
-  //     setGroupList(server_response.details);
-  //   }
-  // };
+  useEffect(() => {}, []);
+  const getRerport = async () => {
+    var data = {
+      // start_date: sdate,
+      // end_date: edate,
+    };
+    const server_response = await ajaxStudentGroup.fetchGroupList(data);
 
-  // useEffect(() => {
-  //   getGroups();
-  // }, [user.school_user?.school.school_id]);
-
+    if (server_response.status === "OK") {
+      setStudentGroups(server_response.details);
+    } else if (server_response.status === "Fail") {
+      toast.error(server_response.message);
+    }
+  };
   return (
     <AppContainer title="Class Groups control page">
       <div className="row">
