@@ -7,14 +7,21 @@ export default {
     return response;
   },
 
-
   async createSchool(data) {
     let response = await apiCall("school/add", data);
     return response;
   },
 
   async updateSchool(
-    school_id,school_name,contact,email,address,district,region,lat,lng
+    school_id,
+    school_name,
+    contact,
+    email,
+    address,
+    district,
+    region,
+    lat,
+    lng
   ) {
     let data = {
       school_id: school_id,
@@ -25,7 +32,7 @@ export default {
       district: district,
       region: region,
       lat: lat,
-      lng: lng
+      lng: lng,
     };
     let response = await apiCall("school/update", data);
 
@@ -39,8 +46,8 @@ export default {
 
   async searchSchoolList(query) {
     let data = {
-      "query":query
-    }
+      query: query,
+    };
     let response = await apiCall("school/search", data);
     return response;
   },
@@ -52,25 +59,19 @@ export default {
     return response;
   },
 
-  async createSchoolUser(names,username,password,school) {
-    let data = {
-      names: names,
-      username: username,
-      password: password,
-      school: school
-    };
+  async createSchoolUser(data) {
     let response = await apiCall("school_user/add", data);
 
     return response;
   },
 
-  async updateSchoolUser(school_user_id,names,username,password,school) {
+  async updateSchoolUser(school_user_id, names, username, password, school) {
     let data = {
       school_user_id: school_user_id,
       names: names,
       username: username,
       password: password,
-      school: school
+      school: school,
     };
     let response = await apiCall("school_user/update", data);
 
@@ -82,7 +83,6 @@ export default {
     return response;
   },
 
-
   async loginSchoolUser(username, password) {
     let data = {
       username: username,
@@ -92,49 +92,56 @@ export default {
     return response;
   },
 
-  async schoolUserPasswordReset(school_user_id,old_password,new_password) {
+  async schoolUserPasswordReset(school_user_id, old_password, new_password) {
     let data = {
       school_user_id: school_user_id,
       old_password: old_password,
-      new_password: new_password
+      new_password: new_password,
     };
     let response = await apiCall("school_user/password/reset", data);
     return response;
   },
 
-
   // Contacts
-
 
   async fetchStudentContactList(data) {
     let response = await apiCall("contact/list", data);
     return response;
   },
 
-  async createStudentContact(contact_number,contact_name,student_id,relationship) {
+  async createStudentContact(
+    contact_number,
+    contact_name,
+    student_id,
+    relationship
+  ) {
     let data = {
       contact_number: contact_number,
       contact_name: contact_name,
       student_id: student_id,
-      relationship: relationship
+      relationship: relationship,
     };
     let response = await apiCall("contact/add", data);
 
     return response;
   },
 
-  async updateStudentContact(contact_id,contact_number,contact_name,student_id,relationship) {
+  async updateStudentContact(
+    contact_id,
+    contact_number,
+    contact_name,
+    student_id,
+    relationship
+  ) {
     let data = {
       contact_id: contact_id,
       contact_number: contact_number,
       contact_name: contact_name,
       student_id: student_id,
-      relationship: relationship
+      relationship: relationship,
     };
     let response = await apiCall("contact/update", data);
 
     return response;
   },
-
-
-}
+};
