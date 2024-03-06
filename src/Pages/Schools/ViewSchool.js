@@ -48,7 +48,7 @@ function ViewSchool() {
               <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
                 <button
                   type="submit"
-                  className="fw-btn-fill btn-gradient-yellow">
+                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                   SEARCH
                 </button>
               </div>

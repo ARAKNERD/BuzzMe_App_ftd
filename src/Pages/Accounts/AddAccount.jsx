@@ -58,7 +58,7 @@ function AddAccount() {
                 <button // Corrected from "butto"
                   type="submit"
                   style={{float: "right"}}
-                  className="col-lg-6 col-md-6 text-center btn-fill-lg btn-gradient-yellow btn-hover-bluedark mr-auto ml-5">
+                  className="col-lg-2 col-md-2 text-center btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                   Save
                 </button>
               </div>

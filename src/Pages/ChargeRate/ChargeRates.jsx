@@ -5,9 +5,8 @@ import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 import AddChargeRate from "./AddChargeRate";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import UpdateChargeRate from "./UpdateChargeRate";
-import { Toaster, toast } from 'react-hot-toast';
+import {Toaster, toast} from "react-hot-toast";
 import RateContext from "../../Context/RateContext";
-
 
 function ChargeRates() {
   const {rateList} = useContext(RateContext);
@@ -21,10 +20,7 @@ function ChargeRates() {
 
   return (
     <AppContainer title="List Charge Rates">
-      <Toaster
-            position="top-center"
-            reverseOrder={false}
-        />
+      <Toaster position="top-center" reverseOrder={false} />
       <div className="row">
         <div className="col-lg-12 col-md-12">
           <AddChargeRate />
@@ -73,7 +69,7 @@ function ChargeRates() {
                   <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
                     <button
                       type="submit"
-                      className="fw-btn-fill btn-gradient-yellow">
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                       SEARCH
                     </button>
                   </div>
@@ -84,9 +80,7 @@ function ChargeRates() {
                 <table className="table display data-table text-nowrap">
                   <thead>
                     <tr>
-                      <th>
-                        No.
-                      </th>
+                      <th>No.</th>
                       <th>Charge Rate</th>
                       <th>Type</th>
 
@@ -94,44 +88,42 @@ function ChargeRates() {
                     </tr>
                   </thead>
                   <tbody>
-                  {Array.isArray(rateList) && rateList.length > 0 ? (
-                  rateList.map((item, key) => (
-                    <tr key={key}>
-                      <td>
-                        {key + 1}
-                      </td>
-                      <td>{item.type}</td>
-                      <td>{item.rate}</td>
+                    {Array.isArray(rateList) && rateList.length > 0 ? (
+                      rateList.map((item, key) => (
+                        <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.type}</td>
+                          <td>{item.rate}</td>
 
-                      <td>
-                        <div className="dropdown">
-                          <Link
-                            to="#"
-                            className="dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                            <span className="flaticon-more-button-of-three-dots"></span>
-                          </Link>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <Link
-                              className="dropdown-item"
-                              to="#"
-                              onClick={() => handle_modal_Updater(1)}>
-                              <i className="fas fa-cogs text-dark-pastel-green"></i>
-                              Edit
-                            </Link>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                     ))
-                     ) : (
-                       <tr>
-                         <td colSpan="2" style={{textAlign: "center"}}>
-                           No charge rates registered yet.
-                         </td>
-                       </tr>
-                     )}
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={() => handle_modal_Updater(1)}>
+                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                  Edit
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="2" style={{textAlign: "center"}}>
+                          No charge rates registered yet.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

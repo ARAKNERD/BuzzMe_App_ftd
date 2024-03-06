@@ -72,7 +72,7 @@ function AddChargeRate() {
             <input
               type="submit"
               style={{float: "right"}}
-              className="btn-fill-md text-light bg-dark-pastel-green"
+              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
               value="Save Charge Rate"
             />
           </div>
