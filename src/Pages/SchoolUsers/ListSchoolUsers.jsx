@@ -1,182 +1,108 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxSchool from "../../util/remote/ajaxSchool";
 
+import ajaxSchool from "../../util/remote/ajaxSchool";
+import useStateCallback from "../../util/customHooks/useStateCallback";
+import ChangeSchoolUserStatus from "./ChangeSchoolUserStatus";
 function ListSchoolUsers(props) {
-  const [SchoolUSers, setSchoolUSers] = useState("");
+  const [schoolUsers, setSchoolUsers] = useState([]);
+
   useEffect(() => {
     getSchoolUsers();
   }, []);
 
   const getSchoolUsers = async () => {
-    var data = {
-      school_id: props.school,
-    };
-    const server_response = await ajaxSchool.fetchSchoolUserList(data);
-    if (server_response.status === "OK") {
-      //store results
-      setSchoolUSers(server_response.details);
-    } else {
-      //communicate error
-      setSchoolUSers("404");
+    try {
+      const data = {
+        school_id: props.school,
+      };
+      const serverResponse = await ajaxSchool.fetchSchoolUserList(data);
+      if (serverResponse.status === "OK") {
+        setSchoolUsers(serverResponse.details);
+      } else {
+        // Handle error condition
+        console.error("Error:", serverResponse.message);
+      }
+    } catch (error) {
+      // Handle network or other errors
+      console.error("Error:", error);
     }
+  };
+  const [changeStatus, setChangeStatus] = useStateCallback(false);
+  const handle_change_status = (id) => {
+    setChangeStatus(false, () =>
+      setChangeStatus(<ChangeSchoolUserStatus isOpen={true} id={id} />)
+    );
   };
 
   return (
-    // <AppContainer title="School Users">
     <div className="card height-auto">
+      {changeStatus}
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
             <h3>All School User Data</h3>
           </div>
-          <div className="dropdown">
-            <Link
-              className="dropdown-toggle"
-              to="#"
-              role="button"
-              data-toggle="dropdown"
-              aria-expanded="false">
-              ...
-            </Link>
-
-            <div className="dropdown-menu dropdown-menu-right">
-              <Link className="dropdown-item" to="#">
-                <i className="fas fa-times text-orange-red"></i>Close
-              </Link>
-              <Link className="dropdown-item" to="/schools/add">
-                <i className="fas fa-cogs text-dark-pastel-green"></i>Add New
-                School
-              </Link>
-              <Link className="dropdown-item" to="#">
-                <i className="fas fa-redo-alt text-orange-peel"></i>Refresh
-              </Link>
-            </div>
-          </div>
+          {/* Dropdown menu */}
         </div>
-        <form className="mg-b-20">
-          <div className="row gutters-8">
-            <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-control"
-              />
-            </div>
-            <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
-              <button type="submit" className="fw-btn-fill btn-gradient-yellow">
-                SEARCH
-              </button>
-            </div>
-          </div>
-        </form>
+        {/* Search form */}
+        {/* Table */}
         <div className="table-responsive">
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
-                <th>
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input checkAll"
-                    />
-                    <label className="form-check-label">ID</label>
-                  </div>
-                </th>
-                <th>Photo</th>
-                <th>School Name</th>
-                <th>Name</th>
-                <th>Status</th>
-                {/* <th>E-mail</th>
-                                        <th>District</th>
-                                        <th>Region</th> */}
-
-                <th></th>
+                <th>ID</th>
+                <th>Names</th>
+                {props.school !== null && (
+                  <>
+                    <th>School Name</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>District</th>
+                    <th>Region</th>
+                    <th>Date Registered</th>
+                    <th>Registered By</th>
+                    <th>change status</th>
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>
-                  <div className="form-check">
-                    <input type="checkbox" className="form-check-input" />
-                    <label className="form-check-label">#0021</label>
-                  </div>
-                </td>
-                <td className="text-center">
-                  <img src="img/figure/student2.png" alt="school" />
-                </td>
-                <td>Mark Willy</td>
-                <td>Male</td>
-                <td>Businessman</td>
-                {/* <td>TA-107 Newyork</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td> */}
-                <td>
-                  <div className="dropdown">
-                    <Link
-                      to="#"
-                      className="dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-expanded="false">
-                      <span className="flaticon-more-button-of-three-dots"></span>
-                    </Link>
-                    <div className="dropdown-menu dropdown-menu-right">
-                      <Link className="dropdown-item" to="#">
-                        <i className="fas fa-times text-orange-red"></i>Close
-                      </Link>
-                      <Link className="dropdown-item" to="/school/user/edit">
-                        <i className="fas fa-cogs text-dark-pastel-green"></i>
-                        Edit
-                      </Link>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <div className="form-check">
-                    <input type="checkbox" className="form-check-input" />
-                    <label className="form-check-label">#0021</label>
-                  </div>
-                </td>
-                <td className="text-center">
-                  <img src="img/figure/student2.png" alt="school" />
-                </td>
-                <td>Mark Willy</td>
-                <td>Male</td>
-                <td>Businessman</td>
-                {/* <td>TA-107 Newyork</td>
-                                        <td>+ 123 9988568</td>
-                                        <td>kazifahim93@gmail.com</td> */}
-                <td>
-                  <div className="dropdown">
-                    <Link
-                      to="#"
-                      className="dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-expanded="false">
-                      <span className="flaticon-more-button-of-three-dots"></span>
-                    </Link>
-                    <div className="dropdown-menu dropdown-menu-right">
-                      <Link className="dropdown-item" to="#">
-                        <i className="fas fa-times text-orange-red"></i>Close
-                      </Link>
-                      <Link className="dropdown-item" to="/schools/user/edit">
-                        <i className="fas fa-cogs text-dark-pastel-green"></i>
-                        Edit
-                      </Link>
-                    </div>
-                  </div>
-                </td>
-              </tr>
+              {schoolUsers.map((user, index) => (
+                <tr key={index}>
+                  <td>{user.id}</td>
+                  <td>{user.names}</td>
+                  <td>{user.user_details.username}</td>
+                  {props.school !== null && user.school ? (
+                    <>
+                      <td>{user.school.school_name}</td>
+                      <td>{user.school.contact}</td>
+                      <td>{user.school.email}</td>
+                      <td>{user.school.address}</td>
+                      <td>{user.school.district.district_name}</td>
+                      <td>{user.school.region.region_name}</td>
+                      <td>{user.school.date_registered.long_date}</td>
+                      <td>
+                        {/* <div className="col-12 form-group"> */}
+                        <button
+                          type="submit"
+                          className="btn-fill-lmd p-2 radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green"
+                          onClick={() => handle_change_status(user.id)}>
+                          change status
+                        </button>
+                        {/* </div> */}
+                      </td>
+                    </>
+                  ) : (
+                    <td colSpan="9">No school details available</td>
+                  )}
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
     </div>
-    // </AppContainer>
   );
 }
 

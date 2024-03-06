@@ -1,7 +1,7 @@
 import React from "react";
 import SystemModal from "../../Components/Common/SystemModal";
 
-function ChangeStatus() {
+function ChangeSchoolUserStatus() {
   const RenderFooter = (controls) => {
     return (
       <>
@@ -27,7 +27,7 @@ function ChangeStatus() {
   return (
     <div>
       <SystemModal
-        title="Change student Status"
+        title="Change School User Status"
         id="model-update-cross"
         size="lg "
         footer={RenderFooter}>
@@ -53,4 +53,4 @@ function ChangeStatus() {
   );
 }
 
-export default ChangeStatus;
+export default ChangeSchoolUserStatus;

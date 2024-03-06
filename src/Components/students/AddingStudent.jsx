@@ -3,7 +3,6 @@ import {Toaster, toast} from "react-hot-toast";
 import StudentContext from "../../Context/StudentContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import Select from "react-select";
-import ParentContext from "../../Context/ParentContext";
 import SchoolContext from "../../Context/SchoolContext";
 import AuthContext from "../../Context/AuthContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
@@ -151,7 +150,7 @@ function AddingStudent() {
                   <button
                     style={{float: "right"}}
                     type="submit"
-                    className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
+                    className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Student Details
                   </button>
                 </div>
