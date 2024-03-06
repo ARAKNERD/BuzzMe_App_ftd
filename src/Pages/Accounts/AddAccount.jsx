@@ -23,6 +23,28 @@ function AddAccount() {
     setSubmitting(false);
   };
 
+  // const handleFormSubmission = async (e) => {
+  //   e.preventDefault();
+
+  //   if (region.length > 0 && district.length > 0) {
+  //     var data = {
+  //       district_name: district,
+  //       region: region,
+  //     };
+  //     const server_response = await ajaxDistrict.createAccount(data);
+  //     if (server_response.status === "OK") {
+  //       getDistrictList();
+  //       toast.success(server_response.message);
+  //       resetForm();
+  //     } else {
+  //       toast.error(server_response.message);
+  //       // toast.error(server_response.details.message);
+  //     }
+  //   } else {
+  //     toast.error("Complete all fields and try again");
+  //   }
+  // };
+
   return (
     <div className="card height-auto">
       <div className="card-body">
@@ -31,10 +53,33 @@ function AddAccount() {
             <h3>Add New Account</h3>
           </div>
         </div>
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <form className="new-added-form">
+          <div className="row">
+            <div className="col-xl-12 col-lg-12 col-12 form-group">
+              <label>Account Code</label>
+              <input type="text" placeholder="" className="form-control" />
+            </div>
+            <div className="col-xl-12 col-lg-12 col-12 form-group">
+              <label>Description *</label>
+              <input type="text" placeholder="" className="form-control" />
+            </div>
+
+            <div className="col-md-3 d-none d-xl-block form-group" />
+            <div className="col-12 form-group mg-t-8">
+              <button
+                type="submit"
+                style={{float: "right"}}
+                className="col-lg-112 col-md-12 text-center btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                Save
+              </button>
+            </div>
+          </div>
+        </form>
+
+        {/* <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           <Form className="new-added-form">
             <div className="row">
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
+              <div className="col-xl-12 col-lg-12 col-12 form-group">
                 <label>Account Code</label>
                 <Field
                   type="text"
@@ -44,7 +89,7 @@ function AddAccount() {
                   className="form-control"
                 />
               </div>
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
+              <div className="col-xl-12 col-lg-12 col-12 form-group">
                 <label>Description *</label>
                 <Field
                   as="textarea" // Corrected from "text-area"
@@ -58,13 +103,13 @@ function AddAccount() {
                 <button // Corrected from "butto"
                   type="submit"
                   style={{float: "right"}}
-                  className="col-lg-2 col-md-2 text-center btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                  className="col-lg-112 col-md-12 text-center btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                   Save
                 </button>
               </div>
             </div>
           </Form>
-        </Formik>
+        </Formik> */}
       </div>
     </div>
   );

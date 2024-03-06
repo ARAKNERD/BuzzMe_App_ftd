@@ -49,7 +49,7 @@ function AddChargeRate() {
           method="post"
           class="new-added-form">
           <div className="row">
-            <div className="col-lg-6 col-12 form-group">
+            <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Type</label>
               <input
                 type="text"
@@ -58,7 +58,7 @@ function AddChargeRate() {
                 className="form-control"
               />
             </div>
-            <div className="col-lg-6 col-12 form-group">
+            <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Rate</label>
               <input
                 type="text"
@@ -68,11 +68,10 @@ function AddChargeRate() {
               />
             </div>
           </div>
-          <div className="mb-4">
+          <div className="col-lg-12 col-12 form-group">
             <input
               type="submit"
-              style={{float: "right"}}
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
+              className=" col-lg-12 col-12 mt-4 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
               value="Save Charge Rate"
             />
           </div>

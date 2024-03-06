@@ -52,14 +52,14 @@ const Sidebar = (props) => {
                 </Link>
               </li>
             </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
+            {/* <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/accounts/view" className="nav-link">
                   <i className="fa-solid fa-file-invoice" />
                   <span>Account</span>
                 </Link>
               </li>
-            </RenderSecure>
+            </RenderSecure> */}
 
             <RenderSecure code="ADMIN-VIEW">
               <li

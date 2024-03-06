@@ -22,10 +22,10 @@ function ChargeRates() {
     <AppContainer title="List Charge Rates">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="row">
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-4 col-md-4">
           <AddChargeRate />
         </div>
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-8 col-md-8">
           <div className="card height-auto">
             <div className="card-body">
               <div className="heading-layout1">
@@ -41,32 +41,18 @@ function ChargeRates() {
                     aria-expanded="false">
                     ...
                   </Link>
-
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <Link className="dropdown-item" to="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </Link>
-                    <Link className="dropdown-item" to="/contacts/add">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Add
-                      New Contact
-                    </Link>
-                    <Link className="dropdown-item" to="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </Link>
-                  </div>
                 </div>
               </div>
               <form className="mg-b-20">
                 <div className="row gutters-8">
-                  <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
+                  <div className="col-md-8 col-lg-8  form-group">
                     <input
                       type="text"
                       placeholder="Search..."
                       className="form-control"
                     />
                   </div>
-                  <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
+                  <div className=" col-md-3 col-lg-4 col-4 form-group">
                     <button
                       type="submit"
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">

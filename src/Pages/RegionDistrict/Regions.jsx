@@ -8,31 +8,15 @@ import RegionContext from "../../Context/RegionContext";
 import AddRegion from "../../Components/DistrictRegion/AddRegion";
 function Regions() {
   const {regionList} = useContext(RegionContext);
-  console.log(regionList);
-
-  // handles the add region modal----------------------------------------
-  const [AddReg, SetAddRegion] = useStateCallback(false);
-  const handle_district_add = (id) => {
-    SetAddRegion(false, () =>
-      SetAddRegion(<AddRegion isOpen={true} id={id} />)
-    );
-  };
+  // console.log(regionList);
 
   return (
     <AppContainer title="Regions control page ">
       <div className="row">
-        <div className="col-lg-12 col-md-12">
-          {/* <AddChargeRate /> */}
-          <div className="pl-20" style={{float: "right"}}>
-            <button
-              type="button"
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-              onClick={handle_district_add}>
-              <i className="fa-solid fa-plus" /> Region
-            </button>
-          </div>
+        <div className="col-lg-4 col-md-4">
+          <AddRegion />
         </div>
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-8 col-md-8">
           <div className="card height-auto">
             <div className="card-body">
               <div className="heading-layout1">
@@ -51,7 +35,6 @@ function Regions() {
                 </div>
               </div>
 
-              {AddReg}
               <div className="table-responsive">
                 <table className="table display data-table text-nowrap">
                   <thead>
