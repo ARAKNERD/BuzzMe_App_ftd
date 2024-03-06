@@ -9,9 +9,15 @@ export default {
 
   async createStudent(data) {
     let response = await apiCall("student/add", data);
-
     return response;
   },
+
+  async importStudents(data) {
+    let response = await apiCall("student/import", data);
+    return response;
+  },
+
+
   async updateStudent(student_id, names, reg_no) {
     let data = {
       student_id: student_id,

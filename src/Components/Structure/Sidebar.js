@@ -44,22 +44,6 @@ const Sidebar = (props) => {
                 <span>Dashboard</span>
               </Link>
             </li>
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/rate/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
-                  <span>charge Rates</span>
-                </Link>
-              </li>
-            </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/accounts/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice" />
-                  <span>Account</span>
-                </Link>
-              </li>
-            </RenderSecure>
 
             <RenderSecure code="ADMIN-VIEW">
               <li
@@ -279,64 +263,6 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-            {/* <li className="nav-item">
-              <Link to="all-subject.html" className="nav-link">
-                <i className="flaticon-open-book" />
-                <span>Subject</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="class-routine.html" className="nav-link">
-                <i className="flaticon-calendar" />
-                <span>Class Routine</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="student-attendence.html" className="nav-link">
-                <i className="flaticon-checklist" />
-                <span>Attendence</span>
-              </Link>
-            </li>
-            <li className="nav-item sidebar-nav-item">
-              <Link to="#" className="nav-link">
-                <i className="flaticon-shopping-list" />
-                <span>Exam</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                  <Link to="exam-schedule.html" className="nav-link">
-                   <FontAwesomeIcon icon={faAngleRight} />
-
-                    Exam Schedule
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="exam-grade.html" className="nav-link">
-                   <FontAwesomeIcon icon={faAngleRight} />
-
-                    Exam Grades
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item">
-              <Link to="transport.html" className="nav-link">
-                <i className="flaticon-bus-side-view" />
-                <span>Transport</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="hostel.html" className="nav-link">
-                <i className="flaticon-bed" />
-                <span>Hostel</span>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to="notice-board.html" className="nav-link">
-                <i className="flaticon-script" />
-                <span>Notice</span>
-              </Link>
-            </li> */}
           </ul>
         </div>
       </div>
