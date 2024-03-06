@@ -1,170 +1,89 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxAccounts from "../../util/remote/ajaxAccounts";
 import {Link} from "react-router-dom";
 import AddAccount from "./AddAccount";
+import WalletAccountContext from "../../Context/WalletAccountContext";
+import Loader from "../../Components/Common/Loader";
+import TableHeader from "../../Components/Common/TableHeader";
 
 function ListAccount() {
-  const [accountList, setAccountListing] = useState(false);
-
-  const listAccount = async () => {
-    const server_response = await ajaxAccounts.fetchAccount();
-    if (server_response.status === "OK") {
-      setAccountListing(false);
-    }
-  };
-
-  useEffect(() => {
-    listAccount();
-  }, []);
+  const {accountList} = useContext(WalletAccountContext);
 
   return (
-    <AppContainer title={"Accounts Management "}>
+    <AppContainer title={"Wallet Accounts "}>
       <div className="row">
-        <div className="col-lg-12 col-md-12">
-          <div className="card height-auto">
+        <div className="col-lg-4">
             <AddAccount />
-          </div>
         </div>
-        <div className="col-lg-12 col-md-12">
-          <div className="card height-auto">
-            <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>All Accounts Data</h3>
-                </div>
-                <div className="dropdown">
-                  <Link
-                    className="dropdown-toggle"
-                    to="#"
+        <div className="col-lg-8">
+          <div className="card custom-card">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
+                <TableHeader
+                  title="Wallet Accounts"
+                  subtitle="List of all the wallet accounts"
+                />
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
                     role="button"
                     data-toggle="dropdown"
                     aria-expanded="false">
                     ...
-                  </Link>
-
-                  <div className="dropdown-menu dropdown-menu-right">
-                    <Link className="dropdown-item" to="#">
-                      <i className="fas fa-times text-orange-red"></i>Close
-                    </Link>
-                    <Link className="dropdown-item" to="/contacts/add">
-                      <i className="fas fa-cogs text-dark-pastel-green"></i>Add
-                      New Contact
-                    </Link>
-                    <Link className="dropdown-item" to="#">
-                      <i className="fas fa-redo-alt text-orange-peel"></i>
-                      Refresh
-                    </Link>
-                  </div>
+                  </a>
                 </div>
               </div>
-              <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
-                    <button
-                      type="submit"
-                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                      SEARCH
-                    </button>
-                  </div>
-                </div>
-              </form>
+
               <div className="table-responsive">
-                <table className="table display data-table text-nowrap">
+                <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                    <tr>
-                      <th>
-                        <div className="form-check">
-                          <input
-                            type="checkbox"
-                            className="form-check-input checkAll"
-                          />
-                          <label className="form-check-label">ID</label>
-                        </div>
-                      </th>
+                  <tr>
+                      <th>No.</th>
                       <th>Account Code</th>
                       <th>Description</th>
-
-                      <th></th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>
-                        <div className="form-check">
-                          <input type="checkbox" className="form-check-input" />
-                          <label className="form-check-label">#0021</label>
-                        </div>
-                      </td>
-                      <td>Male</td>
-                      <td>Businessman</td>
+                    {Array.isArray(accountList) && accountList.length > 0 ? (
+                      accountList.map((item, key) => (
+                        <tr key={key}>
+                        <td>{key + 1}</td>
+                        <td>{item.account_code}</td>
+                        <td>{item.description}</td>
 
-                      <td>
-                        <div className="dropdown">
-                          <Link
-                            to="#"
-                            className="dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                            <span className="flaticon-more-button-of-three-dots"></span>
-                          </Link>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="#">
-                              <i className="fas fa-times text-orange-red"></i>
-                              Close
+                        <td>
+                          <div className="dropdown">
+                            <Link
+                              to="#"
+                              className="dropdown-toggle"
+                              data-toggle="dropdown"
+                              aria-expanded="false">
+                              <span className="flaticon-more-button-of-three-dots"></span>
                             </Link>
-                            <Link className="dropdown-item" to="">
-                              <i className="fas fa-cogs text-dark-pastel-green"></i>
-                              Edit
-                            </Link>
+                            <div className="dropdown-menu dropdown-menu-right">
+                              <Link
+                                className="dropdown-item"
+                                to="#">
+                                <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                Edit
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>
-                        <div className="form-check">
-                          <input type="checkbox" className="form-check-input" />
-                          <label className="form-check-label">#0021</label>
-                        </div>
-                      </td>
-                      <td className="text-center">
-                        <img src="img/figure/student2.png" alt="school" />
-                      </td>
-                      <td>Mark Willy</td>
-
-                      <td>
-                        <div className="dropdown">
-                          <Link
-                            to="#"
-                            className="dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                            <span className="flaticon-more-button-of-three-dots"></span>
-                          </Link>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="#">
-                              <i className="fas fa-times text-orange-red"></i>
-                              Close
-                            </Link>
-                            <Link className="dropdown-item" to="/rate/edit">
-                              <i className="fas fa-cogs text-dark-pastel-green"></i>
-                              Edit
-                            </Link>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
+                        </td>
+                      </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="4" style={{textAlign: "center"}}>
+                          No wallet accounts registered yet.
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
+                {!accountList && <Loader/>}
               </div>
             </div>
           </div>

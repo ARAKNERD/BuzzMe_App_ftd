@@ -41,7 +41,7 @@ function AddChargeRate() {
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
-            <h3>Add New Rate</h3>
+            <h3>Add New Charge Rate</h3>
           </div>
         </div>
         <form
@@ -49,7 +49,7 @@ function AddChargeRate() {
           method="post"
           class="new-added-form">
           <div className="row">
-            <div className="col-lg-6 col-12 form-group">
+            <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Type</label>
               <input
                 type="text"
@@ -58,7 +58,7 @@ function AddChargeRate() {
                 className="form-control"
               />
             </div>
-            <div className="col-lg-6 col-12 form-group">
+            <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Rate</label>
               <input
                 type="text"
@@ -68,14 +68,13 @@ function AddChargeRate() {
               />
             </div>
           </div>
-          <div className="mb-4">
-            <input
-              type="submit"
-              style={{float: "right"}}
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-              value="Save Charge Rate"
-            />
-          </div>
+          <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
+                  <button
+                    type="submit"
+                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                    Save Charge Rate
+                  </button>
+                </div>
         </form>
       </div>
     </div>
