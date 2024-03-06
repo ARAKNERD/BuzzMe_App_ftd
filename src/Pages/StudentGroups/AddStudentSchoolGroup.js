@@ -82,7 +82,7 @@ function AddStudentSchoolGroup() {
                 <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
                   <button
                     type="submit"
-                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green">
+                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Student Group
                   </button>
                 </div>

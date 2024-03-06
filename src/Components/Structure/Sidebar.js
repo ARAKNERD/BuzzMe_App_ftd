@@ -229,14 +229,14 @@ const Sidebar = (props) => {
                 </Link>
               </li>
             </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
+            {/* <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/Admin/addSchoolUser" className="nav-link">
                   <i className="fa-solid fa-file-invoice-dollar" />
                   <span>Admin Add schoolUser </span>
                 </Link>
               </li>
-            </RenderSecure>
+            </RenderSecure> */}
 
             <RenderSecure code="ADMIN-VIEW">
               <li
@@ -248,7 +248,7 @@ const Sidebar = (props) => {
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
-                    <Link to="//Admin/addSchoolUser" className="nav-link">
+                    <Link to="/Admin/addSchoolUser" className="nav-link">
                       <i className="fas fa-angle-right" />
                       Add School User
                     </Link>

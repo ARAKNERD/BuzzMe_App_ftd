@@ -163,7 +163,7 @@ function AddingStudent() {
                   <button
                     style={{float: "right"}}
                     type="submit"
-                    className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
+                    className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Student Details
                   </button>
                 </div>
