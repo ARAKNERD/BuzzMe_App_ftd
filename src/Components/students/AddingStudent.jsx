@@ -3,6 +3,7 @@ import {Toaster, toast} from "react-hot-toast";
 import StudentContext from "../../Context/StudentContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import Select from "react-select";
+import { Link } from 'react-router-dom'
 import SchoolContext from "../../Context/SchoolContext";
 import AuthContext from "../../Context/AuthContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
@@ -73,6 +74,18 @@ function AddingStudent() {
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="row">
+      <div className="col-lg-12 col-md-12">
+          {/* <AddChargeRate /> */}
+          <div className="pl-20" style={{float: "right"}}>
+          <Link to={`/students/import`}>
+            <button
+              type="button"
+              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                
+              <i className="fa-solid fa-plus" /> Import Students
+            </button></Link>
+          </div>
+        </div>
         <div className="col-lg-12 col-md-12">
           <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">

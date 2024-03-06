@@ -26,7 +26,7 @@ function SchoolStudentGroups() {
   // }, [user.school_user?.school.school_id]);
 
   return (
-    <AppContainer title="Class Groups control page">
+    <AppContainer title="Student Groups">
       <div className="row">
         <div className="col-lg-4">
           <AddStudentSchoolGroup />
@@ -39,8 +39,8 @@ function SchoolStudentGroups() {
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                  title="Class Groups List"
-                  subtitle="List of all the class groups sorted according to the recently added"
+                  title="Student Groups List"
+                  subtitle="List of all the student groups sorted according to the recently added"
                 />
                 <div class="dropdown">
                   <a

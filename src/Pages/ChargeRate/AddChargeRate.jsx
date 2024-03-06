@@ -41,7 +41,7 @@ function AddChargeRate() {
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
-            <h3>Add New Rate</h3>
+            <h3>Add New Charge Rate</h3>
           </div>
         </div>
         <form
@@ -68,12 +68,12 @@ function AddChargeRate() {
               />
             </div>
           </div>
-          <div className="col-lg-12 col-12 form-group">
-            <input
+          <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
+            <button
               type="submit"
-              className=" col-lg-12 col-12 mt-4 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-              value="Save Charge Rate"
-            />
+              className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+              Save Charge Rate
+            </button>
           </div>
         </form>
       </div>

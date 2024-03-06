@@ -1,33 +1,26 @@
 import React, {useContext, useState} from "react";
-import AppContainer from "../Structure/AppContainer";
-
-import SystemModal from "../Common/SystemModal";
-import Select from "react-select";
-import toast, {Toaster} from "react-hot-toast";
-import ajaxRegion from "../../util/remote/ajaxRegion";
-
+import {Toaster, toast} from "react-hot-toast";
 import RegionContext from "../../Context/RegionContext";
+import ajaxRegion from "../../util/remote/ajaxRegion";
 
 function AddRegion() {
   const {getRegionList} = useContext(RegionContext);
+  const [regionName, setRegionName] = useState("");
 
-  const [region, setRegion] = useState();
-
-  const handleFormSubmission = async (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (region.length > 0) {
-      var data = {
-        region_name: region,
+    if (regionName.length > 0) {
+      const data = {
+        region_name: regionName
       };
       const server_response = await ajaxRegion.createRegion(data);
       if (server_response.status === "OK") {
-        getRegionList();
         toast.success(server_response.message);
+        getRegionList();
         resetForm();
       } else {
         toast.error(server_response.message);
-        // toast.error(server_response.details.message);
       }
     } else {
       toast.error("Complete all fields and try again");
@@ -35,45 +28,56 @@ function AddRegion() {
   };
 
   const resetForm = () => {
+    setRegionName("");
+  };
+
     setRegion("");
   };
 
   return (
-    <div>
-      <Toaster />
-      <div className="card height-auto">
-        <div className="card-body">
-          <div className="heading-layout1">
-            <div className="item-title">
-              <h3>Add Region</h3>
-            </div>
-          </div>
-          <form className="new-added-form">
-            <div className="row">
-              <div className="col-12-xxxl col-lg-6 col-12 form-group">
-                <label>Region Name *</label>
-                <input
-                  type="text"
-                  placeholder="geographical name of the region you want to add"
-                  value={region}
-                  className="form-control"
-                  onChange={(e) => setRegion(e.target.value)}
-                />
+
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+
+      <div className="row">
+        <br />
+        <br />
+        <br />
+        <div className="col-lg-12 col-md-12">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+            <div className="card-body">
+              <div>
+                <h6 className="card-title mb-4">Add New Region</h6>
               </div>
 
-              <div className="col-12 form-group mg-t-8">
-                <button
-                  onClick={handleFormSubmission}
-                  type="submit"
-                  className="col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  Save
-                </button>
-              </div>
+              <form
+                onSubmit={(e) => handleAdd(e)}
+                method="post"
+                class="new-added-form">
+                <div className="row">
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 radius-30">
+                    <label htmlFor="">Region Name</label>
+                    <input
+                      type="text"
+                      value={regionName}
+                      onChange={(e) => setRegionName(e.target.value)}
+                      className=" colo-12 form-control"
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
+                  <button
+                    type="submit"
+                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                    Save Region
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

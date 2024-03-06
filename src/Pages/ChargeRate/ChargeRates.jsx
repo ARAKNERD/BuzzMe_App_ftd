@@ -7,6 +7,8 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import UpdateChargeRate from "./UpdateChargeRate";
 import {Toaster, toast} from "react-hot-toast";
 import RateContext from "../../Context/RateContext";
+import TableHeader from "../../Components/Common/TableHeader";
+import Loader from "../../Components/Common/Loader";
 
 function ChargeRates() {
   const {rateList} = useContext(RateContext);
@@ -21,56 +23,39 @@ function ChargeRates() {
   return (
     <AppContainer title="List Charge Rates">
       <Toaster position="top-center" reverseOrder={false} />
+      {Chargeupdater}
       <div className="row">
-        <div className="col-lg-4 col-md-4">
+        <div className="col-lg-4">
           <AddChargeRate />
         </div>
-        <div className="col-lg-8 col-md-8">
-          <div className="card height-auto">
-            <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>All charge rates</h3>
-                </div>
-                <div className="dropdown">
-                  <Link
-                    className="dropdown-toggle"
-                    to="#"
+        <div className="col-lg-8">
+          <div className="card custom-card">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
+                <TableHeader
+                  title="Charge Rates"
+                  subtitle="List of all the charge rates"
+                />
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
                     role="button"
                     data-toggle="dropdown"
                     aria-expanded="false">
                     ...
-                  </Link>
+                  </a>
                 </div>
               </div>
-              <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-md-8 col-lg-8  form-group">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className=" col-md-3 col-lg-4 col-4 form-group">
-                    <button
-                      type="submit"
-                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                      SEARCH
-                    </button>
-                  </div>
-                </div>
-              </form>
-              {Chargeupdater}
+
               <div className="table-responsive">
-                <table className="table display data-table text-nowrap">
+                <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
                       <th>No.</th>
                       <th>Charge Rate</th>
                       <th>Type</th>
-
-                      <th>operations</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -105,13 +90,14 @@ function ChargeRates() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="2" style={{textAlign: "center"}}>
+                        <td colSpan="3" style={{textAlign: "center"}}>
                           No charge rates registered yet.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
+                {!rateList && <Loader />}
               </div>
             </div>
           </div>

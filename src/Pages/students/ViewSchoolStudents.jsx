@@ -118,7 +118,7 @@ function ViewSchoolStudents() {
             <table className="table display data-table text-nowrap">
               <thead>
                 <tr>
-                  <th>StudentsID</th>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Student's code</th>
                   <th>reG_no</th>

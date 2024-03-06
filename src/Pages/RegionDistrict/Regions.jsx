@@ -1,66 +1,65 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import {Link} from "react-router-dom";
-
-import useStateCallback from "../../util/customHooks/useStateCallback";
-
 import RegionContext from "../../Context/RegionContext";
 import AddRegion from "../../Components/DistrictRegion/AddRegion";
+import TableHeader from "../../Components/Common/TableHeader";
+import Loader from "../../Components/Common/Loader";
+
 function Regions() {
   const {regionList} = useContext(RegionContext);
-  // console.log(regionList);
 
   return (
-    <AppContainer title="Regions control page ">
+    <AppContainer title="Regions">
       <div className="row">
-        <div className="col-lg-4 col-md-4">
+        <div className="col-lg-4">
           <AddRegion />
         </div>
-        <div className="col-lg-8 col-md-8">
-          <div className="card height-auto">
-            <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>All Registeres Regions </h3>
-                </div>
-                <div className="dropdown">
-                  <Link
-                    className="dropdown-toggle"
-                    to="#"
+        <div className="col-lg-8">
+          <div className="card custom-card">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
+                <TableHeader
+                  title="Regions List"
+                  subtitle="List of all the regions sorted in ascending order"
+                />
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
                     role="button"
                     data-toggle="dropdown"
                     aria-expanded="false">
                     ...
-                  </Link>
+                  </a>
                 </div>
               </div>
 
               <div className="table-responsive">
-                <table className="table display data-table text-nowrap">
+                <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>No.</th>
                       <th>Region Name</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(regionList) &&
+                    {Array.isArray(regionList) && regionList.length > 0 ? (
                       regionList.map((item, key) => (
-                        <tr key={key}>
-                          <td>#{item.region_id}</td>
-                          <td>{item.region_name}</td>
+                        <tr>
+                          <td>{key + 1}</td>
+                          <td>{item.region_name} </td>
                         </tr>
-                      ))}
-                    {!Array.isArray(regionList) && (
+                      ))
+                    ) : (
                       <tr>
-                        <td colSpan={2} className="text-center text-info">
-                          {" "}
-                          no region available yet in the system
+                        <td colSpan="2" style={{textAlign: "center"}}>
+                          No regions registered yet.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
+                {!regionList && <Loader />}
               </div>
             </div>
           </div>

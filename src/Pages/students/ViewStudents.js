@@ -73,6 +73,8 @@ function ViewStudents() {
   };
   return (
     <AppContainer title="Students">
+       <div className="row">
+      
       <div className="col-lg-12">
         {StudentProfile}
         {ViewContacts}
@@ -85,7 +87,7 @@ function ViewStudents() {
           <div className="card-body map-card">
             <TableHeader
               title="Students List"
-              subtitle="List of all the students sorted according to the recently added"
+              subtitle=" the students sorted according to the recently added"
             />
             <div className="border-top mt-3"></div>
             <div className="table-responsive">
@@ -162,7 +164,7 @@ function ViewStudents() {
             </div>
           </div>
         </div>
-      </div>
+      </div></div>
     </AppContainer>
   );
 }
