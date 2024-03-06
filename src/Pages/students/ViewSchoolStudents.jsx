@@ -14,7 +14,7 @@ function ViewSchoolStudents() {
     getStudentList();
   }, []);
   const [studentList, setStudentList] = useState("");
-  // var school_id = user.school_user ? school_user.school.school_id : "";
+  // var school_id = user.school_user ? user.school_user.school.school_id : "";
   var school_id = 1;
   const getStudentList = async () => {
     var data = {

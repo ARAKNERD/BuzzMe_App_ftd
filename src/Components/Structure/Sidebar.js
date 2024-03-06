@@ -85,28 +85,40 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-            <li
-              className="nav-item sidebar-nav-item"
-              onClick={(e) => toggleDropdown(e)}>
-              <Link to="#" className="nav-link">
-                <i className="fa-solid fa-users" />
-                <span>School Users</span>
-              </Link>
-              <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                  <Link to="/schools/user/view" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    View Schools Users
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/schools/user/add" className="nav-link">
-                    <i className="fas fa-angle-right" />
-                    Add School User
-                  </Link>
-                </li>
-              </ul>
-            </li>
+
+            <RenderSecure code="SCHOOL-USER-VIEW">
+              <li className="nav-item">
+                <Link to="/schools/user/view" className="nav-link">
+                  <i className="fa-solid fa-users" />
+                  <span>School Users</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            {/* <RenderSecure code="SCHOOL-USER-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="fa-solid fa-users" />
+                  <span>School Users</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="/schools/user/view" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View Schools Users
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/schools/user/add" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      Add School User
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure> */}
+
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li
                 className="nav-item sidebar-nav-item"
@@ -165,7 +177,7 @@ const Sidebar = (props) => {
               </li>
             </RenderSecure>
 
-            <RenderSecure code="ADMIN-VIEW">
+            <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">
                   <i className="fa-solid fa-file-invoice-dollar" />
@@ -173,6 +185,7 @@ const Sidebar = (props) => {
                 </Link>
               </li>
             </RenderSecure>
+
             {/* <RenderSecure code="SCHOOL-USER-VIEW">
               <li
                 className="nav-item sidebar-nav-item"
@@ -232,7 +245,40 @@ const Sidebar = (props) => {
                 </Link>
               </li>
             </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/Admin/addSchoolUser" className="nav-link">
+                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <span>Admin Add schoolUser </span>
+                </Link>
+              </li>
+            </RenderSecure>
 
+            <RenderSecure code="ADMIN-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="fa-solid fa-users" />
+                  <span> schoolUser (Admin)</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="//Admin/addSchoolUser" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      Add School User
+                    </Link>
+                  </li>
+
+                  <li className="nav-item">
+                    <Link to="/Admin/user/view" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View Schools Users
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
             {/* <li className="nav-item">
               <Link to="all-subject.html" className="nav-link">
                 <i className="flaticon-open-book" />

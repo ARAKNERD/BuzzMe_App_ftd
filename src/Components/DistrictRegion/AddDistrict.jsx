@@ -29,7 +29,7 @@ function AddDistrict() {
         resetForm();
       } else {
         toast.error(server_response.message);
-        toast.error(server_response.details.message);
+        // toast.error(server_response.details.message);
       }
     } else {
       toast.error("Complete all fields and try again");
