@@ -165,7 +165,7 @@ const Sidebar = (props) => {
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">
                   <i className="fa-solid fa-file-invoice-dollar" />
-                  <span>Class Group</span>
+                  <span>Student Groups</span>
                 </Link>
               </li>
             </RenderSecure>
@@ -208,7 +208,7 @@ const Sidebar = (props) => {
               <li className="nav-item">
                 <Link to="/regions/view" className="nav-link">
                   <i className="fa-solid fa-globe" />
-                  <span>regions</span>
+                  <span>Regions</span>
                 </Link>
               </li>
             </RenderSecure>

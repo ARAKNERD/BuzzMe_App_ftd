@@ -1,104 +1,67 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import {Link} from "react-router-dom";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 import AddDistrict from "../../Components/DistrictRegion/AddDistrict";
-import useStateCallback from "../../util/customHooks/useStateCallback";
 import DistrictContext from "../../Context/DistrictContext";
+import TableHeader from "../../Components/Common/TableHeader";
+import Loader from "../../Components/Common/Loader";
 
 function District() {
   const {districtList} = useContext(DistrictContext);
-  const [AddDistricti, setAddDistricti] = useStateCallback(false);
-  // console.log(districtList);
-  const handle_district_add = (id) => {
-    setAddDistricti(false, () =>
-      setAddDistricti(<AddDistrict isOpen={true} id={id} />)
-    );
-  };
 
   return (
-    <AppContainer title="Districts control page ">
+    <AppContainer title="Districts">
       <div className="row">
-        <div className="col-lg-12 col-md-12">
-          {/* <AddChargeRate /> */}
-          <div className="pl-20" style={{float: "right"}}>
-            <button
-              type="button"
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-              onClick={handle_district_add}>
-              <i className="fa-solid fa-plus" /> District
-            </button>
-          </div>
+        <div className="col-lg-4">
+          <AddDistrict />
         </div>
-        <div className="col-lg-12 col-md-12">
-          <div className="card height-auto">
-            <div className="card-body">
-              <div className="heading-layout1">
-                <div className="item-title">
-                  <h3>All Registered Districts </h3>
-                </div>
-                <div className="dropdown">
-                  <Link
-                    className="dropdown-toggle"
-                    to="#"
+        <div className="col-lg-8">
+          <div className="card custom-card">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
+                <TableHeader
+                  title="Districts List"
+                  subtitle="List of all the districts sorted in ascending order"
+                />
+                <div class="dropdown">
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
                     role="button"
                     data-toggle="dropdown"
                     aria-expanded="false">
                     ...
-                  </Link>
+                  </a>
                 </div>
               </div>
-              <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
-                    <button
-                      type="submit"
-                      className="fw-btn-fill btn-gradient-yellow">
-                      SEARCH
-                    </button>
-                  </div>
-                </div>
-              </form>
-              {AddDistricti}
+
               <div className="table-responsive">
-                <table className="table display data-table text-nowrap">
+                <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                    <tr>
+                  <tr>
                       <th>No.</th>
                       <th>District Name</th>
                       <th>Region</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(districtList) &&
+                    {Array.isArray(districtList) && districtList.length > 0 ? (
                       districtList.map((item, key) => (
-                        <>
-                          <tr>
+                        <tr>
                             <td>{key + 1}</td>
                             <td>{item.district_name} </td>
                             <td>{item.region.region_name} </td>
                           </tr>
-                        </>
-                      ))}
-                    {!Array.isArray(districtList) && (
-                      <>
-                        <tr>
-                          <td colSpan={3} className="text-info text-center">
-                            {" "}
-                            No district Available in the system
-                          </td>
-                        </tr>
-                      </>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="3" style={{textAlign: "center"}}>
+                          No districts registered yet.
+                        </td>
+                      </tr>
                     )}
                   </tbody>
                 </table>
+                {!districtList && <Loader/>}
               </div>
             </div>
           </div>

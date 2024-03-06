@@ -1,72 +1,92 @@
-import React from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
+import React, {useContext, useState} from "react";
+import {Toaster, toast} from "react-hot-toast";
+import WalletAccountContext from "../../Context/WalletAccountContext";
 import ajaxAccounts from "../../util/remote/ajaxAccounts";
-import {Formik, Form, Field, ErrorMessage} from "formik";
 
 function AddAccount() {
-  const initialValues = {
-    account_code: "",
-    description: "",
+  const {getAccountList} = useContext(WalletAccountContext);
+  const [accountCode, setAccountCode] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+
+    if (accountCode.length > 0) {
+      const data = {
+        account_code: accountCode,
+        description: description
+      };
+      const server_response = await ajaxAccounts.createAccount(data);
+      if (server_response.status === "OK") {
+        toast.success(server_response.message);
+        getAccountList();
+        resetForm();
+      } else {
+        toast.error(server_response.message);
+      }
+    } else {
+      toast.error("Complete all fields and try again");
+    }
   };
 
-  const handleSubmit = async (values, {setSubmitting}) => {
-    // const server_response = await ajaxAccounts.createAccount(account_code,description);
-    // if(server_response.status==="OK"){
-
-    // }
-    // Handle form submission logic here
-    const data = JSON.stringify(values);
-    console.log(data);
-    // You can make API calls or perform other actions as needed
-
-    // After handling submission, you can reset the form or perform other actions
-    setSubmitting(false);
+  const resetForm = () => {
+    setAccountCode("");
+    setDescription("");
   };
 
   return (
-    <div className="card height-auto">
-      <div className="card-body">
-        <div className="heading-layout1">
-          <div className="item-title">
-            <h3>Add New Account</h3>
+
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+
+      <div className="row">
+        <br />
+        <br />
+        <br />
+        <div className="col-lg-12 col-md-12">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+            <div className="card-body">
+              <div>
+                <h6 className="card-title mb-4">Add New Wallet Account</h6>
+              </div>
+
+              <form
+                onSubmit={(e) => handleAdd(e)}
+                method="post"
+                class="new-added-form">
+                <div className="row">
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 radius-30">
+                    <label htmlFor="">Account Code</label>
+                    <input
+                      type="text"
+                      value={accountCode}
+                      onChange={(e) => setAccountCode(e.target.value)}
+                      className=" colo-12 form-control"
+                    />
+                  </div>
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5">
+                    <label htmlFor="">Description</label>
+                    <input
+                      type="text"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className=" colo-12 form-control"
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
+                  <button
+                    type="submit"
+                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                    Save Wallet Account
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-          <Form className="new-added-form">
-            <div className="row">
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
-                <label>Account Code</label>
-                <Field
-                  type="text"
-                  name="account_code"
-                  // onChange={(e)=>}
-                  placeholder=""
-                  className="form-control"
-                />
-              </div>
-              <div className="col-xl-6 col-lg-6 col-6 form-group">
-                <label>Description *</label>
-                <Field
-                  as="textarea" // Corrected from "text-area"
-                  name="description"
-                  className="select2 form-control"
-                />
-              </div>
-              <div
-                className="col-12 form-group mg-t-8"
-                style={{float: "right"}}>
-                <button // Corrected from "butto"
-                  type="submit"
-                  style={{float: "right"}}
-                  className="col-lg-2 col-md-2 text-center btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  Save
-                </button>
-              </div>
-            </div>
-          </Form>
-        </Formik>
       </div>
-    </div>
+    </>
   );
 }
 
