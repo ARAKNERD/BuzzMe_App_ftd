@@ -8,13 +8,16 @@ import Select from "react-select";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import SystemModal from "../../Components/Common/SystemModal";
+
 function ImageModal(props) {
   const {getStudentList} = useContext(StudentContext);
-  // var school_id = user.school_user ? school_user.school.school_id : "";
+  const {user} = useContext(AuthContext);
+
+  // var school_id = user.school_user ? user.school_user.school.school_id : "";
   var school_id = 1;
 
   const [groupList, setGroupList] = useState(false);
-  const {user} = useContext(AuthContext);
+
   const [group, setGroup] = useState("");
   // const [school, setSchool] = useState("");
   const [parent, setParent] = useState("");
@@ -22,7 +25,7 @@ function ImageModal(props) {
   const [password, setPassword] = useState("");
   const [names, setNames] = useState("");
   const [dob, setDOb] = useState("");
-  // var school_id = user.school_user ? school_user.school.school_id : "";
+  // var school_id = user.school_user ? user.school_user.school.school_id : "";
   var school_id = 1;
 
   const handleAdd = async (e) => {

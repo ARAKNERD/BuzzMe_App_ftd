@@ -96,7 +96,12 @@ export default function Header(props) {
                   <span>Admin</span>
                 </div>
                 <div className="admin-img">
-                  <img src="./assets/img/figure/admin.jpg" alt="Admin" />
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/admin.jpg"
+                    }
+                    alt="Admin"
+                  />
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-right">
@@ -133,14 +138,14 @@ export default function Header(props) {
                 <div className="item-title d-md-none text-16 mg-l-10">
                   Message
                 </div>
-                <span>5</span>
+                <span>0</span>
               </a>
 
               <div className="dropdown-menu dropdown-menu-right">
                 <div className="item-header">
-                  <h6 className="item-title">05 Message</h6>
+                  <h6 className="item-title">0 Message</h6>
                 </div>
-                <div className="item-content">
+                {/* <div className="item-content">
                   <div className="media">
                     <div className="item-img bg-skyblue author-online">
                       <img src="./assets/img/figure/student11.png" alt="img" />
@@ -209,7 +214,7 @@ export default function Header(props) {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </li>
             <li className="navbar-item dropdown header-notification">
@@ -228,10 +233,10 @@ export default function Header(props) {
 
               <div className="dropdown-menu dropdown-menu-right">
                 <div className="item-header">
-                  <h6 className="item-title">03 Notifiacations</h6>
+                  <h6 className="item-title">0 Notifiacations</h6>
                 </div>
                 <div className="item-content">
-                  <div className="media">
+                  {/* <div className="media">
                     <div className="item-icon bg-skyblue">
                       <i className="fas fa-check" />
                     </div>
@@ -257,7 +262,7 @@ export default function Header(props) {
                       <div className="post-title">Update Password</div>
                       <span>45 Mins ago</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </li>

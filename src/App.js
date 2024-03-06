@@ -17,7 +17,7 @@ import AddStudent from "./Pages/students/AddStudent";
 
 import AddSchool from "./Pages/Schools/AddSchool";
 import UpdateSchool from "./Pages/Schools/UpdateSchool";
-import ListSchoolUsers from "./Pages/SchoolUsers/ListSchoolUsers";
+// import SchoolUserPage from "./Pages/SchoolUsers/SchoolUserPage";
 import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
 import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
 import ListContacts from "./Pages/Contacts/ListContacts";
@@ -37,6 +37,9 @@ import ActivateAccount from "./Pages/ActivateAccount";
 import ViewSchool from "./Pages/Schools/ViewSchool";
 import District from "./Pages/RegionDistrict/District";
 import Regions from "./Pages/RegionDistrict/Regions";
+import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
+import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
+import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -102,9 +105,17 @@ function App(props) {
               <Route path="/schools/edit" element={<UpdateSchool />} />
               {/* End school routes */}
               {/* School User routes */}
-              <Route path="/schools/user/view" element={<ListSchoolUsers />} />
+              <Route path="/schools/user/view" element={<SchoolUSerPage />} />
               <Route path="/schools/user/add" element={<AddSchoolUser />} />
               <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
+              <Route
+                path="/Admin/addSchoolUser"
+                element={<AdminAddSchoolUser />}
+              />
+              <Route
+                path="/Admin/user/view"
+                element={<AdminViewSchoolUsers />}
+              />
               {/* End School User routes */}
               {/* Student Contact routes */}
               <Route path="/contacts/view" element={<ListContacts />} />

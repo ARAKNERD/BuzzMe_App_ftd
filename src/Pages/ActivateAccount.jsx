@@ -42,7 +42,7 @@ function ActivateAccount() {
         toast.success(server_response.message);
       } else {
         setLoading(false);
-        toast.error(server_response.details.message);
+        toast.error(server_response.message);
       }
     } else {
       toast.error("Passwords don't match");

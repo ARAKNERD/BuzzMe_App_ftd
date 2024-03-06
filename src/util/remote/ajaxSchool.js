@@ -55,7 +55,7 @@ export default {
   // SCHOOL USERS
 
   async fetchSchoolUserList(data) {
-    let response = await apiCall("school_user/list", data);
+    let response = await apiCall("school_user/listschoolUsers", data);
     return response;
   },
 
