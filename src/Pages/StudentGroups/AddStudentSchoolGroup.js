@@ -1,14 +1,29 @@
-import React, {useContext, useState} from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
+import React, {useContext, useEffect, useState} from "react";
 import {Toaster, toast} from "react-hot-toast";
-import SchoolContext from "../../Context/SchoolContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
-import Select from "react-select";
+import AuthContext from "../../Context/AuthContext";
 
 function AddStudentSchoolGroup() {
-  const {schoolList} = useContext(SchoolContext);
+  const {user} = useContext(AuthContext);
   const [groupName, setGroupName] = useState("");
-  const [school, setSchool] = useState("");
+  const [groupList, setGroupList] = useState(false);
+
+  const getGroups = async () => {
+    const server_response = await ajaxStudentGroup.fetchGroupList(
+      user.school_user?.school?.school_id
+    );
+    if (server_response.status === "OK") {
+      setGroupList(server_response.details);
+    }
+  };
+
+  useEffect(() => {
+    getGroups();
+  }, [user.school_user?.school.school_id]);
+
+
+  var school = user.school_user ? user.school_user.school.school_id : "";
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -20,6 +35,7 @@ function AddStudentSchoolGroup() {
       );
       if (server_response.status === "OK") {
         toast.success(server_response.message);
+        getGroups();
         resetForm();
       } else {
         toast.error(server_response.message);

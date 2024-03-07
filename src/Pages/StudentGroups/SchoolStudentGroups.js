@@ -18,7 +18,6 @@ function SchoolStudentGroups() {
       user.school_user?.school?.school_id
     );
     setLoading(false);
-    console.log(server_response);
     if (server_response.status === "OK") {
       setGroupList(server_response.details);
     }
@@ -65,6 +64,7 @@ function SchoolStudentGroups() {
                         No.
                       </th>
                       <th scope="col">Names</th>
+                      <th scope="col">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,6 +73,11 @@ function SchoolStudentGroups() {
                         <tr key={key}>
                           <th scope="row">{key + 1}</th>
                           <td>{item.group_name}</td>
+                          <td><Link
+                          className="btn btn-info"
+                          to={`view/${item.group_id}`}>
+                          View Students
+                        </Link></td>
                         </tr>
                       ))
                     ) : (
