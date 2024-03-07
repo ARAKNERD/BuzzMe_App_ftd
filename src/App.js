@@ -42,6 +42,8 @@ import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
 import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
+import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
+import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -139,6 +141,7 @@ function App(props) {
               {/* End Account routes */}
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />
+              <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
               {/* Students */}

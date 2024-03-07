@@ -23,12 +23,8 @@ export default {
     return response;
   },
 
-  async fetchStudentNumber(school) {
-    let data = {
-      school: school,
-    };
-    let response = await apiCall("student/list", data);
-
+  async fetchStudentNumber(data) {
+    let response = await apiCall("student/count", data);
     return response;
   },
   async fetchStudentData(data) {
