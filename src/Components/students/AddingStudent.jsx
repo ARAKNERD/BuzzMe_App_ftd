@@ -3,39 +3,38 @@ import {Toaster, toast} from "react-hot-toast";
 import StudentContext from "../../Context/StudentContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import Select from "react-select";
-import { Link } from 'react-router-dom'
+import {Link} from "react-router-dom";
 import SchoolContext from "../../Context/SchoolContext";
 import AuthContext from "../../Context/AuthContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 
 function AddingStudent() {
   const {getStudentList} = useContext(StudentContext);
-  const {schoolList} = useContext(SchoolContext);
+  // const {schoolList} = useContext(SchoolContext);
 
   const [groupList, setGroupList] = useState(false);
   const {user} = useContext(AuthContext);
   const [group, setGroup] = useState("");
-  const [school, setSchool] = useState("");
+  // const [school, setSchool] = useState("");
   const [regNo, setRegNo] = useState("");
-  const [dob, setDOb] = useState("");
+  const [gender, setGender] = useState("");
 
   const [names, setNames] = useState("");
 
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
+  var school_id = user.school_user ? user.school_user.school.school_id : "";
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (regNo.length > 0 || names.length > 0) {
+    if (names.length > 0 && gender.length > 0) {
       var data = {
         group: group,
         school: school_id,
         reg_no: regNo,
         names: names,
-        dob: dob,
+        gender: gender,
       };
-
+      // console.log(data);
       const server_response = await ajaxStudent.createStudent(data);
       if (server_response.status === "OK") {
         toast.success(server_response.message);
@@ -45,7 +44,7 @@ function AddingStudent() {
         toast.error(server_response.message);
       }
     } else {
-      toast.error("Complete all fields and try again");
+      toast.error("names,group and gender  fields are required");
     }
   };
 
@@ -74,16 +73,16 @@ function AddingStudent() {
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="row">
-      <div className="col-lg-12 col-md-12">
+        <div className="col-lg-12 col-md-12">
           {/* <AddChargeRate /> */}
           <div className="pl-20" style={{float: "right"}}>
-          <Link to={`/students/import`}>
-            <button
-              type="button"
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                
-              <i className="fa-solid fa-plus" /> Import Students
-            </button></Link>
+            <Link to={`/students/import`}>
+              <button
+                type="button"
+                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
+                <i className="fa-solid fa-plus" /> Import Students
+              </button>
+            </Link>
           </div>
         </div>
         <div className="col-lg-12 col-md-12">
@@ -107,7 +106,7 @@ function AddingStudent() {
                     />
                   </div>
 
-                  <div className=" col-md-6">
+                  {/* <div className=" col-md-6">
                     <label htmlFor="">School</label>
                     <Select
                       onChange={(e) => setSchool(e.school_id)}
@@ -120,7 +119,7 @@ function AddingStudent() {
                         schoolList.find((value) => value.school_id === school)
                       }
                     />
-                  </div>
+                  </div> */}
                   <div className="col-lg-6 col-md-6">
                     <label htmlFor="">Student Group</label>
                     <Select
@@ -148,15 +147,16 @@ function AddingStudent() {
                     />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Date of birth</label>
-                    <input
-                      type="text"
-                      value={dob}
-                      style={{border: "1px solid grey"}}
-                      placeholder="student's registration number"
-                      onChange={(e) => setDOb(e.target.value)}
-                      className="form-control"
-                    />
+                    <label>Student's gender</label>
+
+                    <select
+                      className="col-12 form-control"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}>
+                      <option value={true}>Please gender*</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
                   </div>
                 </div>
                 <div className="col-12 form-group mg-t-8">

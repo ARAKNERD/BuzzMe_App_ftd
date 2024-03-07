@@ -1,6 +1,6 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ajaxStudent from "../../util/remote/ajaxStudent";
-import AuthContext from "../../Context/AuthContext";
+
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ViewStudentsContacts from "./ViewStudentsContacts";
 import StudentCodeSlip from "./StudentCodeSlip";
@@ -8,17 +8,18 @@ import UpdateStudent from "./UpdateStudent";
 import ChangeStatus from "./ChangeStatus";
 import StudentProfil from "./StudentProfile";
 
-function ViewSchoolStudents() {
-  const {user} = useContext(AuthContext);
+function ViewSchoolStudents(props) {
   useEffect(() => {
     getStudentList();
   }, []);
   const [studentList, setStudentList] = useState("");
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
+  const [studentLists, setStudentLists] = useState("404");
+
   const getStudentList = async () => {
     var data = {
-      school_id: school_id,
+      school: props.school,
+      date_added: props.date_added,
+      group: props.group_id,
     };
     const server_response = await ajaxStudent.fetchStudentList(data);
     if (server_response.status === "OK") {
@@ -44,16 +45,16 @@ function ViewSchoolStudents() {
   };
   // ----------------------handles the view -----students printable codeslipmodal----
   const [studentUpdater, setStudentUpdater] = useStateCallback(false);
-  const handle_student_updater = (id) => {
+  const handle_student_updater = (student) => {
     setStudentUpdater(false, () =>
-      setStudentUpdater(<UpdateStudent isOpen={true} id={id} />)
+      setStudentUpdater(<UpdateStudent isOpen={true} student={student} />)
     );
   };
   // ----------------------handles the--change--status modal-------------
   const [ChangeStaus, setChangeStaus] = useStateCallback(false);
   const handle_status_updater = (id) => {
     setChangeStaus(false, () =>
-      setChangeStaus(<ChangeStatus isOpen={true} id={id} />)
+      setChangeStaus(<ChangeStatus isOpen={true} student={id} />)
     );
   };
   // ----------------------handles the--student--profile--modal-------------
@@ -91,7 +92,7 @@ function ViewSchoolStudents() {
 
           <form className="mg-b-20">
             <div className="row gutters-8">
-              <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
+              <div className="col-xl-9 col-lg-9 col-9 form-group">
                 {/* <Select
                   onChange={(e) => setParent(e.parent_id)}
                   getOptionLabel={(option) => option.parent_name}
@@ -120,6 +121,7 @@ function ViewSchoolStudents() {
                 <tr>
                   <th>ID</th>
                   <th>Name</th>
+                  <th>School_name</th>
                   <th>Student's code</th>
                   <th>reG_no</th>
                   <th>Date of birh</th>
@@ -136,52 +138,68 @@ function ViewSchoolStudents() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>#223</td>
-                  <td>mumbere Andrew</td>
-                  <td className=" text-center text-primary">cd4252</td>
-                  <td>38939635</td>
-                  <td>12/12/1967 </td>
+                {Array.isArray(studentList) &&
+                  studentList.map((student, key) => (
+                    <tr key={key}>
+                      <td>{student.id}</td>
+                      <td>{student.names}</td>
+                      <td>{student.school.school_name}</td>
+                      <td className="text-center text-dark">
+                        {student.student_code}
+                      </td>
+                      <td className="text-center text-primary">
+                        {student.reg_no}
+                      </td>
 
-                  <td>
-                    <button
-                      className="btn btn-info"
-                      onClick={() => handle_view_contact(1)}>
-                      view contacts
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-info"
-                      onClick={() => handle_view_slip(1)}>
-                      code slip
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-secondary"
-                      onClick={() => handle_student_profile(1)}>
-                      student Profile
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-warning"
-                      onClick={() => handle_student_updater(1)}>
-                      Update student
-                    </button>
-                  </td>
-                  <td>
-                    <button className="btn btn-success"> status</button>
-                  </td>
-                  <td>
-                    <button
-                      className="btn btn-info"
-                      onClick={() => handle_status_updater(1)}>
-                      change status
-                    </button>
-                  </td>
-                </tr>
+                      <td>{student.dob}</td>
+                      <td>
+                        <button
+                          className="btn btn-info"
+                          onClick={() => handle_view_contact(student.id)}>
+                          View Contacts
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-info"
+                          onClick={() => handle_view_slip(student.id)}>
+                          Code Slip
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-secondary"
+                          onClick={() => handle_student_profile(student.id)}>
+                          Student Profile
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => handle_student_updater(student)}>
+                          Update Student
+                        </button>
+                      </td>
+                      <td>
+                        <button className="btn btn-success">Status</button>
+                      </td>
+                      <td>
+                        <button
+                          className="btn btn-info"
+                          onClick={() => handle_status_updater(student.id)}>
+                          Change Status
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+
+                {studentList === "404" ? (
+                  <tr>
+                    <td colSpan="13" className="text-center text-info">
+                      No data found
+                    </td>
+                  </tr>
+                ) : null}
               </tbody>
             </table>
           </div>

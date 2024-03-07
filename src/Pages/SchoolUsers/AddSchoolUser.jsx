@@ -6,8 +6,8 @@ import toast, {Toaster} from "react-hot-toast";
 import AuthContext from "../../Context/AuthContext";
 function AddSchoolUser() {
   const {user} = useContext(AuthContext);
-  //   var school_id = user.school_user ? school_user.school.school_id : "";
-  var school_id = 1;
+  var school_id = user.school_user ? user.school_user.school.school_id : "";
+
   const [names, setNames] = useState("");
   const [Username, setUsername] = useState("");
 
