@@ -12,7 +12,7 @@ function AddRegion() {
 
     if (regionName.length > 0) {
       const data = {
-        region_name: regionName
+        region_name: regionName,
       };
       const server_response = await ajaxRegion.createRegion(data);
       if (server_response.status === "OK") {
@@ -32,7 +32,6 @@ function AddRegion() {
   };
 
   return (
-
     <>
       <Toaster position="top-center" reverseOrder={false} />
 

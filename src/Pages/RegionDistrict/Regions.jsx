@@ -37,7 +37,7 @@ function Regions() {
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                  <tr>
+                    <tr>
                       <th>No.</th>
                       <th>Region Name</th>
                     </tr>
@@ -46,9 +46,9 @@ function Regions() {
                     {Array.isArray(regionList) && regionList.length > 0 ? (
                       regionList.map((item, key) => (
                         <tr>
-                            <td>{key + 1}</td>
-                            <td>{item.region_name} </td>
-                          </tr>
+                          <td>{key + 1}</td>
+                          <td>{item.region_name} </td>
+                        </tr>
                       ))
                     ) : (
                       <tr>
@@ -59,7 +59,7 @@ function Regions() {
                     )}
                   </tbody>
                 </table>
-                {!regionList && <Loader/>}
+                {!regionList && <Loader />}
               </div>
             </div>
           </div>

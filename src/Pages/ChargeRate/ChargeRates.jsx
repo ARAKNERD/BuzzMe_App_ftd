@@ -51,7 +51,7 @@ function ChargeRates() {
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                  <tr>
+                    <tr>
                       <th>No.</th>
                       <th>Charge Rate</th>
                       <th>Type</th>
@@ -62,31 +62,31 @@ function ChargeRates() {
                     {Array.isArray(rateList) && rateList.length > 0 ? (
                       rateList.map((item, key) => (
                         <tr key={key}>
-                        <td>{key + 1}</td>
-                        <td>{item.type}</td>
-                        <td>{item.rate}</td>
+                          <td>{key + 1}</td>
+                          <td>{item.type}</td>
+                          <td>{item.rate}</td>
 
-                        <td>
-                          <div className="dropdown">
-                            <Link
-                              to="#"
-                              className="dropdown-toggle"
-                              data-toggle="dropdown"
-                              aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots"></span>
-                            </Link>
-                            <div className="dropdown-menu dropdown-menu-right">
+                          <td>
+                            <div className="dropdown">
                               <Link
-                                className="dropdown-item"
                                 to="#"
-                                onClick={() => handle_modal_Updater(1)}>
-                                <i className="fas fa-cogs text-dark-pastel-green"></i>
-                                Edit
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={() => handle_modal_Updater(1)}>
+                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                  Edit
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
                       ))
                     ) : (
                       <tr>
@@ -97,7 +97,7 @@ function ChargeRates() {
                     )}
                   </tbody>
                 </table>
-                {!rateList && <Loader/>}
+                {!rateList && <Loader />}
               </div>
             </div>
           </div>

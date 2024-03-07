@@ -44,6 +44,22 @@ const Sidebar = (props) => {
                 <span>Dashboard</span>
               </Link>
             </li>
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/rate/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <span>charge Rates</span>
+                </Link>
+              </li>
+            </RenderSecure>
+            {/* <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/accounts/view" className="nav-link">
+                  <i className="fa-solid fa-file-invoice" />
+                  <span>Account</span>
+                </Link>
+              </li>
+            </RenderSecure> */}
 
             <RenderSecure code="ADMIN-VIEW">
               <li

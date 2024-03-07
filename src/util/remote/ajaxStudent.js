@@ -17,13 +17,7 @@ export default {
     return response;
   },
 
-
-  async updateStudent(student_id, names, reg_no) {
-    let data = {
-      student_id: student_id,
-      names: names,
-      reg_no: reg_no,
-    };
+  async updateStudent(data) {
     let response = await apiCall("student/update", data);
 
     return response;

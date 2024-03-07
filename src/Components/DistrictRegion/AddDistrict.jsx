@@ -17,7 +17,7 @@ function AddDistrict() {
     if (districtName.length > 0) {
       const data = {
         district_name: districtName,
-        region: region
+        region: region,
       };
       const server_response = await ajaxDistrict.createDistrict(data);
       if (server_response.status === "OK") {
@@ -37,7 +37,6 @@ function AddDistrict() {
   };
 
   return (
-
     <>
       <Toaster position="top-center" reverseOrder={false} />
 

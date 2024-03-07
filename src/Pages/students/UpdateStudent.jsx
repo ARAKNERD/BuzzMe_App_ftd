@@ -9,39 +9,31 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import SystemModal from "../../Components/Common/SystemModal";
 
-function ImageModal(props) {
+function UpdateStudent(props) {
   const {getStudentList} = useContext(StudentContext);
   const {user} = useContext(AuthContext);
 
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
-
+  var school_id = user.school_user ? user.school_user.school.school_id : "";
+  const raw_data = props.student;
+  console.log(raw_data);
   const [groupList, setGroupList] = useState(false);
-
-  const [group, setGroup] = useState("");
-  // const [school, setSchool] = useState("");
-  const [parent, setParent] = useState("");
-  const [regNo, setRegNo] = useState("");
-  const [password, setPassword] = useState("");
-  const [names, setNames] = useState("");
-  const [dob, setDOb] = useState("");
-  // var school_id = user.school_user ? user.school_user.school.school_id : "";
-  var school_id = 1;
-
+  const [group, setGroup] = useState(raw_data.group.group_id);
+  const [regNo, setRegNo] = useState(raw_data.reg_no);
+  const [names, setNames] = useState(raw_data.names);
+  const [gender, setGender] = useState(raw_data.gender);
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (regNo.length > 0 || names.length > 0) {
+    if (regNo.length > 0 && names.length > 0) {
       var data = {
-        group: group,
-        school: school_id,
-        parent: parent,
+        student_id: raw_data.id,
+        group_id: group,
         reg_no: regNo,
-        password: password,
         names: names,
+        gender: gender,
       };
 
-      const server_response = await ajaxStudent.createStudent(data);
+      const server_response = await ajaxStudent.updateStudent(data);
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getStudentList();
@@ -69,24 +61,22 @@ function ImageModal(props) {
   const RenderFooter = (controls) => {
     return (
       <>
-        <div className="col-4 form-group mg-t-8">
-          <button
-            style={{float: "right"}}
-            type="submit"
-            className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark"
-            onClick={controls.close}>
-            Close
-          </button>
-        </div>
-
-        <div className="col-4 form-group mg-t-8">
-          <button
-            style={{float: "right"}}
-            type="submit"
-            className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark">
-            Save changes
-          </button>
-        </div>
+        <button
+          type="submit"
+          className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
+          onClick={handleAdd}>
+          Update
+        </button>
+        <button
+          type="submit"
+          className="btn-fill-lmd radius-30 text-light shadow-red bg-red"
+          onClick={controls.close}>
+          Close
+        </button>
+        {/* <button className="btn ripple btn-dark" type="button" 
+        onClick={Print}>
+          print image
+        </button> */}
       </>
     );
   };
@@ -99,7 +89,6 @@ function ImageModal(props) {
         footer={RenderFooter}>
         <>
           <Toaster position="top-center" reverseOrder={false} />
-
           <div className="row">
             <div className="col-lg-12 col-md-12">
               <div className="card custom-card" style={{borderRadius: "10px"}}>
@@ -108,7 +97,7 @@ function ImageModal(props) {
                     <h6 className="card-title mb-4">Update Student</h6>
                   </div>
 
-                  <form onSubmit={(e) => handleAdd(e)} method="post">
+                  <form method="post">
                     <div className="row">
                       <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
                         <label>Student Names*</label>
@@ -166,15 +155,16 @@ function ImageModal(props) {
                       </div>
 
                       <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                        <label>Date of birth</label>
-                        <input
-                          type="text"
-                          value={dob}
-                          style={{border: "1px solid grey"}}
-                          placeholder="student's registration number"
-                          onChange={(e) => setDOb(e.target.value)}
-                          className="form-control"
-                        />
+                        <label>Student's gender</label>
+
+                        <select
+                          className="col-12 form-control"
+                          value={gender}
+                          onChange={(e) => setGender(e.target.value)}>
+                          <option value={true}>Please gender*</option>
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
                       </div>
                     </div>
 
@@ -197,4 +187,4 @@ function ImageModal(props) {
   );
 }
 
-export default ImageModal;
+export default UpdateStudent;

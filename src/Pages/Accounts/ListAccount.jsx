@@ -13,7 +13,7 @@ function ListAccount() {
     <AppContainer title={"Wallet Accounts "}>
       <div className="row">
         <div className="col-lg-4">
-            <AddAccount />
+          <AddAccount />
         </div>
         <div className="col-lg-8">
           <div className="card custom-card">
@@ -38,7 +38,7 @@ function ListAccount() {
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                  <tr>
+                    <tr>
                       <th>No.</th>
                       <th>Account Code</th>
                       <th>Description</th>
@@ -49,30 +49,28 @@ function ListAccount() {
                     {Array.isArray(accountList) && accountList.length > 0 ? (
                       accountList.map((item, key) => (
                         <tr key={key}>
-                        <td>{key + 1}</td>
-                        <td>{item.account_code}</td>
-                        <td>{item.description}</td>
+                          <td>{key + 1}</td>
+                          <td>{item.account_code}</td>
+                          <td>{item.description}</td>
 
-                        <td>
-                          <div className="dropdown">
-                            <Link
-                              to="#"
-                              className="dropdown-toggle"
-                              data-toggle="dropdown"
-                              aria-expanded="false">
-                              <span className="flaticon-more-button-of-three-dots"></span>
-                            </Link>
-                            <div className="dropdown-menu dropdown-menu-right">
+                          <td>
+                            <div className="dropdown">
                               <Link
-                                className="dropdown-item"
-                                to="#">
-                                <i className="fas fa-cogs text-dark-pastel-green"></i>
-                                Edit
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link className="dropdown-item" to="#">
+                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                  Edit
+                                </Link>
+                              </div>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
                       ))
                     ) : (
                       <tr>
@@ -83,7 +81,7 @@ function ListAccount() {
                     )}
                   </tbody>
                 </table>
-                {!accountList && <Loader/>}
+                {!accountList && <Loader />}
               </div>
             </div>
           </div>

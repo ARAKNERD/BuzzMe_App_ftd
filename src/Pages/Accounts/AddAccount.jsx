@@ -14,7 +14,7 @@ function AddAccount() {
     if (accountCode.length > 0) {
       const data = {
         account_code: accountCode,
-        description: description
+        description: description,
       };
       const server_response = await ajaxAccounts.createAccount(data);
       if (server_response.status === "OK") {
@@ -35,7 +35,6 @@ function AddAccount() {
   };
 
   return (
-
     <>
       <Toaster position="top-center" reverseOrder={false} />
 

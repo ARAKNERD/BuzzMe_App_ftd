@@ -133,8 +133,8 @@ function App(props) {
               <Route path="/bank/view" element={<ListBankTransactions />} />
               {/* End Bank routes */}
               {/* Account routes */}
-              <Route path="/accounts/view" element={<ListAccount />} />
-              <Route path="/accounts/add" element={<AddAccount />} />
+              {/* <Route path="/accounts/view" element={<ListAccount />} />
+              <Route path="/accounts/add" element={<AddAccount />} /> */}
               {/* End Account routes */}
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />

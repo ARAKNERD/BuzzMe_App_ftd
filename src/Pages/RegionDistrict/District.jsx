@@ -37,7 +37,7 @@ function District() {
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
-                  <tr>
+                    <tr>
                       <th>No.</th>
                       <th>District Name</th>
                       <th>Region</th>
@@ -47,10 +47,10 @@ function District() {
                     {Array.isArray(districtList) && districtList.length > 0 ? (
                       districtList.map((item, key) => (
                         <tr>
-                            <td>{key + 1}</td>
-                            <td>{item.district_name} </td>
-                            <td>{item.region.region_name} </td>
-                          </tr>
+                          <td>{key + 1}</td>
+                          <td>{item.district_name} </td>
+                          <td>{item.region.region_name} </td>
+                        </tr>
                       ))
                     ) : (
                       <tr>
@@ -61,7 +61,7 @@ function District() {
                     )}
                   </tbody>
                 </table>
-                {!districtList && <Loader/>}
+                {!districtList && <Loader />}
               </div>
             </div>
           </div>

@@ -69,12 +69,12 @@ function AddChargeRate() {
             </div>
           </div>
           <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
-                  <button
-                    type="submit"
-                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                    Save Charge Rate
-                  </button>
-                </div>
+            <button
+              type="submit"
+              className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+              Save Charge Rate
+            </button>
+          </div>
         </form>
       </div>
     </div>
