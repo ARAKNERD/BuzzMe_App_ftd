@@ -1,24 +1,54 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import {Link} from "react-router-dom";
 import ajaxSchool from "../../util/remote/ajaxSchool";
+import SchoolContext from "../../Context/SchoolContext";
+import toast, {Toaster} from "react-hot-toast";
+import Loader from "../../Components/Common/Loader";
+
 
 function ViewSchool() {
-  const [schoolList, setSchoolListing] = useState(false);
+  const {schoolList} = useContext(SchoolContext);
+  const [schoolSearch, setSchoolSearch] = useState(false);
+  const [query, setQuery] = useState("");
+  const [loading,setLoading] = useState(false)
 
-  const listSchools = async () => {
-    const server_response = await ajaxSchool.fetchSchoolList();
-    if (server_response.status === "OK") {
-      setSchoolListing(server_response.details);
+
+  const searchSchools = async (e) => {
+    if (e) {
+        e.preventDefault();
     }
-  };
+    if (!query) {
+        toast.error("Please enter name of school.");
+    } else {
+      var data = {
+        query: query
+      };
+        setLoading(true);
+        const server_response = await ajaxSchool.searchSchoolList(data);
+        setLoading(false);
+        if (server_response.status === "OK") {
+            if (server_response.details.length === 0) {
+                setSchoolSearch([]);
+            } else {
+                setSchoolSearch(server_response.details);
+            }
+        } else {
+            setSchoolSearch([]);
+        }
+    }
+};
 
-  useEffect(() => {
-    listSchools();
-  }, []);
+useEffect(() => {
+    if (query) {
+        searchSchools();
+    }
+}, [query]);
 
   return (
     <AppContainer title={"Schools"}>
+      <Toaster position="top-center" reverseOrder={false} />
+
       <div className="card height-auto">
         <div className="card-body">
           <div className="heading-layout1">
@@ -41,6 +71,7 @@ function ViewSchool() {
               <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
                 <input
                   type="text"
+                  value={query} onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search..."
                   className="form-control"
                 />
@@ -48,6 +79,7 @@ function ViewSchool() {
               <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
                 <button
                   type="submit"
+                  onClick={(e) => searchSchools(e)}
                   className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                   SEARCH
                 </button>
@@ -70,7 +102,45 @@ function ViewSchool() {
                 </tr>
               </thead>
               <tbody>
-                {Array.isArray(schoolList) && schoolList.length > 0 ? (
+              {schoolSearch && Array.isArray(schoolSearch) ? 
+                    ( schoolSearch.length > 0 ?
+                        ( schoolSearch.map((item, key) => (
+                          <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.school_name}</td>
+                          <td>{item.contact}</td>
+                          <td>{item.email}</td>
+                          <td>{item.address}</td>
+                          <td>{item.district?.district_name}</td>
+                          <td>{item.region?.region_name}</td>
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link className="dropdown-item" to="/schools/edit">
+                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                  Edit
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                        )))
+                    : (
+                      <tr>
+                      <td colSpan="7" style={{textAlign: "center"}}>
+                        No schools match the search query.
+                      </td>
+                    </tr>
+                    )
+                ) : (
+                Array.isArray(schoolList) && schoolList.length > 0 ? (
                   schoolList.map((item, key) => (
                     <tr key={key}>
                       <td>{key + 1}</td>
@@ -105,7 +175,8 @@ function ViewSchool() {
                       No schools registered yet.
                     </td>
                   </tr>
-                )}
+                ))}
+                {loading && <Loader/>}
               </tbody>
             </table>
           </div>

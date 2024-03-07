@@ -1,29 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import {Link} from "react-router-dom";
 import AddStudentSchoolGroup from "./AddStudentSchoolGroup";
+import AuthContext from "../../Context/AuthContext";
+import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
+import Loader from "../../Components/Common/Loader";
 
 function SchoolStudentGroups() {
-  // const [groupList, setGroupList] = useState(false);
-  // const {user} = useContext(AuthContext);
-  // const [loading, setLoading] = useState(false);
+  const [groupList, setGroupList] = useState(false);
+  const {user} = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
-  // const getGroups = async () => {
-  //   setLoading(true);
-  //   const server_response = await ajaxStudentGroup.fetchGroupList(
-  //     user.school_user?.school?.school_id
-  //   );
-  //   setLoading(false);
-  //   console.log(server_response);
-  //   if (server_response.status === "OK") {
-  //     setGroupList(server_response.details);
-  //   }
-  // };
+  const getGroups = async () => {
+    setLoading(true);
+    const server_response = await ajaxStudentGroup.fetchGroupList(
+      user.school_user?.school?.school_id
+    );
+    setLoading(false);
+    console.log(server_response);
+    if (server_response.status === "OK") {
+      setGroupList(server_response.details);
+    }
+  };
 
-  // useEffect(() => {
-  //   getGroups();
-  // }, [user.school_user?.school.school_id]);
+  useEffect(() => {
+    getGroups();
+  }, [user.school_user?.school.school_id]);
 
   return (
     <AppContainer title="Student Groups">
@@ -65,7 +68,7 @@ function SchoolStudentGroups() {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {Array.isArray(groupList) && groupList.length > 0 ? (
+                    {Array.isArray(groupList) && groupList.length > 0 ? (
                       groupList.map((item, key) => (
                         <tr key={key}>
                           <th scope="row">{key + 1}</th>
@@ -78,10 +81,10 @@ function SchoolStudentGroups() {
                           No class groups registered yet.
                         </td>
                       </tr>
-                    )} */}
+                    )}
                   </tbody>
                 </table>
-                {/* {loading && <Loader />} */}
+                {loading && <Loader />}
               </div>
             </div>
           </div>

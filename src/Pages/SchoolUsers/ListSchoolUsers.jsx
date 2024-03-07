@@ -40,7 +40,7 @@ function ListSchoolUsers(props) {
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
-            <h3>All School User Data</h3>
+            <h3>School Administrators</h3>
           </div>
           {/* Dropdown menu */}
         </div>
@@ -58,11 +58,8 @@ function ListSchoolUsers(props) {
                     <th>Contact</th>
                     <th>Email</th>
                     <th>Address</th>
-                    <th>District</th>
-                    <th>Region</th>
                     <th>Date Registered</th>
-                    <th>Registered By</th>
-                    <th>change status</th>
+                    <th>Actions</th>
                   </>
                 )}
               </tr>
@@ -70,17 +67,14 @@ function ListSchoolUsers(props) {
             <tbody>
               {schoolUsers.map((user, index) => (
                 <tr key={index}>
-                  <td>{user.id}</td>
+                  <td>{index + 1}</td>
                   <td>{user.names}</td>
-                  <td>{user.user_details.username}</td>
                   {props.school !== null && user.school ? (
                     <>
                       <td>{user.school.school_name}</td>
                       <td>{user.school.contact}</td>
                       <td>{user.school.email}</td>
                       <td>{user.school.address}</td>
-                      <td>{user.school.district.district_name}</td>
-                      <td>{user.school.region.region_name}</td>
                       <td>{user.school.date_registered.long_date}</td>
                       <td>
                         {/* <div className="col-12 form-group"> */}
@@ -94,7 +88,7 @@ function ListSchoolUsers(props) {
                       </td>
                     </>
                   ) : (
-                    <td colSpan="9">No school details available</td>
+                    <td colSpan="8" style={{textAlign:"center"}}>No school admins Registered</td>
                   )}
                 </tr>
               ))}

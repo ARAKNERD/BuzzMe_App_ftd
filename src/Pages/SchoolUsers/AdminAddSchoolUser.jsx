@@ -36,7 +36,7 @@ function AdminAddSchoolUser() {
   };
 
   return (
-    <AppContainer title="Add new school user">
+    <AppContainer title="Add new School user">
       <div className="card height-auto">
         <div className="card-body">
           <div className="heading-layout1">
@@ -52,24 +52,24 @@ function AdminAddSchoolUser() {
                 <label> Name *</label>
                 <input
                   type="text"
-                  placeholder="name of the user"
+                  placeholder="Enter name of the school user"
                   value={names}
                   onChange={(e) => setNames(e.target.value)}
                   className="form-control"
                 />
               </div>
               <div className="col-xl-12 col-lg-12 col-12 form-group">
-                <label>UserName *</label>
+                <label>Username *</label>
                 <input
                   type="text"
-                  placeholder="userName"
+                  placeholder="Enter username"
                   value={Username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="form-control"
                 />
               </div>
               <div className="col-xl-12 col-lg-12 col-12 form-group">
-                <label>select school *</label>
+                <label>Select school *</label>
                 <Select
                   onChange={(e) => setSchool(e.school_id)}
                   getOptionLabel={(option) => option.school_name}
@@ -86,13 +86,8 @@ function AdminAddSchoolUser() {
               <div className="col-12 form-group mg-t-8">
                 <button
                   type="submit"
-                  className="btn-fill-lmd radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green">
-                  Save
-                </button>
-                <button
-                  type="reset"
-                  className="btn-fill-md radius-30 text-light bg-martini shadow-martini">
-                  Reset
+                  className="btn-fill-lmd radius-30 text-light shadow-dark-pastel-green bg-dodger-blue">
+                  Save User
                 </button>
               </div>
             </div>
