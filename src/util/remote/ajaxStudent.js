@@ -27,4 +27,19 @@ export default {
     let response = await apiCall("student/count", data);
     return response;
   },
+  async fetchStudentData(data) {
+    let response = await apiCall("student/studentInfo", data);
+
+    return response;
+  },
+  async fetchStudentContacts(data) {
+    let response = await apiCall("student/contacts", data);
+
+    return response;
+  },
+  async fetchStudentCall_logs(data) {
+    let response = await apiCall("student/call_logs", data);
+
+    return response;
+  },
 };

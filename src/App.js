@@ -41,6 +41,7 @@ import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
+import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 
@@ -147,11 +148,14 @@ function App(props) {
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/students/add" element={<AddStudent />} />
               <Route path="/students/import" element={<ImportStudents />} />
+              <Route
+                path="/students/profile/:id"
+                element={<ViewStudentProfile />}
+              />
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
               <Route path="/class-groups/add" element={<AddGroup />} />
-              <Route path="/class-groups/view/:id" element={<GroupStudents />} />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />

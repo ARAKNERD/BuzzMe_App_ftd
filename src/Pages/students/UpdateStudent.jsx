@@ -9,24 +9,23 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import SystemModal from "../../Components/Common/SystemModal";
 
-function UpdateStudent(props) {
+function UpdateStudent() {
   const {getStudentList} = useContext(StudentContext);
   const {user} = useContext(AuthContext);
 
   var school_id = user.school_user ? user.school_user.school.school_id : "";
-  const raw_data = props.student;
-  console.log(raw_data);
+
   const [groupList, setGroupList] = useState(false);
-  const [group, setGroup] = useState(raw_data.group.group_id);
-  const [regNo, setRegNo] = useState(raw_data.reg_no);
-  const [names, setNames] = useState(raw_data.names);
-  const [gender, setGender] = useState(raw_data.gender);
+  const [group, setGroup] = useState("");
+  const [regNo, setRegNo] = useState("");
+  const [names, setNames] = useState("");
+  const [gender, setGender] = useState("");
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (regNo.length > 0 && names.length > 0) {
       var data = {
-        student_id: raw_data.id,
+        // student_id: raw_data.id,
         group_id: group,
         reg_no: regNo,
         names: names,

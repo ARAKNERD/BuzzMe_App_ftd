@@ -7,13 +7,13 @@ import StudentCodeSlip from "./StudentCodeSlip";
 import UpdateStudent from "./UpdateStudent";
 import ChangeStatus from "./ChangeStatus";
 import StudentProfil from "./StudentProfile";
+import {Link} from "react-router-dom";
 
 function ViewSchoolStudents(props) {
   useEffect(() => {
     getStudentList();
   }, []);
   const [studentList, setStudentList] = useState("");
-  const [studentLists, setStudentLists] = useState("404");
 
   const getStudentList = async () => {
     var data = {
@@ -29,13 +29,6 @@ function ViewSchoolStudents(props) {
     }
   };
 
-  // ----------------------handles the view -----students contacts
-  const [ViewContacts, setViewContacts] = useStateCallback(false);
-  const handle_view_contact = (id) => {
-    setViewContacts(false, () =>
-      setViewContacts(<ViewStudentsContacts isOpen={true} id={id} />)
-    );
-  };
   // ----------------------handles the view -----students printable codeslip -modal
   const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
   const handle_view_slip = (id) => {
@@ -43,35 +36,14 @@ function ViewSchoolStudents(props) {
       setViewStudentSlip(<StudentCodeSlip isOpen={true} id={id} />)
     );
   };
-  // ----------------------handles the view -----students printable codeslipmodal----
-  const [studentUpdater, setStudentUpdater] = useStateCallback(false);
-  const handle_student_updater = (student) => {
-    setStudentUpdater(false, () =>
-      setStudentUpdater(<UpdateStudent isOpen={true} student={student} />)
-    );
-  };
-  // ----------------------handles the--change--status modal-------------
-  const [ChangeStaus, setChangeStaus] = useStateCallback(false);
-  const handle_status_updater = (id) => {
-    setChangeStaus(false, () =>
-      setChangeStaus(<ChangeStatus isOpen={true} student={id} />)
-    );
-  };
-  // ----------------------handles the--student--profile--modal-------------
-  const [StudentProfile, setStudentProfile] = useStateCallback(false);
-  const handle_student_profile = (id) => {
-    setStudentProfile(false, () =>
-      setStudentProfile(<StudentProfil isOpen={true} id={id} />)
-    );
-  };
 
   return (
     <div>
-      {StudentProfile}
-      {ViewContacts}
+      {/* {StudentProfile} */}
+      {/* {ViewContacts} */}
       {ViewStudentSlip}
-      {studentUpdater}
-      {ChangeStaus}
+      {/* {studentUpdater} */}
+      {/* {ChangeStaus} */}
       <div className="card height-auto">
         <div className="card-body">
           <div className="heading-layout1">
@@ -126,14 +98,13 @@ function ViewSchoolStudents(props) {
                   <th>reG_no</th>
                   <th>Date of birh</th>
 
-                  <th>contacts</th>
                   <th>
                     student code <br /> slip
                   </th>
                   <th>student Profile</th>
-                  <th>Update</th>
+
                   <th>status</th>
-                  <th>change status</th>
+
                   <th />
                 </tr>
               </thead>
@@ -152,13 +123,7 @@ function ViewSchoolStudents(props) {
                       </td>
 
                       <td>{student.dob}</td>
-                      <td>
-                        <button
-                          className="btn btn-info"
-                          onClick={() => handle_view_contact(student.id)}>
-                          View Contacts
-                        </button>
-                      </td>
+
                       <td>
                         <button
                           className="btn btn-info"
@@ -167,29 +132,17 @@ function ViewSchoolStudents(props) {
                         </button>
                       </td>
                       <td>
-                        <button
+                        <Link
                           className="btn btn-secondary"
-                          onClick={() => handle_student_profile(student.id)}>
+                          to={`/students/profile/${student.id}`}>
                           Student Profile
-                        </button>
+                        </Link>
                       </td>
-                      <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handle_student_updater(student)}>
-                          Update Student
-                        </button>
-                      </td>
+
                       <td>
                         <button className="btn btn-success">Status</button>
                       </td>
-                      <td>
-                        <button
-                          className="btn btn-info"
-                          onClick={() => handle_status_updater(student.id)}>
-                          Change Status
-                        </button>
-                      </td>
+                      <td></td>
                     </tr>
                   ))}
 
