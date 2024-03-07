@@ -44,10 +44,7 @@ export default {
     return response;
   },
 
-  async searchSchoolList(query) {
-    let data = {
-      query: query,
-    };
+  async searchSchoolList(data) {
     let response = await apiCall("school/search", data);
     return response;
   },

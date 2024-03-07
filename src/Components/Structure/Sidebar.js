@@ -44,22 +44,6 @@ const Sidebar = (props) => {
                 <span>Dashboard</span>
               </Link>
             </li>
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/rate/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
-                  <span>charge Rates</span>
-                </Link>
-              </li>
-            </RenderSecure>
-            {/* <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/accounts/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice" />
-                  <span>Account</span>
-                </Link>
-              </li>
-            </RenderSecure> */}
 
             <RenderSecure code="ADMIN-VIEW">
               <li
@@ -83,15 +67,6 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 </ul>
-              </li>
-            </RenderSecure>
-
-            <RenderSecure code="SCHOOL-USER-VIEW">
-              <li className="nav-item">
-                <Link to="/schools/user/view" className="nav-link">
-                  <i className="fa-solid fa-users" />
-                  <span>School Users</span>
-                </Link>
               </li>
             </RenderSecure>
             {/* <RenderSecure code="SCHOOL-USER-VIEW">
@@ -173,6 +148,13 @@ const Sidebar = (props) => {
                       <span className="sidemenu-label">View Parents</span>
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/parent/requests">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Parent Requests</span>
+                    </Link>
+                  </li>
                 </ul>
               </li>
             </RenderSecure>
@@ -237,14 +219,14 @@ const Sidebar = (props) => {
               </li>
             </RenderSecure>
 
-            <RenderSecure code="ADMIN-VIEW">
+            {/* <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/accounts/view" className="nav-link">
                   <i className="fa-solid fa-file-invoice" />
                   <span>Wallet Accounts</span>
                 </Link>
               </li>
-            </RenderSecure>
+            </RenderSecure> */}
             {/* <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/Admin/addSchoolUser" className="nav-link">
@@ -260,7 +242,7 @@ const Sidebar = (props) => {
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
                   <i className="fa-solid fa-users" />
-                  <span> schoolUser (Admin)</span>
+                  <span> School Users / Admins</span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">

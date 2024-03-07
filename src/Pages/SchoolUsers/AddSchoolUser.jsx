@@ -74,11 +74,6 @@ function AddSchoolUser() {
                 className="btn-fill-lmd radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green">
                 Save
               </button>
-              <button
-                type="reset"
-                className="btn-fill-md radius-30 text-light bg-martini shadow-martini">
-                Reset
-              </button>
             </div>
           </div>
         </form>

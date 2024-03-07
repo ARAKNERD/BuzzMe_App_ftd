@@ -92,21 +92,22 @@ export default function Header(props) {
                 data-toggle="dropdown"
                 aria-expanded="false">
                 <div className="admin-title">
-                  <h5 className="item-title">{user.names}</h5>
-                  <span>Admin</span>
+                  <h5 className="item-title">{user.admin?user.admin?.names:user.school_user?.names}</h5>
+                  <span>{user.role?.role_name}</span>
                 </div>
                 <div className="admin-img">
                   <img
                     src={
-                      process.env.PUBLIC_URL + "/assets/img/figure/admin.jpg"
+                      process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
                     }
+                    style={{width:40}}
                     alt="Admin"
                   />
                 </div>
               </a>
               <div className="dropdown-menu dropdown-menu-right">
                 <div className="item-header">
-                  <h6 className="item-title">{user.names}</h6>
+                  <h6 className="item-title">{user.admin?user.admin?.names:user.school_user?.names}</h6>
                 </div>
                 <div className="item-content">
                   <ul className="settings-list">
