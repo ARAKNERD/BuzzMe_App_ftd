@@ -41,6 +41,8 @@ import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
+import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
+import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -138,6 +140,7 @@ function App(props) {
               {/* End Account routes */}
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />
+              <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
               {/* Students */}
@@ -148,6 +151,7 @@ function App(props) {
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
               <Route path="/class-groups/add" element={<AddGroup />} />
+              <Route path="/class-groups/view/:id" element={<GroupStudents />} />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />
