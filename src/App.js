@@ -41,6 +41,7 @@ import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
+import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -144,6 +145,10 @@ function App(props) {
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/students/add" element={<AddStudent />} />
               <Route path="/students/import" element={<ImportStudents />} />
+              <Route
+                path="/students/profile/:id"
+                element={<ViewStudentProfile />}
+              />
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
