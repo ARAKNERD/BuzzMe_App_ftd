@@ -141,4 +141,9 @@ export default {
 
     return response;
   },
+
+  async fetchSchoolProfile(data) {
+    let response = await apiCall("school/profile", data);
+    return response;
+  },
 };

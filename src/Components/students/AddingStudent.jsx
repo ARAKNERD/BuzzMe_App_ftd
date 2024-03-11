@@ -45,7 +45,7 @@ function AddingStudent() {
         toast.error(server_response.message);
       }
     } else {
-      toast.error("names,group and gender  fields are required");
+      toast.error("Please fill in the required fields");
     }
   };
 
@@ -90,7 +90,7 @@ function AddingStudent() {
           <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h6 className="card-title mb-4">Add New Student</h6>
+                <h6 className="card-title mb-4">Register New Student</h6>
               </div>
 
               <form onSubmit={(e) => handleAdd(e)} method="post">
@@ -101,26 +101,11 @@ function AddingStudent() {
                       type="text"
                       value={names}
                       style={{border: "1px solid grey"}}
-                      placeholder="student's names"
+                      placeholder="Enter name of student.."
                       onChange={(e) => setNames(e.target.value)}
                       className="form-control"
                     />
                   </div>
-
-                  {/* <div className=" col-md-6">
-                    <label htmlFor="">School</label>
-                    <Select
-                      onChange={(e) => setSchool(e.school_id)}
-                      getOptionLabel={(option) => option.school_name}
-                      getOptionValue={(option) => option.school_id}
-                      isSearchable
-                      options={Array.isArray(schoolList) ? schoolList : []}
-                      value={
-                        Array.isArray(schoolList) &&
-                        schoolList.find((value) => value.school_id === school)
-                      }
-                    />
-                  </div> */}
                   <div className="col-lg-6 col-md-6">
                     <label htmlFor="">Student Group</label>
                     <Select
@@ -137,24 +122,24 @@ function AddingStudent() {
                   </div>
 
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Reg No</label>
+                    <label>Registration No</label>
                     <input
                       type="text"
                       value={regNo}
                       style={{border: "1px solid grey"}}
-                      placeholder="student's registration number"
+                      placeholder="Enter registration number of student.."
                       onChange={(e) => setRegNo(e.target.value)}
                       className="form-control"
                     />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Student's gender</label>
+                    <label>Gender*</label>
 
                     <select
                       className="col-12 form-control"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}>
-                      <option value={true}>Please gender*</option>
+                      <option value={true}>Select..</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                     </select>
