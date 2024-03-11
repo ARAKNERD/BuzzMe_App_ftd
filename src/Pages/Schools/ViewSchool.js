@@ -144,7 +144,10 @@ useEffect(() => {
                   schoolList.map((item, key) => (
                     <tr key={key}>
                       <td>{key + 1}</td>
-                      <td>{item.school_name}</td>
+                      <td><Link
+                          to={`/schools/view/profile/${item.school_id}`}>
+                          {item.school_name}
+                        </Link></td>
                       <td>{item.contact}</td>
                       <td>{item.email}</td>
                       <td>{item.address}</td>

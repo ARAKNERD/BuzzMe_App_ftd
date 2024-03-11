@@ -21,7 +21,7 @@ function ChargeRates() {
   };
 
   return (
-    <AppContainer title="List Charge Rates">
+    <AppContainer title="Charge Rates">
       <Toaster position="top-center" reverseOrder={false} />
       {Chargeupdater}
       <div className="row">

@@ -44,6 +44,9 @@ import ImportStudents from "./Pages/students/ImportStudents";
 import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
+import StudentProfile from "./Pages/students/StudentProfile";
+import ListStations from "./Pages/Stations/ListStations";
+import SchoolProfile from "./Pages/Schools/SchoolProfile";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -107,6 +110,10 @@ function App(props) {
               <Route path="/schools/view" element={<ViewSchool />} />
               <Route path="/schools/add" element={<AddSchool />} />
               <Route path="/schools/edit" element={<UpdateSchool />} />
+              <Route
+                path="/schools/view/profile/:id"
+                element={<SchoolProfile />}
+              />
               {/* End school routes */}
               {/* School User routes */}
               <Route path="/schools/user/view" element={<SchoolUSerPage />} />
@@ -150,17 +157,20 @@ function App(props) {
               <Route path="/students/import" element={<ImportStudents />} />
               <Route
                 path="/students/profile/:id"
-                element={<ViewStudentProfile />}
+                element={<StudentProfile />}
               />
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
               <Route path="/class-groups/add" element={<AddGroup />} />
+              <Route path="/class-groups/view/:id" element={<GroupStudents/>} />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />
               <Route path="/regions/view" element={<Regions />} />
               {/* End class groups */}
+              <Route path="/stations" element={<ListStations />} />
+
             </>
           )}
         </Switch>

@@ -27,16 +27,16 @@ function ListSchoolUsers(props) {
       console.error("Error:", error);
     }
   };
-  const [changeStatus, setChangeStatus] = useStateCallback(false);
-  const handle_change_status = (id) => {
-    setChangeStatus(false, () =>
-      setChangeStatus(<ChangeSchoolUserStatus isOpen={true} id={id} />)
-    );
-  };
+  // const [changeStatus, setChangeStatus] = useStateCallback(false);
+  // const handle_change_status = (id) => {
+  //   setChangeStatus(false, () =>
+  //     setChangeStatus(<ChangeSchoolUserStatus isOpen={true} id={id} />)
+  //   );
+  // };
 
   return (
     <div className="card height-auto">
-      {changeStatus}
+      {/* {changeStatus} */}
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
@@ -57,8 +57,6 @@ function ListSchoolUsers(props) {
                     <th>School Name</th>
                     <th>Contact</th>
                     <th>Email</th>
-                    <th>Address</th>
-                    <th>Date Registered</th>
                     <th>Actions</th>
                   </>
                 )}
@@ -74,18 +72,7 @@ function ListSchoolUsers(props) {
                       <td>{user.school.school_name}</td>
                       <td>{user.school.contact}</td>
                       <td>{user.school.email}</td>
-                      <td>{user.school.address}</td>
-                      <td>{user.school.date_registered.long_date}</td>
-                      <td>
-                        {/* <div className="col-12 form-group"> */}
-                        <button
-                          type="submit"
-                          className="btn-fill-lmd p-2 radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green"
-                          onClick={() => handle_change_status(user.id)}>
-                          change status
-                        </button>
-                        {/* </div> */}
-                      </td>
+                     
                     </>
                   ) : (
                     <td colSpan="8" style={{textAlign:"center"}}>No school admins Registered</td>
