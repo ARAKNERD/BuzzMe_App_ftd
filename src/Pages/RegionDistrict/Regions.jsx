@@ -4,9 +4,14 @@ import RegionContext from "../../Context/RegionContext";
 import AddRegion from "../../Components/DistrictRegion/AddRegion";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
+import { Link } from "react-router-dom";
 
 function Regions() {
-  const {regionList} = useContext(RegionContext);
+  const {regionList, getRegionList} = useContext(RegionContext);
+
+  const refreshData = () =>{
+    getRegionList()
+  }
 
   return (
     <AppContainer title="Regions">
@@ -23,15 +28,13 @@ function Regions() {
                   subtitle="List of all the regions sorted in ascending order"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
               </div>
 
               <div className="table-responsive">

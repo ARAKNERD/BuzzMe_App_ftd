@@ -8,10 +8,14 @@ import Loader from "../../Components/Common/Loader";
 
 
 function ViewSchool() {
-  const {schoolList} = useContext(SchoolContext);
+  const {schoolList, getSchoolList} = useContext(SchoolContext);
   const [schoolSearch, setSchoolSearch] = useState(false);
   const [query, setQuery] = useState("");
   const [loading,setLoading] = useState(false)
+
+  const refreshData = () =>{
+    getSchoolList()
+  }
 
 
   const searchSchools = async (e) => {
@@ -55,16 +59,14 @@ useEffect(() => {
             <div className="item-title">
               <h3>All Schools</h3>
             </div>
-            <div className="dropdown">
-              <Link
-                className="dropdown-toggle"
-                to="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                ...
-              </Link>
-            </div>
+            <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
           </div>
           <form className="mg-b-20">
             <div className="row gutters-8">
@@ -94,11 +96,7 @@ useEffect(() => {
                   <th>School Name</th>
                   <th>Phone</th>
                   <th>E-mail</th>
-                  <th>Address</th>
                   <th>District</th>
-                  <th>Region</th>
-
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -107,29 +105,13 @@ useEffect(() => {
                         ( schoolSearch.map((item, key) => (
                           <tr key={key}>
                           <td>{key + 1}</td>
-                          <td>{item.school_name}</td>
+                          <td><Link
+                          to={`/schools/view/profile/${item.school_id}`}>
+                          {item.school_name}
+                        </Link></td>
                           <td>{item.contact}</td>
                           <td>{item.email}</td>
-                          <td>{item.address}</td>
                           <td>{item.district?.district_name}</td>
-                          <td>{item.region?.region_name}</td>
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <Link className="dropdown-item" to="/schools/edit">
-                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
-                                  Edit
-                                </Link>
-                              </div>
-                            </div>
-                          </td>
                         </tr>
                         )))
                     : (
@@ -150,26 +132,7 @@ useEffect(() => {
                         </Link></td>
                       <td>{item.contact}</td>
                       <td>{item.email}</td>
-                      <td>{item.address}</td>
                       <td>{item.district?.district_name}</td>
-                      <td>{item.region?.region_name}</td>
-                      <td>
-                        <div className="dropdown">
-                          <Link
-                            to="#"
-                            className="dropdown-toggle"
-                            data-toggle="dropdown"
-                            aria-expanded="false">
-                            <span className="flaticon-more-button-of-three-dots"></span>
-                          </Link>
-                          <div className="dropdown-menu dropdown-menu-right">
-                            <Link className="dropdown-item" to="/schools/edit">
-                              <i className="fas fa-cogs text-dark-pastel-green"></i>
-                              Edit
-                            </Link>
-                          </div>
-                        </div>
-                      </td>
                     </tr>
                   ))
                 ) : (

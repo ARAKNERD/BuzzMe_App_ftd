@@ -23,6 +23,10 @@ function ListStations() {
     setModal(false, ()=>setModal(<ActivateStation stationID={item.station_id} g={getStationList} isOpen={true}/>))
   }
 
+  const refreshData = () =>{
+    getStationList();
+  }
+
     return (
     <AppContainer title="Calling Stations">
       <Toaster position="top-center" reverseOrder={false} />
@@ -40,15 +44,13 @@ function ListStations() {
                   subtitle="List of all the calling stations"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
               </div>
 
               <div className="table-responsive">

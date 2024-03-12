@@ -16,6 +16,7 @@ function Dashboard() {
 
   const [schoolsNumber, setSchoolsNumber] = useState(false);
   const [studentsNumber, setStudentsNumber] = useState(false);
+  const [parentsNumber, setParentsNumber] = useState(false);
   const {user}  = useContext(AuthContext)
   const [requestList,setRequestList] = useState(false)
   const [loading,setLoading] = useState(false)
@@ -23,13 +24,17 @@ function Dashboard() {
 
 
   const data = {
-    school: user.school_user?user.school_user.school?.school_id:"",
-    group: "",
+    school_id: user.school_user?user.school_user.school?.school_id:"",
+    group_id: "",
   };
 
   const data2 = {
     school_requested: user.school_user?.school?.school_id,
     parent_id: "",
+  };
+
+  const data3 = {
+    school_id: user.school_user?user.school_user.school?.school_id:"",
   };
 
 const getRequestList = async () => {
@@ -81,6 +86,19 @@ const declineRequest = async (e,item) => {
     }
   }
 
+  const getParentsNumber =async()=>{
+
+    const server_response = await ajaxParent.countParents(data);
+     
+    if(server_response.status==="OK"){
+       //store results
+       setParentsNumber(server_response.details);
+    }else{
+       //communicate error
+       setParentsNumber("404");
+    }
+  }
+
   const getSchoolsNumber =async()=>{
 
     const server_response = await ajaxSchool.fetchSchoolNumber();
@@ -104,7 +122,11 @@ const declineRequest = async (e,item) => {
 
   useEffect(()=>{
     getStudentsNumber();
-  }, [user.school_user?.school?user.school_user.school.school_id:""])
+  }, [data])
+
+  useEffect(()=>{
+    getParentsNumber();
+  }, [data3])
 
 
   return (
@@ -160,6 +182,27 @@ const declineRequest = async (e,item) => {
               </div>
             </div>
           </div>
+          <div className="col-xl-3 col-sm-6 col-12">
+            <div className="dashboard-summery-one mg-b-20">
+              <div className="row align-items-center">
+                <div className="col-6">
+                  <div className="item-icon bg-light-green">
+                    <i className="flaticon-user text-green" />
+                  </div>
+                </div>
+                <div className="col-6">
+                  <div className="item-content">
+                    <div className="item-title">Parents</div>
+                    <div className="item-number">
+                      <span className="counter">
+                      {parentsNumber? parentsNumber.total_p:"..."}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           
         
          
@@ -167,7 +210,7 @@ const declineRequest = async (e,item) => {
         <div className="row gutters-20">
         <RenderSecure code="SCHOOL-USER-VIEW">
 
-        <div className="col-lg-6">
+        <div className="col-lg-12">
           <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
             <div className="card-body map-card">
             <div class="heading-layout1 mg-b-25">

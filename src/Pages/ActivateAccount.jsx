@@ -67,10 +67,10 @@ function ActivateAccount() {
             </h2>
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>password</label>
+                <label>New Password</label>
                 <input
                   type={passView ? "text" : "password"}
-                  placeholder="Enter password"
+                  placeholder="Enter new password"
                   className="form-control"
                   value={pass}
                   onChange={(e) => setPass(e.target.value)}
@@ -84,10 +84,10 @@ function ActivateAccount() {
               </div>
 
               <div className="form-group">
-                <label>comfirm password</label>
+                <label>Confirm New Password</label>
                 <input
                   type={passView1 ? "text" : "password"}
-                  placeholder="comfirm password"
+                  placeholder="Confirm password.."
                   className="form-control"
                   value={cpass}
                   onChange={(e) => setCpass(e.target.value)}

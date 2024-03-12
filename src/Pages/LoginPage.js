@@ -69,7 +69,7 @@ function Login() {
                 <i className="fas fa-user" />
               </div>
               <div className="form-group">
-                <label>password</label>
+                <label>Password</label>
                 <input
                   type={passView ? "text" : "password"}
                   placeholder="Enter password"

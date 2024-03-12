@@ -12,30 +12,8 @@ export default {
     return response;
   },
 
-  async updateSchool(
-    school_id,
-    school_name,
-    contact,
-    email,
-    address,
-    district,
-    region,
-    lat,
-    lng
-  ) {
-    let data = {
-      school_id: school_id,
-      school_name: school_name,
-      contact: contact,
-      email: email,
-      address: address,
-      district: district,
-      region: region,
-      lat: lat,
-      lng: lng,
-    };
+  async updateSchool(data) {
     let response = await apiCall("school/update", data);
-
     return response;
   },
 

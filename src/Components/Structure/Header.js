@@ -68,7 +68,7 @@ export default function Header(props) {
           className="header-main-menu collapse navbar-collapse"
           id="mobile-navbar">
           <ul className="navbar-nav">
-            <li className="navbar-item header-search-bar">
+            {/* <li className="navbar-item header-search-bar">
               <div className="input-group stylish-input-group">
                 <span className="input-group-addon">
                   <button type="submit">
@@ -81,7 +81,7 @@ export default function Header(props) {
                   placeholder="Find Something . . ."
                 />
               </div>
-            </li>
+            </li> */}
           </ul>
           <ul className="navbar-nav">
             <li className="navbar-item dropdown header-admin">
@@ -112,10 +112,10 @@ export default function Header(props) {
                 <div className="item-content">
                   <ul className="settings-list">
                     <li>
-                      <a href="#">
-                        <i className="flaticon-user" />
+                    <Link to={'/profile'}>
+                    <i className="flaticon-user" />
                         My Profile
-                      </a>
+                      </Link>
                     </li>
 
                     <li>
@@ -128,7 +128,7 @@ export default function Header(props) {
                 </div>
               </div>
             </li>
-            <li className="navbar-item dropdown header-message">
+            {/* <li className="navbar-item dropdown header-message">
               <a
                 className="navbar-nav-link dropdown-toggle"
                 href="#"
@@ -146,7 +146,7 @@ export default function Header(props) {
                 <div className="item-header">
                   <h6 className="item-title">0 Message</h6>
                 </div>
-                {/* <div className="item-content">
+                <div className="item-content">
                   <div className="media">
                     <div className="item-img bg-skyblue author-online">
                       <img src="./assets/img/figure/student11.png" alt="img" />
@@ -215,7 +215,7 @@ export default function Header(props) {
                       </p>
                     </div>
                   </div>
-                </div> */}
+                </div>
               </div>
             </li>
             <li className="navbar-item dropdown header-notification">
@@ -237,7 +237,7 @@ export default function Header(props) {
                   <h6 className="item-title">0 Notifiacations</h6>
                 </div>
                 <div className="item-content">
-                  {/* <div className="media">
+                  <div className="media">
                     <div className="item-icon bg-skyblue">
                       <i className="fas fa-check" />
                     </div>
@@ -263,10 +263,10 @@ export default function Header(props) {
                       <div className="post-title">Update Password</div>
                       <span>45 Mins ago</span>
                     </div>
-                  </div> */}
+                  </div>
                 </div>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
