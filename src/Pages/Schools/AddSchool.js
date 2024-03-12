@@ -2,13 +2,10 @@ import React, {useContext, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxSchool from "../../util/remote/ajaxSchool";
 import SchoolContext from "../../Context/SchoolContext";
-import RegionContext from "../../Context/RegionContext";
-import AdminContext from "../../Context/AdminContext";
 import Select from "react-select";
 import {Toaster, toast} from "react-hot-toast";
-import ajaxDistrict from "../../util/remote/ajaxDistrict";
 import DistrictContext from "../../Context/DistrictContext";
-import functions from "../../util/functions";
+import AuthContext from "../../Context/AuthContext";
 
 function AddSchool() {
   // gets the current date
@@ -20,13 +17,8 @@ function AddSchool() {
     return `${year}-${month}-${day}`;
   };
 
-  // getting the user logged in as is the one who is creating the sschool
-
-  const user = functions.sessionGuard();
-
   const {getSchoolList} = useContext(SchoolContext);
-  const {regionList} = useContext(RegionContext);
-  const {adminList} = useContext(AdminContext);
+  const {userId} = useContext(AuthContext);
   const {districtList} = useContext(DistrictContext);
 
   const [contact, setContact] = useState("");
@@ -34,7 +26,6 @@ function AddSchool() {
   const [district, setDistrict] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [region, setRegion] = useState("");
   const [dateRegistered, setDateRegistered] = useState(getCurrentDate());
   // console.log(dateRegistered);
   const handleAdd = async (e) => {
@@ -46,9 +37,8 @@ function AddSchool() {
       email: email,
       address: address,
       district: district,
-      region: region,
       date_registered: dateRegistered,
-      registered_by: user,
+      registered_by: userId,
     };
 
     if (schoolName.length > 0 || contact.length > 0) {
@@ -97,7 +87,7 @@ function AddSchool() {
                   value={schoolName}
                   onChange={(e) => setSchoolName(e.target.value)}
                   className="form-control"
-                  placeholder="school name"
+                  placeholder="Enter name of school.."
                 />
               </div>
               <div className="col-lg-6 col-md-6  col-12 form-group">
@@ -107,46 +97,29 @@ function AddSchool() {
                   value={contact}
                   onChange={(e) => setContact(e.target.value)}
                   className="form-control"
-                  placeholder=" telephone number"
+                  placeholder="Enter telephone contact of school.."
                 />
               </div>
               <div className="col-lg-6 col-md-6  col-12 form-group">
-                <label htmlFor="">Email</label>
+                <label htmlFor="">E-mail Address</label>
                 <input
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="form-control"
-                  placeholder="school email"
+                  placeholder="Enter email address of school.."
                 />
               </div>
               <div className="col-lg-6 col-md-6 col-12 form-group">
-                <label htmlFor="">Location</label>
+                <label htmlFor="">Location / Physical Address</label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="form-control"
-                  placeholder="school location"
+                  placeholder="Enter address of school.."
                 />
               </div>
-              {/* Region select */}
-              <div className="col-lg-6 col-md-6 col-12 form-group">
-                <label htmlFor="">Region</label>
-                <Select
-                  onChange={(e) => setRegion(e.region_id)}
-                  getOptionLabel={(option) => option.region_name}
-                  getOptionValue={(option) => option.region_id}
-                  isSearchable
-                  options={Array.isArray(regionList) ? regionList : []}
-                  value={
-                    Array.isArray(regionList) &&
-                    regionList.find((value) => value.region_id === region)
-                  }
-                />
-              </div>
-              {/* District select */}
-              {region ? (
                 <div className="col-lg-6 col-md-6  col-12 form-group">
                   <label htmlFor="">District</label>
                   <Select
@@ -154,18 +127,10 @@ function AddSchool() {
                     getOptionLabel={(option) => option.district_name}
                     getOptionValue={(option) => option.district_id}
                     isSearchable
-                    options={
-                      Array.isArray(districtList)
-                        ? districtList.filter(
-                            (district) => district.region.region_id === region
-                          )
-                        : []
-                    }
+                    options={districtList}
+                    value={Array.isArray(districtList) && districtList.find(( value ) => value.district_id===district)}
                   />
                 </div>
-              ) : (
-                ""
-              )}
               <div className="col-lg-6 col-md-6 col-12 form-group">
                 <label htmlFor="">Date Registered</label>
                 <input
@@ -182,7 +147,7 @@ function AddSchool() {
                 type="submit"
                 style={{float: "right"}}
                 className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-                value="Save School Details"
+                value="Register School"
               />
             </div>
           </form>

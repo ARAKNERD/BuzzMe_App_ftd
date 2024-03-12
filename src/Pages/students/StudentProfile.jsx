@@ -245,6 +245,11 @@ const StudentProfile = props => {
                                             <td className="py-2 px-0"> <span className="">{studentProfile.student_code}</span> </td>
                                         </tr>
                                         <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Username</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.username}</span> </td>
+                                        </tr>
+                                        <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Group Name</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{studentProfile.group.group_name}</span> </td>

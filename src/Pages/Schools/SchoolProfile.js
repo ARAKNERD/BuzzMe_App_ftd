@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Select from 'react-select'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudent from '../../util/remote/ajaxStudent'
 import Loader from '../../Components/Common/Loader';
 import useStateCallback from '../../util/customHooks/useStateCallback';
-import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
-import AuthContext from '../../Context/AuthContext';
 import TableHeader from '../../Components/Common/TableHeader';
 import DistrictContext from '../../Context/DistrictContext';
 import ajaxSchool from '../../util/remote/ajaxSchool';
@@ -76,6 +74,7 @@ const SchoolProfile = props => {
       setLat(schoolProfile.lat)
       setAddress(schoolProfile.address)
       setLongitude(schoolProfile.lng)
+      setSchoolID(schoolProfile.school_id)
     }
 
     const handleUpdate = async(event) => {
@@ -93,6 +92,7 @@ const SchoolProfile = props => {
         };
        
         const server_response = await ajaxSchool.updateSchool(data)
+        console.log(server_response)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getSchoolProfile(id)
@@ -155,6 +155,19 @@ const SchoolProfile = props => {
           }
       }
   };
+
+    const getLocation = () => {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            setLat(position.coords.latitude);
+            setLongitude(position.coords.longitude);
+        });
+    }
+
+    useEffect(() => {
+        if(!lat || !longitude){
+        getLocation();
+        }
+    }, [lat,longitude]);
   
   const setStudents = (e) =>{
     e.preventDefault()
@@ -266,11 +279,11 @@ const SchoolProfile = props => {
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
                                             <label htmlFor="">Latitude Co-ordinates:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={lat} onChange={(e)=>setLat(e.target.value)} className="form-control"/>
+                                            <input type="text" defaultValue={lat} onChange={(e)=>setLat(e.target.value)} readOnly className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
                                             <label htmlFor="">Longitude Co-ordinates:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={longitude} onChange={(e)=>setLongitude(e.target.value)} className="form-control"/>
+                                            <input type="text" defaultValue={longitude} onChange={(e)=>setLongitude(e.target.value)} readOnly className="form-control"/>
 							            </div>
                                        
                                     </div>

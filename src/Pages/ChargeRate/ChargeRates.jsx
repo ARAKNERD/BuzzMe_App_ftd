@@ -11,19 +11,22 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 
 function ChargeRates() {
-  const {rateList} = useContext(RateContext);
+  const {rateList, getRateList} = useContext(RateContext);
 
-  const [Chargeupdater, setChargeupdater] = useStateCallback(false);
-  const handle_modal_Updater = (id) => {
-    setChargeupdater(false, () =>
-      setChargeupdater(<UpdateChargeRate isOpen={true} id={id} />)
-    );
-  };
+  const refreshData = () =>{
+    getRateList();
+  }
+
+  const [modal, setModal] = useStateCallback(false);
+
+  const handleUpdate=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateChargeRate rateID={item.rate_id} g={getRateList} isOpen={true} rate={item.rate} type={item.type}/>))
+  }
 
   return (
     <AppContainer title="Charge Rates">
       <Toaster position="top-center" reverseOrder={false} />
-      {Chargeupdater}
+      {modal}
       <div className="row">
         <div className="col-lg-4">
           <AddChargeRate />
@@ -37,15 +40,13 @@ function ChargeRates() {
                   subtitle="List of all the charge rates"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
               </div>
 
               <div className="table-responsive">
@@ -53,8 +54,8 @@ function ChargeRates() {
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Charge Rate</th>
                       <th>Type</th>
+                      <th>Rate</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -79,9 +80,9 @@ function ChargeRates() {
                                 <Link
                                   className="dropdown-item"
                                   to="#"
-                                  onClick={() => handle_modal_Updater(1)}>
+                                  onClick={(e) => handleUpdate(e,item)}>
                                   <i className="fas fa-cogs text-dark-pastel-green"></i>
-                                  Edit
+                                  Edit Rate
                                 </Link>
                               </div>
                             </div>

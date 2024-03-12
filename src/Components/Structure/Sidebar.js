@@ -162,16 +162,12 @@ const Sidebar = (props) => {
                   <span>Districts</span>
                 </Link>
               </li>
-            </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/regions/view" className="nav-link">
                   <i className="fa-solid fa-globe" />
                   <span>Regions</span>
                 </Link>
               </li>
-            </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/rate/view" className="nav-link">
                   <i className="fa-solid fa-file-invoice-dollar" />
@@ -206,7 +202,7 @@ const Sidebar = (props) => {
                   <li className="nav-item">
                     <Link to="/Admin/user/view" className="nav-link">
                       <i className="fas fa-angle-right" />
-                      View Schools Users
+                      View School Users
                     </Link>
                   </li>
                 </ul>
