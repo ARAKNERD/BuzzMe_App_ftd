@@ -6,8 +6,8 @@ export default function Loader() {
       {/* LOADEAR */}
       <div>
         <img
-          src="../assets/img/preloader.gif"
           className="loader-img"
+          src={process.env.PUBLIC_URL + "/assets/img/preloader.gif"}
           alt="Loader"
         />
       </div>

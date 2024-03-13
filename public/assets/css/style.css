@@ -2778,7 +2778,7 @@ ul {
 }
 .sidebar-main {
   left: -27rem;
-  height: 150vh;
+  height: 250vh;
   /* position: fixed; */
 }
 @media only screen and (min-width: 768px) {

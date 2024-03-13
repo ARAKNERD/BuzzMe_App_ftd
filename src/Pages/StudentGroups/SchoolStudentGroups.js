@@ -65,6 +65,9 @@ function SchoolStudentGroups() {
                       </th>
                       <th scope="col">Names</th>
                       <th scope="col">Actions</th>
+                      <th scope="col">
+                        Group <br /> codeslips{" "}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -73,11 +76,27 @@ function SchoolStudentGroups() {
                         <tr key={key}>
                           <th scope="row">{key + 1}</th>
                           <td>{item.group_name}</td>
-                          <td><Link
-                          className="btn btn-info"
-                          to={`view/${item.group_id}`}>
-                          View Students
-                        </Link></td>
+                          <td>
+                            <Link
+                              className="btn btn-info"
+                              to={`view/${item.group_id}`}>
+                              View Students
+                            </Link>
+                          </td>
+
+                          {/* <Link
+                            className="btn btn-info"
+                            to={`/students/student_card/:id?/${item.group_id}`}>
+                            students codeslips
+                          </Link> */}
+
+                          <td>
+                            <Link
+                              className="btn btn-info"
+                              to={`/students/student_card/:student_id?/${item.group_id}`}>
+                              students codeslips
+                            </Link>
+                          </td>
                         </tr>
                       ))
                     ) : (

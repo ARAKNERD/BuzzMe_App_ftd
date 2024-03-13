@@ -38,7 +38,10 @@ import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
+import AddCallStation from "./Pages/CallStations/AddCallStation";
+import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
 import StudentProfile from "./Pages/students/StudentProfile";
+import StudentCards from "./Pages/students/StudentCards";
 import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
@@ -148,8 +151,23 @@ function App(props) {
                 element={<ParentProfile />}
               />
               {/* End parent */}
+              {/* call station  */}
+              <Route path="/Casll_stations/Add" element={<AddCallStation />} />
+              <Route
+                path="/Casll_stations/view"
+                element={<ViewCallStationPAge />}
+              />
+              {/*end  call station  */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
+              {/* <Route
+                path="/students/student_card/:id/:group_id"
+                element={<StudentCards />}
+              /> */}
+              <Route
+                path="/students/student_card/:student_id?/:group_id?"
+                element={<StudentCards />}
+              />
               <Route path="/students/add" element={<AddStudent />} />
               <Route path="/students/import" element={<ImportStudents />} />
               <Route
@@ -159,8 +177,15 @@ function App(props) {
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               <Route path="/class-groups/add" element={<AddGroup />} />
-              <Route path="/class-groups/view/:id" element={<GroupStudents/>} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />
@@ -168,7 +193,6 @@ function App(props) {
               {/* End class groups */}
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
-
             </>
           )}
         </Switch>
