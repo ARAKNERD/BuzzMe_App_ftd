@@ -34,11 +34,11 @@ export default function AppContainer(props) {
             {props.children}
 
             {/* Footer Area */}
-            <footer className="footer-wrap-layout1">
+            {/* <footer className="footer-wrap-layout1">
               <div className="copyright">
                 © Copyrights <a href="#">Buzz Me</a> 2024. All rights reserved.
               </div>
-            </footer>
+            </footer> */}
           </div>
         </div>
       </div>

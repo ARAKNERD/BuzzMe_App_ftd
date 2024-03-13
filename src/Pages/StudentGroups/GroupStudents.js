@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import { Link, useParams } from 'react-router-dom'
-import Loader from "../../Components/Common/Loader";
 import TableHeader from "../../Components/Common/TableHeader";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import StudentCodeSlip from "../students/StudentCodeSlip";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import toast, {Toaster} from "react-hot-toast";
+import Loader from "../../Components/Common/Loader";
 
 
 function GroupStudents() 
@@ -17,6 +17,7 @@ function GroupStudents()
   const [meta,setMeta] = useState("")
   const [studentSearch, setStudentSearch] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
 
   const data = {
@@ -31,8 +32,9 @@ function GroupStudents()
   
   
   const getStudentList = async () => {
-      
+    setLoading2(true)
     const server_response = await ajaxStudent.fetchStudentList(data);
+    setLoading2(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages)
       setStudentList(server_response.details.list);
@@ -43,7 +45,7 @@ function GroupStudents()
   
   useEffect(() => {
     getStudentList();
-  }, [data]);
+  }, []);
   
   const searchStudents = async (e) => {
     if (e) {
@@ -242,7 +244,7 @@ function GroupStudents()
     <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
           </div>
         </table>
-        {loading && <Loader/>}
+        {loading2 && <Loader/>}
       </div>
     </div>
     </div>
