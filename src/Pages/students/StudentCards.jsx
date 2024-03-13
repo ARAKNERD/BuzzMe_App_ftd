@@ -7,6 +7,8 @@ function StudentCards() {
   const {user} = useContext(AuthContext);
   var school_id = user.school_user ? user.school_user.school.school_id : "";
   const {student_id, group_id} = useParams();
+  console.log(student_id);
+  console.log(group_id);
 
   const Print = () => {
     let printContents = document.getElementById("printablediv").innerHTML;
@@ -24,9 +26,9 @@ function StudentCards() {
   const [studentsData, setStudentsData] = useState("404");
   const getStudentList = async () => {
     var data = {
-      school_id,
-      group_id,
-      student_id,
+      school_id: school_id,
+      group_id: group_id,
+      student_id: student_id,
     };
     const server_response = await ajaxStudent.fetchStudentCardList(data);
     if (server_response.status === "OK") {
