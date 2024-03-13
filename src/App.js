@@ -41,6 +41,7 @@ import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import AddCallStation from "./Pages/CallStations/AddCallStation";
 import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
 import StudentProfile from "./Pages/students/StudentProfile";
+import StudentCards from "./Pages/students/StudentCards";
 import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
@@ -155,6 +156,14 @@ function App(props) {
               {/*end  call station  */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
+              {/* <Route
+                path="/students/student_card/:id/:group_id"
+                element={<StudentCards />}
+              /> */}
+              <Route
+                path="/students/student_card/:student_id?/:group_id?"
+                element={<StudentCards />}
+              />
               <Route path="/students/add" element={<AddStudent />} />
               <Route path="/students/import" element={<ImportStudents />} />
               <Route

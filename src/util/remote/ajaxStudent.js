@@ -51,4 +51,8 @@ export default {
     let response = await apiCall("student/search", data);
     return response;
   },
+  async fetchStudentCardList(data) {
+    let response = await apiCall("student/search", data);
+    return response;
+  },
 };
