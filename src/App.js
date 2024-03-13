@@ -44,6 +44,8 @@ import ImportStudents from "./Pages/students/ImportStudents";
 import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
+import AddCallStation from "./Pages/CallStations/AddCallStation";
+import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -144,6 +146,13 @@ function App(props) {
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
+              {/* call station  */}
+              <Route path="/Casll_stations/Add" element={<AddCallStation />} />
+              <Route
+                path="/Casll_stations/view"
+                element={<ViewCallStationPAge />}
+              />
+              {/*end  call station  */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/students/add" element={<AddStudent />} />
@@ -155,6 +164,10 @@ function App(props) {
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               <Route path="/class-groups/add" element={<AddGroup />} />
               {/* End class groups */}
               {/* districts and regions*/}
