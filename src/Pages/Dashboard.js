@@ -79,15 +79,14 @@ function Dashboard() {
     }
   };
 
-  const getParentsNumber = async () => {
-    const server_response = await ajaxParent.countParents(data);
-
-    if (server_response.status === "OK") {
-      //store results
-      setParentsNumber(server_response.details);
-    } else {
-      //communicate error
-      setParentsNumber("404");
+    const server_response = await ajaxParent.countParents(data3);
+     
+    if(server_response.status==="OK"){
+       //store results
+       setParentsNumber(server_response.details);
+    }else{
+       //communicate error
+       setParentsNumber("404");
     }
   };
 
