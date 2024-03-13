@@ -6,7 +6,7 @@ import AddSchoolUser from "./AddSchoolUser";
 
 function AdminViewSchoolUsers() {
   return (
-    <AppContainer title="School Users">
+    <AppContainer title="School Administrators">
       <div className="row">
         <div className="col-lg-12 col-md-12 mt-3">
           <ListSchoolUsers school={""} />

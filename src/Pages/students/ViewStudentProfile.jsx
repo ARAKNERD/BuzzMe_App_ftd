@@ -5,7 +5,6 @@ import {useContext} from "react";
 import AuthContext from "../../Context/AuthContext";
 import ChangeStatus from "./ChangeStatus";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import ViewStudentsContacts from "./ViewStudentsContacts";
 import UpdateStudent from "./UpdateStudent";
 import {useParams} from "react-router-dom";
 import ajaxStudent from "../../util/remote/ajaxStudent";
@@ -71,14 +70,6 @@ function ViewStudentProfile() {
     );
   };
 
-  // ----------------------handles the view -----students contacts
-  const [ViewContacts, setViewContacts] = useStateCallback(false);
-  const handle_view_contact = (id) => {
-    setViewContacts(false, () =>
-      setViewContacts(<ViewStudentsContacts isOpen={true} id={id} />)
-    );
-  };
-
   // ----------------------handles the view -----students printable codeslipmodal----
   const [studentUpdater, setStudentUpdater] = useStateCallback(false);
   const handle_student_updater = (studentDetails) => {
@@ -92,7 +83,6 @@ function ViewStudentProfile() {
   return (
     <AppContainer title="Students">
       <div className="row">
-        {ViewContacts}
         {/* {ViewStudentSlip} */}
         {studentUpdater}
         {ChangeStaus}
@@ -110,11 +100,6 @@ function ViewStudentProfile() {
                     className=" mx-5 btn-fill-md radius-30 text-light bg-martini shadow-martini "
                     onClick={() => handle_status_updater(studentDetails)}>
                     Change Status
-                  </button>
-                  <button
-                    className=" mx-5 btn-fill-lmd radius-30 text-light shadow-true-v bg-true-v"
-                    onClick={() => handle_view_contact(1)}>
-                    View Contacts
                   </button>
                 </div>
               </div>

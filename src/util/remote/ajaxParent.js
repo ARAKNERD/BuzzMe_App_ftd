@@ -7,19 +7,9 @@ export default {
     let response = await apiCall("guardian/list", data);
     return response;
   },
-  async updateParent(parent_id,parent_name,username,main_contact,alternative_contact,address,nin) 
+  async updateParent(data) 
   {
-    let data = {
-      parent_id: parent_id,
-      parent_name: parent_name,
-      username: username,
-      main_contact: main_contact,
-      alternative_contact: alternative_contact,
-      address: address,
-      nin: nin
-    };
     let response = await apiCall("guardian/update", data);
-
     return response;
   },
   async fetchParentRequests(data) 
@@ -35,6 +25,11 @@ export default {
   async declineParentRequest(data) 
   {
     let response = await apiCall("request/deny", data);
+    return response;
+  },
+  async countParents(data) 
+  {
+    let response = await apiCall("guardian/count", data);
     return response;
   },
 

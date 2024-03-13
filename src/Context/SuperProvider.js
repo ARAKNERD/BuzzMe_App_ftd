@@ -10,6 +10,7 @@ import { RegionProvider } from './RegionContext';
 import { AdminProvider } from './AdminContext';
 import { RateProvider } from './RateContext';
 import { WalletAccountProvider } from './WalletAccountContext';
+import { StationProvider } from './StationContext';
 
 
 const SuperProvider=(props)=>{
@@ -26,10 +27,12 @@ const SuperProvider=(props)=>{
                             <AdminProvider>
                               <RateProvider>
                                 <WalletAccountProvider>
+                                  <StationProvider>
                  
-                            {props.children}
-                            </WalletAccountProvider>
-                            </RateProvider>
+                                  {props.children}
+                                  </StationProvider>
+                                </WalletAccountProvider>
+                              </RateProvider>
                             </AdminProvider>
                           </RegionProvider>
                         </DistrictProvider>

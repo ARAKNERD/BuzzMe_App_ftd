@@ -7,6 +7,11 @@ export default {
     return response;
   },
 
+  async fetchStudentsToday(data) {
+    let response = await apiCall("student/today", data);
+    return response;
+  },
+
   async createStudent(data) {
     let response = await apiCall("student/add", data);
     return response;
@@ -33,13 +38,17 @@ export default {
     return response;
   },
   async fetchStudentContacts(data) {
-    let response = await apiCall("student/contacts", data);
+    let response = await apiCall("contact/list", data);
 
     return response;
   },
   async fetchStudentCall_logs(data) {
-    let response = await apiCall("student/call_logs", data);
+    let response = await apiCall("call_log/list", data);
 
+    return response;
+  },
+  async searchStudent(data) {
+    let response = await apiCall("student/search", data);
     return response;
   },
 };

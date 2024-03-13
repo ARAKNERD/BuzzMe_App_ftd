@@ -1,43 +1,47 @@
 import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import {Link} from "react-router-dom";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
-import AddChargeRate from "./AddChargeRate";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import UpdateChargeRate from "./UpdateChargeRate";
-import {Toaster, toast} from "react-hot-toast";
-import RateContext from "../../Context/RateContext";
+import {Toaster} from "react-hot-toast";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
+import ajaxStation from "../../util/remote/ajaxStation";
+import AddStation from "./AddStation";
+import StationContext from "../../Context/StationContext";
+import useStateCallback from "../../util/customHooks/useStateCallback";
+import DeActivateStation from "./DeActivateStation";
+import ActivateStation from "./ActivateStation";
 
-function ChargeRates() {
-  const {rateList, getRateList} = useContext(RateContext);
+function ListStations() {
+    const {stationList, getStationList} = useContext(StationContext);
+    const [modal, setModal] = useStateCallback(false);
+
+  const deActivateStation=(e,item)=>{
+    setModal(false, ()=>setModal(<DeActivateStation stationID={item.station_id} g={getStationList} isOpen={true}/>))
+  }
+
+  const activateStation=(e,item)=>{
+    setModal(false, ()=>setModal(<ActivateStation stationID={item.station_id} g={getStationList} isOpen={true}/>))
+  }
 
   const refreshData = () =>{
-    getRateList();
+    getStationList();
   }
 
-  const [modal, setModal] = useStateCallback(false);
-
-  const handleUpdate=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateChargeRate rateID={item.rate_id} g={getRateList} isOpen={true} rate={item.rate} type={item.type}/>))
-  }
-
-  return (
-    <AppContainer title="Charge Rates">
+    return (
+    <AppContainer title="Calling Stations">
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <AddChargeRate />
+          <AddStation />
         </div>
         <div className="col-lg-8">
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                  title="Charge Rates"
-                  subtitle="List of all the charge rates"
+                  title="Calling Stations"
+                  subtitle="List of all the calling stations"
                 />
                 <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -54,18 +58,22 @@ function ChargeRates() {
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Type</th>
-                      <th>Rate</th>
+                      <th>Station Name</th>
+                      <th>Station Code</th>
+                      <th>School</th>
+                      <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(rateList) && rateList.length > 0 ? (
-                      rateList.map((item, key) => (
+                    {Array.isArray(stationList) && stationList.length > 0 ? (
+                      stationList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
-                          <td>{item.type}</td>
-                          <td>{item.rate}</td>
+                          <td>{item.station_name}</td>
+                          <td>{item.station_code}</td>
+                          <td>{item.school?.school_name}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
 
                           <td>
                             <div className="dropdown">
@@ -77,28 +85,35 @@ function ChargeRates() {
                                 <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
-                                <Link
+                                {item.status==="1"?<Link
                                   className="dropdown-item"
                                   to="#"
-                                  onClick={(e) => handleUpdate(e,item)}>
-                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
-                                  Edit Rate
-                                </Link>
-                              </div>
+                                  onClick={(e) => deActivateStation(e,item)}>
+                                  <i className="fas fa-close text-orange-red"></i>
+                                  De-Activate Station
+                                </Link>:
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => activateStation(e,item)}>
+                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
+                                Activate Station
+                              </Link>
+}</div>
                             </div>
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="3" style={{textAlign: "center"}}>
-                          No charge rates registered yet.
+                        <td colSpan="5" style={{textAlign: "center"}}>
+                          No calling stations registered yet.
                         </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
-                {!rateList && <Loader />}
+                {!stationList && <Loader />}
               </div>
             </div>
           </div>
@@ -108,4 +123,4 @@ function ChargeRates() {
   );
 }
 
-export default ChargeRates;
+export default ListStations;

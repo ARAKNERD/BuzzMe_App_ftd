@@ -1,14 +1,12 @@
 import React, {useEffect, useState} from "react";
-
 import ajaxSchool from "../../util/remote/ajaxSchool";
+import { Link } from "react-router-dom";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import ChangeSchoolUserStatus from "./ChangeSchoolUserStatus";
+import ResetPassword from "./ResetPassword";
+
 function ListSchoolUsers(props) {
   const [schoolUsers, setSchoolUsers] = useState([]);
-
-  useEffect(() => {
-    getSchoolUsers();
-  }, []);
+  const [modal, setModal] = useStateCallback(false);
 
   const getSchoolUsers = async () => {
     try {
@@ -27,16 +25,19 @@ function ListSchoolUsers(props) {
       console.error("Error:", error);
     }
   };
-  const [changeStatus, setChangeStatus] = useStateCallback(false);
-  const handle_change_status = (id) => {
-    setChangeStatus(false, () =>
-      setChangeStatus(<ChangeSchoolUserStatus isOpen={true} id={id} />)
-    );
-  };
+
+  useEffect(() => {
+    getSchoolUsers();
+  }, []);
+
+  const handleUpdate=(e,item)=>{
+    setModal(false, ()=>setModal(<ResetPassword accountID={item.id} isOpen={true}/>))
+  }
+  
 
   return (
     <div className="card height-auto">
-      {changeStatus}
+      {modal}
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
@@ -55,40 +56,45 @@ function ListSchoolUsers(props) {
                 {props.school !== null && (
                   <>
                     <th>School Name</th>
-                    <th>Contact</th>
-                    <th>Email</th>
-                    <th>Address</th>
-                    <th>Date Registered</th>
+                    <th>School Contact</th>
                     <th>Actions</th>
                   </>
                 )}
               </tr>
             </thead>
             <tbody>
-              {schoolUsers.map((user, index) => (
+              {schoolUsers.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{user.names}</td>
-                  {props.school !== null && user.school ? (
+                  <td>{item.names}</td>
+                  {props.school !== null && item.school ? (
                     <>
-                      <td>{user.school.school_name}</td>
-                      <td>{user.school.contact}</td>
-                      <td>{user.school.email}</td>
-                      <td>{user.school.address}</td>
-                      <td>{user.school.date_registered.long_date}</td>
+                      <td>{item.school.school_name}</td>
+                      <td>{item.school.contact}</td>
                       <td>
-                        {/* <div className="col-12 form-group"> */}
-                        <button
-                          type="submit"
-                          className="btn-fill-lmd p-2 radius-30 text-light shadow-dark-pastel-green bg-dark-pastel-green"
-                          onClick={() => handle_change_status(user.id)}>
-                          change status
-                        </button>
-                        {/* </div> */}
-                      </td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={(e) => handleUpdate(e,item)}>
+                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                  Reset Password
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                     
                     </>
                   ) : (
-                    <td colSpan="8" style={{textAlign:"center"}}>No school admins Registered</td>
+                    <td colSpan="5" style={{textAlign:"center"}}>No school administrators registered.</td>
                   )}
                 </tr>
               ))}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 
 import {useContext} from "react";
@@ -15,8 +15,6 @@ function ViewStudents() {
         <div className="col-12">
           <ViewSchoolStudents
             school={school_id}
-            date_added={""}
-            group_id={""}
           />
         </div>
       </div>

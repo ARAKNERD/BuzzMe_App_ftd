@@ -4,9 +4,14 @@ import AddDistrict from "../../Components/DistrictRegion/AddDistrict";
 import DistrictContext from "../../Context/DistrictContext";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
+import { Link } from "react-router-dom";
 
 function District() {
-  const {districtList} = useContext(DistrictContext);
+  const {districtList, getDistrictList} = useContext(DistrictContext);
+
+  const refreshData = () =>{
+    getDistrictList()
+  }
 
   return (
     <AppContainer title="Districts">
@@ -23,15 +28,13 @@ function District() {
                   subtitle="List of all the districts sorted in ascending order"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
               </div>
 
               <div className="table-responsive">

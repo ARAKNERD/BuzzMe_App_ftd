@@ -16,15 +16,10 @@ import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
 
 import AddSchool from "./Pages/Schools/AddSchool";
-import UpdateSchool from "./Pages/Schools/UpdateSchool";
-// import SchoolUserPage from "./Pages/SchoolUsers/SchoolUserPage";
 import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
-import UpdateSchoolUser from "./Pages/SchoolUsers/UpdateSchoolUser";
 import ListContacts from "./Pages/Contacts/ListContacts";
 import AddContacts from "./Pages/Contacts/AddContacts";
 import UpdateContact from "./Pages/Contacts/UpdateContact";
-import UpdateChargeRate from "./Pages/ChargeRate/UpdateChargeRate";
-import AddChargeRate from "./Pages/ChargeRate/AddChargeRate";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
@@ -41,11 +36,14 @@ import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
-import ViewStudentProfile from "./Pages/students/ViewStudentProfile";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import AddCallStation from "./Pages/CallStations/AddCallStation";
 import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
+import StudentProfile from "./Pages/students/StudentProfile";
+import ListStations from "./Pages/Stations/ListStations";
+import SchoolProfile from "./Pages/Schools/SchoolProfile";
+import Profile from "./Pages/Profile";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -108,12 +106,14 @@ function App(props) {
               {/* School routes */}
               <Route path="/schools/view" element={<ViewSchool />} />
               <Route path="/schools/add" element={<AddSchool />} />
-              <Route path="/schools/edit" element={<UpdateSchool />} />
+              <Route
+                path="/schools/view/profile/:id"
+                element={<SchoolProfile />}
+              />
               {/* End school routes */}
               {/* School User routes */}
               <Route path="/schools/user/view" element={<SchoolUSerPage />} />
               <Route path="/schools/user/add" element={<AddSchoolUser />} />
-              <Route path="/schools/user/edit" element={<UpdateSchoolUser />} />
               <Route
                 path="/Admin/addSchoolUser"
                 element={<AdminAddSchoolUser />}
@@ -159,7 +159,7 @@ function App(props) {
               <Route path="/students/import" element={<ImportStudents />} />
               <Route
                 path="/students/profile/:id"
-                element={<ViewStudentProfile />}
+                element={<StudentProfile />}
               />
               {/* End student */}
               {/* Class Groups */}
@@ -169,11 +169,17 @@ function App(props) {
                 element={<GroupStudents />}
               />
               <Route path="/class-groups/add" element={<AddGroup />} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />
               <Route path="/regions/view" element={<Regions />} />
               {/* End class groups */}
+              <Route path="/stations" element={<ListStations />} />
+              <Route path="/profile" element={<Profile />} />
             </>
           )}
         </Switch>
