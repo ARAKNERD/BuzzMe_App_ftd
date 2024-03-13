@@ -9,8 +9,8 @@ export const RenderSecure = (props) => {
         // if (functions.findInObject(userProps.permissionLists, props.code)) {
         return <>{props.children}</>;
         // } else {
-        //    return <></>;
-        //  }
+        //   return <></>;
+        // }
       }}
     </AuthConsumer>
   );
