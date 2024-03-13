@@ -69,6 +69,30 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
+            <RenderSecure code="ADMIN-VIEW">
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <i className="fa-solid fa-headset" />
+                  <span>call stations</span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                  <li className="nav-item">
+                    <Link to="/Casll_stations/Add" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      Add Call stations
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/Casll_stations/view" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View Call Stations
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            </RenderSecure>
             {/* <RenderSecure code="SCHOOL-USER-VIEW">
               <li
                 className="nav-item sidebar-nav-item"
@@ -139,7 +163,9 @@ const Sidebar = (props) => {
                     <Link className="nav-link" to="/parent/requests">
                       <FontAwesomeIcon icon={faAngleRight} />
 
-                      <span className="sidemenu-label">View Parent Requests</span>
+                      <span className="sidemenu-label">
+                        View Parent Requests
+                      </span>
                     </Link>
                   </li>
                 </ul>

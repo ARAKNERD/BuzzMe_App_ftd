@@ -38,6 +38,8 @@ import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
+import AddCallStation from "./Pages/CallStations/AddCallStation";
+import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
 import StudentProfile from "./Pages/students/StudentProfile";
 import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
@@ -144,6 +146,13 @@ function App(props) {
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               {/* End parent */}
+              {/* call station  */}
+              <Route path="/Casll_stations/Add" element={<AddCallStation />} />
+              <Route
+                path="/Casll_stations/view"
+                element={<ViewCallStationPAge />}
+              />
+              {/*end  call station  */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/students/add" element={<AddStudent />} />
@@ -155,8 +164,15 @@ function App(props) {
               {/* End student */}
               {/* Class Groups */}
               <Route path="/class-groups" element={<SchoolStudentGroups />} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               <Route path="/class-groups/add" element={<AddGroup />} />
-              <Route path="/class-groups/view/:id" element={<GroupStudents/>} />
+              <Route
+                path="/class-groups/view/:id"
+                element={<GroupStudents />}
+              />
               {/* End class groups */}
               {/* districts and regions*/}
               <Route path="/Districts/view" element={<District />} />
@@ -164,7 +180,6 @@ function App(props) {
               {/* End class groups */}
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
-
             </>
           )}
         </Switch>

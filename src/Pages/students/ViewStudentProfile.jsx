@@ -26,6 +26,7 @@ function ViewStudentProfile() {
       setStudentDetails("404");
     }
   };
+  console.log(studentDetails);
   //  getting student's contacts--------------------------
   const [contacts, setContacts] = useState("");
   const getStudentContacts = async () => {
@@ -39,6 +40,7 @@ function ViewStudentProfile() {
       setContacts("404");
     }
   };
+  //   console.log(contacts);
   //  getting student's contacts--------------------------
   const [call_logs, setCall_logs] = useState("");
   const getStudentCall_logs = async () => {
@@ -53,7 +55,7 @@ function ViewStudentProfile() {
       setCall_logs("404");
     }
   };
-
+  //   console.log(call_logs);
   useEffect(() => {
     getStudentDetails();
     getStudentContacts();
@@ -70,9 +72,11 @@ function ViewStudentProfile() {
 
   // ----------------------handles the view -----students printable codeslipmodal----
   const [studentUpdater, setStudentUpdater] = useStateCallback(false);
-  const handle_student_updater = (student) => {
+  const handle_student_updater = (studentDetails) => {
     setStudentUpdater(false, () =>
-      setStudentUpdater(<UpdateStudent isOpen={true} student={student} />)
+      setStudentUpdater(
+        <UpdateStudent isOpen={true} student={studentDetails} />
+      )
     );
   };
 
@@ -89,87 +93,190 @@ function ViewStudentProfile() {
                 <div className="col-12">
                   <button
                     className=" mx-5 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-                    onClick={() => handle_student_updater(1)}>
+                    onClick={() => handle_student_updater(studentDetails)}>
                     Update Student
                   </button>
                   <button
                     className=" mx-5 btn-fill-md radius-30 text-light bg-martini shadow-martini "
-                    onClick={() => handle_status_updater(1)}>
+                    onClick={() => handle_status_updater(studentDetails)}>
                     Change Status
                   </button>
                 </div>
-                <div className="dropdown">
-                  <a
-                    className="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
               </div>
               <div className="single-info-details">
-                <div className="item-img">
-                  <img src="img/figure/student1.jpg" alt="student" />
-                </div>
                 <div className="item-content">
                   <div className="header-inline item-header">
                     <h3 className="text-dark-medium font-medium">
                       Student Names
                     </h3>
                   </div>
-
+                  {/* const [group, setGroup] = useState(raw_data.group.group_id);
+                  const [regNo, setRegNo] = useState(raw_data.names); const
+                  [names, setNames] = useState(raw_data.reg_no); const [gender,
+                  setGender] = useState(raw_data.gender); */}
                   <div className="info-table table-responsive">
                     <table className="table text-nowrap">
                       <tbody>
                         <tr>
                           <td>Name:</td>
                           <td className="font-medium text-dark-medium">
-                            Jessia Rose
+                            {studentDetails && studentDetails.names}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Class Group:</td>
+                          <td className="font-medium text-dark-medium">
+                            {studentDetails && studentDetails.group.group_name}
                           </td>
                         </tr>
                         <tr>
                           <td>Gender:</td>
                           <td className="font-medium text-dark-medium">
-                            Female
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Father Name:</td>
-                          <td className="font-medium text-dark-medium">
-                            Steve Jones
+                            {studentDetails && studentDetails.gender}
                           </td>
                         </tr>
 
                         <tr>
                           <td>Date Of Birth:</td>
                           <td className="font-medium text-dark-medium">
-                            07.08.2016
+                            {studentDetails && studentDetails.dob}
                           </td>
                         </tr>
 
                         <tr>
-                          <td>Roll:</td>
+                          <td>Student code:</td>
                           <td className="font-medium text-dark-medium">
-                            10005
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Address:</td>
-                          <td className="font-medium text-dark-medium">
-                            House #10, Road #6, Australia
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Phone:</td>
-                          <td className="font-medium text-dark-medium">
-                            + 88 98568888418
+                            {studentDetails && studentDetails.student_code}
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* student contact s  */}
+        {/*  */}
+        <div className="col-12">
+          <div className="card height-auto">
+            <div className="card-body">
+              <div className="card-body">
+                <div className="heading-layout1">
+                  <div className="item-title">
+                    <h3> Students Contacts</h3>
+                  </div>
+                </div>
+
+                <div className="table-responsive">
+                  <table className="table display data-table text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>contact Holder</th>
+                        <th>contact_number</th>
+                        <th>relationShip</th>
+                        <th>status</th>
+                        <th>Change status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(contacts) &&
+                        contacts.map((item, key) => (
+                          <>
+                            <tr key={key}>
+                              <td>{item.contact_name}</td>
+                              <td>{item.contact_number}</td>
+                              <td>{item.relationship}</td>
+                              <td>{item.status}</td>
+                              <td>
+                                <button className="btn btn-info">
+                                  Change statusip
+                                </button>
+                              </td>
+                            </tr>
+                          </>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* student call logs  */}
+        <div className="col-12">
+          <div className="card height-auto">
+            <div className="card-body">
+              <div className="card-body">
+                <div className="heading-layout1">
+                  <div className="item-title">
+                    <h3> Students Call logs</h3>
+                  </div>
+                </div>
+
+                <div className="table-responsive">
+                  <table className="table display data-table text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>call_type</th>
+                        <th>contact Holder</th>
+                        <th>contact</th>
+                        <th>relationship</th>
+                        <th>rate</th>
+                        <th>amount_charged</th>
+                        <th>duration</th>
+
+                        <th>station_name</th>
+                        <th>station_code</th>
+                        <th>date</th>
+                        <th />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {Array.isArray(call_logs) &&
+                        call_logs.map((item, key) => (
+                          <>
+                            {/* {     
+            "station": {
+                "station_id": "1",
+                "station_name": "Luzirass1",
+                "station_code": "Luz_001"
+            },
+            "duration": "1",
+            "contact": {
+                "contact_id": "1",
+                "contact_name": "Kamya bridget",
+                "contact_number": "256703433934",
+                "relationship": "Guardian"
+            },
+           
+            "created_at": {
+                "long_date": "08 Mar 2024 at 01:21 pm",
+                "short_date": "08 Mar 2024",
+                "when": "Today at 01:21 pm",
+                "time": "01:21 pm",
+                "date": "Today",
+                "weekday": "Friday",
+                "db": "2024-03-08"
+            } */}
+                            <tr>
+                              <td>{item.call_type}</td>
+                              <td>{item.contact.contact_name}</td>
+                              <td>{item.contact.contact_number}</td>
+                              <td>{item.contact.relationship}</td>
+                              <td>{item.rate.rate}</td>
+                              <td>{item.amount}</td>
+                              <td>{item.duration}</td>
+                              <td>{item.station.station_name}</td>
+                              <td>{item.station.station_code}</td>
+                              <td>{item.created_at.long_date}</td>
+                            </tr>
+                          </>
+                        ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
