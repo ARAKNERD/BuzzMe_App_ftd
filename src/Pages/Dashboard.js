@@ -88,7 +88,7 @@ const declineRequest = async (e,item) => {
 
   const getParentsNumber =async()=>{
 
-    const server_response = await ajaxParent.countParents(data);
+    const server_response = await ajaxParent.countParents(data3);
      
     if(server_response.status==="OK"){
        //store results
@@ -114,7 +114,7 @@ const declineRequest = async (e,item) => {
 
   useEffect(() => {
     getRequestList();
-  }, [data2]);
+  }, []);
 
   useEffect(()=>{
     getSchoolsNumber();
@@ -122,11 +122,11 @@ const declineRequest = async (e,item) => {
 
   useEffect(()=>{
     getStudentsNumber();
-  }, [data])
+  }, [])
 
   useEffect(()=>{
     getParentsNumber();
-  }, [data3])
+  }, [])
 
 
   return (

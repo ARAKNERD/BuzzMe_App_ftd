@@ -42,6 +42,7 @@ import StudentProfile from "./Pages/students/StudentProfile";
 import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
+import ParentProfile from "./Pages/Parents/ParentProfile";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -96,7 +97,6 @@ function App(props) {
                   !loggedIn ? <Navigate replace to="/login" /> : <Dashboard />
                 }
               />
-              /regions/view
               <Route
                 path="/login"
                 element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}
@@ -143,6 +143,10 @@ function App(props) {
               <Route path="/parents" element={<ViewParents />} />
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
+              <Route
+                path="/parents/profile/:id"
+                element={<ParentProfile />}
+              />
               {/* End parent */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
