@@ -52,6 +52,7 @@ export default {
     return response;
   },
   async fetchStudentCardList(data) {
+    console.log(data);
     let response = await apiCall("student/student_cards", data);
     return response;
   },

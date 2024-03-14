@@ -11,7 +11,6 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 function ViewStudentProfile() {
   const {user} = useContext(AuthContext);
   const {id} = useParams();
-
   var school_id = user.school_user ? user.school_user.school.school_id : "";
   // getting student details ----------------------------
   const [studentDetails, setStudentDetails] = useState("");

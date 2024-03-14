@@ -8,7 +8,6 @@ function SchoolUSerPage() {
   const {user} = useContext(AuthContext);
   // console.log(user);
   var school_id = user.school_user ? user.school_user.school.school_id : "";
-
   return (
     <AppContainer title="School Administrators">
       <div className="row">
