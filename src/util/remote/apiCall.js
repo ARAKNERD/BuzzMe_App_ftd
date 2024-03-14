@@ -1,7 +1,7 @@
 import axios from "axios";
 import dictionary from "../dictionary";
 
-const ACCESS_TOKEN = localStorage.getItem("projectm@user");
+const ACCESS_TOKEN = localStorage.getItem("buzzMe@user");
 const apiHost = dictionary.apiHost;
 
 const apiCall = async (endpoint, data) => {

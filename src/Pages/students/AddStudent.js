@@ -6,7 +6,6 @@ import AuthContext from "../../Context/AuthContext";
 import TodayStudents from "./TodayStudents";
 function AddStudent(props) {
   const {user} = useContext(AuthContext);
-  console.log(user);
   var school_id = user.school_user ? user.school_user.school.school_id : "";
   // console.log(school_id);
   return (

@@ -27,7 +27,6 @@ const UpdateParent=(props)=>{
         if(props.parentID>0 ||parentName.length>0 || mainContact.length>0){
             setLoading(true)
             const server_response = await ajaxParent.updateParent(data);
-            console.log(server_response)
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);

@@ -7,7 +7,7 @@ function StudentCards() {
   const {user} = useContext(AuthContext);
   const {student_id, group_id} = useParams();
 
-  var school = user?.school_user ? user.school_user.school.school_id : "";
+  var school = user.school_user ? user.school_user.school.school_id : "";
 
   useEffect(() => {
     getStudentList();
@@ -27,7 +27,6 @@ function StudentCards() {
     //   data["group_id"] = group_id;
     // }
 
-    console.log(data);
 
     const server_response = await ajaxStudent.fetchStudentCardList(data);
     if (server_response.status === "OK") {

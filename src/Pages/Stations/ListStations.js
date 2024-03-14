@@ -10,21 +10,41 @@ import StationContext from "../../Context/StationContext";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import DeActivateStation from "./DeActivateStation";
 import ActivateStation from "./ActivateStation";
+import { RenderSecure } from "../../util/script/RenderSecure";
+import AuthContext from "../../Context/AuthContext";
 
 function ListStations() {
-    const {stationList, getStationList} = useContext(StationContext);
+    const [stationList, setStationList] = useState(false);
     const [modal, setModal] = useStateCallback(false);
+    const {user} = useContext(AuthContext);
+    const [loading, setLoading] = useState(false);
+
+    const getStations = async () => {
+      setLoading(true);
+      const server_response = await ajaxStation.fetchStationList(user.school_user?user.school_user?.school.school_id:"");
+      setLoading(false);
+      if (server_response.status === "OK") {
+        setStationList(server_response.details);
+      }
+    };
+  
+    useEffect(() => {
+      getStations();
+    }, [user.school_user?user.school_user?.school?.school_id:""]);
+
+
+
 
   const deActivateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateStation stationID={item.station_id} g={getStationList} isOpen={true}/>))
+    setModal(false, ()=>setModal(<DeActivateStation stationID={item.station_id} g={getStations} isOpen={true}/>))
   }
 
   const activateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateStation stationID={item.station_id} g={getStationList} isOpen={true}/>))
+    setModal(false, ()=>setModal(<ActivateStation stationID={item.station_id} g={getStations} isOpen={true}/>))
   }
 
   const refreshData = () =>{
-    getStationList();
+    getStations();
   }
 
     return (
@@ -32,10 +52,13 @@ function ListStations() {
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
+      <RenderSecure code="ADMIN-VIEW">
         <div className="col-lg-4">
           <AddStation />
         </div>
-        <div className="col-lg-8">
+        </RenderSecure>
+
+        <div className={user.school_user ? "col-lg-12" : "col-lg-8"}>
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
@@ -60,7 +83,7 @@ function ListStations() {
                       <th>No.</th>
                       <th>Station Name</th>
                       <th>Station Code</th>
-                      <th>School</th>
+                      {user.school_user?"":<th>School</th>}
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
@@ -72,7 +95,7 @@ function ListStations() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
-                          <td>{item.school?.school_name}</td>
+                          {user.school_user?"":<td>{item.school?.school_name}</td>}
                           <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
 
                           <td>
@@ -113,7 +136,7 @@ function ListStations() {
                     )}
                   </tbody>
                 </table>
-                {!stationList && <Loader />}
+                {loading && <Loader />}
               </div>
             </div>
           </div>

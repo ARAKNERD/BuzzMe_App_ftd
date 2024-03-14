@@ -16,7 +16,6 @@ const ResetPassword=(props)=>{
         e.preventDefault()
         setLoading(true)
         const server_response = await ajaxUser.resetUserPassword(data);
-        console.log(server_response)
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);

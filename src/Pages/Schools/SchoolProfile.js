@@ -114,7 +114,7 @@ const SchoolProfile = props => {
 
     const getSchoolStudents = async () => {
         setLoading3(true)
-        const server_response = await ajaxStudent.fetchStudentList(data3);
+        const server_response = await ajaxStudent.fetchStudentList(id,page);
         setLoading3(false)
         if (server_response.status === "OK") {
             setMeta(server_response.details.meta.list_of_pages)

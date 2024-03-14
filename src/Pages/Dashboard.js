@@ -18,18 +18,9 @@ function Dashboard() {
   const [requestList, setRequestList] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const data = {
-    school_id: user.school_user ? user.school_user.school?.school_id : "",
-    group_id: "",
-  };
-
   const data2 = {
     school_requested: user.school_user?.school?.school_id,
     parent_id: "",
-  };
-
-  const data3 = {
-    school_id: user.school_user ? user.school_user.school?.school_id : "",
   };
 
   const getRequestList = async () => {
@@ -68,7 +59,7 @@ function Dashboard() {
   };
 
   const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchStudentNumber(data);
+    const server_response = await ajaxStudent.fetchStudentNumber(user.school_user ? user.school_user.school?.school_id : "");
 
     if (server_response.status === "OK") {
       //store results
@@ -80,7 +71,7 @@ function Dashboard() {
   };
 
   const getParentsNumber = async () => {
-    const server_response = await ajaxParent.countParents(data3);
+    const server_response = await ajaxParent.countParents(user.school_user ? user.school_user.school?.school_id : "");
      
     if(server_response.status==="OK"){
        //store results
@@ -113,11 +104,11 @@ function Dashboard() {
 
   useEffect(() => {
     getStudentsNumber();
-  }, []);
+  }, [user.school_user ? user.school_user.school.school_id : ""]);
 
   useEffect(() => {
     getParentsNumber();
-  }, []);
+  }, [user.school_user ? user.school_user.school?.school_id : ""]);
 
   return (
     <div>
