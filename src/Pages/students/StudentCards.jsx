@@ -5,9 +5,37 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 import {useParams} from "react-router-dom";
 function StudentCards() {
   const {user} = useContext(AuthContext);
-  var school_id = user.school_user ? user.school_user.school.school_id : "";
   const {student_id, group_id} = useParams();
 
+  var school = user?.school_user ? user.school_user.school.school_id : "";
+
+  useEffect(() => {
+    getStudentList();
+  }, []);
+  const [studentsData, setStudentsData] = useState("404");
+  const getStudentList = async () => {
+    var data = {
+      school_id: school,
+      student_id: student_id !== "null" ? student_id : "",
+      group_id: group_id !== "null" ? group_id : "",
+    };
+
+    // if (student_id) {
+    //   data["student_id"] = student_id;
+    // }
+    // if (group_id) {
+    //   data["group_id"] = group_id;
+    // }
+
+    console.log(data);
+
+    const server_response = await ajaxStudent.fetchStudentCardList(data);
+    if (server_response.status === "OK") {
+      setStudentsData(server_response.details);
+    } else {
+      setStudentsData("404");
+    }
+  };
   const Print = () => {
     let printContents = document.getElementById("printablediv").innerHTML;
     let originalContents = document.body.innerHTML;
@@ -17,25 +45,6 @@ function StudentCards() {
     window.location.reload();
     document.body.innerHTML = originalContents;
   };
-
-  useEffect(() => {
-    getStudentList();
-  }, []);
-  const [studentsData, setStudentsData] = useState("404");
-  const getStudentList = async () => {
-    var data = {
-      school_id,
-      group_id,
-      student_id,
-    };
-    const server_response = await ajaxStudent.fetchStudentCardList(data);
-    if (server_response.status === "OK") {
-      setStudentsData(server_response.details);
-    } else {
-      setStudentsData("404");
-    }
-  };
-
   return (
     <AppContainer title="Student Cards">
       <div className="row">

@@ -93,7 +93,7 @@ function SchoolStudentGroups() {
                           <td>
                             <Link
                               className="btn btn-info"
-                              to={`/students/student_card/:student_id?/${item.group_id}`}>
+                              to={`/students/student_card/null/${item.group_id}`}>
                               students codeslips
                             </Link>
                           </td>

@@ -120,17 +120,20 @@ function AddSchool() {
                   placeholder="Enter address of school.."
                 />
               </div>
-                <div className="col-lg-6 col-md-6  col-12 form-group">
-                  <label htmlFor="">District</label>
-                  <Select
-                    onChange={(e) => setDistrict(e.district_id)}
-                    getOptionLabel={(option) => option.district_name}
-                    getOptionValue={(option) => option.district_id}
-                    isSearchable
-                    options={districtList}
-                    value={Array.isArray(districtList) && districtList.find(( value ) => value.district_id===district)}
-                  />
-                </div>
+              <div className="col-lg-6 col-md-6  col-12 form-group">
+                <label htmlFor="">District</label>
+                <Select
+                  onChange={(e) => setDistrict(e.district_id)}
+                  getOptionLabel={(option) => option.district_name}
+                  getOptionValue={(option) => option.district_id}
+                  isSearchable
+                  options={Array.isArray(districtList) ? districtList : []}
+                  value={
+                    Array.isArray(districtList) &&
+                    districtList.find((value) => value.district_id === district)
+                  }
+                />
+              </div>
               <div className="col-lg-6 col-md-6 col-12 form-group">
                 <label htmlFor="">Date Registered</label>
                 <input

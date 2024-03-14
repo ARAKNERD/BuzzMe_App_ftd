@@ -34,7 +34,7 @@ function AddingStudent() {
         names: names,
         gender: gender,
       };
-      
+
       const server_response = await ajaxStudent.createStudent(data);
       console.log(server_response);
       if (server_response.status === "OK") {

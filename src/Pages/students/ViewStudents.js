@@ -13,9 +13,7 @@ function ViewStudents() {
     <AppContainer title="Students">
       <div className="row">
         <div className="col-12">
-          <ViewSchoolStudents
-            school={school_id}
-          />
+          <ViewSchoolStudents school={school_id} />
         </div>
       </div>
     </AppContainer>
