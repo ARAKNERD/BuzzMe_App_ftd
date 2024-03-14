@@ -31,7 +31,6 @@ const StudentProfile = props => {
     const handleActive = ()=> setActive(true)
     const handleInActive = ()=> setActive(false)
     const [loading,setLoading] = useState(false)
-    const [loading1,setLoading1] = useState(false)
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
 
@@ -141,7 +140,7 @@ const StudentProfile = props => {
 						</div>
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
                                 <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{studentProfile.names}</h5>
-                                <h6 className="pro-user-desc text-muted fs-14">{studentProfile.group.group_name}</h6>
+                                <h6 className="pro-user-desc text-muted fs-14">{studentProfile.group?.group_name}</h6>
                             </div>
                         </div>
                     </div>}
@@ -252,12 +251,12 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Group Name</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.group.group_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.group?.group_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">School Name</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.school.school_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.school?.school_name}</span> </td>
                                         </tr>
                                        
                                     </tbody>}

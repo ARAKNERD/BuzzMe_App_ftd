@@ -43,6 +43,7 @@ const SchoolProfile = props => {
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
+    const [loading4,setLoading4] = useState(false)
 
     const data = {
         school_id: id
@@ -92,17 +93,16 @@ const SchoolProfile = props => {
         };
        
         const server_response = await ajaxSchool.updateSchool(data)
-        console.log(server_response)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
-            getSchoolProfile(id)
+            getSchoolProfile()
         }
     };
 
     const getSchoolProfile =async()=>{
-        
+        setLoading2(true)
         const server_response = await ajaxSchool.fetchSchoolProfile(data);
-      
+        setLoading2(false)
         if(server_response.status==="OK"){
             //store results
             setSchoolProfile(server_response.details);
@@ -113,19 +113,21 @@ const SchoolProfile = props => {
     }
 
     const getSchoolStudents = async () => {
-    
-      const server_response = await ajaxStudent.fetchStudentList(data3);
-      if (server_response.status === "OK") {
-        setMeta(server_response.details.meta.list_of_pages)
-        setSchoolStudents(server_response.details.list);
-      } else {
-        setSchoolStudents("404");
-      }
+        setLoading3(true)
+        const server_response = await ajaxStudent.fetchStudentList(data3);
+        setLoading3(false)
+        if (server_response.status === "OK") {
+            setMeta(server_response.details.meta.list_of_pages)
+            setSchoolStudents(server_response.details.list);
+        } else {
+            setSchoolStudents("404");
+        }
     };
 
     const getSchoolStations =async()=>{
+        setLoading4(false)
         const server_response = await ajaxStation.fetchStationList(data);
-        
+        setLoading4(false)
         if(server_response.status==="OK"){
             setSchoolStations(server_response.details);
         }else{
@@ -359,7 +361,7 @@ const SchoolProfile = props => {
                                        
                                     </tbody>}
                                 </table>
-                                {loading && <Loader/>}
+                                {loading2 && <Loader/>}
                             </div>
                         </div>
                     </div>
@@ -460,7 +462,7 @@ const SchoolProfile = props => {
 					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
                 </div>
                             </table>
-                            {loading2 && <Loader/>}
+                            {loading3 && <Loader/>}
                         </div>
                               
                     </div>
@@ -503,7 +505,7 @@ const SchoolProfile = props => {
                                     )}
                                 </tbody>
                             </table>
-                            {loading3 && <Loader/>}
+                            {loading4 && <Loader/>}
                         </div>
                               
                     </div>

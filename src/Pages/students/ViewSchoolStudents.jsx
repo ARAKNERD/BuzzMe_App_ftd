@@ -13,6 +13,7 @@ function ViewSchoolStudents(props) {
   const [meta, setMeta] = useState("");
   const [studentSearch, setStudentSearch] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
 
   const data = {
@@ -26,8 +27,12 @@ function ViewSchoolStudents(props) {
   };
 
   const getStudentList = async () => {
+    setLoading2(true);
     const server_response = await ajaxStudent.fetchStudentList(data);
+    setLoading2(false);
     if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+
       setMeta(server_response.details.meta.list_of_pages);
       setStudentList(server_response.details.list);
     } else {
@@ -37,7 +42,7 @@ function ViewSchoolStudents(props) {
 
   useEffect(() => {
     getStudentList();
-  }, [data]);
+  }, []);
 
   const searchStudents = async (e) => {
     if (e) {
@@ -261,7 +266,7 @@ function ViewSchoolStudents(props) {
                   </button>
                 </div>
               </table>
-              {loading && <Loader />}
+              {loading2 && <Loader />}
             </div>
           </div>
         </div>

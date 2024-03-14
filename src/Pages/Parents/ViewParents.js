@@ -25,8 +25,9 @@ function ViewParents() {
   };
 
   const getParentList = async () => {
-    
+    setLoading(true)
     const server_response = await ajaxParent.fetchParentList(data);
+    setLoading(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages)
       setParentList(server_response.details.list);
@@ -37,7 +38,7 @@ function ViewParents() {
 
   useEffect(() => {
     getParentList();
-  }, [data]);
+  }, []);
 
   const handleModal=(e,item)=>{
     setModal(false, ()=>setModal(<UpdateParent parentID={item.parent?.parent_id} parentName={item.parent?.parent_name} nin={item.parent?.nin} address={item.parent?.address} mainContact={item.parent?.main_contact} alternativeContact={item.parent?.alternative_contact} g={getParentList} isOpen={true}/>))
@@ -105,7 +106,10 @@ function ViewParents() {
                       parentList.map((item, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
-                          <td>{item.parent?.parent_name}</td>
+                          <td><Link
+                          to={`/parents/profile/${item.parent?.parent_id}`}>
+                          {item.parent?.parent_name}
+                        </Link></td>
                           <td>{item.parent?.main_contact}</td>
                           <td>{item.parent?.address}</td>
                           <td><div class="dropdown">
