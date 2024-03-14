@@ -5,28 +5,43 @@ import { UserProvider } from './UserContext';
 import { ParentProvider } from './ParentContext';
 import { StudentProvider } from './StudentContext';
 import { SchoolProvider } from './SchoolContext';
-import { StudentGroupProvider } from './StudentGroupContext';
+import { DistrictProvider } from './DistrictContext';
+import { RegionProvider } from './RegionContext';
+import { AdminProvider } from './AdminContext';
+import { RateProvider } from './RateContext';
+import { WalletAccountProvider } from './WalletAccountContext';
+import { StationProvider } from './StationContext';
 
 
 const SuperProvider=(props)=>{
   
         return (
             <ThemeProvider>
-               <AuthProvider>
-                 <UserProvider>
+              <AuthProvider>
+                <UserProvider>
                   <ParentProvider>
                     <StudentProvider>
                       <SchoolProvider>
-                      <StudentGroupProvider>
+                        <DistrictProvider>
+                          <RegionProvider>
+                            <AdminProvider>
+                              <RateProvider>
+                                <WalletAccountProvider>
+                                  <StationProvider>
                  
-                     {props.children}
-                     </StudentGroupProvider>
-                     </SchoolProvider>
-                     </StudentProvider>
-                     </ParentProvider>
-                 </UserProvider>
-             </AuthProvider>
-          </ThemeProvider>                         
+                                  {props.children}
+                                  </StationProvider>
+                                </WalletAccountProvider>
+                              </RateProvider>
+                            </AdminProvider>
+                          </RegionProvider>
+                        </DistrictProvider>
+                      </SchoolProvider>
+                    </StudentProvider>
+                  </ParentProvider>
+                </UserProvider>
+              </AuthProvider>
+            </ThemeProvider>                         
         )
 }
 

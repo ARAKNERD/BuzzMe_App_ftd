@@ -7,15 +7,64 @@ import ParentContext from "../../Context/ParentContext";
 import { Link } from "react-router-dom";
 import UpdateParent from "./UpdateParent";
 import useStateCallback from "../../util/customHooks/useStateCallback";
+import ajaxParent from "../../util/remote/ajaxParent";
+import AuthContext from "../../Context/AuthContext";
 
 function ViewParents() {
 
-  const {parentList, getParentList} = useContext(ParentContext);
-  const [loading,setLoading] = useState(false)
+  const [parentList, setParentList] = useState("");
+  const [page,setPage] = useState(1)
+  const [meta,setMeta] = useState("")
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useStateCallback(false);
+  const {user} = useContext(AuthContext);
+
+  const data = {
+    school_id: user.school_id?.school?.school_id,
+    page: page
+  };
+
+  const getParentList = async () => {
+    setLoading(true)
+    const server_response = await ajaxParent.fetchParentList(data);
+    setLoading(false)
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages)
+      setParentList(server_response.details.list);
+    } else {
+      setParentList("404");
+    }
+  };
+
+  useEffect(() => {
+    getParentList();
+  }, []);
 
   const handleModal=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateParent parentID={item.parent_id} parentName={item.parent_name} nin={item.nin} address={item.address} mainContact={item.main_contact} alternativeContact={item.alternative_contact} username={item.username} g={getParentList} isOpen={true}/>))
+    setModal(false, ()=>setModal(<UpdateParent parentID={item.parent?.parent_id} parentName={item.parent?.parent_name} nin={item.parent?.nin} address={item.parent?.address} mainContact={item.parent?.main_contact} alternativeContact={item.parent?.alternative_contact} g={getParentList} isOpen={true}/>))
+  }
+
+  const setNextPageNumber = () =>{
+    if(meta.length===page){
+      
+    }
+    else{
+      setPage(page+1)
+    }
+    
+  }
+
+  const setPreviousPageNumber = () =>{
+    if(page===1){
+      
+    }
+    else{
+      setPage(page-1)
+    }
+    
+  }
+  const setPageNumber = (e,item) =>{
+    setPage(item)
   }
 
   return(
@@ -33,9 +82,9 @@ function ViewParents() {
                                         <a class="dropdown-toggle" href="#" role="button" 
                                         data-toggle="dropdown" aria-expanded="false">...</a>
                 
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={getParentList} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        </div>
+                                        {/* <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div> */}
                                     </div>
                         </div>
               <div className="border-top mt-3"></div>
@@ -57,9 +106,12 @@ function ViewParents() {
                       parentList.map((item, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
-                          <td>{item.parent_name}</td>
-                          <td>{item.main_contact}</td>
-                          <td>{item.address}</td>
+                          <td><Link
+                          to={`/parents/profile/${item.parent?.parent_id}`}>
+                          {item.parent?.parent_name}
+                        </Link></td>
+                          <td>{item.parent?.main_contact}</td>
+                          <td>{item.parent?.address}</td>
                           <td><div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                     aria-expanded="false">
@@ -78,6 +130,20 @@ function ViewParents() {
                       </tr>
                     )}
                   </tbody>
+                  <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+          {Array.isArray(meta) && meta.map((item)=>
+          page===item?
+          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+          :
+          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+          )}
+
+
+					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                </div>
                 </table>
                 {loading && <Loader/>}
               </div>

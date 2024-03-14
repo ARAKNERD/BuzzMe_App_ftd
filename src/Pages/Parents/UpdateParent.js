@@ -8,20 +8,30 @@ const UpdateParent=(props)=>{
 
     const [loading, setLoading] = useState(false)
     const [parentName,setParentName] =useState(props.parentName)
-    const [userName,setUserName] =useState(props.username)
     const [mainContact,setMainContact] =useState(props.mainContact)
     const [alternativeContact,setAlternativeContact] =useState(props.alternativeContact)
     const [address,setAddress] =useState(props.address)
     const [nin,setNIN] =useState(props.nin)
 
+    const data = {
+        parent_id: props.parentID,
+        parent_name: parentName,
+        main_contact: mainContact,
+        alternative_contact: alternativeContact,
+        address: address,
+        nin: nin
+      };
+
     const handleUpdateParent = async(e) =>{
         e.preventDefault()
-        if(props.parentID>0 ||parentName.length>0 || userName.length>0 || mainContact.length>0){
+        if(props.parentID>0 ||parentName.length>0 || mainContact.length>0){
             setLoading(true)
-            const server_response = await ajaxParent.updateParent(props.parentID,parentName,userName,mainContact,alternativeContact,address,nin);
+            const server_response = await ajaxParent.updateParent(data);
+            console.log(server_response)
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
+                props.g();
             }
             else{
                 toast.error(server_response.message); 
@@ -62,10 +72,6 @@ const UpdateParent=(props)=>{
                <label htmlFor="">Parent Name</label>
                <input type="text" value={parentName} onChange={(e)=>setParentName(e.target.value)} className="form-control"/>
             </div>
-             <div className="col-xl-6 col-lg-6 col-12 form-group">
-               <label htmlFor="">Username</label>
-                <input type="text" value={userName} onChange={(e)=>setUserName(e.target.value)} className="form-control"/>
-             </div>
              <div className="col-xl-6 col-lg-6 col-12 form-group">
                 <label htmlFor="">Main Contact</label>
                 <input type="text" value={mainContact} onChange={(e)=>setMainContact(e.target.value)} className="form-control"/>

@@ -2,12 +2,12 @@ import React from "react";
 
 export default function Loader() {
   return (
-    <div className="text-center">
+    <div id="" className="text-center preloader">
       {/* LOADEAR */}
       <div>
         <img
-          src="../assets/img/loader.svg"
           className="loader-img"
+          src={process.env.PUBLIC_URL + "/assets/img/preloader.gif"}
           alt="Loader"
         />
       </div>

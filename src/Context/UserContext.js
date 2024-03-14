@@ -17,7 +17,7 @@ export const UserProvider = (props)=> {
   
    const getUserList =async()=>{
 
-      const server_response = await ajaxUser.getUserList(data);
+      const server_response = await ajaxUser.fetchUserList(data);
 
       if(server_response.status==="OK"){
          //store results

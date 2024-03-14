@@ -1,69 +1,92 @@
-import React from 'react'
-import AppContainer from '../../Components/Structure/AppContainer'
-import ajaxAccounts from '../../util/remote/ajaxAccounts';
-import { Formik,Form,Field,ErrorMessage } from "formik";
+import React, {useContext, useState} from "react";
+import {Toaster, toast} from "react-hot-toast";
+import WalletAccountContext from "../../Context/WalletAccountContext";
+import ajaxAccounts from "../../util/remote/ajaxAccounts";
 
 function AddAccount() {
-    const initialValues = {
-        account_code:"",
-        description:""
+  const {getAccountList} = useContext(WalletAccountContext);
+  const [accountCode, setAccountCode] = useState("");
+  const [description, setDescription] = useState("");
+
+  const handleAdd = async (e) => {
+    e.preventDefault();
+
+    if (accountCode.length > 0) {
+      const data = {
+        account_code: accountCode,
+        description: description,
+      };
+      const server_response = await ajaxAccounts.createAccount(data);
+      if (server_response.status === "OK") {
+        toast.success(server_response.message);
+        getAccountList();
+        resetForm();
+      } else {
+        toast.error(server_response.message);
       }
-    
-      const handleSubmit = async(values, { setSubmitting }) => {
-    
-        // const server_response = await ajaxAccounts.createAccount(account_code,description);
-        // if(server_response.status==="OK"){
-    
-        // }
-        // Handle form submission logic here
-        console.log(values);
-        // You can make API calls or perform other actions as needed
-    
-        // After handling submission, you can reset the form or perform other actions
-        setSubmitting(false);
+    } else {
+      toast.error("Complete all fields and try again");
     }
-    
-    
-      return(
-        <AppContainer title={"Add New Account"}>
-        <div className="card height-auto">
-                        <div className="card-body">
-                            <div className="heading-layout1">
-                                <div className="item-title">
-                                    <h3>Add New Account</h3>
-                                </div>
-                             
-                            </div>
-                            <Formik 
-                            initialValues={initialValues}
-                            onSubmit={handleSubmit}
-                            >
-    
-                            <Form className="new-added-form">
-                                <div className="row">
-                                    <div className="col-xl-6 col-lg-6 col-6 form-group">
-                                        <label>Account Code</label>
-                                        <Field type="text"
-                                        name="account_code"
-                                        // onChange={(e)=>}
-                                        placeholder="" className="form-control"/>
-                                    </div>
-                                    <div className="col-xl-6 col-lg-6 col-6 form-group">
-                                    <label>Description *</label>
-                                    <Field as="text-area" name="description" className="select2 form-control"/>
-                                    </div>
-                                    <div className="col-12 form-group mg-t-8" style={{float:'right'}}>
-                                        <button type="submit" style={{float:'right'}} className="btn-fill-lg btn-gradient-yellow btn-hover-bluedark mr-auto ml-5">Save</button>
-                                        <button type="reset" style={{float:'right'}} className="btn-fill-lg bg-blue-dark btn-hover-yellow">Reset</button>
-                                    </div>
-                                </div>
-                            </Form>
-                            </Formik>
-    
-                        </div>
-                    </div>
-    </AppContainer>
-  )
+  };
+
+  const resetForm = () => {
+    setAccountCode("");
+    setDescription("");
+  };
+
+  return (
+    <>
+      <Toaster position="top-center" reverseOrder={false} />
+
+      <div className="row">
+        <br />
+        <br />
+        <br />
+        <div className="col-lg-12 col-md-12">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+            <div className="card-body">
+              <div>
+                <h6 className="card-title mb-4">Add New Wallet Account</h6>
+              </div>
+
+              <form
+                onSubmit={(e) => handleAdd(e)}
+                method="post"
+                class="new-added-form">
+                <div className="row">
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 radius-30">
+                    <label htmlFor="">Account Code</label>
+                    <input
+                      type="text"
+                      value={accountCode}
+                      onChange={(e) => setAccountCode(e.target.value)}
+                      className=" colo-12 form-control"
+                    />
+                  </div>
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5">
+                    <label htmlFor="">Description</label>
+                    <input
+                      type="text"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className=" colo-12 form-control"
+                    />
+                  </div>
+                </div>
+                <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
+                  <button
+                    type="submit"
+                    className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                    Save Wallet Account
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
 
-export default AddAccount
+export default AddAccount;
