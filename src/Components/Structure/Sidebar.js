@@ -69,54 +69,6 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
-              <li
-                className="nav-item sidebar-nav-item"
-                onClick={(e) => toggleDropdown(e)}>
-                <Link to="#" className="nav-link">
-                  <i className="fa-solid fa-headset" />
-                  <span>call stations</span>
-                </Link>
-                <ul className="nav sub-group-menu">
-                  <li className="nav-item">
-                    <Link to="/Casll_stations/Add" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      Add Call stations
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/Casll_stations/view" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      View Call Stations
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </RenderSecure>
-            {/* <RenderSecure code="SCHOOL-USER-VIEW">
-              <li
-                className="nav-item sidebar-nav-item"
-                onClick={(e) => toggleDropdown(e)}>
-                <Link to="#" className="nav-link">
-                  <i className="fa-solid fa-users" />
-                  <span>School Users</span>
-                </Link>
-                <ul className="nav sub-group-menu">
-                  <li className="nav-item">
-                    <Link to="/schools/user/view" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      View Schools Users
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/schools/user/add" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      Add School User
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-            </RenderSecure> */}
 
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li
@@ -202,7 +154,7 @@ const Sidebar = (props) => {
               </li>
               <li className="nav-item">
                 <Link to="/stations" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
+                <i className="fa-solid fa-headset" />
                   <span>Calling Stations</span>
                 </Link>
               </li>
