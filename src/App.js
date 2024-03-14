@@ -151,13 +151,6 @@ function App(props) {
                 element={<ParentProfile />}
               />
               {/* End parent */}
-              {/* call station  */}
-              <Route path="/Casll_stations/Add" element={<AddCallStation />} />
-              <Route
-                path="/Casll_stations/view"
-                element={<ViewCallStationPAge />}
-              />
-              {/*end  call station  */}
               {/* Students */}
               <Route path="/students" element={<ViewStudents />} />
               {/* <Route

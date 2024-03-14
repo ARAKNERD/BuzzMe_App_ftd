@@ -79,6 +79,7 @@ function Dashboard() {
     }
   };
 
+  const getParentsNumber = async () => {
     const server_response = await ajaxParent.countParents(data3);
      
     if(server_response.status==="OK"){
