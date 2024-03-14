@@ -2,8 +2,25 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async fetchStudentList(data) {
+  async fetchStudentList(school_id, page) 
+  {
+    let data = {
+      "school_id":school_id,
+      "page": page
+    };
     let response = await apiCall("student/list", data);
+
+    return response;
+  },
+
+  async fetchGroupStudents(group_id, page) 
+  {
+    let data = {
+      "group_id":group_id,
+      "page": page
+    };
+    let response = await apiCall("student/list", data);
+
     return response;
   },
 
@@ -28,7 +45,10 @@ export default {
     return response;
   },
 
-  async fetchStudentNumber(data) {
+  async fetchStudentNumber(school) {
+    let data = {
+      school_id: school
+    };
     let response = await apiCall("student/count", data);
     return response;
   },

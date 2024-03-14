@@ -13,17 +13,12 @@ function GroupStudents()
 {
   const {id} = useParams();
   const [studentList, setStudentList] = useState(false);
-  const [page,setPage] = useState(1)
+  const [page,setPage] = useState(1);
   const [meta,setMeta] = useState("")
   const [studentSearch, setStudentSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
-
-  const data = {
-    group_id: id,
-    page: page
-  };
   
   const data2 = {
     query: query,
@@ -33,7 +28,7 @@ function GroupStudents()
   
   const getStudentList = async () => {
     setLoading2(true)
-    const server_response = await ajaxStudent.fetchStudentList(data);
+    const server_response = await ajaxStudent.fetchGroupStudents(id, page);
     setLoading2(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages)
@@ -124,7 +119,7 @@ function GroupStudents()
             <div class="heading-layout1 mg-b-25">
               <TableHeader
                 title="Students List"
-                subtitle="List of all the students sorted in ascending order"    
+                subtitle="List of all the students within the group sorted in ascending order"    
               />
               <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>

@@ -17,9 +17,6 @@ import AddStudent from "./Pages/students/AddStudent";
 
 import AddSchool from "./Pages/Schools/AddSchool";
 import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
-import ListContacts from "./Pages/Contacts/ListContacts";
-import AddContacts from "./Pages/Contacts/AddContacts";
-import UpdateContact from "./Pages/Contacts/UpdateContact";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
@@ -38,8 +35,6 @@ import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
-import AddCallStation from "./Pages/CallStations/AddCallStation";
-import ViewCallStationPAge from "./Pages/CallStations/ViewCallStationPAge";
 import StudentProfile from "./Pages/students/StudentProfile";
 import StudentCards from "./Pages/students/StudentCards";
 import ListStations from "./Pages/Stations/ListStations";
@@ -124,11 +119,6 @@ function App(props) {
                 element={<AdminViewSchoolUsers />}
               />
               {/* End School User routes */}
-              {/* Student Contact routes */}
-              <Route path="/contacts/view" element={<ListContacts />} />
-              <Route path="/contacts/add" element={<AddContacts />} />
-              <Route path="/contacts/edit" element={<UpdateContact />} />
-              {/* End Student Contact routes */}
               {/* Charge rate routes */}
               <Route path="/rate/view" element={<ChargeRates />} />
               {/* End Charge rate routes */}
@@ -143,7 +133,7 @@ function App(props) {
               <Route path="/accounts/add" element={<AddAccount />} />
               {/* End Account routes */}
               {/* Parents */}
-              <Route path="/parents" element={<ViewParents />} />
+              <Route path="/parents/:id" element={<ViewParents />} />
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               <Route
@@ -152,7 +142,7 @@ function App(props) {
               />
               {/* End parent */}
               {/* Students */}
-              <Route path="/students" element={<ViewStudents />} />
+              <Route path="/students/:id" element={<ViewStudents />} />
               {/* <Route
                 path="/students/student_card/:id/:group_id"
                 element={<StudentCards />}

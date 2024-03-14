@@ -25,7 +25,6 @@ function AddStation() {
       const server_response = await ajaxStation.createStation(data);
       // console.log(server_response)
       if (server_response.status === "OK") {
-        console.log(server_response)
         toast.success(server_response.message);
         getStationList();
         resetForm();

@@ -4,7 +4,7 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { useContext } from "react";
 import ParentContext from "../../Context/ParentContext";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import UpdateParent from "./UpdateParent";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxParent from "../../util/remote/ajaxParent";
@@ -17,10 +17,11 @@ function ViewParents() {
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
   const [modal, setModal] = useStateCallback(false);
-  const {user} = useContext(AuthContext);
+  const {id} = useParams();
+
 
   const data = {
-    school_id: user.school_id?.school?.school_id,
+    school_id: id,
     page: page
   };
 
@@ -35,6 +36,11 @@ function ViewParents() {
       setParentList("404");
     }
   };
+
+  const refreshData = () =>{
+    getParentList()
+  }
+
 
   useEffect(() => {
     getParentList();
@@ -82,9 +88,9 @@ function ViewParents() {
                                         <a class="dropdown-toggle" href="#" role="button" 
                                         data-toggle="dropdown" aria-expanded="false">...</a>
                 
-                                        {/* <div class="dropdown-menu dropdown-menu-right">
+                                        <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        </div> */}
+                                        </div>
                                     </div>
                         </div>
               <div className="border-top mt-3"></div>

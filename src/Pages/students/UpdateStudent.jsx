@@ -13,7 +13,6 @@ function UpdateStudent(props) {
   const {getStudentList} = useContext(StudentContext);
   const {user} = useContext(AuthContext);
   const raw_data = props.student;
-  console.log(props.student);
   var school_id = user.school_user ? user.school_user.school.school_id : "";
 
   const [groupList, setGroupList] = useState(false);

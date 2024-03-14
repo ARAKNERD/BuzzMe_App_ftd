@@ -36,7 +36,6 @@ function AddingStudent() {
       };
 
       const server_response = await ajaxStudent.createStudent(data);
-      console.log(server_response);
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getStudentList();

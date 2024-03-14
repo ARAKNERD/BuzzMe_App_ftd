@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import {Link} from "react-router-dom";
 import {RenderSecure} from "../../util/script/RenderSecure";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleRight} from "@fortawesome/free-solid-svg-icons";
+import AuthContext from "../../Context/AuthContext";
+
 
 const Sidebar = (props) => {
+  const {user} = useContext(AuthContext);
   const toggleDropdown = (e) => {
     // e.preventDefault();
     // Toggle the "show" class on the main menu item
@@ -82,11 +85,11 @@ const Sidebar = (props) => {
                   <li className="nav-item">
                     <Link to="/students/add" className="nav-link">
                       <FontAwesomeIcon icon={faAngleRight} />
-                      Add student
+                      Add Student
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/students">
+                    <Link className="nav-link" to={`/students/${user.school_user?.school?.school_id}`}>
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Students</span>
@@ -105,7 +108,7 @@ const Sidebar = (props) => {
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
-                    <Link className="nav-link" to="/parents">
+                    <Link className="nav-link" to={`/parents/${user.school_user?.school?.school_id}`}>
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Parents</span>
@@ -152,13 +155,14 @@ const Sidebar = (props) => {
                   <span>Charge Rates</span>
                 </Link>
               </li>
+              </RenderSecure>
               <li className="nav-item">
                 <Link to="/stations" className="nav-link">
                 <i className="fa-solid fa-headset" />
                   <span>Calling Stations</span>
                 </Link>
               </li>
-            </RenderSecure>
+            
 
 
             <RenderSecure code="ADMIN-VIEW">

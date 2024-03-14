@@ -32,7 +32,6 @@ function ActivateAccount() {
 
       const server_response = await ajaxUser.ActivateUserAccount(data);
       setLoading(true);
-      // //console.log(server_response);
 
       if (server_response.status === "OK") {
         setLoading(false);

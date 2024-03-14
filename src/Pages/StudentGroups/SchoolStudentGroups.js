@@ -23,6 +23,10 @@ function SchoolStudentGroups() {
     }
   };
 
+  const refreshData = () =>{
+    getGroups()
+  }
+
   useEffect(() => {
     getGroups();
   }, [user.school_user?.school.school_id]);
@@ -45,15 +49,13 @@ function SchoolStudentGroups() {
                   subtitle="List of all the student groups sorted according to the recently added"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false">
-                    ...
-                  </a>
-                </div>
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        </div>
+                                    </div>
               </div>
 
               <div className="table-responsive">

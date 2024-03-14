@@ -32,8 +32,11 @@ export default {
     let response = await apiCall("request/deny", data);
     return response;
   },
-  async countParents(data) 
+  async countParents(school) 
   {
+    let data = {
+      school_id: school
+    };
     let response = await apiCall("guardian/count", data);
     return response;
   },
