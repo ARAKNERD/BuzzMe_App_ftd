@@ -9,6 +9,7 @@ import ajaxParent from "../util/remote/ajaxParent";
 import {Toaster, toast} from "react-hot-toast";
 import Loader from "../Components/Common/Loader";
 import {Link} from "react-router-dom";
+import ajaxCallStation from "../util/remote/ajaxCallStation";
 
 function Dashboard() {
   const [schoolsNumber, setSchoolsNumber] = useState(false);
@@ -59,7 +60,9 @@ function Dashboard() {
   };
 
   const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchStudentNumber(user.school_user ? user.school_user.school?.school_id : "");
+    const server_response = await ajaxStudent.fetchStudentNumber(
+      user.school_user ? user.school_user.school?.school_id : ""
+    );
 
     if (server_response.status === "OK") {
       //store results
@@ -69,16 +72,31 @@ function Dashboard() {
       setStudentsNumber("404");
     }
   };
+  // fetches  call stations count
+  const [callStations, setCallStations] = useState("");
+  const getcall_stations_sNumber = async () => {
+    const server_response = await ajaxCallStation.callStation_count();
+
+    if (server_response.status === "OK") {
+      //store results
+      setCallStations(server_response.details);
+    } else {
+      //communicate error
+      setCallStations("404");
+    }
+  };
 
   const getParentsNumber = async () => {
-    const server_response = await ajaxParent.countParents(user.school_user ? user.school_user.school?.school_id : "");
-     
-    if(server_response.status==="OK"){
-       //store results
-       setParentsNumber(server_response.details);
-    }else{
-       //communicate error
-       setParentsNumber("404");
+    const server_response = await ajaxParent.countParents(
+      user.school_user ? user.school_user.school?.school_id : ""
+    );
+
+    if (server_response.status === "OK") {
+      //store results
+      setParentsNumber(server_response.details);
+    } else {
+      //communicate error
+      setParentsNumber("404");
     }
   };
 
@@ -100,6 +118,7 @@ function Dashboard() {
 
   useEffect(() => {
     getSchoolsNumber();
+    getcall_stations_sNumber();
   }, []);
 
   useEffect(() => {
@@ -131,6 +150,29 @@ function Dashboard() {
                       <div className="item-number">
                         <span className="counter">
                           {schoolsNumber ? schoolsNumber.total_p : "..."}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </RenderSecure>
+          <RenderSecure code="ADMIN-VIEW">
+            <div className="col-xl-3 col-sm-6 col-12">
+              <div className="dashboard-summery-one mg-b-20">
+                <div className="row align-items-center">
+                  <div className="col-6">
+                    <div className="item-icon bg-light-blue">
+                      <i className="fa-solid fa-headset text-blue" />
+                    </div>
+                  </div>
+                  <div className="col-6">
+                    <div className="item-content">
+                      <div className="item-title">calling stations</div>
+                      <div className="item-number">
+                        <span className="counter">
+                          {callStations ? callStations.total_p : "..."}
                         </span>
                       </div>
                     </div>

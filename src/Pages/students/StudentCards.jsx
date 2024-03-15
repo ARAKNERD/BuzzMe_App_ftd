@@ -5,9 +5,9 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 import {useParams} from "react-router-dom";
 function StudentCards() {
   const {user} = useContext(AuthContext);
-  const {student_id, group_id} = useParams();
+  const {student_id, group_id, school_id} = useParams();
 
-  var school = user.school_user ? user.school_user.school.school_id : "";
+  // var school = user.school_user ? user.school_user.school.school_id : "";
 
   useEffect(() => {
     getStudentList();
@@ -15,7 +15,7 @@ function StudentCards() {
   const [studentsData, setStudentsData] = useState("404");
   const getStudentList = async () => {
     var data = {
-      school_id: school,
+      school_id: school_id,
       student_id: student_id !== "null" ? student_id : "",
       group_id: group_id !== "null" ? group_id : "",
     };
@@ -26,7 +26,6 @@ function StudentCards() {
     // if (group_id) {
     //   data["group_id"] = group_id;
     // }
-
 
     const server_response = await ajaxStudent.fetchStudentCardList(data);
     if (server_response.status === "OK") {
