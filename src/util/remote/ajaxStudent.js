@@ -72,8 +72,14 @@ export default {
     return response;
   },
   async fetchStudentCardList(data) {
-    console.log(data);
     let response = await apiCall("student/student_cards", data);
+    return response;
+  },
+  async setDefaultPin(account_id) {
+    let data = {
+      account_id: account_id
+    };
+    let response = await apiCall("student/pin/default", data);
     return response;
   },
 };

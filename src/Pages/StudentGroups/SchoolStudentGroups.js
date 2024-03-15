@@ -35,7 +35,7 @@ function SchoolStudentGroups() {
     <AppContainer title="Student Groups">
       <div className="row">
         <div className="col-lg-4">
-          <AddStudentSchoolGroup />
+          <AddStudentSchoolGroup g={getGroups}/>
         </div>
         <div className="col-lg-8">
           <div

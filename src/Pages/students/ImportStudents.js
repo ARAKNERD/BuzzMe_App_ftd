@@ -10,6 +10,10 @@ import Loader from "../../Components/Common/Loader";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faRefresh } from "@fortawesome/free-solid-svg-icons";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 
 
 const ImportStudents = () => {
@@ -21,6 +25,11 @@ const ImportStudents = () => {
   const [group, setGroup] = useState("");
   const {user} = useContext(AuthContext);
   const navigation = useNavigate();
+
+  const AddGroupOption = {
+    group_id: 'add_new',
+    group_name: '- - - Register New Student Group - - -',
+  };
 
   const schoolData = {
     school_id: user.school_user?.school?.school_id,
@@ -120,7 +129,10 @@ const ImportStudents = () => {
       >
         <div {...getRootProps()} style={dropzoneStyles}>
           <input {...getInputProps()} />
+          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 3 </b>columns in this order; Student Names, Registration Number and Gender. </p>
           <p>Drag & drop an Excel file here, or click to select one</p>
+         
+
         </div>
         {loading && <Loader />}
         {excelData.length > 0 && (
@@ -160,13 +172,23 @@ const ImportStudents = () => {
             </div>
             {!loading && !saved && (
                 <><div className="col-lg-6 col-md-6">
-                <label htmlFor="">Student Group</label>
+                <label htmlFor="">Student Group 
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip id="refresh-tooltip">Refresh Student Groups</Tooltip>}>
+                     <FontAwesomeIcon icon={faRefresh} onClick={getGroups} style={{marginLeft:"4px"}} /></OverlayTrigger></label>
                 <Select
-                  onChange={(e) => setGroup(e.group_id)}
+                  onChange={(selectedOption) => {
+                    if (selectedOption.group_id === 'add_new') {
+                      window.open('/class-groups', '_blank');
+                    } else {
+                      setGroup(selectedOption.group_id);
+                    }
+                  }}
                   getOptionLabel={(option) => option.group_name}
                   getOptionValue={(option) => option.group_id}
                   isSearchable
-                  options={Array.isArray(groupList) ? groupList : []}
+                  options={Array.isArray(groupList) ? [...groupList, AddGroupOption] : []}
                   value={
                     Array.isArray(groupList) &&
                     groupList.find((value) => value.group_id === group)

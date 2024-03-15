@@ -11,6 +11,16 @@ export default {
     return response;
   },
 
+  async fetchFewStations(school,limit) 
+  {
+    let data = {
+      school_id: school,
+      limit: limit
+    };
+    let response = await apiCall("station/list", data);
+    return response;
+  },
+
   async createStation(data) 
   {
     let response = await apiCall("station/add", data);

@@ -52,9 +52,7 @@ function Login() {
             {info}
             <h2 className="text-center">
               {" "}
-              <i>
-                Login to your Account <br /> To Continue
-              </i>
+                Admin Login
             </h2>
             <form className="login-form" onSubmit={handleSubmit}>
               <div className="form-group">

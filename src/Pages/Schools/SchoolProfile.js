@@ -500,7 +500,7 @@ const SchoolProfile = props => {
                                         ))
                                     ): (
                                         <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No callinf stations installed within the school yet.</td>
+                                            <td colSpan="4" style={{textAlign:"center"}}>No calling stations installed within the school yet.</td>
                                         </tr>
                                     )}
                                 </tbody>

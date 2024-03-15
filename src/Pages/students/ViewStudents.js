@@ -32,6 +32,14 @@ function ViewStudents() {
     }
   };
 
+  const getDefaultPin = async (e,item) => {
+    e.preventDefault()
+    const server_response = await ajaxStudent.setDefaultPin(item.account_id);
+    if (server_response.status === "OK") {
+      toast.success(server_response.message, {duration: 10000});
+    }
+  };
+
   useEffect(() => {
     getStudentList();
   }, [id, page]);
@@ -190,6 +198,27 @@ function ViewStudents() {
                                 View
                               </Link>
                             </td>
+                            <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => getDefaultPin(e,item)}>
+                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
+                                Set Default Pin
+                              </Link>
+</div>
+                            </div>
+                          </td>
                           </tr>
                         ))
                       ) : (
@@ -200,25 +229,46 @@ function ViewStudents() {
                         </tr>
                       )
                     ) : Array.isArray(studentList) && studentList.length > 0 ? (
-                      studentList.map((student, key) => (
+                      studentList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td>
-                            <Link to={`/students/profile/${student.id}`}>
-                              {student.names}
+                            <Link to={`/students/profile/${item.id}`}>
+                              {item.names}
                             </Link>
                           </td>
-                          <td className="text-dark">{student.student_code}</td>
-                          <td className="text-dark">{student.reg_no}</td>
+                          <td className="text-dark">{item.student_code}</td>
+                          <td className="text-dark">{item.reg_no}</td>
                           <td>
-                            <td>
+                            
                               <Link
                                 className="btn btn-info"
                                 target="_blank "
-                                to={`/students/student_card/${student.id}/null/${user.school_user.school.school_id}`}>
+                                to={`/students/student_card/${item.id}/null/${user.school_user.school.school_id}`}>
                                 View
                               </Link>
-                            </td>
+                            
+                          </td>
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => getDefaultPin(e,item)}>
+                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
+                                Set Default Pin
+                              </Link>
+</div>
+                            </div>
                           </td>
                         </tr>
                       ))

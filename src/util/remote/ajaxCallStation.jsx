@@ -11,7 +11,10 @@ export default {
     let response = await apiCall("station/add", data);
     return response;
   },
-  async callStation_count(data) {
+  async callStation_count(school) {
+    let data = {
+      school_id: school
+    };
     let response = await apiCall("station/count", data);
     return response;
   },

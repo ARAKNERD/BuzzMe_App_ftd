@@ -17,8 +17,11 @@ export default {
     let response = await apiCall("guardian/update", data);
     return response;
   },
-  async fetchParentRequests(data) 
+  async fetchParentRequests(school) 
   {
+    let data = {
+      school_requested: school
+    };
     let response = await apiCall("request/list", data);
     return response;
   },

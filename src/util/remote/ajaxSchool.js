@@ -27,6 +27,11 @@ export default {
     return response;
   },
 
+  async fetchRecentSchools(data) {
+    let response = await apiCall("school/recent", data);
+    return response;
+  },
+
   // SCHOOL USERS
 
   async fetchSchoolUserList(data) {
