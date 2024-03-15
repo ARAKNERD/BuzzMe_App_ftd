@@ -15,13 +15,8 @@ function ViewParentRequests() {
   const [modal, setModal] = useStateCallback(false);
   const {user} = useContext(AuthContext);
 
-  const data = {
-    school_requested: user.school_user?.school?.school_id,
-    parent_id: "",
-  };
-
   const getRequestList = async () => {
-    const server_response = await ajaxParent.fetchParentRequests(data);
+    const server_response = await ajaxParent.fetchParentRequests(user.school_user?.school.school_id);
     if (server_response.status === "OK") {
       setRequestList(server_response.details);
     } else {
@@ -57,7 +52,7 @@ function ViewParentRequests() {
 
   useEffect(() => {
     getRequestList();
-  }, []);
+  }, [user.school_user?.school.school_id]);
 
   return (
     <AppContainer title="Parent Requests">

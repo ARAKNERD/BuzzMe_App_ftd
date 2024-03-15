@@ -42,9 +42,8 @@ const Profile = props => {
                     <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
                         <div className="btn-list text-center">
                             
-                                <a href="#"  className="btn ripple btn-warning btn-sm mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
                             
-                                <a href="#" onClick={changePassword} className="btn ripple btn-info btn-sm mr-2"><i className="far fa-edit mr-1"></i>Change Password</a>
+                                <a href="#" onClick={changePassword} className="btn ripple btn-info btn-md mr-2"><i className="far fa-edit mr-1"></i>Change Password</a>
                             
                         </div>
                     </div>

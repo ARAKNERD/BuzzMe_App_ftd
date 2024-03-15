@@ -130,7 +130,7 @@ const Sidebar = (props) => {
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
+                  <i className="fa-solid fa-users" />
                   <span>Student Groups</span>
                 </Link>
               </li>

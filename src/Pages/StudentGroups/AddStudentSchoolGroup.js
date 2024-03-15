@@ -3,23 +3,9 @@ import {Toaster, toast} from "react-hot-toast";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import AuthContext from "../../Context/AuthContext";
 
-function AddStudentSchoolGroup() {
+function AddStudentSchoolGroup(props) {
   const {user} = useContext(AuthContext);
   const [groupName, setGroupName] = useState("");
-  const [groupList, setGroupList] = useState(false);
-
-  const getGroups = async () => {
-    const server_response = await ajaxStudentGroup.fetchGroupList(
-      user.school_user?.school?.school_id
-    );
-    if (server_response.status === "OK") {
-      setGroupList(server_response.details);
-    }
-  };
-
-  useEffect(() => {
-    getGroups();
-  }, [user.school_user?.school.school_id]);
 
 
   var school = user.school_user ? user.school_user.school.school_id : "";
@@ -35,7 +21,7 @@ function AddStudentSchoolGroup() {
       );
       if (server_response.status === "OK") {
         toast.success(server_response.message);
-        getGroups();
+        props.g();
         resetForm();
       } else {
         toast.error(server_response.message);

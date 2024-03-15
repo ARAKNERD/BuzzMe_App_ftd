@@ -114,7 +114,6 @@ const StudentProfile = props => {
         const server_response = await ajaxStudent.fetchStudentContacts(data);
         
         setLoading3(false)
-        console.log(server_response)
         if(server_response.status==="OK"){
             setStudentContacts(server_response.details);
         }else{

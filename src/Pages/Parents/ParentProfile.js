@@ -223,8 +223,8 @@ const ParentProfile = props => {
                 <div className="card height-auto" >
                     <div className="card-body map-card">
                         <TableHeader
-                            title="Children"
-                            subtitle="List of the children under the parent's or guardian's care" 
+                            title="Students"
+                            subtitle="List of the students under the parent's or guardian's care" 
                            
                                 
                         />
