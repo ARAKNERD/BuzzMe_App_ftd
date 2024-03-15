@@ -23,9 +23,9 @@ function SchoolStudentGroups() {
     }
   };
 
-  const refreshData = () =>{
-    getGroups()
-  }
+  const refreshData = () => {
+    getGroups();
+  };
 
   useEffect(() => {
     getGroups();
@@ -49,13 +49,21 @@ function SchoolStudentGroups() {
                   subtitle="List of all the student groups sorted according to the recently added"
                 />
                 <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-                
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        </div>
-                                    </div>
+                  <a
+                    class="dropdown-toggle"
+                    href="#"
+                    role="button"
+                    data-toggle="dropdown"
+                    aria-expanded="false">
+                    ...
+                  </a>
+
+                  <div class="dropdown-menu dropdown-menu-right">
+                    <Link class="dropdown-item" onClick={refreshData}>
+                      <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
+                    </Link>
+                  </div>
+                </div>
               </div>
 
               <div className="table-responsive">
@@ -95,7 +103,7 @@ function SchoolStudentGroups() {
                           <td>
                             <Link
                               className="btn btn-info"
-                              to={`/students/student_card/null/${item.group_id}`}>
+                              to={`/students/student_card/null/${item.group_id}/${user.school_user.school.school_id}`}>
                               students codeslips
                             </Link>
                           </td>

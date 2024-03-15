@@ -11,6 +11,10 @@ export default {
     let response = await apiCall("station/add", data);
     return response;
   },
+  async callStation_count(data) {
+    let response = await apiCall("station/count", data);
+    return response;
+  },
 
   async updateAccount(data) {
     let response = await apiCall("account/update", data);
