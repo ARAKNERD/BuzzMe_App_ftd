@@ -72,7 +72,8 @@ function AddSchool() {
         <div className="card-body">
           <div className="heading-layout1">
             <div className="item-title">
-              <h3>Add New School</h3>
+              <h5 style={{marginBottom:0}}>Add New School</h5>
+              <p><small><i>Note: All fields in the form marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
             </div>
           </div>
           <form
@@ -81,7 +82,7 @@ function AddSchool() {
             className="new-added-form">
             <div className="row">
               <div className="col-lg-6 col-md-6  col-12 form-group">
-                <label htmlFor="">School Name</label>
+                <label htmlFor="">School Name <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
                   value={schoolName}
@@ -91,7 +92,7 @@ function AddSchool() {
                 />
               </div>
               <div className="col-lg-6 col-md-6  col-12 form-group">
-                <label htmlFor="">Contact</label>
+                <label htmlFor="">Contact <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
                   value={contact}
@@ -101,7 +102,7 @@ function AddSchool() {
                 />
               </div>
               <div className="col-lg-6 col-md-6  col-12 form-group">
-                <label htmlFor="">E-mail Address</label>
+                <label htmlFor="">E-mail Address <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
                   value={email}
@@ -111,7 +112,7 @@ function AddSchool() {
                 />
               </div>
               <div className="col-lg-6 col-md-6 col-12 form-group">
-                <label htmlFor="">Location / Physical Address</label>
+                <label htmlFor="">Location / Physical Address <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
                   value={address}
@@ -121,7 +122,7 @@ function AddSchool() {
                 />
               </div>
               <div className="col-lg-6 col-md-6  col-12 form-group">
-                <label htmlFor="">District</label>
+                <label htmlFor="">District <span style={{color:"red"}}>*</span></label>
                 <Select
                   onChange={(e) => setDistrict(e.district_id)}
                   getOptionLabel={(option) => option.district_name}
@@ -135,7 +136,7 @@ function AddSchool() {
                 />
               </div>
               <div className="col-lg-6 col-md-6 col-12 form-group">
-                <label htmlFor="">Date Registered</label>
+                <label htmlFor="">Date Registered <span style={{color:"red"}}>*</span></label>
                 <input
                   type="date"
                   value={dateRegistered || getCurrentDate()}

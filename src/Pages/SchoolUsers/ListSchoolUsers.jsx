@@ -3,6 +3,7 @@ import ajaxSchool from "../../util/remote/ajaxSchool";
 import { Link } from "react-router-dom";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ResetPassword from "./ResetPassword";
+import TableHeader from "../../Components/Common/TableHeader";
 
 function ListSchoolUsers(props) {
   const [schoolUsers, setSchoolUsers] = useState([]);
@@ -40,9 +41,10 @@ function ListSchoolUsers(props) {
       {modal}
       <div className="card-body">
         <div className="heading-layout1">
-          <div className="item-title">
-            <h3>School Administrators</h3>
-          </div>
+        <TableHeader
+                title="School Administrators List"
+                subtitle="List of all the different school administrators"    
+              />
           {/* Dropdown menu */}
         </div>
         {/* Search form */}

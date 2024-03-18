@@ -43,7 +43,7 @@ function AddRegion() {
           <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h6 className="card-title mb-4">Add New Region</h6>
+                <h5 className="card-title">Add New Region</h5>
               </div>
 
               <form
@@ -51,11 +51,12 @@ function AddRegion() {
                 method="post"
                 class="new-added-form">
                 <div className="row">
-                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 radius-30">
-                    <label htmlFor="">Region Name</label>
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-4 radius-30">
+                    <label htmlFor="">Region Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       value={regionName}
+                      placeholder="Enter name of region..."
                       onChange={(e) => setRegionName(e.target.value)}
                       className=" colo-12 form-control"
                     />

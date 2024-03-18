@@ -6,12 +6,14 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import ajaxStation from "../../util/remote/ajaxStation";
 import AddStation from "./AddStation";
-import StationContext from "../../Context/StationContext";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import DeActivateStation from "./DeActivateStation";
-import ActivateStation from "./ActivateStation";
 import { RenderSecure } from "../../util/script/RenderSecure";
 import AuthContext from "../../Context/AuthContext";
+import UpdateStation from "./UpdateStation";
+import UpdateHours from "./UpdateHours";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
+
 
 function ListStations() {
     const [stationList, setStationList] = useState(false);
@@ -33,14 +35,11 @@ function ListStations() {
     }, [user.school_user?user.school_user?.school?.school_id:""]);
 
 
-
-
-  const deActivateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+  const updateStation=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} stationNumber={item.station_code} startTime={item.start_time} endTime={item.end_time} g={getStations} isOpen={true}/>))
   }
-
-  const activateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+  const updateHours=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
   }
 
   const refreshData = () =>{
@@ -54,7 +53,7 @@ function ListStations() {
       <div className="row">
       <RenderSecure code="ADMIN-VIEW">
         <div className="col-lg-4">
-          <AddStation />
+          <AddStation g={getStations} />
         </div>
         </RenderSecure>
 
@@ -82,8 +81,9 @@ function ListStations() {
                     <tr>
                       <th>No.</th>
                       <th>Station Name</th>
-                      <th>Station Code</th>
+                      <th>Station / IMEI Numbers</th>
                       {user.school_user?"":<th>School</th>}
+                      <th>Active Hours</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
@@ -96,6 +96,7 @@ function ListStations() {
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
                           {user.school_user?"":<td>{item.school?.school_name}</td>}
+                          <td>{item.start_time} - {item.end_time}</td>
                           <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
 
                           <td>
@@ -108,21 +109,22 @@ function ListStations() {
                                 <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
-                                {item.status==="1"?<Link
-                                  className="dropdown-item"
-                                  to="#"
-                                  onClick={(e) => deActivateStation(e,item)}>
-                                  <i className="fas fa-close text-orange-red"></i>
-                                  De-Activate Station
-                                </Link>:
+                                <RenderSecure code="SCHOOL-USER-VIEW">
                                 <Link
                                 className="dropdown-item"
                                 to="#"
-                                onClick={(e) => activateStation(e,item)}>
-                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
-                                Activate Station
-                              </Link>
-}</div>
+                                onClick={(e) => updateHours(e,item)}>
+                                <FontAwesomeIcon icon={faClock} style={{ color: "grey", marginRight: "3px" }} />
+                                 Change Active Hours
+                              </Link></RenderSecure>
+                              <RenderSecure code="ADMIN-VIEW">
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateStation(e,item)}>
+                                <i className="far fa-edit mr-1"></i>
+                                 Update Station Details
+                              </Link></RenderSecure></div>
                             </div>
                           </td>
                         </tr>

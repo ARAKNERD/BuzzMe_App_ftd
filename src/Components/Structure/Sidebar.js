@@ -171,20 +171,20 @@ const Sidebar = (props) => {
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
                   <i className="fa-solid fa-users" />
-                  <span> School Users / Admins</span>
+                  <span> School Administrators</span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
                     <Link to="/Admin/addSchoolUser" className="nav-link">
                       <i className="fas fa-angle-right" />
-                      Add School User
+                      Add School Admin
                     </Link>
                   </li>
 
                   <li className="nav-item">
                     <Link to="/Admin/user/view" className="nav-link">
                       <i className="fas fa-angle-right" />
-                      View School Users
+                      View School Admins
                     </Link>
                   </li>
                 </ul>

@@ -48,7 +48,8 @@ function AddDistrict() {
           <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h6 className="card-title mb-4">Add New District</h6>
+                <h5 style={{marginBottom:0}} className="card-title">Add New District</h5>
+                <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
               </div>
 
               <form
@@ -56,8 +57,8 @@ function AddDistrict() {
                 method="post"
                 class="new-added-form">
                 <div className="row">
-                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 radius-30">
-                    <label htmlFor="">District Name</label>
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-2 radius-30">
+                    <label htmlFor="">District Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       value={districtName}
@@ -65,8 +66,8 @@ function AddDistrict() {
                       className=" colo-12 form-control"
                     />
                   </div>
-                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5">
-                    <label htmlFor="">Region</label>
+                  <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-2">
+                    <label htmlFor="">Region <span style={{color:"red"}}>*</span></label>
                     <Select
                       onChange={(e) => setRegion(e.region_id)}
                       getOptionLabel={(option) => option.region_name}
