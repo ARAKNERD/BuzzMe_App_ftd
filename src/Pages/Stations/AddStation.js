@@ -3,19 +3,21 @@ import {toast} from "react-hot-toast";
 import SchoolContext from "../../Context/SchoolContext";
 import ajaxStation from "../../util/remote/ajaxStation";
 import Select from "react-select";
-import StationContext from "../../Context/StationContext";
 
-function AddStation() {
+function AddStation(props) {
   const [stationCode, setStationCode] = useState("");
   const [stationName, setStationName] = useState("");
   const [school, setSchool] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
   const {schoolList} = useContext(SchoolContext);
-  const {getStationList} = useContext(StationContext);
 
   const data = {
-    station_code: stationCode,
+    station_number: stationCode,
     station_name: stationName,
     school_id: school,
+    start_time: startTime,
+    end_time: endTime
   };
 
   const handleAdd = async (e) => {
@@ -26,7 +28,7 @@ function AddStation() {
       // console.log(server_response)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
-        getStationList();
+        props.g()
         resetForm();
       } else {
         toast.error(server_response.message);
@@ -39,6 +41,8 @@ function AddStation() {
   const resetForm = () => {
     setStationCode("");
     setStationName("");
+    setEndTime("");
+    setStartTime("");
   };
 
   return (
@@ -46,7 +50,8 @@ function AddStation() {
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
-            <h3>Add New Calling Station</h3>
+            <h5 style={{marginBottom:0}}>Add New Calling Station</h5>
+            <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
           </div>
         </div>
         <form
@@ -54,26 +59,28 @@ function AddStation() {
           method="post"
           class="new-added-form">
           <div className="row">
-            <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Name</label>
+            <div className="col-lg-12 col-12 mt-1 form-group">
+              <label htmlFor="">Name <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
+                placeholder="Enter name of calling station.."
                 value={stationName}
                 onChange={(e) => setStationName(e.target.value)}
                 className="form-control"
               />
             </div>
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Station Code</label>
+              <label htmlFor="">Station / IMEI Number <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
                 value={stationCode}
+                placeholder="Enter IMEI number of station.."
                 onChange={(e) => setStationCode(e.target.value)}
                 className="form-control"
               />
             </div>
             <div className="col-xl-12 col-lg-12 form-group">
-                <label htmlFor="">School</label>
+                <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
                 <Select
                     onChange={(e) => setSchool(e.school_id)}
                     getOptionLabel={(option) => option.school_name}
@@ -85,6 +92,24 @@ function AddStation() {
                         schoolList.find((value) => value.school_id === school)
                     }
                 />
+            </div>
+            <div className="col-lg-12 col-12 form-group">
+              <label htmlFor="">Start Time <span style={{color:"red"}}>*</span></label>
+              <input
+                type="time"
+                value={startTime}
+                onChange={(e) => setStartTime(e.target.value)}
+                className="form-control"
+              />
+            </div>
+            <div className="col-lg-12 col-12 form-group">
+              <label htmlFor="">End Time <span style={{color:"red"}}>*</span></label>
+              <input
+                type="time"
+                value={endTime}
+                onChange={(e) => setEndTime(e.target.value)}
+                className="form-control"
+              />
             </div>
           </div>
           <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">

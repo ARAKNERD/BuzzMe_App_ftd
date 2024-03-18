@@ -205,7 +205,9 @@ const SchoolProfile = props => {
   const setPageNumber = (e,item) =>{
     setPage(item)
   }
- 
+  useEffect(()=>{
+    getSchoolStudents()
+  }, [id, page])
     return (
         <AppContainer title={"Student Profile"} >
             <Toaster

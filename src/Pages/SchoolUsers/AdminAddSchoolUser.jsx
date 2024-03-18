@@ -1,13 +1,12 @@
 import React, {useContext, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import {Formik, Form, Field, ErrorMessage} from "formik";
 import ajaxSchool from "../../util/remote/ajaxSchool";
 import toast, {Toaster} from "react-hot-toast";
 import SchoolContext from "../../Context/SchoolContext";
 import Select from "react-select";
+
 function AdminAddSchoolUser() {
   const {schoolList} = useContext(SchoolContext);
-  // console.log(schoolList);
   const [names, setNames] = useState("");
   const [Username, setUsername] = useState("");
   const [school, setSchool] = useState("");
@@ -36,30 +35,31 @@ function AdminAddSchoolUser() {
   };
 
   return (
-    <AppContainer title="Add new School user">
+    <AppContainer title="Register School Administrator">
       <div className="card height-auto">
         <div className="card-body">
           <div className="heading-layout1">
             <div className="item-title">
-              <h3>Add New School User</h3>
+              <h5 style={{marginBottom:0}}>Add School Administrator</h5>
+              <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
             </div>
           </div>
           <Toaster />
 
           <form className="new-added-form" onSubmit={handleFormSubmission}>
             <div className="row">
-              <div className="col-xl-12 col-lg-12 col-12 form-group">
-                <label> Name *</label>
+              <div className="col-xl-12 col-lg-12 col-12 mt-1 form-group">
+                <label> Names <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
-                  placeholder="Enter name of the school user"
+                  placeholder="Enter name of the school administrator.."
                   value={names}
                   onChange={(e) => setNames(e.target.value)}
                   className="form-control"
                 />
               </div>
               <div className="col-xl-12 col-lg-12 col-12 form-group">
-                <label>Username *</label>
+                <label>Username <span style={{color:"red"}}>*</span></label>
                 <input
                   type="text"
                   placeholder="Enter username"
@@ -69,7 +69,7 @@ function AdminAddSchoolUser() {
                 />
               </div>
               <div className="col-xl-12 col-lg-12 col-12 form-group">
-                <label>Select school *</label>
+                <label>Select School: <span style={{color:"red"}}>*</span></label>
                 <Select
                   onChange={(e) => setSchool(e.school_id)}
                   getOptionLabel={(option) => option.school_name}

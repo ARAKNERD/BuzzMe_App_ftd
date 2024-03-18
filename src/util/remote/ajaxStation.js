@@ -38,5 +38,15 @@ export default {
     let response = await apiCall("station/deactivate", data);
     return response;
   },
+  async updateStation(data) 
+  {
+    let response = await apiCall("station/update", data);
+    return response;
+  },
+  async updateHours(data) 
+  {
+    let response = await apiCall("station/update/hours", data);
+    return response;
+  },
   
 };

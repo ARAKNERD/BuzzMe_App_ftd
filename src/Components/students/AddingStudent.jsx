@@ -89,13 +89,15 @@ function AddingStudent() {
           <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h6 className="card-title mb-4">Register New Student</h6>
+                <h5 style={{marginBottom:0}} className="card-title">Register New Student</h5>
+            <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
+
               </div>
 
               <form onSubmit={(e) => handleAdd(e)} method="post">
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Student Names*</label>
+                    <label>Student Names <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       value={names}
@@ -106,7 +108,7 @@ function AddingStudent() {
                     />
                   </div>
                   <div className="col-lg-6 col-md-6">
-                    <label htmlFor="">Student Group</label>
+                    <label htmlFor="">Student Group <span style={{color:"red"}}>*</span></label>
                     <Select
                       onChange={(e) => setGroup(e.group_id)}
                       getOptionLabel={(option) => option.group_name}
@@ -121,7 +123,7 @@ function AddingStudent() {
                   </div>
 
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Registration No</label>
+                    <label>Registration Number </label>
                     <input
                       type="text"
                       value={regNo}
@@ -132,7 +134,7 @@ function AddingStudent() {
                     />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Gender*</label>
+                    <label>Gender <span style={{color:"red"}}>*</span></label>
 
                     <select
                       className="col-12 form-control"
@@ -152,14 +154,6 @@ function AddingStudent() {
                     Save Student Details
                   </button>
                 </div>
-                {/* <div className="mb-4">
-                  <input
-                    type="submit"
-                    style={{float: "right"}}
-                    className="btn btn-success"
-                    value="Save Student Details"
-                  />
-                </div> */}
               </form>
             </div>
           </div>

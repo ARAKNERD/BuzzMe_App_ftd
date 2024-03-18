@@ -57,7 +57,7 @@ useEffect(() => {
         <div className="card-body">
           <div className="heading-layout1">
             <div className="item-title">
-              <h3>All Schools</h3>
+              <h5 style={{marginBottom:0}}>All Schools</h5>
             </div>
             <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 

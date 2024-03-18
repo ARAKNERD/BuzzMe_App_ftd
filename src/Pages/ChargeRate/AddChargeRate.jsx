@@ -41,7 +41,8 @@ function AddChargeRate() {
       <div className="card-body">
         <div className="heading-layout1">
           <div className="item-title">
-            <h3>Add New Charge Rate</h3>
+            <h5 style={{marginBottom:0}}>Add New Charge Rate</h5>
+            <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
           </div>
         </div>
         <form
@@ -50,18 +51,21 @@ function AddChargeRate() {
           class="new-added-form">
           <div className="row">
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Type</label>
-              <input
-                type="text"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className="form-control"
-              />
+              <label htmlFor="">Type <span style={{color:"red"}}>*</span><small>(i.e. message, phone call, ...)</small> </label>
+              <select
+                      className="col-12 form-control"
+                      value={type}
+                      onChange={(e) => setType(e.target.value)}>
+                      <option value={true}>Select..</option>
+                      <option value="Message">Message</option>
+                      <option value="Phone Call">Phone Call</option>
+                    </select>
             </div>
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Rate</label>
+              <label htmlFor="">Rate <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
+                placeholder="Enter cost of each message or call.."
                 value={rate}
                 onChange={(e) => setRate(e.target.value)}
                 className="form-control"
