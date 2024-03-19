@@ -1623,7 +1623,7 @@ ul {
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.1);
 }
 .nav-bar-header-one {
-  background: linear-gradient(to right, #ff9d01, #ffaa01);
+  background: linear-gradient(to right, #042954, #042954);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2361,7 +2361,7 @@ ul {
 }
 .header-main-menu .navbar-nav .header-admin .dropdown-menu .item-header {
   text-align: center;
-  background-color: #ffa001;
+  background-color: #042954;
   padding: 20px 25px;
   border-radius: 4px 4px 0 0;
   position: relative;
@@ -2370,7 +2370,7 @@ ul {
   content: "";
   height: 0;
   width: 0;
-  border-bottom: 10px solid #ffa001;
+  border-bottom: 10px solid #042954;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   position: absolute;
@@ -2490,7 +2490,7 @@ ul {
   > .nav-item
   > .nav-link
   i:before {
-  color: #ffa901;
+  color: #6abc45;
   font-size: 18px;
   margin-right: 15px;
   margin-left: 0;
@@ -4295,9 +4295,7 @@ ul {
 }
 /*=============== 6.6 Login Page ==================*/
 .login-page-wrap {
-  background-image: url("../img/figure/login-bg.jpg");
-  background-repeat: no-repeat;
-  background-position: top;
+  display: flex; /* Use flexbox */
   position: fixed;
   top: 0;
   bottom: 0;
@@ -4305,6 +4303,37 @@ ul {
   right: 0;
   height: 100%;
   width: 100%;
+}
+
+.login-page-wrap .half-image {
+  flex: 1; /* Each half takes up equal space */
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+/* Set background images for each half */
+.login-page-wrap .half-image:first-child {
+  background-image: url("../img/figure/322.png");
+  height: 100%;
+}
+
+.login-page-wrap .half-image:last-child {
+  background-color: #042954 ;
+}
+.login-page-wrap .halv-image {
+  flex: 1; /* Each half takes up equal space */
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+/* Set background images for each half */
+.login-page-wrap .halv-image:first-child {
+  background-color: #042954 ;
+}
+
+.login-page-wrap .halv-image:last-child {
+  background-image: url("../img/figure/45.jpeg");
+  
 }
 @media only screen and (max-width: 1024px) {
   .login-page-wrap {

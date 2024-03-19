@@ -157,7 +157,7 @@ sup {
   top: -0.5em;
 }
 a {
-  color: #007bff;
+  color: #042954;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
@@ -3654,7 +3654,7 @@ input[type="submit"].btn-block {
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
   color: #fff;
-  background-color: #007bff;
+  background-color: #042954;
 }
 .nav-fill .nav-item {
   -ms-flex: 1 1 auto;
