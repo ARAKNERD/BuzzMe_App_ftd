@@ -158,91 +158,51 @@ function Dashboard() {
         {/* Dashboard summery Start Here */}
         <div className="row gutters-20">
           <RenderSecure code="ADMIN-VIEW">
-            <div className="col-xl-3 col-sm-6 col-12">
-              <div className="dashboard-summery-one mg-b-20">
-                <div className="row align-items-center">
-                  <div className="col-6">
-                    <div className="item-icon bg-light-blue">
-                    <i className="fa-solid fa-school text-blue" />
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <div className="item-content">
-                      <div className="item-title">Schools</div>
-                      <div className="item-number">
-                        <span className="counter">
-                          {schoolsNumber ? schoolsNumber.total_p : "..."}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="col-sm-12 col-md-3">
+							<div class="card custom-card">
+								<div class="card-body">
+									<div>
+										<h5>Schools</h5>
+										<h2><span class="fs-30 mr-2">{schoolsNumber ? schoolsNumber.total_p : "..."}</span></h2>
+										<span class="text-muted">The number of schools registered to use the Buzz App.</span>
+									</div>
+								</div>
+							</div>
+						</div>
           </RenderSecure>
-            <div className="col-xl-3 col-sm-6 col-12">
-              <div className="dashboard-summery-one mg-b-20">
-                <div className="row align-items-center">
-                  <div className="col-6">
-                    <div className="item-icon bg-light-blue">
-                      <i className="fa-solid fa-headset text-blue" />
-                    </div>
-                  </div>
-                  <div className="col-6">
-                    <div className="item-content">
-                      <div className="item-title">Calling Stations</div>
-                      <div className="item-number">
-                        <span className="counter">
-                          {callStations ? callStations.total_p : "..."}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          <div className="col-xl-3 col-sm-6 col-12">
-            <div className="dashboard-summery-one mg-b-20">
-              <div className="row align-items-center">
-                <div className="col-6">
-                  <div className="item-icon bg-light-green">
-                    <i className="flaticon-classmates text-green" />
-                  </div>
-                </div>
-                <div className="col-6">
-                  <div className="item-content">
-                    <div className="item-title">Students</div>
-                    <div className="item-number">
-                      <span className="counter">
-                        {studentsNumber ? studentsNumber.total_p : "..."}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-xl-3 col-sm-6 col-12">
-            <div className="dashboard-summery-one mg-b-20">
-              <div className="row align-items-center">
-                <div className="col-6">
-                  <div className="item-icon bg-light-green">
-                    <i className="flaticon-user text-green" />
-                  </div>
-                </div>
-                <div className="col-6">
-                  <div className="item-content">
-                    <div className="item-title">Parents</div>
-                    <div className="item-number">
-                      <span className="counter">
-                        {parentsNumber ? parentsNumber.total_p : "..."}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="col-sm-12 col-md-3">
+							<div class="card custom-card">
+								<div class="card-body">
+									<div>
+										<h5>Calling Stations</h5>
+										<h2><span class="fs-30 mr-2">{callStations ? callStations.total_p : "..."}</span></h2>
+										<span class="text-muted">The number of call stations installed within the school(s).</span>
+									</div>
+								</div>
+							</div>
+						</div>
+            <div class="col-sm-12 col-md-3">
+							<div class="card custom-card">
+								<div class="card-body">
+									<div>
+										<h5>Students</h5>
+										<h2><span class="fs-30 mr-2">{studentsNumber ? studentsNumber.total_p : "..."}</span></h2>
+										<span class="text-muted">The number of students using the Buzz App.</span>
+									</div>
+								</div>
+							</div>
+						</div>
+          <div class="col-sm-12 col-md-3">
+							<div class="card custom-card">
+								<div class="card-body">
+									<div>
+										<h5>Parents</h5>
+										<h2><span class="fs-30 mr-2">{parentsNumber ? parentsNumber.total_p : "..."}</span></h2>
+										<span class="text-muted">The number of parents using the Buzz App.</span>
+									</div>
+								</div>
+							</div>
+						</div>
         </div>
         <div className="row gutters-20">
           <RenderSecure code="SCHOOL-USER-VIEW">
@@ -450,7 +410,6 @@ function Dashboard() {
                       <tr>
                       <th>No.</th>
                       <th>Station Name</th>
-                      <th>Station Code</th>
                       {user.school_user?"":<th>School</th>}
                       <th>Status</th>
                     </tr>
@@ -462,7 +421,6 @@ function Dashboard() {
                             <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
-                          <td>{item.station_code}</td>
                           {user.school_user?"":<td>{item.school?.school_name}</td>}
                           <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
 

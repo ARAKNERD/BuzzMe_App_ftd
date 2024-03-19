@@ -43,6 +43,9 @@ function Login() {
   return (
     <div>
       <div className="login-page-wrap">
+      <div className="half-image first-half">
+      </div>
+      <div className="half-image second-half">
         <div className="login-page-content">
           <div className="login-box">
             <div className="item-logo">
@@ -97,7 +100,7 @@ function Login() {
               </div>
             </form>
           </div>
-        </div>
+        </div></div>
       </div>
     </div>
   );

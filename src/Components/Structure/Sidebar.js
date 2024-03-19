@@ -43,8 +43,7 @@ const Sidebar = (props) => {
           <ul className="nav nav-sidebar-menu sidebar-toggle-view">
             <li className="nav-item">
               <Link to="/" className="nav-link">
-                <i className="flaticon-dashboard" />
-                <span>Dashboard</span>
+                <span><b>Dashboard</b></span>
               </Link>
             </li>
 
@@ -53,8 +52,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="fa-solid fa-school" />
-                  <span>Schools</span>
+                  <span><b>Schools</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
@@ -78,8 +76,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="flaticon-classmates" />
-                  <span>Students</span>
+                  <span><b>Students</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
@@ -103,8 +100,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="flaticon-couple" />
-                  <span>Parents</span>
+                  <span><b>Parents</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
@@ -130,8 +126,7 @@ const Sidebar = (props) => {
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">
-                  <i className="fa-solid fa-users" />
-                  <span>Student Groups</span>
+                  <span><b>Student Groups</b></span>
                 </Link>
               </li>
             </RenderSecure>
@@ -139,27 +134,23 @@ const Sidebar = (props) => {
             <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
                 <Link to="/Districts/view" className="nav-link">
-                  <i className="fa-solid fa-location-dot" />
-                  <span>Districts</span>
+                  <span><b>Districts</b></span>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/regions/view" className="nav-link">
-                  <i className="fa-solid fa-globe" />
-                  <span>Regions</span>
+                  <span><b>Regions</b></span>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link to="/rate/view" className="nav-link">
-                  <i className="fa-solid fa-file-invoice-dollar" />
-                  <span>Charge Rates</span>
+                  <span><b>Charge Rates</b></span>
                 </Link>
               </li>
               </RenderSecure>
               <li className="nav-item">
                 <Link to="/stations" className="nav-link">
-                <i className="fa-solid fa-headset" />
-                  <span>Calling Stations</span>
+                  <span><b>Calling Stations</b></span>
                 </Link>
               </li>
             
@@ -170,8 +161,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <i className="fa-solid fa-users" />
-                  <span> School Administrators</span>
+                  <span><b>School Administrators</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                   <li className="nav-item">
