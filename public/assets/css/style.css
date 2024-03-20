@@ -4328,11 +4328,12 @@ ul {
 
 /* Set background images for each half */
 .login-page-wrap .halv-image:first-child {
-  background-color: #042954 ;
+  background-image: url("../img/figure/222.png");
+  
 }
 
 .login-page-wrap .halv-image:last-child {
-  background-image: url("../img/figure/45.jpeg");
+  background-color: #042954 ;
   
 }
 @media only screen and (max-width: 1024px) {
