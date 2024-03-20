@@ -51,6 +51,9 @@ function ActivateAccount() {
     <div>
       <div className="login-page-wrap">
       <div className="halv-image first-half">
+      
+      </div>
+      <div className="halv-image second-half">
       <div className="login-page-content">
           <Toaster />
           <div className="login-box">
@@ -115,8 +118,6 @@ function ActivateAccount() {
             </form>
           </div>
         </div>
-      </div>
-      <div className="halv-image second-half">
         </div>
       </div>
     </div>

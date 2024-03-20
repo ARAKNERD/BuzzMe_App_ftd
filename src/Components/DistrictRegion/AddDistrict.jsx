@@ -62,6 +62,7 @@ function AddDistrict() {
                     <input
                       type="text"
                       value={districtName}
+                      placeholder="Enter name of district.."
                       onChange={(e) => setDistrictName(e.target.value)}
                       className=" colo-12 form-control"
                     />
