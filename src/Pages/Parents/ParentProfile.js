@@ -3,10 +3,12 @@ import Select from 'react-select'
 import { Link, useParams } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
 import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxStudent from '../../util/remote/ajaxStudent'
 import Loader from '../../Components/Common/Loader';
 import TableHeader from '../../Components/Common/TableHeader';
 import ajaxParent from '../../util/remote/ajaxParent';
+import useStateCallback from '../../util/customHooks/useStateCallback';
+import AddStudentParent from './AddStudentParent';
+import AuthContext from '../../Context/AuthContext';
 
 const ParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
@@ -18,6 +20,9 @@ const ParentProfile = props => {
     const [address,setAddress] =useState("")
     const [NIN,setNIN] =useState("")
     const [parentID,setParentID] = useState("")
+    const [modal, setModal] = useStateCallback(false);
+    const {user} = useContext(AuthContext);
+
 
 
     const [active,setActive] = useState(false)
@@ -28,6 +33,12 @@ const ParentProfile = props => {
 
     const data = {
         parent_id: id
+    
+      };
+
+    const data2 = {
+        parent_id: id,
+        school_id: user.school_user?.school.school_id
       };
 
     useEffect(()=>{
@@ -82,7 +93,7 @@ const ParentProfile = props => {
 
     const getChildren =async()=>{
         setLoading2(true)
-        const server_response = await ajaxParent.fetchChildren(data);
+        const server_response = await ajaxParent.fetchChildren(data2);
         setLoading2(false)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
@@ -91,6 +102,10 @@ const ParentProfile = props => {
             setChildren("404");
         }
     }
+
+    const handleModal2=()=>{
+        setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} schoolID={user.school_user?.school.school_id} isOpen={true}/>))
+    }
  
     return (
         <AppContainer title={"Guardian Profile"} >
@@ -98,7 +113,7 @@ const ParentProfile = props => {
                 position="top-center"
                 reverseOrder={false}
             />
-
+            {modal}
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {parentProfile && <div className="box-body" style={{position:"relative"}}>
@@ -224,7 +239,11 @@ const ParentProfile = props => {
                     <div className="card-body map-card">
                         <TableHeader
                             title="Students"
-                            subtitle="List of the students under the parent's or guardian's care" 
+                            subtitle="List of the students under the parent's or guardian's care"
+                            viewButton={
+                                <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Attach Student</a>
+                               
+                            } 
                            
                                 
                         />
@@ -238,7 +257,6 @@ const ParentProfile = props => {
                                         <th scope="col"> Student Name</th>
                                         <th scope="col"> Student Code</th>
                                         <th scope="col"> Student Group</th>
-                                        <th scope="col"> School</th>
                                         
                                     </tr>
                                 </thead>
@@ -251,7 +269,6 @@ const ParentProfile = props => {
                                                 <td>{item.student?.names}</td>
                                                 <td>{item.student?.student_code}</td>
                                                 <td>{item.student?.group?.group_name}</td>
-                                                <td>{item.student?.school?.school_name}</td>
                                             </tr>
                                         ))
                                     ): (
