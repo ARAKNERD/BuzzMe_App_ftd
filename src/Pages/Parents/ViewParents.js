@@ -20,18 +20,12 @@ function ViewParents() {
   const {id} = useParams();
 
 
-  const data = {
-    school_id: id,
-    page: page
-  };
-
   const getParentList = async () => {
     setLoading(true)
-    const server_response = await ajaxParent.fetchParentList(data);
+    const server_response = await ajaxParent.fetchParentList();
     setLoading(false)
     if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages)
-      setParentList(server_response.details.list);
+      setParentList(server_response.details);
     } else {
       setParentList("404");
     }
@@ -113,11 +107,11 @@ function ViewParents() {
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
                           <td><Link
-                          to={`/parents/profile/${item.parent?.parent_id}`}>
-                          {item.parent?.parent_name}
+                          to={`/parents/profile/${item.parent_id}`}>
+                          {item.parent_name}
                         </Link></td>
-                          <td>{item.parent?.main_contact}</td>
-                          <td>{item.parent?.address}</td>
+                          <td>{item.main_contact}</td>
+                          <td>{item.address}</td>
                           <td><div class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                                                     aria-expanded="false">

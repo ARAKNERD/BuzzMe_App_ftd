@@ -17,6 +17,16 @@ export default {
     let response = await apiCall("guardian/update", data);
     return response;
   },
+  async searchNIN(data) 
+  {
+    let response = await apiCall("guardian/nin", data);
+    return response;
+  },
+  async createParent(data) 
+  {
+    let response = await apiCall("guardian/add", data);
+    return response;
+  },
   async fetchParentRequests(school) 
   {
     let data = {
@@ -46,6 +56,11 @@ export default {
   async fetchChildren(data) 
   {
     let response = await apiCall("link/students/list", data);
+    return response;
+  },
+  async addGuardianStudent(data) 
+  {
+    let response = await apiCall("link/add", data);
     return response;
   },
 

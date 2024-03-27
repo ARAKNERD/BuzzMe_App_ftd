@@ -82,7 +82,7 @@ const Sidebar = (props) => {
                   <li className="nav-item">
                     <Link to="/students/add" className="nav-link">
                       <FontAwesomeIcon icon={faAngleRight} />
-                      Add Student
+                      Register Student
                     </Link>
                   </li>
                   <li className="nav-item">
@@ -103,6 +103,15 @@ const Sidebar = (props) => {
                   <span><b>Parents</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/parents/add">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">
+                        Register Parent
+                      </span>
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link className="nav-link" to={`/parents/${user.school_user?.school?.school_id}`}>
                       <FontAwesomeIcon icon={faAngleRight} />
@@ -110,15 +119,7 @@ const Sidebar = (props) => {
                       <span className="sidemenu-label">View Parents</span>
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/parent/requests">
-                      <FontAwesomeIcon icon={faAngleRight} />
-
-                      <span className="sidemenu-label">
-                        View Parent Requests
-                      </span>
-                    </Link>
-                  </li>
+                  
                 </ul>
               </li>
             </RenderSecure>
