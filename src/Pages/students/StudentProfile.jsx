@@ -9,6 +9,7 @@ import useStateCallback from '../../util/customHooks/useStateCallback';
 import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
 import AuthContext from '../../Context/AuthContext';
 import TableHeader from '../../Components/Common/TableHeader';
+import AddContact from './AddContact';
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -120,6 +121,10 @@ const StudentProfile = props => {
             //communicate error
             setStudentContacts("404");
         }
+    }
+
+    const handleModal2=()=>{
+        setModal(false, ()=>setModal(<AddContact studentID={id} g={getStudentContacts} isOpen={true}/>))
     }
  
     return (
@@ -273,7 +278,10 @@ const StudentProfile = props => {
                         <TableHeader
                             title="Student Contacts"
                             subtitle="List of all the student's contacts" 
-                           
+                            viewButton={
+                                <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Add Contact</a>
+                               
+                            } 
                                 
                         />
                         <div className="border-top mt-3"></div>                    

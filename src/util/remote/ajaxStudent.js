@@ -82,4 +82,8 @@ export default {
     let response = await apiCall("student/pin/default", data);
     return response;
   },
+  async addContact(data) {
+    let response = await apiCall("contact/add", data);
+    return response;
+  },
 };
