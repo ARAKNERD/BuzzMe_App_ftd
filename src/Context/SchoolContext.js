@@ -9,10 +9,12 @@ export const SchoolProvider = (props)=> {
 
    
    const [schoolList, setSchoolList] = useState(false);
+   const [recentSchools, setRecentSchools] = useState(false);
    const [data, setData]= useState({page:"1"})
 
    useEffect(()=>{
          getSchoolList();
+         getRecentSchools();
    }, [data])
   
    const getSchoolList =async()=>{
@@ -26,13 +28,27 @@ export const SchoolProvider = (props)=> {
          setSchoolList("404");
       }
    }
+
+   const getRecentSchools =async()=>{
+
+      const server_response = await ajaxSchool.fetchTodaySchools(data);
+      if(server_response.status==="OK"){
+         //store results
+         setRecentSchools(server_response.details);
+      }else{
+         //communicate error
+         setRecentSchools("404");
+      }
+   }
     
     return (
            <SchoolContext.Provider value={
                {
                     schoolList,
+                    recentSchools,
                   setData,
-                  getSchoolList
+                  getSchoolList,
+                  getRecentSchools
                }
                }>
                {props.children}

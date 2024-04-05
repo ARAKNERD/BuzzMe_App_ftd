@@ -65,19 +65,19 @@ const UpdateStation=(props)=>{
             footer={RenderFooter}
         >
 
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">Station Name</label>
                 <input onChange={(e)=>setStationName(e.target.value)} value={stationName} type="text" className="form-control"/>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">Station / IMEI Number</label>
                 <input onChange={(e)=>setStationNumber(e.target.value)} value={stationNumber} type="text" className="form-control"/>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">Start Time</label>
                 <input onChange={(e)=>setStartTime(e.target.value)} value={startTime} type="time" className="form-control"/>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">End Time</label>
                 <input onChange={(e)=>setEndTime(e.target.value)} value={endTime} type="time" className="form-control"/>
             </div>

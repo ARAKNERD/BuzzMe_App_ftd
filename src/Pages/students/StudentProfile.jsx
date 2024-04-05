@@ -154,9 +154,9 @@ const StudentProfile = props => {
                     <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
                         <div className="btn-list text-center">
                             {active?
-                                <a href="#" onClick={handleInActive} className="btn ripple btn-danger btn-sm mr-2"><i className="fe fe-x"></i>Back</a>
+                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
                             :
-                                <a href="#" onClick={setUserUpdate} className="btn ripple btn-warning btn-sm mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
+                                <a href="#" onClick={setUserUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
                             }
                             
                             
@@ -175,11 +175,11 @@ const StudentProfile = props => {
 						        <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">Names:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Names:<span style={{color:"red"}}>*</span></label>
                                             <input type="text" defaultValue={names} onChange={(e)=>setNames(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Registration Number:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Registration Number:</label>
                                             <input type="text" defaultValue={regNo} onChange={(e)=>setRegNo(e.target.value)} className="form-control"/>
 							            </div>
                                        
@@ -188,7 +188,7 @@ const StudentProfile = props => {
                                 <div className="form-group">
                                     <div className="row row-sm">
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Group:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Group:<span style={{color:"red"}}>*</span></label>
                                             <Select
                                                 onChange={(e)=>setGroup(e.group_id)}
                                                 getOptionLabel ={(option)=>option.group_name}
@@ -199,7 +199,7 @@ const StudentProfile = props => {
                                             />
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Gender:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Gender:<span style={{color:"red"}}>*</span></label>
                                             <select
                                                 className="col-12 form-control"
                                                 defaultValue={gender}
@@ -214,7 +214,7 @@ const StudentProfile = props => {
                                     </div>
                                 </div>
               
-						        <button className="btn ripple btn-main-primary btn-block">Update Student Details</button>
+						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Student Details</button>
 						    </form>
 					               
 				        </div>
@@ -242,17 +242,12 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Registration Number</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.reg_no}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.reg_no?studentProfile.reg_no:"Not recorded"}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Student Code</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{studentProfile.student_code}</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Username</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.username}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Group Name</span> </td>

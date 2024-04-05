@@ -11,34 +11,25 @@ import Loader from "../Components/Common/Loader";
 import {Link} from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import ajaxStation from "../util/remote/ajaxStation";
+import SchoolContext from "../Context/SchoolContext";
 
 function Dashboard() {
   const [schoolsNumber, setSchoolsNumber] = useState(false);
   const [studentsNumber, setStudentsNumber] = useState(false);
   const [parentsNumber, setParentsNumber] = useState(false);
   const {user} = useContext(AuthContext);
-  const [recentSchools, setRecentSchools] = useState(false);
+  const {recentSchools, getRecentSchools} = useContext(SchoolContext);
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [stationList, setStationList] = useState(false);
   const [limit, setLimit] = useState(5);
 
   const getStations = async () => {
-    setLoading(true);
+    setLoading2(true);
     const server_response = await ajaxStation.fetchFewStations(user.school_user?user.school_user?.school.school_id:"",limit);
-    setLoading(false);
+    setLoading2(false);
     if (server_response.status === "OK") {
       setStationList(server_response.details);
-    }
-  };
-
-  const getRecentSchools = async () => {
-    setLoading(true)
-    const server_response = await ajaxSchool.fetchRecentSchools();
-    setLoading(false)
-    if (server_response.status === "OK") {
-      setRecentSchools(server_response.details);
-    } else {
-      setRecentSchools("404");
     }
   };
 
@@ -96,7 +87,6 @@ function Dashboard() {
 
   useEffect(() => {
     getSchoolsNumber();
-    getRecentSchools();
   }, []);
 
   useEffect(() => {
@@ -172,7 +162,7 @@ function Dashboard() {
                   <div class="heading-layout1 mg-b-25">
                     <TableHeader
                       title="Recently Registered Schools"
-                      subtitle="List of schools that have been registered recently"
+                      subtitle="List of schools that have been registered today"
                      
                     />
                     <div class="dropdown">
@@ -220,12 +210,12 @@ function Dashboard() {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="6" style={{textAlign: "center"}}>
-                              No schools registered recently.
+                            <td colSpan="4" style={{textAlign: "center"}}>
+                              No schools registered today.
                             </td>
                           </tr>
                         )}
-                        {loading && <Loader/>}
+                        
                       </tbody>
                     </table>
                   </div>
@@ -294,6 +284,8 @@ function Dashboard() {
                         )}
                       </tbody>
                     </table>
+                    {loading2 && <Loader/>}
+
                   </div>
                 </div>
               </div>

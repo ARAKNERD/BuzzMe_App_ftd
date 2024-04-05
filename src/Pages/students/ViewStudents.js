@@ -9,6 +9,8 @@ import TableHeader from "../../Components/Common/TableHeader";
 import toast, {Toaster} from "react-hot-toast";
 import {Link, useParams} from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons";
 
 function ViewStudents() {
   const {user} = useContext(AuthContext);
@@ -175,6 +177,7 @@ function ViewStudents() {
                       <th>Student Code</th>
                       <th>Registration Number</th>
                       <th>Student Card</th>
+                      <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -213,7 +216,8 @@ function ViewStudents() {
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => getDefaultPin(e,item)}>
-                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
+                                <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
+
                                 Set Default Pin
                               </Link>
 </div>
@@ -264,7 +268,7 @@ function ViewStudents() {
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => getDefaultPin(e,item)}>
-                                <i className="fas fa-check-circle text-dark-pastel-green"></i>
+                                <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
                                 Set Default Pin
                               </Link>
 </div>
@@ -316,6 +320,7 @@ function ViewStudents() {
                   </div>
                 </table>
                 {loading2 && <Loader />}
+                {loading && <Loader />}
               </div>
             </div>
           </div>

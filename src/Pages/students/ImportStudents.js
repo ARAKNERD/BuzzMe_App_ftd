@@ -92,7 +92,7 @@ const ImportStudents = () => {
       toast.success(server_response.message);
       setSaved(true);
       setTimeout(() => {
-        navigation('/students');
+        navigation(-1);
       }, 1000);
     } else {
       toast.error(server_response.message);
