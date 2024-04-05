@@ -2,30 +2,36 @@ import React, { useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
-import { useContext } from "react";
-import ParentContext from "../../Context/ParentContext";
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 import UpdateParent from "./UpdateParent";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxParent from "../../util/remote/ajaxParent";
-import AuthContext from "../../Context/AuthContext";
+import toast, {Toaster} from "react-hot-toast";
+
 
 function ViewParents() {
 
   const [parentList, setParentList] = useState("");
+  const [parentSearch, setParentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [modal, setModal] = useStateCallback(false);
-  const {id} = useParams();
+  const [query, setQuery] = useState("");
 
+
+  const data2 = {
+    query: query
+  };
 
   const getParentList = async () => {
     setLoading(true)
-    const server_response = await ajaxParent.fetchParentList();
+    const server_response = await ajaxParent.fetchParentList(page);
     setLoading(false)
     if (server_response.status === "OK") {
-      setParentList(server_response.details);
+      setMeta(server_response.details.meta.list_of_pages);
+      setParentList(server_response.details.list);
     } else {
       setParentList("404");
     }
@@ -38,7 +44,7 @@ function ViewParents() {
 
   useEffect(() => {
     getParentList();
-  }, []);
+  }, [page]);
 
   const handleModal=(e,item)=>{
     setModal(false, ()=>setModal(<UpdateParent parentID={item.parent?.parent_id} parentName={item.parent?.parent_name} nin={item.parent?.nin} address={item.parent?.address} mainContact={item.parent?.main_contact} alternativeContact={item.parent?.alternative_contact} g={getParentList} isOpen={true}/>))
@@ -67,8 +73,43 @@ function ViewParents() {
     setPage(item)
   }
 
+  const searchParents = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+    if (!query) {
+      toast.error("Please enter name of parent or guardian.");
+    } else {
+      setLoading2(true);
+      const server_response = await ajaxParent.searchGuardian(data2);
+      setLoading2(false);
+      if (server_response.status === "OK") {
+        if (server_response.details.length === 0) {
+          setParentSearch([]);
+        } else {
+          setParentSearch(server_response.details);
+        }
+      } else {
+        setParentSearch([]);
+      }
+    }
+  };
+
+  const setParents = (e) => {
+    e.preventDefault();
+    setParentSearch(false);
+    setQuery("");
+  };
+
+  useEffect(() => {
+    if (query) {
+      searchParents();
+    }
+  }, [query]);
+
   return(
   <AppContainer title="Parents">
+    <Toaster position="top-center" reverseOrder={false} />
           {modal}      
 				<div className="col-lg-12">
           <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
@@ -76,7 +117,7 @@ function ViewParents() {
             <div class="heading-layout1 mg-b-25">
               <TableHeader
                 title="Parents List"
-                subtitle="List of all the parents sorted according to the recently added"    
+                subtitle="List of all the parents sorted in ascending order"    
               />
                            <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -87,6 +128,33 @@ function ViewParents() {
                                         </div>
                                     </div>
                         </div>
+                        <form className="mg-b-20">
+                <div className="row gutters-8">
+                  <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Search for parent or guardian name..."
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <button
+                      type="submit"
+                      onClick={(e) => searchParents(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                      SEARCH
+                    </button>
+                    <button
+                      type="submit"
+                      onClick={(e) => setParents(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-2">
+                      RESET
+                    </button>
+                  </div>
+                </div>
+              </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
@@ -96,13 +164,31 @@ function ViewParents() {
                       <th scope="col">Names</th>
                       <th scope="col">Contact</th>
                       <th scope="col">Address</th>
-                      <th scope="col">Actions</th>
-                      
                     
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(parentList) && parentList.length > 0 ? (
+                  {parentSearch && Array.isArray(parentSearch) ? (
+                      parentSearch.length > 0 ? (
+                        parentSearch.map((item, key) => (
+                          <tr key={key}>
+                          <th scope='row'>{key+1}</th>
+                          <td><Link
+                          to={`/parents/profile/${item.parent_id}`}>
+                          {item.parent_name}
+                        </Link></td>
+                          <td>{item.main_contact}</td>
+                          <td>{item.address}</td>
+                        </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No parents or guardians match the search query.
+                          </td>
+                        </tr>
+                      )
+                    ) : Array.isArray(parentList) && parentList.length > 0 ? (
                       parentList.map((item, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
@@ -112,21 +198,13 @@ function ViewParents() {
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
-                          <td><div class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    <span class="flaticon-more-button-of-three-dots"></span>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <Link class="dropdown-item" onClick={(e)=>handleModal(e,item)}><i
-                                                            class="fas fa-cogs text-dark-pastel-green"></i>Update Details</Link>
-                                                </div>
-                                            </div></td>
                         </tr>
                       ))
-                    ): (
+                    ) : (
                       <tr>
-                        <td colSpan="4" style={{textAlign:"center"}}>No parents registered yet.</td>
+                        <td colSpan="5" style={{textAlign: "center"}}>
+                          No parents or guardians registered yet.
+                        </td>
                       </tr>
                     )}
                   </tbody>
@@ -146,6 +224,7 @@ function ViewParents() {
                 </div>
                 </table>
                 {loading && <Loader/>}
+                {loading2 && <Loader/>}
               </div>
             </div>
 			    </div>

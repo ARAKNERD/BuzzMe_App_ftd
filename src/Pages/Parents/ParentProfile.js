@@ -132,9 +132,9 @@ const ParentProfile = props => {
                     <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
                         <div className="btn-list text-center">
                             {active?
-                                <a href="#" onClick={handleInActive} className="btn ripple btn-danger btn-sm mr-2"><i className="fe fe-x"></i>Back</a>
+                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
                             :
-                                <a href="#" onClick={setParentUpdate} className="btn ripple btn-warning btn-sm mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
+                                <a href="#" onClick={setParentUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
                             }
                             
                             
@@ -186,7 +186,7 @@ const ParentProfile = props => {
                                     </div>
                                 </div>
               
-						        <button className="btn ripple btn-main-primary btn-block">Update Guardian Details</button>
+						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Guardian Details</button>
 						    </form>
 					               
 				        </div>

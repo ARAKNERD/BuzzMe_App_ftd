@@ -2,8 +2,11 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async fetchParentList(data) 
+  async fetchParentList(page) 
   {
+    let data = {
+      "page": page
+    };
     let response = await apiCall("guardian/list", data);
     return response;
   },
@@ -58,6 +61,10 @@ export default {
   async addGuardianStudent(data) 
   {
     let response = await apiCall("link/add", data);
+    return response;
+  },
+  async searchGuardian(data) {
+    let response = await apiCall("guardian/search", data);
     return response;
   },
 

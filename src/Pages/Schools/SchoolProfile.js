@@ -209,7 +209,7 @@ const SchoolProfile = props => {
     getSchoolStudents()
   }, [id, page])
     return (
-        <AppContainer title={"Student Profile"} >
+        <AppContainer title={"School Profile"} >
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -226,7 +226,7 @@ const SchoolProfile = props => {
                     }/></div>
 						</div> */}
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
-                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{schoolProfile.school_name}</h5>
+                                <h3 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{schoolProfile.school_name}</h3>
                                 <h6 className="pro-user-desc text-muted fs-14">{schoolProfile.district?.district_name}</h6>
                             </div>
                         </div>
@@ -235,9 +235,9 @@ const SchoolProfile = props => {
                     <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
                         <div className="btn-list text-center">
                             {active?
-                                <a href="#" onClick={handleInActive} className="btn ripple btn-danger btn-sm mr-2"><i className="fe fe-x"></i>Back</a>
+                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
                             :
-                                <a href="#" onClick={setSchoolUpdate} className="btn ripple btn-warning btn-sm mr-2"><i className="far fa-edit mr-1"></i>Update School Info</a>
+                                <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update School Info</a>
                             }
                             
                             
@@ -256,11 +256,11 @@ const SchoolProfile = props => {
 						        <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">School Name<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">School Name</label>
                                             <input type="text" defaultValue={schoolName} onChange={(e)=>setSchoolName(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Contact:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Contact:</label>
                                             <input type="text" defaultValue={contact} onChange={(e)=>setContact(e.target.value)} className="form-control"/>
 							            </div>
                                        
@@ -269,11 +269,11 @@ const SchoolProfile = props => {
                                 <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">Email:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Email:</label>
                                             <input type="text" defaultValue={email} onChange={(e)=>setEmail(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Address:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Address:</label>
                                             <input type="text" defaultValue={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
 							            </div>
                                        
@@ -282,11 +282,11 @@ const SchoolProfile = props => {
                                 <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">Latitude Co-ordinates:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Latitude Co-ordinates:</label>
                                             <input type="text" defaultValue={lat} onChange={(e)=>setLat(e.target.value)} readOnly className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Longitude Co-ordinates:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">Longitude Co-ordinates:</label>
                                             <input type="text" defaultValue={longitude} onChange={(e)=>setLongitude(e.target.value)} readOnly className="form-control"/>
 							            </div>
                                        
@@ -295,7 +295,7 @@ const SchoolProfile = props => {
                                 <div className="form-group">
                                     <div className="row row-sm">
                                         <div className="col-sm-6">
-                                            <label htmlFor="">District:<span className="tx-danger">*</span></label>
+                                            <label htmlFor="">District:</label>
                                             <Select
                                                 onChange={(e)=>setDistrict(e.district_id)}
                                                 getOptionLabel ={(option)=>option.district_name}
@@ -310,7 +310,7 @@ const SchoolProfile = props => {
                                     </div>
                                 </div>
               
-						        <button className="btn ripple btn-main-primary btn-block">Update School Details</button>
+						        <button className="btn btn-primary" style={{width:"100%"}}>Update School Details</button>
 						    </form>
 					               
 				        </div>

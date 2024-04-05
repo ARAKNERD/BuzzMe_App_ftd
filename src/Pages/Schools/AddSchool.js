@@ -6,6 +6,8 @@ import Select from "react-select";
 import {Toaster, toast} from "react-hot-toast";
 import DistrictContext from "../../Context/DistrictContext";
 import AuthContext from "../../Context/AuthContext";
+import { Link } from "react-router-dom";
+import TableHeader from "../../Components/Common/TableHeader";
 
 function AddSchool() {
   // gets the current date
@@ -17,7 +19,7 @@ function AddSchool() {
     return `${year}-${month}-${day}`;
   };
 
-  const {getSchoolList} = useContext(SchoolContext);
+  const {recentSchools, getSchoolList, getRecentSchools} = useContext(SchoolContext);
   const {userId} = useContext(AuthContext);
   const {districtList} = useContext(DistrictContext);
 
@@ -46,10 +48,10 @@ function AddSchool() {
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getSchoolList();
+        getRecentSchools();
         resetForm();
       } else {
         toast.error(server_response.message);
-        // toast.error(server_response.details.message);
       }
     } else {
       toast.error("Complete all fields and try again");
@@ -155,6 +157,50 @@ function AddSchool() {
               />
             </div>
           </form>
+        </div>
+      </div>
+      <div className="card height-auto">
+        <div className="card-body">
+          <div className="heading-layout1">
+          <TableHeader
+                  title="Recently Registered Schools"
+                  subtitle="List of the schools registered today"
+                />
+          </div>
+
+          <div className="table-responsive">
+            <table className="table display data-table text-nowrap">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>School Name</th>
+                  <th>Phone Number</th>
+                  <th>E-mail</th>
+                  <th>District</th>
+                </tr>
+              </thead>
+              <tbody>
+              {Array.isArray(recentSchools) && recentSchools.length > 0 ? (
+                      recentSchools.map((item, key) => (
+                        <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td><Link
+                          to={`/schools/view/profile/${item.school_id}`}>
+                          {item.school_name}
+                        </Link></td>
+                          <td>{item.contact}</td>
+                          <td>{item.email}</td>
+                          <td>{item.district?.district_name}</td>
+                        </tr>
+                      ))
+                    ): (
+                      <tr>
+                        <td colSpan="5" style={{textAlign:"center"}}>No schools registered today.</td>
+                      </tr>
+                    )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </AppContainer>

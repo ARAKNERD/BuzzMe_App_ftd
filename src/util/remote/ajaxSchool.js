@@ -27,8 +27,16 @@ export default {
     return response;
   },
 
-  async fetchRecentSchools(data) {
-    let response = await apiCall("school/recent", data);
+  async fetchTodaySchools(data) {
+    let response = await apiCall("school/today", data);
+    return response;
+  },
+
+  async fetchSchools(page) {
+    let data = {
+      "page": page
+    };
+    let response = await apiCall("school/page", data);
     return response;
   },
 

@@ -65,17 +65,17 @@ const AddContact=(props)=>{
             footer={RenderFooter}
         >
 
-            <div className="mb-4">
-                <label htmlFor="">Contact Name</label>
-                <input onChange={(e)=>setContactName(e.target.value)} value={contactName} type="text" className="form-control"/>
+            <div className="mb-4 form-group border-1">
+                <label htmlFor="">Contact Name <span style={{color:"red"}}>*</span></label>
+                <input onChange={(e)=>setContactName(e.target.value)} value={contactName} type="text" placeholder="Enter names of contact.." className="form-control"/>
             </div>
-            <div className="mb-4">
-                <label htmlFor="">Contact Number</label>
-                <input onChange={(e)=>setContactNumber(e.target.value)} value={contactNumber} type="text" className="form-control"/>
+            <div className="mb-4 form-group border-1">
+                <label htmlFor="">Contact Number <span style={{color:"red"}}>*</span></label>
+                <input onChange={(e)=>setContactNumber(e.target.value)} value={contactNumber} type="text" placeholder="Enter telephone number of contact.." className="form-control"/>
             </div>
-            <div className="mb-4">
-                <label htmlFor="">Relationship</label>
-                <input onChange={(e)=>setRelationship(e.target.value)} value={relationship} type="text" className="form-control"/>
+            <div className="mb-4 form-group border-1">
+                <label htmlFor="">Relationship <span style={{color:"red"}}>*</span></label>
+                <input onChange={(e)=>setRelationship(e.target.value)} value={relationship} type="text" placeholder="Describe relationship with contact.." className="form-control"/>
             </div>
        
         </SystemModal>

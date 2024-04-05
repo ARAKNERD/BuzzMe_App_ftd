@@ -8,13 +8,51 @@ import Loader from "../../Components/Common/Loader";
 
 
 function ViewSchool() {
-  const {schoolList, getSchoolList} = useContext(SchoolContext);
+  const [schoolList, setSchoolList] = useState(false);
   const [schoolSearch, setSchoolSearch] = useState(false);
   const [query, setQuery] = useState("");
   const [loading,setLoading] = useState(false)
+  const [loading2,setLoading2] = useState(false)
+  const [page,setPage] = useState(1)
+  const [meta,setMeta] = useState("")
 
   const refreshData = () =>{
     getSchoolList()
+  }
+
+  const getSchoolList= async () => {
+    setLoading2(true)
+    const server_response = await ajaxSchool.fetchSchools(page);
+    setLoading2(false)
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setSchoolList(server_response.details.list);
+    } else {
+      setSchoolList("404");
+    }
+  };
+
+  const setNextPageNumber = () =>{
+    if(meta.length===page){
+      
+    }
+    else{
+      setPage(page+1)
+    }
+    
+  }
+
+  const setPreviousPageNumber = () =>{
+    if(page===1){
+      
+    }
+    else{
+      setPage(page-1)
+    }
+    
+  }
+  const setPageNumber = (e,item) =>{
+    setPage(item)
   }
 
 
@@ -49,6 +87,10 @@ useEffect(() => {
     }
 }, [query]);
 
+useEffect(() => {
+  getSchoolList();
+}, [page]);
+
   return (
     <AppContainer title={"Schools"}>
       <Toaster position="top-center" reverseOrder={false} />
@@ -74,7 +116,7 @@ useEffect(() => {
                 <input
                   type="text"
                   value={query} onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search..."
+                  placeholder="Search for school..."
                   className="form-control"
                 />
               </div>
@@ -142,9 +184,25 @@ useEffect(() => {
                     </td>
                   </tr>
                 ))}
-                {loading && <Loader/>}
+                
               </tbody>
+              <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+          {Array.isArray(meta) && meta.map((item)=>
+          page===item?
+          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+          :
+          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+          )}
+
+
+					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                </div>
             </table>
+            {loading && <Loader/>}
+            {loading2 && <Loader/>}
           </div>
         </div>
       </div>
