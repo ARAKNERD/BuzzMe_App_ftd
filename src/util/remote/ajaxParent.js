@@ -55,7 +55,7 @@ export default {
   },
   async fetchChildren(data) 
   {
-    let response = await apiCall("link/students/list", data);
+    let response = await apiCall("link/students/all", data);
     return response;
   },
   async addGuardianStudent(data) 

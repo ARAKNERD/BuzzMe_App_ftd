@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ListSchoolUsers from "./ListSchoolUsers";
-import AddSchoolUser from "./AddSchoolUser";
 
 function AdminViewSchoolUsers() {
   return (

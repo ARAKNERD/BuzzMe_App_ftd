@@ -13,6 +13,16 @@ export default {
     return response;
   },
 
+  async fetchAllStudents(page) 
+  {
+    let data = {
+      "page": page
+    };
+    let response = await apiCall("student/list", data);
+
+    return response;
+  },
+
   async fetchGroupStudents(group_id, page) 
   {
     let data = {
