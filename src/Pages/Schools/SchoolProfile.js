@@ -433,8 +433,7 @@ const SchoolProfile = props => {
                     </tr>
                     )
                 ) : (
-                                    Array.isArray(schoolStudents) && schoolStudents.length > 0 ? (
-                                        schoolStudents.map((item, key) => (
+                                    Array.isArray(schoolStudents) && schoolStudents.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
@@ -443,11 +442,8 @@ const SchoolProfile = props => {
                                                 <td className="text-dark">{item.reg_no}</td>
                                             </tr>
                                         ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No students registered for the student yet.</td>
-                                        </tr>
-                                    ))}
+                                    )}
+                        
                                 </tbody>
                                 <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       

@@ -1,80 +1,61 @@
-import React, {useEffect, useState} from "react";
-import ajaxSchool from "../../util/remote/ajaxSchool";
-import { Link } from "react-router-dom";
+import React, {useContext} from "react";
+import {Link} from "react-router-dom";
+import AppContainer from "../../Components/Structure/AppContainer";
+import AddAdmin from "./AddAdmin";
+import AdminContext from "../../Context/AdminContext";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import ResetPassword from "./ResetPassword";
 import TableHeader from "../../Components/Common/TableHeader";
-import AddSchoolAdmin from "./AddSchoolAdmin";
+import ResetPassword from "./ResetPassword";
+import toast, {Toaster} from "react-hot-toast";
 
-function ListSchoolUsers(props) {
-  const [schoolUsers, setSchoolUsers] = useState([]);
-  const [modal, setModal] = useStateCallback(false);
+function ListAdmins() {
 
-  const getSchoolUsers = async () => {
-    try {
-      const data = {
-        school_id: props.school,
-      };
-      const serverResponse = await ajaxSchool.fetchSchoolUserList(data);
-      if (serverResponse.status === "OK") {
-        setSchoolUsers(serverResponse.details);
-      } else {
-        // Handle error condition
-        console.error("Error:", serverResponse.message);
-      }
-    } catch (error) {
-      // Handle network or other errors
-      console.error("Error:", error);
+    const {adminList, getAdminList} = useContext(AdminContext);
+    const [modal, setModal] = useStateCallback(false);
+
+    const handleAdd=()=>{
+        setModal(false, ()=>setModal(<AddAdmin g={getAdminList}  isOpen={true}/>))
     }
-  };
 
-  useEffect(() => {
-    getSchoolUsers();
-  }, []);
-
-  const handleUpdate=(e,item)=>{
-    setModal(false, ()=>setModal(<ResetPassword accountID={item.account_id} isOpen={true}/>))
-  }
-
-  const handleAdd=()=>{
-    setModal(false, ()=>setModal(<AddSchoolAdmin g={getSchoolUsers}  isOpen={true}/>))
-}
-  
-
+    const handleUpdate=(e,item)=>{
+        setModal(false, ()=>setModal(<ResetPassword accountID={item.account_id} isOpen={true}/>))
+      }
   return (
-    <div className="card height-auto">
-      {modal}
+    <AppContainer title="System Administrators">
+      <Toaster position="top-center" reverseOrder={false} />
+
+    {modal}
+      <div className="row">
+        <div className="col-lg-12 col-md-12 mt-3">
+        <div className="card height-auto">
+   
       <div className="card-body">
         <TableHeader
-                title="School Administrators List"
-                subtitle="List of all the different school administrators"  
-                viewButton={
-                  <a href="#" onClick={handleAdd} className="btn btn-info" style={{float:"right"}}>Add School Administrator</a>
-                     
-              } 
+            title="System Administrators List"
+            subtitle="List of all the different system administrators" 
+            viewButton={
+                <a href="#" onClick={handleAdd} className="btn btn-info" style={{float:"right"}}>Add Administrator</a>
+                   
+            }   
               />
+        {/* Search form */}
+        {/* Table */}
         <div className="border-top mt-3"></div>
-
         <div className="table-responsive">
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Names</th>
-                <th>School Name</th>
-                <th>School Contact</th>
                 <th>Actions</th>
-                 
               </tr>
             </thead>
             <tbody>
-            {Array.isArray(schoolUsers) && schoolUsers.length > 0 ? (
-                      schoolUsers.map((item, key) => (
+                    {Array.isArray(adminList) && adminList.length > 0 ? (
+                      adminList.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.names} </td>
-                          <td>{item.school.school_name}</td>
-                          <td>{item.school.contact}</td>
                           <td>
                             <div className="dropdown">
                               <Link
@@ -100,16 +81,19 @@ function ListSchoolUsers(props) {
                     ) : (
                       <tr>
                         <td colSpan="3" style={{textAlign: "center"}}>
-                          No school administrators registered yet.
+                          No system administrators registered yet.
                         </td>
                       </tr>
                     )}
-            </tbody>
+                  </tbody>
           </table>
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </AppContainer>
   );
 }
 
-export default ListSchoolUsers;
+export default ListAdmins;

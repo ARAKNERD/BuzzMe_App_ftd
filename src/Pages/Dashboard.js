@@ -12,6 +12,8 @@ import {Link} from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import ajaxStation from "../util/remote/ajaxStation";
 import SchoolContext from "../Context/SchoolContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightArrowLeft, faMoneyBillTransfer, faPhone, faSchoolFlag } from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
   const [schoolsNumber, setSchoolsNumber] = useState(false);
@@ -104,54 +106,131 @@ function Dashboard() {
       <AppContainer title={"Dashboard"}>
         <Toaster position="top-center" reverseOrder={false} />
         {/* Dashboard summery Start Here */}
+        <RenderSecure code="SCHOOL-USER-VIEW">
         <div className="row gutters-20">
-          <RenderSecure code="ADMIN-VIEW">
-          <div class="col-sm-12 col-md-3">
-							<div class="card custom-card">
-								<div class="card-body">
-									<div>
-										<h5>Schools</h5>
-										<h2><span class="fs-30 mr-2">{schoolsNumber ? schoolsNumber.total_p : "..."}</span></h2>
-										<span class="text-muted">The number of schools registered to use the Buzz App.</span>
-									</div>
-								</div>
-							</div>
-						</div>
-          </RenderSecure>
-          <div class="col-sm-12 col-md-3">
-							<div class="card custom-card">
-								<div class="card-body">
-									<div>
-										<h5>Calling Stations</h5>
-										<h2><span class="fs-30 mr-2">{callStations ? callStations.total_p : "..."}</span></h2>
-										<span class="text-muted">The number of call stations installed within the school(s).</span>
-									</div>
-								</div>
-							</div>
-						</div>
-            <div class="col-sm-12 col-md-3">
-							<div class="card custom-card">
-								<div class="card-body">
-									<div>
-										<h5>Students</h5>
-										<h2><span class="fs-30 mr-2">{studentsNumber ? studentsNumber.total_p : "..."}</span></h2>
-										<span class="text-muted">The number of students using the Buzz App.</span>
-									</div>
-								</div>
-							</div>
-						</div>
-          <div class="col-sm-12 col-md-3">
-							<div class="card custom-card">
-								<div class="card-body">
-									<div>
-										<h5>Parents</h5>
-										<h2><span class="fs-30 mr-2">{parentsNumber ? parentsNumber.total_p : "..."}</span></h2>
-										<span class="text-muted">The number of parents using the Buzz App.</span>
-									</div>
-								</div>
-							</div>
-						</div>
-        </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-green ">
+                                        <i class="flaticon-classmates text-green"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Students</div>
+                                        <div class="item-number"><span class="counter">{studentsNumber ? studentsNumber.total_p : "..."}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-green ">
+                                        <i class="flaticon-classmates text-green"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Calling Stations</div>
+                                        <div class="item-number"><span class="counter">{callStations ? callStations.total_p : "..."}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-green ">
+                                        <i class="flaticon-classmates text-green"></i>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Calls Today</div>
+                                        <div class="item-number"><span class="counter">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        </div></RenderSecure>
+        <RenderSecure code="ADMIN-VIEW">
+        <div class="row gutters-20">
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-green ">
+                                    <FontAwesomeIcon icon={faSchoolFlag} style={{fontSize: "44px", marginTop:20, color:"green"}} />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Total Schools</div>
+                                        <div class="item-number"><span class="counter">{schoolsNumber ? schoolsNumber.total_p : "..."}</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-blue">
+                                    <FontAwesomeIcon icon={faMoneyBillTransfer} style={{fontSize: "44px", marginTop:20, color:"blue"}} />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Airtime Today</div>
+                                        <div class="item-number"><span class="counter" data-num="2250">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-yellow">
+                                    <FontAwesomeIcon icon={faArrowRightArrowLeft} style={{fontSize: "44px", marginTop:20, color:"orange"}} />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Transactions Today</div>
+                                        <div class="item-number"><span class="counter" data-num="5690">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-sm-6 col-12">
+                        <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-red">
+                                    <FontAwesomeIcon icon={faPhone} style={{fontSize: "44px", marginTop:20, color:"red"}} />
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Calls Today</div>
+                                        <div class="item-number"><span></span><span class="counter" data-num="193000">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> </RenderSecure>
         <div className="row gutters-20">
           <RenderSecure code="ADMIN-VIEW">
             <div className="col-lg-6">
@@ -291,6 +370,62 @@ function Dashboard() {
               </div>
             </div>
         </div>
+        <RenderSecure code="ADMIN-VIEW">
+        <div className="row gutters-20">
+         
+            <div className="col-lg-12">
+              <div
+                className="card custom-card"
+                style={{marginTop: "25px", borderRadius: "10px"}}>
+                <div className="card-body map-card">
+                  <div class="heading-layout1 mg-b-25">
+                    <TableHeader
+                      title="Recent Transactions"
+                      subtitle="List of recent transactions"
+                     
+                    />
+                    <div class="dropdown">
+                      <a
+                        class="dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-expanded="false">
+                        ...
+                      </a>
+
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <Link class="dropdown-item" to={'/'}>
+                          <i class="fa-solid fa-eye text-orange-peel"></i>
+                          View All
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-top mt-3"></div>
+                  <div className="table-responsive">
+                    <table className="table table-hover text-nowrap mg-b-0">
+                      <thead>
+                      <tr>
+                  <th>Date </th>
+                  <th>Transaction ID</th>
+                  <th>Student Number</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                </tr>
+                      </thead>
+                      <tbody>
+                        
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+          
+        </div></RenderSecure>
       </AppContainer>
     </div>
   );

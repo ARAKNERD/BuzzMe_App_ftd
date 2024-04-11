@@ -1,38 +1,32 @@
 import React, {useEffect, useState} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import {useContext} from "react";
-import AuthContext from "../../Context/AuthContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import TableHeader from "../../Components/Common/TableHeader";
 import toast, {Toaster} from "react-hot-toast";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons";
 
-function ViewStudents() {
-  const {user} = useContext(AuthContext);
+function ViewAllStudents() {
   const [studentList, setStudentList] = useState(false);
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState("");
-  const [group, setGroup] = useState("");
   const [studentSearch, setStudentSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
-  const {id} = useParams();
   const [first, setFirst] = useState("");
 
 
   const getStudentList = async () => {
     setLoading2(true);
-    const server_response = await ajaxStudent.fetchStudentList(id, page);
+    const server_response = await ajaxStudent.fetchAllStudents(page);
     setLoading2(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setStudentList(server_response.details.list);
       setFirst(server_response.details.meta.offset_count);
-
     }
   };
 
@@ -46,11 +40,10 @@ function ViewStudents() {
 
   useEffect(() => {
     getStudentList();
-  }, [id, page]);
+  }, [page]);
 
   const data2 = {
-    query: query,
-    school_id: user.school_user?.school.school_id,
+    query: query
   };
   const searchStudents = async (e) => {
     if (e) {
@@ -85,14 +78,6 @@ function ViewStudents() {
       searchStudents();
     }
   }, [query]);
-
-  // ----------------------handles the view -----students printable codeslip -modal
-  // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
-  // const handle_view_slip = (id) => {
-  //   setViewStudentSlip(false, () =>
-  //     setViewStudentSlip(<StudentCodeSlip isOpen={true} id={id} />)
-  //   );
-  // };
 
   const setNextPageNumber = () => {
     if (meta.length === page) {
@@ -176,9 +161,9 @@ function ViewStudents() {
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
+                      <th>School</th>
                       <th>Student Code</th>
-                      <th>Registration Number</th>
-                      <th>Student Card</th>
+                      
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -187,23 +172,16 @@ function ViewStudents() {
                       studentSearch.length > 0 ? (
                         studentSearch.map((item, key) => (
                           <tr key={key}>
-                           <td style={{width:"5px"}}>{key + first + 1}</td>
-
+                            <td style={{width:"5px"}}>{key + first + 1}</td>
                             <td>
                               <Link to={`/students/profile/${item.id}`}>
                                 {item.names}
                               </Link>
                             </td>
+                            <td className="text-dark">{item.school?.school_name}</td>
                             <td className="text-dark">{item.student_code}</td>
-                            <td className="text-dark">{item.reg_no}</td>
-                            <td>
-                              <Link
-                                className="btn btn-info"
-                                target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school_user?.school?.school_id}`}>
-                                View
-                              </Link>
-                            </td>
+                            
+                            
                             <td>
                             <div className="dropdown">
                               <Link
@@ -235,26 +213,18 @@ function ViewStudents() {
                           </td>
                         </tr>
                       )
-                    ) : Array.isArray(studentList) && studentList.map((item, key) => (
+                    ) : Array.isArray(studentList) &&
+                      studentList.map((item, key) => (
                         <tr key={key}>
-                         <td style={{width:"5px"}}>{key + first + 1}</td>
+                          <td style={{width:"5px"}}>{key + first + 1}</td>
                           <td>
                             <Link to={`/students/profile/${item.id}`}>
                               {item.names}
                             </Link>
                           </td>
+                          <td className="text-dark">{item.school?.school_name}</td>
                           <td className="text-dark">{item.student_code}</td>
-                          <td className="text-dark">{item.reg_no}</td>
-                          <td>
-                            
-                              <Link
-                                className="btn btn-info"
-                                target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school_user.school.school_id}`}>
-                                View
-                              </Link>
-                            
-                          </td>
+                        
                           <td>
                             <div className="dropdown">
                               <Link
@@ -279,11 +249,6 @@ function ViewStudents() {
                         </tr>
                       ))
                     }
-                    {studentList.length <1 && <tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No students match the search query.
-                          </td>
-                        </tr>}
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"
@@ -331,4 +296,4 @@ function ViewStudents() {
   );
 }
 
-export default ViewStudents;
+export default ViewAllStudents;

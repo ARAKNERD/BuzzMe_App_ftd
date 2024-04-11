@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
+import { RenderSecure } from "../../util/script/RenderSecure";
 
 export default function Header(props) {
   const {user} = useContext(AuthContext);
@@ -111,6 +112,12 @@ export default function Header(props) {
                 </div>
                 <div className="item-content">
                   <ul className="settings-list">
+                  <RenderSecure code="ADMIN-VIEW"><li>
+                    <Link to={'/settings'}>
+                    <i className="flaticon-gear-loading" />
+                        Settings
+                      </Link>
+                    </li></RenderSecure>
                     <li>
                     <Link to={'/profile'}>
                     <i className="flaticon-user" />

@@ -95,7 +95,13 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             </RenderSecure>
-            <RenderSecure code="SCHOOL-USER-VIEW">
+            <RenderSecure code="ADMIN-VIEW">
+              <li className="nav-item">
+                <Link to="/students" className="nav-link">
+                  <span><b>Students</b></span>
+                </Link>
+              </li>
+            </RenderSecure>
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
@@ -113,7 +119,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to={`/parents/${user.school_user?.school?.school_id}`}>
+                    <Link className="nav-link" to={"/parents"}>
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Parents</span>
@@ -122,7 +128,6 @@ const Sidebar = (props) => {
                   
                 </ul>
               </li>
-            </RenderSecure>
 
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
@@ -132,23 +137,7 @@ const Sidebar = (props) => {
               </li>
             </RenderSecure>
 
-            <RenderSecure code="ADMIN-VIEW">
-              <li className="nav-item">
-                <Link to="/Districts/view" className="nav-link">
-                  <span><b>Districts</b></span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/regions/view" className="nav-link">
-                  <span><b>Regions</b></span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/rate/view" className="nav-link">
-                  <span><b>Charge Rates</b></span>
-                </Link>
-              </li>
-              </RenderSecure>
+            
               <li className="nav-item">
                 <Link to="/stations" className="nav-link">
                   <span><b>Calling Stations</b></span>
@@ -162,20 +151,20 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <span><b>School Administrators</b></span>
+                  <span><b>System Users</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
-                  <li className="nav-item">
-                    <Link to="/Admin/addSchoolUser" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      Add School Admin
-                    </Link>
-                  </li>
 
                   <li className="nav-item">
-                    <Link to="/Admin/user/view" className="nav-link">
+                    <Link to="/school_admin/view" className="nav-link">
                       <i className="fas fa-angle-right" />
                       View School Admins
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to="/admin/view" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View System Admins
                     </Link>
                   </li>
                 </ul>

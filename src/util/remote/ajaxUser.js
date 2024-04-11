@@ -39,5 +39,9 @@ export default {
     let response = await apiCall("user/profile", data);
 
     return response;
-  }
+  },
+  async fetchSmallRoleList(data) {
+    let response = await apiCall("user/roles/two", data);
+    return response;
+  },
 };

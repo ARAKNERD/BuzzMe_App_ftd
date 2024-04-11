@@ -36,11 +36,6 @@ const ParentProfile = props => {
     
       };
 
-    const data2 = {
-        parent_id: id,
-        school_id: user.school_user?.school.school_id
-      };
-
     useEffect(()=>{
         getChildren()
         getParentProfile();
@@ -93,7 +88,7 @@ const ParentProfile = props => {
 
     const getChildren =async()=>{
         setLoading2(true)
-        const server_response = await ajaxParent.fetchChildren(data2);
+        const server_response = await ajaxParent.fetchChildren(data);
         setLoading2(false)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
@@ -104,7 +99,7 @@ const ParentProfile = props => {
     }
 
     const handleModal2=()=>{
-        setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} schoolID={user.school_user?.school.school_id} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} isOpen={true}/>))
     }
  
     return (
@@ -255,6 +250,7 @@ const ParentProfile = props => {
                                         <th scope="col">No.</th>
                 
                                         <th scope="col"> Student Name</th>
+                                        <th scope="col"> School</th>
                                         <th scope="col"> Student Code</th>
                                         <th scope="col"> Student Group</th>
                                         
@@ -267,6 +263,7 @@ const ParentProfile = props => {
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
                                                 <td>{item.student?.names}</td>
+                                                <td>{item.student?.school?.school_name}</td>
                                                 <td>{item.student?.student_code}</td>
                                                 <td>{item.student?.group?.group_name}</td>
                                             </tr>

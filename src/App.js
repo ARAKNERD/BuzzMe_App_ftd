@@ -16,7 +16,6 @@ import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
 
 import AddSchool from "./Pages/Schools/AddSchool";
-import AddSchoolUser from "./Pages/SchoolUsers/AddSchoolUser";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
@@ -29,9 +28,7 @@ import ActivateAccount from "./Pages/ActivateAccount";
 import ViewSchool from "./Pages/Schools/ViewSchool";
 import District from "./Pages/RegionDistrict/District";
 import Regions from "./Pages/RegionDistrict/Regions";
-import AdminAddSchoolUser from "./Pages/SchoolUsers/AdminAddSchoolUser";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
-import SchoolUSerPage from "./Pages/SchoolUsers/SchoolUSerPage";
 import ImportStudents from "./Pages/students/ImportStudents";
 import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
@@ -41,6 +38,9 @@ import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
 import ParentProfile from "./Pages/Parents/ParentProfile";
+import Settings from "./Pages/Settings";
+import ListAdmins from "./Pages/SchoolUsers/ListAdmins";
+import ViewAllStudents from "./Pages/students/ViewAllStudents";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -108,19 +108,14 @@ function App(props) {
               />
               {/* End school routes */}
               {/* School User routes */}
-              <Route path="/schools/user/view" element={<SchoolUSerPage />} />
-              <Route path="/schools/user/add" element={<AddSchoolUser />} />
+              <Route path="/admin/view" element={<ListAdmins />} />
               <Route
-                path="/Admin/addSchoolUser"
-                element={<AdminAddSchoolUser />}
-              />
-              <Route
-                path="/Admin/user/view"
+                path="/school_admin/view"
                 element={<AdminViewSchoolUsers />}
               />
               {/* End School User routes */}
               {/* Charge rate routes */}
-              <Route path="/rate/view" element={<ChargeRates />} />
+              <Route path="/rates" element={<ChargeRates />} />
               {/* End Charge rate routes */}
               {/* MM Payments routes */}
               <Route path="/payments/mm/view" element={<ListMMPayments />} />
@@ -133,17 +128,15 @@ function App(props) {
               <Route path="/accounts/add" element={<AddAccount />} />
               {/* End Account routes */}
               {/* Parents */}
-              <Route path="/parents/:id" element={<ViewParents />} />
+              <Route path="/parents" element={<ViewParents />} />
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               <Route path="/parents/profile/:id" element={<ParentProfile />} />
               {/* End parent */}
               {/* Students */}
               <Route path="/students/:id" element={<ViewStudents />} />
-              {/* <Route
-                path="/students/student_card/:id/:group_id"
-                element={<StudentCards />}
-              /> */}
+              <Route path="/students" element={<ViewAllStudents />} />
+              
               <Route
                 path="/students/student_card/:student_id?/:group_id?/:school_id?"
                 element={<StudentCards />}
@@ -168,11 +161,13 @@ function App(props) {
               />
               {/* End class groups */}
               {/* districts and regions*/}
-              <Route path="/Districts/view" element={<District />} />
-              <Route path="/regions/view" element={<Regions />} />
+              <Route path="/districts" element={<District />} />
+              <Route path="/regions" element={<Regions />} />
               {/* End class groups */}
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/settings" element={<Settings />} />
+
             </>
           )}
         </Switch>
