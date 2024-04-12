@@ -279,11 +279,6 @@ function ViewStudents() {
                         </tr>
                       ))
                     }
-                    {studentList.length <1 && <tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No students match the search query.
-                          </td>
-                        </tr>}
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

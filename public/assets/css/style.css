@@ -1389,7 +1389,7 @@ h6 {
   display: inline-block;
   border: none;
   background-color: transparent;
-  padding: 12px 30px;
+  padding: 5px 12px;
   cursor: pointer;
 }
 .btn-fill-md:focus {

@@ -94,6 +94,32 @@ const Sidebar = (props) => {
                   </li>
                 </ul>
               </li>
+              <li
+                className="nav-item sidebar-nav-item"
+                onClick={(e) => toggleDropdown(e)}>
+                <Link to="#" className="nav-link">
+                  <span><b>Parents</b></span>
+                </Link>
+                <ul className="nav sub-group-menu">
+                <li className="nav-item">
+                    <Link className="nav-link" to="/parents/add">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">
+                        Register Parent
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={`/school-parents/${user.school_user?.school?.school_id}`}>
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Parents</span>
+                    </Link>
+                  </li>
+                  
+                </ul>
+              </li>
             </RenderSecure>
             <RenderSecure code="ADMIN-VIEW">
               <li className="nav-item">
@@ -101,7 +127,7 @@ const Sidebar = (props) => {
                   <span><b>Students</b></span>
                 </Link>
               </li>
-            </RenderSecure>
+            
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
@@ -128,7 +154,7 @@ const Sidebar = (props) => {
                   
                 </ul>
               </li>
-
+              </RenderSecure>
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">

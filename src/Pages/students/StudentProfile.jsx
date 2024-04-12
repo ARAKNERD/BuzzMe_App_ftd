@@ -10,6 +10,8 @@ import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
 import AuthContext from '../../Context/AuthContext';
 import TableHeader from '../../Components/Common/TableHeader';
 import AddContact from './AddContact';
+import ajaxParent from '../../util/remote/ajaxParent';
+import AttachParent from '../Parents/AttachParent';
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -17,6 +19,7 @@ const StudentProfile = props => {
     const {id} = useParams();
     const [studentLogs, setStudentLogs] = useState(false);
     const [studentContacts, setStudentContacts] = useState(false);
+    const [studentParents, setStudentParents] = useState(false);
     const {user} = useContext(AuthContext);
 
 
@@ -34,6 +37,7 @@ const StudentProfile = props => {
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
+    const [loading4,setLoading4] = useState(false)
 
     const data = {
         student_id: id
@@ -43,6 +47,7 @@ const StudentProfile = props => {
          getStudentContacts()
         getStudentProfile();
         getStudentLogs();
+        getStudentParents();
       
     }, [])
 
@@ -97,6 +102,19 @@ const StudentProfile = props => {
             setStudentProfile("404");
         }
     }
+    const getStudentParents =async()=>{
+        
+        setLoading4(true)
+        const server_response = await ajaxParent.listParents(data);
+        setLoading4(false)
+        if(server_response.status==="OK"){
+            //store results
+            setStudentParents(server_response.details);
+        }else{
+            //communicate error
+            setStudentParents("404");
+        }
+    }
 
     const getStudentLogs =async()=>{
         setLoading2(true)
@@ -125,6 +143,9 @@ const StudentProfile = props => {
 
     const handleModal2=()=>{
         setModal(false, ()=>setModal(<AddContact studentID={id} g={getStudentContacts} isOpen={true}/>))
+    }
+    const handleModal3=()=>{
+        setModal(false, ()=>setModal(<AttachParent studentID={id} g={getStudentParents} isOpen={true}/>))
     }
  
     return (
@@ -266,8 +287,56 @@ const StudentProfile = props => {
                             </div>
                         </div>
                     </div>
-                }
-
+ 
+ }
+ <div className='row'>
+<div className="col-6 col-xl-6">
+                <div className="card height-auto" >
+                    <div className="card-body map-card">
+                        <TableHeader
+                            title="Parents / Guardians"
+                            subtitle="List of the parents or guardians attached to the student" 
+                            viewButton={
+                                <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Attach Parent</a>
+                               
+                            } 
+                                
+                        />
+                        <div className="border-top mt-3"></div>                    
+                        <div className="table-responsive">
+                            <table className="table table-hover text-nowrap mg-b-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No.</th>
+                                        <th scope="col"> Names</th>
+                                        <th scope="col"> Contact Number</th>
+                                        <th scope="col"> Relationship</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array.isArray(studentParents) && studentParents.length > 0 ? (
+                                        studentParents.map((item, key) => (
+                                            
+                                             <tr key={key} >
+                                                <th scope="row">{key+1}</th>
+                                                <td>{item.parent?.parent_name}</td>
+                                                <td>{item.parent?.main_contact}</td>
+                                                <td>{item.relationship}</td>
+                                            </tr>
+                                        ))
+                                    ): (
+                                        <tr>
+                                            <td colSpan="4" style={{textAlign:"center"}}>No parents / guardians attached to this student yet.</td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                            {loading4 && <Loader/>}
+                        </div>
+                              
+                    </div>
+			    </div></div>
+                <div className="col-6 col-xl-6">
                 <div className="card height-auto" >
                     <div className="card-body map-card">
                         <TableHeader
@@ -312,7 +381,7 @@ const StudentProfile = props => {
                         </div>
                               
                     </div>
-			    </div>
+			    </div></div></div>
 
                 <div className="card height-auto" >
                     <div className="card-body map-card">

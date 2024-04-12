@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import ajaxParent from "../../util/remote/ajaxParent";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import Select from "react-select";
+import AuthContext from "../../Context/AuthContext";
 
 
 const AddStudentParent=(props)=>{
-
+    const {user} = useContext(AuthContext);
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [student,setStudent] =useState("")
@@ -35,7 +36,7 @@ const AddStudentParent=(props)=>{
 
     const getStudentList = async () => {
         var data = {
-            school_id: props.schoolID,
+            school_id: user.school_user? props.schoolID :"",
             student_id:"",
             group_id:""
             
@@ -75,11 +76,11 @@ const AddStudentParent=(props)=>{
         }else{
 
             return <> 
-                    <button className="btn ripple btn-dark" type="button" onClick={controls.close}>Close</button>
+                    <button className="btn-fill-md text-light bg-martini shadow-martini" type="button" onClick={controls.close}>Close</button>
                     <button 
                         type="button" 
-                        className={`btn ripple btn-success`} 
-                        onClick={handleAdd}>Attach Student</button>
+                        className={`btn-fill-md text-light bg-dodger-blue`} 
+                        onClick={handleAdd}>Attach Student<i class="fas fa-check mg-l-15"></i></button>
                     </>
         }
     }
@@ -96,7 +97,7 @@ const AddStudentParent=(props)=>{
                 <label htmlFor="">Select Student</label>
                 <Select
                       onChange={(e) => setStudent(e.id)}
-                      getOptionLabel={(option) => option.names}
+                      getOptionLabel={(option) => `${option.names} - ${option.school.school_name}`}
                       getOptionValue={(option) => option.id}
                       isSearchable
                       options={Array.isArray(studentList) ? studentList : []}
