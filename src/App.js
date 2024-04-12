@@ -41,6 +41,8 @@ import ParentProfile from "./Pages/Parents/ParentProfile";
 import Settings from "./Pages/Settings";
 import ListAdmins from "./Pages/SchoolUsers/ListAdmins";
 import ViewAllStudents from "./Pages/students/ViewAllStudents";
+import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
+import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -129,9 +131,11 @@ function App(props) {
               {/* End Account routes */}
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />
+              <Route path="/school-parents/:id" element={<ViewSchoolParents />} />
               <Route path="/parent/requests" element={<ViewParentRequests />} />
               <Route path="/parents/add" element={<AddParent />} />
               <Route path="/parents/profile/:id" element={<ParentProfile />} />
+              <Route path="/school-parents/:id/profile/:parent/" element={<SchoolParentProfile />} />
               {/* End parent */}
               {/* Students */}
               <Route path="/students/:id" element={<ViewStudents />} />

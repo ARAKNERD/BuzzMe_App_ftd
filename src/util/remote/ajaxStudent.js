@@ -96,4 +96,9 @@ export default {
     let response = await apiCall("contact/add", data);
     return response;
   },
+  async getSchoolStudents(data) {
+    let response = await apiCall("link/students/list", data);
+    return response;
+  },
+  
 };

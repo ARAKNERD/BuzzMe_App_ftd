@@ -67,6 +67,24 @@ export default {
     let response = await apiCall("guardian/search", data);
     return response;
   },
+  async listParents(data) {
+    let response = await apiCall("link/parents/list", data);
+    return response;
+  },
+  async listSchoolParents(school_id, page) {
+    let data = {
+      "school_id":school_id,
+      "page": page
+    };
+    let response = await apiCall("link/parents/school", data);
+    return response;
+  },
+  async searchSchoolParents(data) {
+    let response = await apiCall("link/parents/search", data);
+    return response;
+  },
+  
 
-
+  
+  
 };
