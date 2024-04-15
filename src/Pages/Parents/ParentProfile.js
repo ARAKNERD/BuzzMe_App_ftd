@@ -31,17 +31,6 @@ const ParentProfile = props => {
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
 
-    const data = {
-        parent_id: id
-    
-      };
-
-    useEffect(()=>{
-        getChildren()
-        getParentProfile();
-      
-    }, [])
-
     const setParentUpdate = () =>{
         handleActive()
         setParentName(parentProfile.parent_name)
@@ -52,9 +41,8 @@ const ParentProfile = props => {
         setParentID(parentProfile.parent_id)
     }
 
-    const handleUpdate = async(event) => {
-
-        event.preventDefault()
+    const handleUpdate = async(e) =>{
+        e.preventDefault()
         var data = {
 
             parent_name: parentName,
@@ -64,18 +52,43 @@ const ParentProfile = props => {
             nin: NIN,
             parent_id: id
         };
+            const server_response = await ajaxParent.updateParent(data);
+            console.log(server_response)
+            if(server_response.status==="OK"){
+                toast.success(server_response.message);
+                getParentProfile(id);
+            }
+            else{
+                toast.error(server_response.message); 
+            } 
+    }
+
+    // const handleUpdate = async(event) => {
+
+    //     event.preventDefault();
+    //     var data = {
+
+    //         parent_name: parentName,
+    //         alternative_contact: alternativeContact,
+    //         main_contact: mainContact,
+    //         address: address,
+    //         nin: NIN,
+    //         parent_id: id
+    //     };
        
-        const server_response = await ajaxParent.updateParent(data)
-        if(server_response.status === "OK"){
-            toast.success(server_response.message)
-            getParentProfile();
-        }
-    };
+    //     const server_response = await ajaxParent.updateParent(data)
+    //     console.log(server_response)
+    //     if(server_response.status === "OK"){
+            
+    //         toast.success(server_response.message)
+            
+    //     }
+    // };
 
     const getParentProfile =async()=>{
         
         setLoading(true)
-        const server_response = await ajaxParent.fetchParentInfo(data);
+        const server_response = await ajaxParent.fetchParentInfo(id);
         setLoading(false)
         if(server_response.status==="OK"){
             //store results
@@ -88,7 +101,7 @@ const ParentProfile = props => {
 
     const getChildren =async()=>{
         setLoading2(true)
-        const server_response = await ajaxParent.fetchChildren(data);
+        const server_response = await ajaxParent.fetchChildren(id);
         setLoading2(false)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
@@ -97,6 +110,12 @@ const ParentProfile = props => {
             setChildren("404");
         }
     }
+
+    useEffect(()=>{
+        getChildren();
+        getParentProfile(id);
+      
+    }, [id])
 
     const handleModal2=()=>{
         setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} isOpen={true}/>))

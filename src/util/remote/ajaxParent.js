@@ -10,8 +10,11 @@ export default {
     let response = await apiCall("guardian/list", data);
     return response;
   },
-  async fetchParentInfo(data) 
+  async fetchParentInfo(parent_id) 
   {
+    let data = {
+      "parent_id":parent_id
+    };
     let response = await apiCall("guardian/profile", data);
     return response;
   },
@@ -23,6 +26,11 @@ export default {
   async searchNIN(data) 
   {
     let response = await apiCall("guardian/nin", data);
+    return response;
+  },
+  async searchTerms(data) 
+  {
+    let response = await apiCall("guardian/terms", data);
     return response;
   },
   async createParent(data) 
@@ -53,8 +61,11 @@ export default {
     let response = await apiCall("guardian/count", data);
     return response;
   },
-  async fetchChildren(data) 
+  async fetchChildren(parent_id) 
   {
+    let data = {
+      "parent_id":parent_id
+    };
     let response = await apiCall("link/students/all", data);
     return response;
   },

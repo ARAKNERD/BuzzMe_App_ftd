@@ -143,7 +143,7 @@ function AddParent() {
                     />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Alternative Contact <span style={{color:"red"}}>*</span> </label>
+                    <label>Alternative Contact </label>
                     <input
                       type="text"
                       value={alternativeContact}

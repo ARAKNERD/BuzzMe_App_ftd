@@ -55,7 +55,7 @@ const AttachParent=(props)=>{
           search: query
         };
         setLoading2(true)
-        const server_response = await ajaxParent.searchNIN(data);
+        const server_response = await ajaxParent.searchTerms(data);
         setLoading2(false)
         if(server_response.status==="OK"){
             //store results
