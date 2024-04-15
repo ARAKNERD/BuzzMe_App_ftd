@@ -48,11 +48,11 @@ const UpdateStation=(props)=>{
         }else{
 
             return <> 
-                    <button className="btn ripple btn-dark" type="button" onClick={controls.close}>Close</button>
+                    <button className="btn-fill-md text-light bg-martini shadow-martini" type="button" onClick={controls.close}>Close</button>
                     <button 
                         type="button" 
-                        className={`btn ripple btn-success`} 
-                        onClick={handleUpdate}>Save Changes</button>
+                        className={`btn-fill-md text-light bg-dodger-blue`} 
+                        onClick={handleUpdate}>Save Changes<i class="fas fa-check mg-l-15"></i></button>
                     </>
         }
     }
