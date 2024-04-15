@@ -32,11 +32,6 @@ const SchoolParentProfile = props => {
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
 
-    const data = {
-        parent_id: parent
-    
-      };
-
     useEffect(()=>{
         getChildren()
         getParentProfile();
@@ -76,7 +71,7 @@ const SchoolParentProfile = props => {
     const getParentProfile =async()=>{
         
         setLoading(true)
-        const server_response = await ajaxParent.fetchParentInfo(data);
+        const server_response = await ajaxParent.fetchParentInfo(parent);
         setLoading(false)
         if(server_response.status==="OK"){
             //store results
