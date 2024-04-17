@@ -126,7 +126,7 @@ const SchoolProfile = props => {
 
     const getSchoolStations =async()=>{
         setLoading4(false)
-        const server_response = await ajaxStation.fetchStationList(data);
+        const server_response = await ajaxStation.fetchStationList(id);
         setLoading4(false)
         if(server_response.status==="OK"){
             setSchoolStations(server_response.details);
@@ -377,13 +377,15 @@ const SchoolProfile = props => {
                            
                                 
                         />
-                        <form className="mg-b-20">
+                        <form className="mg-t-10">
             <div className="row gutters-8">
               <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                 <input
                   type="text"
                   value={query} onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search for student name..."
+                  style={{border: "1px solid grey"}}
+
                   className="form-control"
                 />
               </div>
@@ -403,7 +405,7 @@ const SchoolProfile = props => {
               </div>
             </div>
           </form>
-                        <div className="border-top mt-3"></div>                    
+                        <div className="border-top mt-1"></div>                    
                         <div className="table-responsive">
                             <table className="table table-hover text-nowrap mg-b-0">
                                 <thead>

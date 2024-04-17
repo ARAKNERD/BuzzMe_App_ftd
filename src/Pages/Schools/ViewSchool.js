@@ -115,6 +115,8 @@ useEffect(() => {
               <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
                 <input
                   type="text"
+                  style={{border: "1px solid grey"}}
+
                   value={query} onChange={(e) => setQuery(e.target.value)}
                   placeholder="Search for school..."
                   className="form-control"

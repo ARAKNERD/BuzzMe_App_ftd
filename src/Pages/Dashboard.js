@@ -13,18 +13,18 @@ import ajaxCallStation from "../util/remote/ajaxCallStation";
 import ajaxStation from "../util/remote/ajaxStation";
 import SchoolContext from "../Context/SchoolContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRightArrowLeft, faMoneyBillTransfer, faPhone, faSchoolFlag } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightArrowLeft, faMoneyBillTransfer} from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
+
   const [schoolsNumber, setSchoolsNumber] = useState(false);
   const [studentsNumber, setStudentsNumber] = useState(false);
-  const [parentsNumber, setParentsNumber] = useState(false);
   const {user} = useContext(AuthContext);
-  const {recentSchools, getRecentSchools} = useContext(SchoolContext);
+  const {recentSchools} = useContext(SchoolContext);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [stationList, setStationList] = useState(false);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(3);
 
   const getStations = async () => {
     setLoading2(true);
@@ -48,32 +48,6 @@ function Dashboard() {
       setStudentsNumber("404");
     }
   };
-  // fetches  call stations count
-  const [callStations, setCallStations] = useState("");
-  const getcall_stations_sNumber = async () => {
-    const server_response = await ajaxCallStation.callStation_count(user.school_user ? user.school_user.school?.school_id : "");
-
-    if (server_response.status === "OK") {
-      //store results
-      setCallStations(server_response.details);
-    } else {
-      //communicate error
-      setCallStations("404");
-    }
-  };
-
-  const getParentsNumber = async () => {
-    const server_response = await ajaxParent.countParents(
-    );
-
-    if (server_response.status === "OK") {
-      //store results
-      setParentsNumber(server_response.details);
-    } else {
-      //communicate error
-      setParentsNumber("404");
-    }
-  };
 
   const getSchoolsNumber = async () => {
     const server_response = await ajaxSchool.fetchSchoolNumber();
@@ -93,27 +67,142 @@ function Dashboard() {
 
   useEffect(() => {
     getStudentsNumber();
-    getcall_stations_sNumber();
     getStations();
   }, [user.school_user ? user.school_user.school.school_id : ""]);
-
-  useEffect(() => {
-    getParentsNumber();
-  }, []);
 
   return (
     <div>
       <AppContainer title={"Dashboard"}>
         <Toaster position="top-center" reverseOrder={false} />
-        {/* Dashboard summery Start Here */}
+
+        <RenderSecure code="ADMIN-VIEW">
+          <div class="row gutters-20">
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="dashboard-summery-one mg-b-20">
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <div class="item-icon bg-light-green ">
+                      <img alt="avatar" src={process.env.PUBLIC_URL + "/assets/img/figure/school.png"}/>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="item-content">
+                      <div class="item-title">Total Schools</div>
+                      <div class="item-number"><span class="counter">{schoolsNumber ? schoolsNumber.total_p : "..."}</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="dashboard-summery-one mg-b-20">
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <div class="item-icon bg-light-red">
+                      <FontAwesomeIcon icon={faMoneyBillTransfer} style={{fontSize: "44px", marginTop:20, color:"black"}} />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="item-content">
+                      <div class="item-title">Airtime Balance</div>
+                      <div class="item-number"><span class="counter" data-num="2250">00</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="dashboard-summery-one mg-b-20">
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <div class="item-icon bg-light-yellow">
+                      <FontAwesomeIcon icon={faArrowRightArrowLeft} style={{fontSize: "44px", marginTop:20, color:"orange"}} />
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="item-content">
+                      <div class="item-title">Airtime Used</div>
+                      <div class="item-number"><span class="counter" data-num="5690">00</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+              <div class="dashboard-summery-one mg-b-20">
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <div class="item-icon bg-light-red">
+                      <img alt="avatar" src={process.env.PUBLIC_URL + "/assets/img/figure/customer-support.png"}/>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="item-content">
+                      <div class="item-title">Calls Today</div>
+                      <div class="item-number"><span></span><span class="counter" data-num="193000">00</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> 
+        </RenderSecure>
+        
         <RenderSecure code="SCHOOL-USER-VIEW">
-        <div className="row gutters-20">
-        <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
+        <div class="row">
+                    <div class="col-4-xxxl col-12">
+                        <div class="card dashboard-card-ten">
+                            <div class="card-body">
+                                <div class="heading-layout1">
+                                    <div class="item-title">
+                                        <h3>Welcome!</h3>
+                                    </div>
+                                </div>
+                                <div class="student-info">
+                                    <div class="media media-none--xs">
+                                        <div class="item-img">
+                                        <img src={process.env.PUBLIC_URL + "/assets/img/figure/user55.png"} alt="School Admin"/>
+                                        </div>
+                                        <div class="media-body">
+                                            <h3 class="item-title">{user.school_user?.names}</h3>
+                                            <p>School Administrator</p>
+                                        </div>
+                                    </div>
+                                    <div className="table-responsive">
+                                <table className="table mt-5 mw-100 color-span">
+                                    <tbody>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">School Name </span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.school_name}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">School E-mail</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.email}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Contact</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.contact}</span> </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-8-xxxl col-12">
+                        <div class="row">
+                            <div class="col-lg-4">
+                            <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
                                 <div class="col-6">
                                     <div class="item-icon bg-light-green ">
-                                        <i class="flaticon-classmates text-green"></i>
+                                    <img alt="avatar" src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/students.png"
+                    }/>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -124,30 +213,32 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-        <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
+                            </div>
+                            <div class="col-lg-4">
+                            <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
                                 <div class="col-6">
-                                    <div class="item-icon bg-light-green ">
-                                        <i class="flaticon-classmates text-green"></i>
+                                    <div class="item-icon bg-light-yellow ">
+                                    <FontAwesomeIcon icon={faArrowRightArrowLeft} style={{fontSize: "44px", marginTop:20, color:"orange"}} />
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="item-content">
-                                        <div class="item-title">Calling Stations</div>
-                                        <div class="item-number"><span class="counter">{callStations ? callStations.total_p : "..."}</span></div>
+                                        <div class="item-title">Airtime Used</div>
+                                        <div class="item-number"><span class="counter">00</span></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
+                            </div>
+                            <div class="col-lg-4">
+                            <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
                                 <div class="col-6">
                                     <div class="item-icon bg-light-green ">
-                                        <i class="flaticon-classmates text-green"></i>
+                                    <img alt="avatar" src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/customer-support.png"
+                    }/>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -158,79 +249,81 @@ function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-        </div></RenderSecure>
-        <RenderSecure code="ADMIN-VIEW">
-        <div class="row gutters-20">
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <div class="item-icon bg-light-green ">
-                                    <FontAwesomeIcon icon={faSchoolFlag} style={{fontSize: "44px", marginTop:20, color:"green"}} />
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="item-content">
-                                        <div class="item-title">Total Schools</div>
-                                        <div class="item-number"><span class="counter">{schoolsNumber ? schoolsNumber.total_p : "..."}</span></div>
-                                    </div>
-                                </div>
                             </div>
+                            <div className="col-lg-12">
+              <div
+                className="card custom-card"
+                style={{marginTop: "10px", borderRadius: "10px"}}>
+                <div className="card-body map-card">
+                  <div class="heading-layout1 mg-b-25">
+                    <TableHeader
+                      title="Status of Calling Stations"
+                      subtitle="List of calling stations and their current status"
+                     
+                    />
+                    <div class="dropdown">
+                      <a
+                        class="dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-expanded="false">
+                        ...
+                      </a>
+
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <Link class="dropdown-item" to={'/stations'}>
+                          <i class="fa-solid fa-eye text-orange-peel"></i>
+                          View All
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-top mt-3"></div>
+                  <div className="table-responsive">
+                    <table className="table table-hover text-nowrap mg-b-0">
+                      <thead>
+                      <tr>
+                      <th>No.</th>
+                      <th>Station Name</th>
+                      {user.school_user?"":<th>School</th>}
+                      <th>Status</th>
+                    </tr>
+                      </thead>
+                      <tbody>
+                        {Array.isArray(stationList) &&
+                        stationList.length > 0 ? (
+                          stationList.map((item, key) => (
+                            <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.station_name}</td>
+                          {user.school_user?"":<td>{item.school?.school_name}</td>}
+                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
+                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+
+                        </tr>
+                        
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="6" style={{textAlign: "center"}}>
+                              No calling stations registered.
+                            </td>
+                          </tr>
+                        )}
+                        
+                      </tbody>
+                    </table>
+                    {loading2 && <Loader/>}
+
+                  </div>
+                </div>
+              </div>
+            </div>
+                            
                         </div>
                     </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <div class="item-icon bg-light-blue">
-                                    <FontAwesomeIcon icon={faMoneyBillTransfer} style={{fontSize: "44px", marginTop:20, color:"blue"}} />
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="item-content">
-                                        <div class="item-title">Airtime Today</div>
-                                        <div class="item-number"><span class="counter" data-num="2250">00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <div class="item-icon bg-light-yellow">
-                                    <FontAwesomeIcon icon={faArrowRightArrowLeft} style={{fontSize: "44px", marginTop:20, color:"orange"}} />
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="item-content">
-                                        <div class="item-title">Transactions Today</div>
-                                        <div class="item-number"><span class="counter" data-num="5690">00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-sm-6 col-12">
-                        <div class="dashboard-summery-one mg-b-20">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <div class="item-icon bg-light-red">
-                                    <FontAwesomeIcon icon={faPhone} style={{fontSize: "44px", marginTop:20, color:"red"}} />
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="item-content">
-                                        <div class="item-title">Calls Today</div>
-                                        <div class="item-number"><span></span><span class="counter" data-num="193000">00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> </RenderSecure>
+                </div></RenderSecure>
         <div className="row gutters-20">
           <RenderSecure code="ADMIN-VIEW">
             <div className="col-lg-6">
@@ -302,6 +395,7 @@ function Dashboard() {
               </div>
             </div>
           </RenderSecure>
+          <RenderSecure code="ADMIN-VIEW">
           <div className="col-lg-6">
               <div
                 className="card custom-card"
@@ -350,7 +444,8 @@ function Dashboard() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           {user.school_user?"":<td>{item.school?.school_name}</td>}
-                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
+                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
 
                         </tr>
                           ))
@@ -368,8 +463,9 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div></RenderSecure>
         </div>
+        
         <RenderSecure code="ADMIN-VIEW">
         <div className="row gutters-20">
          

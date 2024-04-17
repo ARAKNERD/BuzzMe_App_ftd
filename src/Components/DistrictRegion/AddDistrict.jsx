@@ -63,6 +63,8 @@ function AddDistrict() {
                       type="text"
                       value={districtName}
                       placeholder="Enter name of district.."
+                      style={{border: "1px solid grey"}}
+
                       onChange={(e) => setDistrictName(e.target.value)}
                       className=" colo-12 form-control"
                     />

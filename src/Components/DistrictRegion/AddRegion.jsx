@@ -57,6 +57,7 @@ function AddRegion() {
                       type="text"
                       value={regionName}
                       placeholder="Enter name of region..."
+                      style={{border: "1px solid grey"}}
                       onChange={(e) => setRegionName(e.target.value)}
                       className=" colo-12 form-control"
                     />
