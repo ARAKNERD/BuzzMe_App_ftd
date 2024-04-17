@@ -13,6 +13,8 @@ import UpdateStation from "./UpdateStation";
 import UpdateHours from "./UpdateHours";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
+import TurnOnStation from "./TurnOnStation";
+import TurnOffStation from "./TurnOffStation";
 
 
 function ListStations() {
@@ -40,6 +42,12 @@ function ListStations() {
   }
   const updateHours=(e,item)=>{
     setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
+  }
+  const stationOn=(e,item)=>{
+    setModal(false, ()=>setModal(<TurnOnStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+  }
+  const stationOff=(e,item)=>{
+    setModal(false, ()=>setModal(<TurnOffStation stationID={item.station_id} g={getStations} isOpen={true}/>))
   }
 
   const refreshData = () =>{
@@ -97,7 +105,8 @@ function ListStations() {
                           <td>{item.station_code}</td>
                           {user.school_user?"":<td>{item.school?.school_name}</td>}
                           <td>{item.start_time} - {item.end_time}</td>
-                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
+                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
 
                           <td>
                             <div className="dropdown">
@@ -124,7 +133,20 @@ function ListStations() {
                                 onClick={(e) => updateStation(e,item)}>
                                 <i className="far fa-edit mr-1"></i>
                                  Update Station Details
-                              </Link></RenderSecure></div>
+                              </Link></RenderSecure>
+                              {item.status==="1"?<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => stationOff(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                                 Turn Off
+                              </Link>:<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => stationOn(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                                 Turn On
+                              </Link>}</div>
                             </div>
                           </td>
                         </tr>

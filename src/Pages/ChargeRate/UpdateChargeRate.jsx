@@ -41,11 +41,11 @@ const UpdateChargeRate=(props)=>
     }else{
 
       return <> 
-        <button className="btn ripple btn-dark" type="button" onClick={controls.close}>Close</button>
+        <button className="btn-fill-md text-light bg-martini shadow-martini" type="button" onClick={controls.close}>Close</button>
         <button 
           type="button" 
-          className={`btn ripple btn-success`} 
-          onClick={handleUpdate}>Save Changes</button>
+          className={`btn-fill-md text-light bg-dodger-blue`} 
+          onClick={handleUpdate}>Save Changes<i class="fas fa-check mg-l-15"></i></button>
       </>
     }
   }
@@ -61,7 +61,7 @@ const UpdateChargeRate=(props)=>
     <div className="row">
             <div className="col-xl-6 col-lg-6 col-12 form-group">
                <label htmlFor="">Type</label>
-               <input type="text" value={type} onChange={(e)=>setType(e.target.value)} className="form-control"/>
+               <input type="text" value={type} onChange={(e)=>setType(e.target.value)} readOnly className="form-control"/>
             </div>
              <div className="col-xl-6 col-lg-6 col-12 form-group">
                <label htmlFor="">Rate</label>

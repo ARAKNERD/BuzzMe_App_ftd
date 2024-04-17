@@ -43,6 +43,9 @@ import ListAdmins from "./Pages/SchoolUsers/ListAdmins";
 import ViewAllStudents from "./Pages/students/ViewAllStudents";
 import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
 import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
+import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
+import AdminImportStudents from "./Pages/students/AdminImportStudents";
+import CallLogs from "./Pages/CallLogs";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -146,7 +149,9 @@ function App(props) {
                 element={<StudentCards />}
               />
               <Route path="/students/add" element={<AddStudent />} />
+              <Route path="/students/register" element={<AdminRegisterStudent />} />
               <Route path="/students/import" element={<ImportStudents />} />
+              <Route path="/students/upload" element={<AdminImportStudents />} />
               <Route
                 path="/students/profile/:id"
                 element={<StudentProfile />}
@@ -171,6 +176,7 @@ function App(props) {
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/call-logs" element={<CallLogs />} />
 
             </>
           )}

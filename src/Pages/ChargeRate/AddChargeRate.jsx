@@ -51,22 +51,24 @@ function AddChargeRate() {
           class="new-added-form">
           <div className="row">
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Type <span style={{color:"red"}}>*</span><small>(i.e. message, phone call, ...)</small> </label>
+              <label htmlFor="">Charge Type <span style={{color:"red"}}>*</span> </label>
               <select
                       className="col-12 form-control"
                       value={type}
+                      style={{border: "1px solid grey"}}
                       onChange={(e) => setType(e.target.value)}>
                       <option value={true}>Select..</option>
-                      <option value="Message">Message</option>
-                      <option value="Phone Call">Phone Call</option>
+                      <option value="SMS">Message / SMS</option>
+                      <option value="CALL">Phone Call</option>
                     </select>
             </div>
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Rate <span style={{color:"red"}}>*</span></label>
+              <label htmlFor="">Cost <span style={{color:"red"}}>*</span></label>
               <input
                 type="text"
                 placeholder="Enter cost of each message or call.."
                 value={rate}
+                style={{border: "1px solid grey"}}
                 onChange={(e) => setRate(e.target.value)}
                 className="form-control"
               />

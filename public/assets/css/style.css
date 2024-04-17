@@ -5075,10 +5075,10 @@ ul {
   }
 }
 .dashboard-card-ten .card-body .student-info .media .item-img {
-  background-color: #4dd0e1;
+  
   height: 115px;
   width: 115px;
-  line-height: 129px;
+
   text-align: center;
   border-radius: 50%;
   overflow: hidden;

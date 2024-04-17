@@ -27,15 +27,15 @@ export default {
     return response;
   },
 
-  async activateStation(data) 
+  async turnOnStation(data) 
   {
-    let response = await apiCall("station/activate", data);
+    let response = await apiCall("station/on", data);
     return response;
   },
 
-  async deactivateStation(data) 
+  async turnOffStation(data) 
   {
-    let response = await apiCall("station/deactivate", data);
+    let response = await apiCall("station/off", data);
     return response;
   },
   async updateStation(data) 

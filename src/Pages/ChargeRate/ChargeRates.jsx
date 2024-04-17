@@ -81,7 +81,7 @@ function ChargeRates() {
                                   className="dropdown-item"
                                   to="#"
                                   onClick={(e) => handleUpdate(e,item)}>
-                                  <i className="fas fa-cogs text-dark-pastel-green"></i>
+                                   <i className="far fa-edit mr-1"></i>
                                   Edit Rate
                                 </Link>
                               </div>
