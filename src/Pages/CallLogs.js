@@ -4,8 +4,35 @@ import toast, {Toaster} from "react-hot-toast";
 import AppContainer from "../Components/Structure/AppContainer";
 import TableHeader from "../Components/Common/TableHeader";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function CallLogs() {
+
+  const exportToPDF = () => {
+    const table = document.querySelector(".table"); // Select the table element
+    const pdf = new jsPDF("p", "pt", "a4");
+  
+    // Define columns for the table (add more if needed)
+    const columns = ["Date & Time", "Student", "Contact", "Duration"];
+  
+    // Extract data from the table and format it as an array of arrays
+    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
+      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
+    });
+  
+    // Remove the header row
+    data.shift();
+  
+    // Create the PDF document and add the table
+    pdf.autoTable({
+      head: [columns],
+      body: data,
+    });
+  
+    // Save the PDF
+    pdf.save("call_log_data.pdf");
+  };
 
   return (
     <AppContainer title="Call Logs">
@@ -16,10 +43,19 @@ function CallLogs() {
         <div className="card height-auto">
    
       <div className="card-body">
+      <div class="heading-layout1 mg-b-25">
         <TableHeader
             title="Call Log Details"
             subtitle="List of all the phone calls sorted by the most recent"    
               />
+              <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+                                        </div>
+                                    </div></div>
          <form className="mg-t-20">
                 <div className="row gutters-8">
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">

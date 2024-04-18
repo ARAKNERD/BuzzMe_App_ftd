@@ -7,6 +7,8 @@ import {Link} from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function ViewAllStudents() {
   const [studentList, setStudentList] = useState(false);
@@ -36,6 +38,31 @@ function ViewAllStudents() {
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
     }
+  };
+
+  const exportToPDF = () => {
+    const table = document.querySelector(".table"); // Select the table element
+    const pdf = new jsPDF("p", "pt", "a4");
+  
+    // Define columns for the table (add more if needed)
+    const columns = ["No.", "Student Name", "School", "Student Code"];
+  
+    // Extract data from the table and format it as an array of arrays
+    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
+      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
+    });
+  
+    // Remove the header row
+    data.shift();
+  
+    // Create the PDF document and add the table
+    pdf.autoTable({
+      head: [columns],
+      body: data,
+    });
+  
+    // Save the PDF
+    pdf.save("students_data.pdf");
   };
 
   useEffect(() => {
@@ -124,6 +151,7 @@ function ViewAllStudents() {
                     <Link class="dropdown-item" onClick={getStudentList}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
+                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
                   </div>
                 </div>
               </div>

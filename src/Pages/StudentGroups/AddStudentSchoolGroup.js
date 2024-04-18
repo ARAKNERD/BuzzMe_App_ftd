@@ -62,24 +62,13 @@ function AddStudentSchoolGroup(props) {
                     <input
                       type="text"
                       value={groupName}
+                      style={{border: "1px solid grey"}}
                       onChange={(e) => setGroupName(e.target.value)}
                       className=" colo-12 form-control"
+                      placeholder="Enter name of class or group..."
+
                     />
                   </div>
-                  {/* <div className="col-xl-6 col-lg-6 col-12 form-group">
-                    <label htmlFor="">School</label>
-                    <Select
-                      onChange={(e) => setSchool(e.school_id)}
-                      getOptionLabel={(option) => option.school_name}
-                      getOptionValue={(option) => option.school_id}
-                      isSearchable
-                      options={Array.isArray(schoolList) ? schoolList : []}
-                      value={
-                        Array.isArray(schoolList) &&
-                        schoolList.find((value) => value.school_id === school)
-                      }
-                    />
-                  </div> */}
                 </div>
                 <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
                   <button
