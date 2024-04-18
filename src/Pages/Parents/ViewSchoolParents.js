@@ -3,23 +3,20 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { Link, useParams} from "react-router-dom";
-import UpdateParent from "./UpdateParent";
-import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxParent from "../../util/remote/ajaxParent";
 import toast, {Toaster} from "react-hot-toast";
 import AuthContext from "../../Context/AuthContext";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function ViewSchoolParents() {
     const {id} = useParams();
-  const {user} = useContext(AuthContext);
   const [parentList, setParentList] = useState("");
   const [parentSearch, setParentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [modal, setModal] = useStateCallback(false);
   const [query, setQuery] = useState("");
 
 
@@ -43,6 +40,31 @@ function ViewSchoolParents() {
   const refreshData = () =>{
     getParentList()
   }
+
+  const exportToPDF = () => {
+    const table = document.querySelector(".table"); // Select the table element
+    const pdf = new jsPDF("p", "pt", "a4");
+  
+    // Define columns for the table (add more if needed)
+    const columns = ["Names", "Contact", "Address"];
+  
+    // Extract data from the table and format it as an array of arrays
+    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
+      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
+    });
+  
+    // Remove the header row
+    data.shift();
+  
+    // Create the PDF document and add the table
+    pdf.autoTable({
+      head: [columns],
+      body: data,
+    });
+  
+    // Save the PDF
+    pdf.save("parents_data.pdf");
+  };
 
 
   useEffect(() => {
@@ -108,8 +130,7 @@ function ViewSchoolParents() {
 
   return(
   <AppContainer title="Parents">
-    <Toaster position="top-center" reverseOrder={false} />
-          {modal}      
+    <Toaster position="top-center" reverseOrder={false} />     
 				<div className="col-lg-12">
           <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
             <div className="card-body map-card">
@@ -124,6 +145,7 @@ function ViewSchoolParents() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
                                         </div>
                                     </div>
                         </div>

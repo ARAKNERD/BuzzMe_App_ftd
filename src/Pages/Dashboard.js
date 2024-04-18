@@ -20,11 +20,15 @@ function Dashboard() {
   const [schoolsNumber, setSchoolsNumber] = useState(false);
   const [studentsNumber, setStudentsNumber] = useState(false);
   const {user} = useContext(AuthContext);
+  const [studentsToday, setStudentsToday] = useState(false);
+
   const {recentSchools} = useContext(SchoolContext);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [stationList, setStationList] = useState(false);
   const [limit, setLimit] = useState(3);
+  var school_id = user.school_user?.school?.school_id;
+
 
   const getStations = async () => {
     setLoading2(true);
@@ -32,6 +36,19 @@ function Dashboard() {
     setLoading2(false);
     if (server_response.status === "OK") {
       setStationList(server_response.details);
+    }
+  };
+
+  const getStudentsToday = async () => {
+    var data = {
+      school: school_id,
+      group: "",
+    };
+    const server_response = await ajaxStudent.fetchStudentsToday(data);
+    if (server_response.status === "OK") {
+      setStudentsToday(server_response.details);
+    } else {
+      setStudentsToday("404");
     }
   };
 
@@ -149,8 +166,8 @@ function Dashboard() {
         </RenderSecure>
         
         <RenderSecure code="SCHOOL-USER-VIEW">
-        <div class="row">
-                    <div class="col-4-xxxl col-12">
+        <div className="row">
+          <div class="col-4-xxxl col-12">
                         <div class="card dashboard-card-ten">
                             <div class="card-body">
                                 <div class="heading-layout1">
@@ -169,33 +186,29 @@ function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="table-responsive">
-                                <table className="table mt-5 mw-100 color-span">
+                                <table className="table mt-2 mw-100 color-span">
                                     <tbody>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">School Name </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.school_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className=""><b>{user.school_user?.school?.school_name}</b></span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">School E-mail</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.email}</span> </td>
+                                            <td className="py-2 px-0"> <span className=""><b>{user.school_user?.school?.email}</b></span> </td>
                                         </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Contact</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.contact}</span> </td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
                             </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-8-xxxl col-12">
+          </div>
+          <div class="col-8-xxxl col-12">
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                             <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
                                 <div class="col-6">
@@ -214,24 +227,7 @@ function Dashboard() {
                             </div>
                         </div>
                             </div>
-                            <div class="col-lg-4">
-                            <div class="dashboard-summery-one mg-b-20">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <div class="item-icon bg-light-yellow ">
-                                    <FontAwesomeIcon icon={faArrowRightArrowLeft} style={{fontSize: "44px", marginTop:20, color:"orange"}} />
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="item-content">
-                                        <div class="item-title">Airtime Used</div>
-                                        <div class="item-number"><span class="counter">00</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                            </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                             <div class="dashboard-summery-one mg-b-20">
                             <div class="row align-items-center">
                                 <div class="col-6">
@@ -250,7 +246,49 @@ function Dashboard() {
                             </div>
                         </div>
                             </div>
-                            <div className="col-lg-12">
+                            <div class="col-lg-6">
+                            <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-yellow ">
+                                    <img alt="avatar" src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/payment-method.png"
+                    }/>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Airtime Loaded Today</div>
+                                        <div class="item-number"><span class="counter">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                            <div class="col-lg-6">
+                            <div class="dashboard-summery-one mg-b-20">
+                            <div class="row align-items-center">
+                                <div class="col-6">
+                                    <div class="item-icon bg-light-yellow ">
+                                    <img alt="avatar" src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/commission.png"
+                    }/>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="item-content">
+                                        <div class="item-title">Airtime Commission</div>
+                                        <div class="item-number"><span class="counter">00</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+          </div>
+        </div>
+        <div className="row">
+        <div className="col-6-xxxl col-12">
               <div
                 className="card custom-card"
                 style={{marginTop: "10px", borderRadius: "10px"}}>
@@ -319,11 +357,68 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            </div>
-                            
-                        </div>
+        </div>
+        <div className="col-6-xxxl col-12">
+          <div className="card custom-card"
+                style={{marginTop: "10px", borderRadius: "10px"}}>
+            <div className="card-body">
+          <div className="heading-layout1">
+          <TableHeader
+                  title="Recently Registered Students"
+                  subtitle="List of the students registered today"
+                />
+                <div class="dropdown">
+                      <a
+                        class="dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-toggle="dropdown"
+                        aria-expanded="false">
+                        ...
+                      </a>
+
+                      <div class="dropdown-menu dropdown-menu-right">
+                        <Link class="dropdown-item" to={`/students/${user.school_user?.school?.school_id}`}>
+                          <i class="fa-solid fa-eye text-orange-peel"></i>
+                          View All
+                        </Link>
+                      </div>
                     </div>
-                </div></RenderSecure>
+          </div>
+
+          <div className="table-responsive">
+            <table className="table display data-table text-nowrap">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Student Code</th>
+                  <th>Registration Number</th>
+                  <th>Student Group</th>
+                </tr>
+              </thead>
+              <tbody>
+              {Array.isArray(studentsToday) && studentsToday.length > 0 ? (
+                      studentsToday.map((student, key) => (
+                        <tr key={key}>
+                          <th scope='row'>{key+1}</th>
+                          <td>{student.names}</td>
+                          <td>{student.student_code}</td>
+                          <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
+                          <td>{student.group?.group_name}</td>
+                        </tr>
+                      ))
+                    ): (
+                      <tr>
+                        <td colSpan="5" style={{textAlign:"center"}}>No students registered today.</td>
+                      </tr>
+                    )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+              </div></div></div>
+                </RenderSecure>
         <div className="row gutters-20">
           <RenderSecure code="ADMIN-VIEW">
             <div className="col-lg-6">

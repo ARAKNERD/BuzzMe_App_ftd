@@ -43,11 +43,11 @@ const UpdateHours=(props)=>{
         }else{
 
             return <> 
-                    <button className="btn ripple btn-dark" type="button" onClick={controls.close}>Close</button>
+                    <button className="btn-fill-md text-light bg-martini shadow-martini" type="button" onClick={controls.close}>Close</button>
                     <button 
                         type="button" 
-                        className={`btn ripple btn-success`} 
-                        onClick={handleUpdate}>Save Changes</button>
+                        className={`btn-fill-md text-light bg-dodger-blue`} 
+                        onClick={handleUpdate}>Save Changes<i class="fas fa-check mg-l-15"></i></button>
                     </>
         }
     }
@@ -62,11 +62,11 @@ const UpdateHours=(props)=>{
 
             <div className="mb-4">
                 <label htmlFor="">Start Time</label>
-                <input onChange={(e)=>setStartTime(e.target.value)} value={startTime} type="time" className="form-control"/>
+                <input onChange={(e)=>setStartTime(e.target.value)} style={{border: "1px solid grey"}} value={startTime} type="time" className="form-control"/>
             </div>
             <div className="mb-4">
                 <label htmlFor="">End Time</label>
-                <input onChange={(e)=>setEndTime(e.target.value)} value={endTime} type="time" className="form-control"/>
+                <input onChange={(e)=>setEndTime(e.target.value)} style={{border: "1px solid grey"}} value={endTime} type="time" className="form-control"/>
             </div>
        
         </SystemModal>

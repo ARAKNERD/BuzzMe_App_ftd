@@ -78,8 +78,8 @@ function AddParent() {
             <div className="card-body">
               <div>
                 <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian NIN check</h5>
-                <p><small>Check whether parent or guardian is already registered in the system.</small></p>
-
+                <p><small>Check whether parent or guardian is already registered in the system.<br/>When checking with a contact, please start with 256....</small></p>
+         
               </div>
 
               <form className="mg-b-20">
@@ -89,7 +89,7 @@ function AddParent() {
                       type="text"
                       value={nin}
                       onChange={(e) => setNin(e.target.value)}
-                      placeholder="Enter NIN of parent / guardian..."
+                      placeholder="Enter the NIN or contact of parent / guardian..."
                       className="form-control"
                     />
                   </div>
