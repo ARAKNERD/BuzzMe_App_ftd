@@ -65,7 +65,6 @@ function Dashboard() {
       setStudentsNumber("404");
     }
   };
-
   const getSchoolsNumber = async () => {
     const server_response = await ajaxSchool.fetchSchoolNumber();
 
@@ -418,7 +417,7 @@ function Dashboard() {
           </div>
         </div>
               </div></div></div>
-                </RenderSecure>
+        </RenderSecure>
         <div className="row gutters-20">
           <RenderSecure code="ADMIN-VIEW">
             <div className="col-lg-6">
@@ -489,9 +488,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          </RenderSecure>
-          <RenderSecure code="ADMIN-VIEW">
-          <div className="col-lg-6">
+            <div className="col-lg-6">
               <div
                 className="card custom-card"
                 style={{marginTop: "25px", borderRadius: "10px"}}>
@@ -558,7 +555,8 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-            </div></RenderSecure>
+            </div>
+          </RenderSecure>
         </div>
         
         <RenderSecure code="ADMIN-VIEW">

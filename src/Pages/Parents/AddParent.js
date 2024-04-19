@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 function AddParent() {
   const [nin, setNin] = useState("");
+  const [searchedNin, setSearchedNin] = useState("");
   const [ninSearch, setNinSearch] = useState(null);
   const [address, setAddress] = useState("");
   const [alternativeContact, setAlternativeContact] = useState("");
@@ -42,18 +43,20 @@ function AddParent() {
 
   const searchNin =async(e)=>{
     e.preventDefault();  
-    if (nin.length > 0) {
+    if (searchedNin.length > 0) {
     var data = {
-      query: nin
+      query: searchedNin
     };
     const server_response = await ajaxParent.searchNIN(data);
     console.log(server_response)
     if(server_response.status==="OK"){
         //store results
         setNinSearch(server_response.details);
+
     }else{
         toast.error(server_response.message);
         setNinSearch(false);
+        setSearchedNin("")
     }
 } else {
     toast.error("Please enter a National Identification Number!");
@@ -77,7 +80,7 @@ function AddParent() {
         <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian NIN check</h5>
+                <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian check</h5>
                 <p><small>Check whether parent or guardian is already registered in the system.<br/>When checking with a contact, please start with 256....</small></p>
          
               </div>
@@ -87,8 +90,8 @@ function AddParent() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={nin}
-                      onChange={(e) => setNin(e.target.value)}
+                      value={searchedNin}
+                      onChange={(e) => setSearchedNin(e.target.value)}
                       placeholder="Enter the NIN or contact of parent / guardian..."
                       className="form-control"
                     />
@@ -139,6 +142,17 @@ function AddParent() {
                       style={{border: "1px solid grey"}}
                       placeholder="Enter main contact of parent or guardian.."
                       onChange={(e) => setMainContact(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
+                    <label>NIN <span style={{color:"red"}}>*</span> </label>
+                    <input
+                      type="text"
+                      value={nin}
+                      style={{border: "1px solid grey"}}
+                      placeholder="Enter NIN of parent or guardian.."
+                      onChange={(e) => setNin(e.target.value)}
                       className="form-control"
                     />
                   </div>
