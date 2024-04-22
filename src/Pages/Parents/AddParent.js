@@ -15,6 +15,8 @@ function AddParent() {
   const [alternativeContact, setAlternativeContact] = useState("");
   const [mainContact, setMainContact] = useState("");
   const [names, setNames] = useState("");
+  const [loading, setLoading] = useState(false)
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -47,8 +49,9 @@ function AddParent() {
     var data = {
       query: searchedNin
     };
+    setLoading(true)
     const server_response = await ajaxParent.searchNIN(data);
-    console.log(server_response)
+    setLoading(false)
     if(server_response.status==="OK"){
         //store results
         setNinSearch(server_response.details);
@@ -261,6 +264,7 @@ function AddParent() {
           </div>
         </div>
       )}
+      {loading && <Loader/>}
         </div>
         
       </div>

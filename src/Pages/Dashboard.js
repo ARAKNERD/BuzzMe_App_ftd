@@ -529,28 +529,36 @@ function Dashboard() {
                     </tr>
                       </thead>
                       <tbody>
-                        {Array.isArray(stationList) &&
-                        stationList.length > 0 ? (
-                          stationList.map((item, key) => (
-                            <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.station_name}</td>
-                          {user.school_user?"":<td>{item.school?.school_name}</td>}
-                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
-                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
-
-                        </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="6" style={{textAlign: "center"}}>
-                              No calling stations registered.
-                            </td>
-                          </tr>
-                        )}
+                      {loading2 ? (
+        <Loader/>
+      ) : (
+        Array.isArray(stationList) && stationList.length > 0 ? (
+          stationList.map((item, key) => (
+            <tr key={key}>
+              <td>{key + 1}</td>
+              <td>{item.station_name}</td>
+              {user.school_user ? null : <td>{item.school?.school_name}</td>}
+              <td>
+                {item.status === "1" ? (
+                  <span className="badge badge-success">Active</span>
+                ) : item.status === "0" ? (
+                  <span className="badge badge-warning">Inactive</span>
+                ) : (
+                  <span className="badge badge-danger">Off</span>
+                )}
+              </td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="4" style={{ textAlign: "center" }}>
+              No calling stations registered.
+            </td>
+          </tr>
+        )
+      )}
                       </tbody>
                     </table>
-                    {loading2 && <Loader/>}
 
                   </div>
                 </div>
