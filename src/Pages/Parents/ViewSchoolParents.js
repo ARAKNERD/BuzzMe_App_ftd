@@ -10,28 +10,32 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 function ViewSchoolParents() {
-    const {id} = useParams();
-  const [parentList, setParentList] = useState("");
+  const {user} = useContext(AuthContext);
+  const [parentList, setParentList] = useState(false);
   const [parentSearch, setParentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
+  const [first, setFirst] = useState("");
+
 
 
   const data2 = {
     query: query,
-    school_id : id
+    school_id : user.school
   };
 
   const getParentList = async () => {
     setLoading(true)
-    const server_response = await ajaxParent.listSchoolParents(id,page);
+    const server_response = await ajaxParent.listSchoolParents(user.school,page);
     setLoading(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setParentList(server_response.details.list);
+      setFirst(server_response.details.meta.offset_count);
+
     } else {
       setParentList("404");
     }
@@ -69,7 +73,7 @@ function ViewSchoolParents() {
 
   useEffect(() => {
     getParentList();
-  }, [id, page]);
+  }, [user.school, page]);
 
   const setNextPageNumber = () =>{
     if(meta.length===page){
@@ -126,7 +130,7 @@ function ViewSchoolParents() {
     if (query) {
       searchParents();
     }
-  }, [query,id]);
+  }, [query,user.school]);
 
   return(
   <AppContainer title="Parents">
@@ -190,44 +194,35 @@ function ViewSchoolParents() {
                   </thead>
                   <tbody>
                   {parentSearch && Array.isArray(parentSearch) ? (
-                      parentSearch.length > 0 ? (
                         parentSearch.map((item, key) => (
                           <tr key={key}>
-                          <th scope='row'>{key+1}</th>
+                          <th scope='row'>{key + first + 1}</th>
                           <td><Link
-                          to={`/school-parents/${id}/profile/${item.parent?.parent_id}`}>
+                          to={`/school-parents/profile/${item.parent?.parent_id}`}>
                           {item.parent?.parent_name}
                         </Link></td>
                           <td>{item.parent?.main_contact}</td>
                           <td>{item.parent?.address}</td>
                         </tr>
                         ))
-                      ) : (
-                        <tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians match the search query.
-                          </td>
-                        </tr>
-                      )
-                    ) : Array.isArray(parentList) && parentList.length > 0 ? (
-                      parentList.map((item, key) => (
+                      
+                    ) : Array.isArray(parentList) && parentList.map((item, key) => (
                         <tr key={key}>
-                          <th scope='row'>{key+1}</th>
+                          <th scope='row'>{key + first + 1}</th>
                           <td><Link
-                          to={`/school-parents/${id}/profile/${item.parent?.parent_id}`}>
+                          to={`/school-parents/profile/${item.parent?.parent_id}`}>
                           {item.parent?.parent_name}
                         </Link></td>
                           <td>{item.parent?.main_contact}</td>
                           <td>{item.parent?.address}</td>
                         </tr>
                       ))
-                    ) : (
-                      <tr>
-                        <td colSpan="4" style={{textAlign: "center"}}>
-                          No parents or guardians registered yet.
-                        </td>
-                      </tr>
-                    )}
+                   }
+                   {parentList === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                   <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       

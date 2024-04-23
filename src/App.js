@@ -30,7 +30,6 @@ import District from "./Pages/RegionDistrict/District";
 import Regions from "./Pages/RegionDistrict/Regions";
 import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import ImportStudents from "./Pages/students/ImportStudents";
-import ViewParentRequests from "./Pages/Parents/ViewParentRequests";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import StudentProfile from "./Pages/students/StudentProfile";
 import StudentCards from "./Pages/students/StudentCards";
@@ -134,14 +133,13 @@ function App(props) {
               {/* End Account routes */}
               {/* Parents */}
               <Route path="/parents" element={<ViewParents />} />
-              <Route path="/school-parents/:id" element={<ViewSchoolParents />} />
-              <Route path="/parent/requests" element={<ViewParentRequests />} />
+              <Route path="/school-parents" element={<ViewSchoolParents />} />
               <Route path="/parents/add" element={<AddParent />} />
               <Route path="/parents/profile/:id" element={<ParentProfile />} />
-              <Route path="/school-parents/:id/profile/:parent/" element={<SchoolParentProfile />} />
+              <Route path="/school-parents/profile/:parent/" element={<SchoolParentProfile />} />
               {/* End parent */}
               {/* Students */}
-              <Route path="/students/:id" element={<ViewStudents />} />
+              <Route path="/school-students" element={<ViewStudents />} />
               <Route path="/students" element={<ViewAllStudents />} />
               
               <Route
@@ -154,6 +152,10 @@ function App(props) {
               <Route path="/students/upload" element={<AdminImportStudents />} />
               <Route
                 path="/students/profile/:id"
+                element={<StudentProfile />}
+              />
+              <Route
+                path="/school-students/profile/:id"
                 element={<StudentProfile />}
               />
               {/* End student */}

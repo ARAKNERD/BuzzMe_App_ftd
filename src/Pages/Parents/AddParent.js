@@ -84,7 +84,7 @@ function AddParent() {
             <div className="card-body">
               <div>
                 <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian check</h5>
-                <p><small>Check whether parent or guardian is already registered in the system.<br/>When checking with a contact, please start with 256....</small></p>
+                <p style={{color:"#042954"}}><small>Check whether parent or guardian is already registered in the system.<br/>When checking with a contact, please start with 256....</small></p>
          
               </div>
 

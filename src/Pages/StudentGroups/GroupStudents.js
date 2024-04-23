@@ -15,6 +15,7 @@ function GroupStudents()
   const [studentList, setStudentList] = useState(false);
   const [page,setPage] = useState(1);
   const [meta,setMeta] = useState("")
+  const [first,setFirst] = useState("")
   const [studentSearch, setStudentSearch] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -33,6 +34,7 @@ function GroupStudents()
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages)
       setStudentList(server_response.details.list);
+      setFirst(server_response.details.meta.offset_count);
     } else {
       setStudentList("404");
     }
@@ -40,7 +42,7 @@ function GroupStudents()
   
   useEffect(() => {
     getStudentList();
-  }, []);
+  }, [id, page]);
   
   const searchStudents = async (e) => {
     if (e) {
@@ -78,7 +80,7 @@ function GroupStudents()
   
     // ----------------------handles the view -----students printable codeslip -modal
   const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
-  const handle_view_slip = (id) => {
+  const handle_view_slip = () => {
     setViewStudentSlip(false, () =>
       setViewStudentSlip(<StudentCodeSlip isOpen={true} id={id} />)
       );
@@ -163,9 +165,6 @@ function GroupStudents()
               <th>Name</th>
               <th>Student Code</th>
               <th>Registration Number</th>
-              <th>
-                Student Card
-              </th>
             </tr>
           </thead>
           <tbody>
@@ -173,18 +172,14 @@ function GroupStudents()
               ( studentSearch.length > 0 ?
                   ( studentSearch.map((item, key) => (
                     <tr key={key}>
-                    <td>{key + 1}</td>
+                    <td>{key + first + 1}</td>
                     <td><Link
                     to={`/students/profile/${item.id}`}>
                     {item.names}
                   </Link></td>
                     <td className="text-dark">{item.student_code}</td>
                     <td className="text-dark">{item.reg_no}</td>
-                    <td><button
-                    className="btn btn-info"
-                    onClick={() => handle_view_slip(item.id)}>
-                    View
-                  </button></td>
+                 
                   </tr>
                   )))
               : (
@@ -198,7 +193,7 @@ function GroupStudents()
           Array.isArray(studentList) && studentList.length > 0 ? (
             studentList.map((student, key) => (
               <tr key={key}>
-                <td>{key+1}</td>
+                <td>{key + first + 1}</td>
                 <td><Link
                     to={`/students/profile/${student.id}`}>
                     {student.names}
@@ -208,13 +203,6 @@ function GroupStudents()
                 </td>
                 <td className="text-dark">
                   {student.reg_no}
-                </td>
-                <td>
-                  <button
-                    className="btn btn-info"
-                    onClick={() => handle_view_slip(student.id)}>
-                    View
-                  </button>
                 </td>
               </tr>
                 ))

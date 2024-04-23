@@ -27,24 +27,27 @@ function Dashboard() {
   const [loading2, setLoading2] = useState(false);
   const [stationList, setStationList] = useState(false);
   const [limit, setLimit] = useState(3);
-  var school_id = user.school_user?.school?.school_id;
 
 
   const getStations = async () => {
     setLoading2(true);
-    const server_response = await ajaxStation.fetchFewStations(user.school_user?user.school_user?.school.school_id:"",limit);
+    const server_response = await ajaxStation.fetchFewStations(user.school?user.school:"",limit);
     setLoading2(false);
     if (server_response.status === "OK") {
       setStationList(server_response.details);
+    }else {
+      setStationList("404");
     }
   };
 
   const getStudentsToday = async () => {
     var data = {
-      school: school_id,
+      school: user.school,
       group: "",
     };
+    setLoading(true);
     const server_response = await ajaxStudent.fetchStudentsToday(data);
+    setLoading(false);
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
     } else {
@@ -54,7 +57,7 @@ function Dashboard() {
 
   const getStudentsNumber = async () => {
     const server_response = await ajaxStudent.fetchStudentNumber(
-      user.school_user ? user.school_user.school?.school_id : ""
+      user.school ? user.school : ""
     );
 
     if (server_response.status === "OK") {
@@ -79,12 +82,13 @@ function Dashboard() {
 
   useEffect(() => {
     getSchoolsNumber();
+    getStudentsToday();
   }, []);
 
   useEffect(() => {
     getStudentsNumber();
     getStations();
-  }, [user.school_user ? user.school_user.school.school_id : ""]);
+  }, [user.school ? user.school : ""]);
 
   return (
     <div>
@@ -328,9 +332,7 @@ function Dashboard() {
                     </tr>
                       </thead>
                       <tbody>
-                        {Array.isArray(stationList) &&
-                        stationList.length > 0 ? (
-                          stationList.map((item, key) => (
+                        {Array.isArray(stationList) && stationList.map((item, key) => (
                             <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
@@ -340,15 +342,12 @@ function Dashboard() {
 
                         </tr>
                         
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="6" style={{textAlign: "center"}}>
-                              No calling stations registered.
-                            </td>
-                          </tr>
-                        )}
-                        
+                          ))}
+                        {stationList === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No calling stations registered yet.
+                          </td>
+                        </tr>)}
                       </tbody>
                     </table>
                     {loading2 && <Loader/>}
@@ -377,7 +376,7 @@ function Dashboard() {
                       </a>
 
                       <div class="dropdown-menu dropdown-menu-right">
-                        <Link class="dropdown-item" to={`/students/${user.school_user?.school?.school_id}`}>
+                        <Link class="dropdown-item" to={`/school-students`}>
                           <i class="fa-solid fa-eye text-orange-peel"></i>
                           View All
                         </Link>
@@ -397,8 +396,7 @@ function Dashboard() {
                 </tr>
               </thead>
               <tbody>
-              {Array.isArray(studentsToday) && studentsToday.length > 0 ? (
-                      studentsToday.map((student, key) => (
+              {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
                           <td>{student.names}</td>
@@ -407,13 +405,15 @@ function Dashboard() {
                           <td>{student.group?.group_name}</td>
                         </tr>
                       ))
-                    ): (
-                      <tr>
-                        <td colSpan="5" style={{textAlign:"center"}}>No students registered today.</td>
-                      </tr>
-                    )}
+                    }
+                    {studentsToday === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No students registered today.
+                          </td>
+                        </tr>)}
               </tbody>
             </table>
+            {loading && <Loader/>}
           </div>
         </div>
               </div></div></div>

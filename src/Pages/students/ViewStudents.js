@@ -22,19 +22,20 @@ function ViewStudents() {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
-  const {id} = useParams();
   const [first, setFirst] = useState("");
 
 
   const getStudentList = async () => {
     setLoading2(true);
-    const server_response = await ajaxStudent.fetchStudentList(id, page);
+    const server_response = await ajaxStudent.fetchStudentList(user.school, page);
     setLoading2(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setStudentList(server_response.details.list);
       setFirst(server_response.details.meta.offset_count);
 
+    }else {
+      setStudentList("404");
     }
   };
 
@@ -48,11 +49,11 @@ function ViewStudents() {
 
   useEffect(() => {
     getStudentList();
-  }, [id, page]);
+  }, [user.school, page]);
 
   const data2 = {
     query: query,
-    school_id: user.school_user?.school.school_id,
+    school_id: user.school,
   };
   const searchStudents = async (e) => {
     if (e) {
@@ -212,13 +213,13 @@ function ViewStudents() {
                   </thead>
                   <tbody>
                     {studentSearch && Array.isArray(studentSearch) ? (
-                      studentSearch.length > 0 ? (
+                     
                         studentSearch.map((item, key) => (
                           <tr key={key}>
                            <td style={{width:"5px"}}>{key + first + 1}</td>
 
                             <td>
-                              <Link to={`/students/profile/${item.id}`}>
+                              <Link to={`/school-students/profile/${item.id}`}>
                                 {item.names}
                               </Link>
                             </td>
@@ -228,7 +229,7 @@ function ViewStudents() {
                               <Link
                                 className="btn btn-info"
                                 target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school_user?.school?.school_id}`}>
+                                to={`/students/student_card/${item.id}/null/${user.school}`}>
                                 View
                               </Link>
                             </td>
@@ -256,18 +257,12 @@ function ViewStudents() {
                           </td>
                           </tr>
                         ))
-                      ) : (
-                        <tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No students match the search query.
-                          </td>
-                        </tr>
-                      )
+                      
                     ) : Array.isArray(studentList) && studentList.map((item, key) => (
                         <tr key={key}>
                          <td style={{width:"5px"}}>{key + first + 1}</td>
                           <td>
-                            <Link to={`/students/profile/${item.id}`}>
+                            <Link to={`/school-students/profile/${item.id}`}>
                               {item.names}
                             </Link>
                           </td>
@@ -278,7 +273,7 @@ function ViewStudents() {
                               <Link
                                 className="btn btn-info"
                                 target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school_user.school.school_id}`}>
+                                to={`/students/student_card/${item.id}/null/${user.school}`}>
                                 View
                               </Link>
                             
@@ -307,6 +302,11 @@ function ViewStudents() {
                         </tr>
                       ))
                     }
+                    {studentList === "404" && (<tr>
+                          <td colSpan="6" style={{textAlign: "center"}}>
+                            No students registered in this school yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

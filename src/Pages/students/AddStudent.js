@@ -16,11 +16,10 @@ function AddStudent(props) {
   const [regNo, setRegNo] = useState("");
   const [gender, setGender] = useState("");
   const [names, setNames] = useState("");
-  var school_id = user.school_user?.school?.school_id;
 
   const getStudentsToday = async () => {
     var data = {
-      school: school_id,
+      school: user.school,
       group: "",
     };
     const server_response = await ajaxStudent.fetchStudentsToday(data);
@@ -37,7 +36,7 @@ function AddStudent(props) {
     if (names.length > 0 && gender.length > 0) {
       var data = {
         group: group,
-        school: school_id,
+        school: user.school,
         reg_no: regNo,
         names: names,
         gender: gender,
@@ -64,18 +63,21 @@ function AddStudent(props) {
   };
 
   const getGroups = async () => {
-    const server_response = await ajaxStudentGroup.fetchGroupList(
-      school_id
-    );
-
+    const server_response = await ajaxStudentGroup.fetchGroupList(user.school);
     if (server_response.status === "OK") {
       setGroupList(server_response.details);
+    }else {
+      setGroupList("404");
     }
   };
 
   useEffect(() => {
     getGroups();
-  }, [school_id]);
+  }, [user.school]);
+
+  useEffect(() => {
+    getStudentsToday();
+  }, []);
   return (
     <AppContainer title="Add Student">
       <Toaster position="top-center" reverseOrder={false} />
@@ -189,8 +191,7 @@ function AddStudent(props) {
                 </tr>
               </thead>
               <tbody>
-              {Array.isArray(studentsToday) && studentsToday.length > 0 ? (
-                      studentsToday.map((student, key) => (
+              {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
                           <td>{student.names}</td>
@@ -199,11 +200,12 @@ function AddStudent(props) {
                           <td>{student.group?.group_name}</td>
                         </tr>
                       ))
-                    ): (
-                      <tr>
-                        <td colSpan="5" style={{textAlign:"center"}}>No students registered today.</td>
-                      </tr>
-                    )}
+                    }
+                    {studentsToday === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No students registered today.
+                          </td>
+                        </tr>)}
               </tbody>
             </table>
           </div>

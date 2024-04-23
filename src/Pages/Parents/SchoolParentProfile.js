@@ -13,7 +13,7 @@ import ajaxStudent from '../../util/remote/ajaxStudent';
 
 const SchoolParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
-    const {id, parent} = useParams();
+    const {parent} = useParams();
     const [children, setChildren] = useState(false);
     const [parentName, setParentName] = useState("");
     const [mainContact,setMainContact] =useState("")
@@ -33,7 +33,6 @@ const SchoolParentProfile = props => {
     const [loading2,setLoading2] = useState(false)
 
     useEffect(()=>{
-        getChildren()
         getParentProfile();
       
     }, [])
@@ -65,6 +64,9 @@ const SchoolParentProfile = props => {
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getParentProfile();
+        }else{
+            //communicate error
+            toast.error(server_response.message)
         }
     };
 
@@ -83,13 +85,11 @@ const SchoolParentProfile = props => {
     }
 
     const getChildren =async()=>{
-        var data = {
-            parent_id: parent,
-            school_id: id,
-        };
+        
         setLoading2(true)
-        const server_response = await ajaxStudent.getSchoolStudents(data);
+        const server_response = await ajaxStudent.getSchoolStudents(parent, user.school);
         setLoading2(false)
+        console.log(server_response)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
         }else{
@@ -99,8 +99,13 @@ const SchoolParentProfile = props => {
     }
 
     const handleModal2=()=>{
-        setModal(false, ()=>setModal(<AddStudentParent parentID={parent} schoolID={id} g={getChildren} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AddStudentParent parentID={parent} schoolID={user.school} g={getChildren} isOpen={true}/>))
     }
+
+    useEffect(()=>{
+        getChildren()
+      
+    }, [parent, user.school])
  
     return (
         <AppContainer title={"Guardian Profile"} >
@@ -256,8 +261,7 @@ const SchoolParentProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(children) && children.length > 0 ? (
-                                        children.map((item, key) => (
+                                    {Array.isArray(children) && children.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
@@ -265,12 +269,12 @@ const SchoolParentProfile = props => {
                                                 <td>{item.student?.student_code}</td>
                                                 <td>{item.student?.group?.group_name}</td>
                                             </tr>
-                                        ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No children registered yet.</td>
-                                        </tr>
-                                    )}
+                                        ))}
+                                    {children === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No students attached yet.
+                          </td>
+                        </tr>)}
                                 </tbody>
                             </table>
                             {loading2 && <Loader/>}
