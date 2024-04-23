@@ -86,7 +86,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to={`/students/${user.school_user?.school?.school_id}`}>
+                    <Link className="nav-link" to="/school-students">
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Students</span>
@@ -111,7 +111,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to={`/school-parents/${user.school_user?.school?.school_id}`}>
+                    <Link className="nav-link" to="/school-parents">
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Parents</span>

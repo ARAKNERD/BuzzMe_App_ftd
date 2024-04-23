@@ -25,16 +25,18 @@ function ListStations() {
 
     const getStations = async () => {
       setLoading(true);
-      const server_response = await ajaxStation.fetchStationList(user.school_user?user.school_user?.school.school_id:"");
+      const server_response = await ajaxStation.fetchStationList(user.school?user.school:"");
       setLoading(false);
       if (server_response.status === "OK") {
         setStationList(server_response.details);
+      }else {
+        setStationList("404");
       }
     };
   
     useEffect(() => {
       getStations();
-    }, [user.school_user?user.school_user?.school?.school_id:""]);
+    }, [user.school?user.school:""]);
 
 
   const updateStation=(e,item)=>{
@@ -97,8 +99,7 @@ function ListStations() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(stationList) && stationList.length > 0 ? (
-                      stationList.map((item, key) => (
+                    {Array.isArray(stationList) && stationList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
@@ -150,14 +151,12 @@ function ListStations() {
                             </div>
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" style={{textAlign: "center"}}>
-                          No calling stations registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {stationList === "404" && (<tr>
+                          <td colSpan="7" style={{textAlign: "center"}}>
+                            No calling stations registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
                 {loading && <Loader />}

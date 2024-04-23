@@ -96,7 +96,11 @@ export default {
     let response = await apiCall("contact/add", data);
     return response;
   },
-  async getSchoolStudents(data) {
+  async getSchoolStudents(parent, school) {
+    let data = {
+      parent_id: parent,
+      school_id: school,
+    };
     let response = await apiCall("link/students/list", data);
     return response;
   },

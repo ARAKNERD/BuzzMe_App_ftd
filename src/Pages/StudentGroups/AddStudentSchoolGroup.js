@@ -8,16 +8,13 @@ function AddStudentSchoolGroup(props) {
   const [groupName, setGroupName] = useState("");
 
 
-  var school = user.school_user ? user.school_user.school.school_id : "";
-
-
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (groupName.length > 0) {
       const server_response = await ajaxStudentGroup.createGroup(
         groupName,
-        school
+        user.school
       );
       if (server_response.status === "OK") {
         toast.success(server_response.message);

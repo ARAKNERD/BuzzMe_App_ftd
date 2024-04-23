@@ -6,30 +6,11 @@ import AddStudentSchoolGroup from "./AddStudentSchoolGroup";
 import AuthContext from "../../Context/AuthContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Loader from "../../Components/Common/Loader";
+import SchoolContext from "../../Context/SchoolContext";
 
 function SchoolStudentGroups() {
-  const [groupList, setGroupList] = useState(false);
+  const { schoolGroups, getGroups } = useContext(SchoolContext);
   const {user} = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-
-  const getGroups = async () => {
-    setLoading(true);
-    const server_response = await ajaxStudentGroup.fetchGroupList(
-      user.school_user?.school?.school_id
-    );
-    setLoading(false);
-    if (server_response.status === "OK") {
-      setGroupList(server_response.details);
-    }
-  };
-
-  const refreshData = () => {
-    getGroups();
-  };
-
-  useEffect(() => {
-    getGroups();
-  }, [user.school_user?.school.school_id]);
 
   return (
     <AppContainer title="Student Groups">
@@ -59,7 +40,7 @@ function SchoolStudentGroups() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                    <Link class="dropdown-item" onClick={refreshData}>
+                    <Link class="dropdown-item" onClick={getGroups}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
                   </div>
@@ -81,8 +62,7 @@ function SchoolStudentGroups() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(groupList) && groupList.length > 0 ? (
-                      groupList.map((item, key) => (
+                    {Array.isArray(schoolGroups) && schoolGroups.map((item, key) => (
                         <tr key={key}>
                           <th scope="row">{key + 1}</th>
                           <td>{item.group_name}</td>
@@ -94,31 +74,23 @@ function SchoolStudentGroups() {
                             </Link>
                           </td>
 
-                          {/* <Link
-                            className="btn btn-info"
-                            to={`/students/student_card/:id?/${item.group_id}`}>
-                            students codeslips
-                          </Link> */}
-
                           <td>
                             <Link
                               className="btn btn-info"
-                              to={`/students/student_card/null/${item.group_id}/${user.school_user.school.school_id}`}>
+                              to={`/students/student_card/null/${item.group_id}/${user.school}`}>
                               students codeslips
                             </Link>
                           </td>
                         </tr>
                       ))
-                    ) : (
-                      <tr>
-                        <td colSpan="2" style={{textAlign: "center"}}>
-                          No class groups registered yet.
-                        </td>
-                      </tr>
-                    )}
+                    }
+                    {schoolGroups === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No groups registered in this school yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
-                {loading && <Loader />}
               </div>
             </div>
           </div>

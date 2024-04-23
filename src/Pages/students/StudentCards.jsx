@@ -3,16 +3,16 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import AuthContext from "../../Context/AuthContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import {useParams} from "react-router-dom";
+import Loader from "../../Components/Common/Loader";
 function StudentCards() {
   const {user} = useContext(AuthContext);
   const {student_id, group_id, school_id} = useParams();
-
-  // var school = user.school_user ? user.school_user.school.school_id : "";
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getStudentList();
   }, []);
-  const [studentsData, setStudentsData] = useState("404");
+  const [studentsData, setStudentsData] = useState(false);
   const getStudentList = async () => {
     var data = {
       school_id: school_id,
@@ -26,8 +26,9 @@ function StudentCards() {
     // if (group_id) {
     //   data["group_id"] = group_id;
     // }
-
+setLoading(true)
     const server_response = await ajaxStudent.fetchStudentCardList(data);
+    setLoading(false)
     if (server_response.status === "OK") {
       setStudentsData(server_response.details);
     } else {
@@ -115,6 +116,7 @@ function StudentCards() {
                     </div>
                   </>
                 )}
+                {loading && <Loader/>}
               </div>
             </div>
           </div>

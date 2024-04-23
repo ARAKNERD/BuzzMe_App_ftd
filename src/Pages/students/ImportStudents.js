@@ -32,7 +32,7 @@ const ImportStudents = () => {
   };
 
   const schoolData = {
-    school_id: user.school_user?.school?.school_id,
+    school_id: user.school,
     excel_data: excelData,
     group: group
   };
@@ -101,7 +101,7 @@ const ImportStudents = () => {
 
   const getGroups = async () => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
-      user.school_user?.school?.school_id
+      user.school
     );
 
     if (server_response.status === "OK") {
@@ -111,7 +111,7 @@ const ImportStudents = () => {
 
   useEffect(() => {
     getGroups();
-  }, [user.school_user?.school?.school_id]);
+  }, [user.school]);
 
   return (
     <AppContainer title="Import Students">

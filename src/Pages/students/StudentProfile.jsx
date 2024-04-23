@@ -12,6 +12,7 @@ import TableHeader from '../../Components/Common/TableHeader';
 import AddContact from './AddContact';
 import ajaxParent from '../../util/remote/ajaxParent';
 import AttachParent from '../Parents/AttachParent';
+import { RenderSecure } from '../../util/script/RenderSecure';
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -52,7 +53,7 @@ const StudentProfile = props => {
     }, [])
 
     const getGroups = async () => {
-        const server_response = await ajaxStudentGroup.fetchGroupList(user.school_user?.school?.school_id);
+        const server_response = await ajaxStudentGroup.fetchGroupList(user.school);
         if (server_response.status === "OK") {
           setGroupList(server_response.details);
         }
@@ -60,7 +61,7 @@ const StudentProfile = props => {
     
     useEffect(() => {
         getGroups();
-    }, [user.school_user?.school?.school_id]);
+    }, [user.school]);
 
     const setUserUpdate = () =>{
         handleActive()
@@ -75,17 +76,21 @@ const StudentProfile = props => {
 
         event.preventDefault()
         var data = {
-          group_id: group,
-          reg_no: regNo,
-          names: names,
-          gender: gender,
-          student_id: id
+            student_id: id,
+            names: names,
+            reg_no: regNo,
+            gender: gender,
+            group_id: group,       
         };
        
         const server_response = await ajaxStudent.updateStudent(data)
+        console.log(server_response)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getStudentProfile(id)
+        }else{
+            //communicate error
+            toast.error(server_response.message)
         }
     };
 
@@ -145,7 +150,7 @@ const StudentProfile = props => {
         setModal(false, ()=>setModal(<AddContact studentID={id} g={getStudentContacts} isOpen={true}/>))
     }
     const handleModal3=()=>{
-        setModal(false, ()=>setModal(<AttachParent studentID={id} g={getStudentParents} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AttachParent studentID={id} g={getStudentParents} h={getStudentContacts} isOpen={true}/>))
     }
  
     return (
@@ -172,7 +177,7 @@ const StudentProfile = props => {
                         </div>
                     </div>}
 
-                    <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
+                    <RenderSecure code="SCHOOL-USER-VIEW"><div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
                         <div className="btn-list text-center">
                             {active?
                                 <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
@@ -182,7 +187,7 @@ const StudentProfile = props => {
                             
                             
                         </div>
-                    </div>
+                    </div></RenderSecure>
                 </div>
 
                 {active?
@@ -197,11 +202,11 @@ const StudentProfile = props => {
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
                                             <label htmlFor="">Names:<span style={{color:"red"}}>*</span></label>
-                                            <input type="text" defaultValue={names} onChange={(e)=>setNames(e.target.value)} className="form-control"/>
+                                            <input type="text" value={names} onChange={(e)=>setNames(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
                                             <label htmlFor="">Registration Number:</label>
-                                            <input type="text" defaultValue={regNo} onChange={(e)=>setRegNo(e.target.value)} className="form-control"/>
+                                            <input type="text" value={regNo} onChange={(e)=>setRegNo(e.target.value)} className="form-control"/>
 							            </div>
                                        
                                     </div>
@@ -314,8 +319,7 @@ const StudentProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(studentParents) && studentParents.length > 0 ? (
-                                        studentParents.map((item, key) => (
+                                    {Array.isArray(studentParents) && studentParents.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
@@ -324,11 +328,12 @@ const StudentProfile = props => {
                                                 <td>{item.relationship}</td>
                                             </tr>
                                         ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No parents / guardians attached to this student yet.</td>
-                                        </tr>
-                                    )}
+                                   }
+                                   {studentParents === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No parents or guardians attached to this student yet.
+                          </td>
+                        </tr>)}
                                 </tbody>
                             </table>
                             {loading4 && <Loader/>}
@@ -360,8 +365,7 @@ const StudentProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(studentContacts) && studentContacts.length > 0 ? (
-                                        studentContacts.map((item, key) => (
+                                    {Array.isArray(studentContacts) && studentContacts.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
@@ -369,12 +373,12 @@ const StudentProfile = props => {
                                                 <td>{item.contact_number}</td>
                                                 <td>{item.relationship}</td>
                                             </tr>
-                                        ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No contacts registered for the student yet.</td>
-                                        </tr>
-                                    )}
+                                        ))}
+                                       {studentContacts === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No contacts added to this student yet.
+                          </td>
+                        </tr>)} 
                                 </tbody>
                             </table>
                             {loading3 && <Loader/>}
@@ -403,8 +407,7 @@ const StudentProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(studentLogs) && studentLogs.length > 0 ? (
-                                        studentLogs.map((item, key) => (
+                                    {Array.isArray(studentLogs) && studentLogs.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{item.created_at}</th>
@@ -412,12 +415,12 @@ const StudentProfile = props => {
                                                 <td><span>{item.contact?.contact_name}</span><br/><span>{item.contact?.contact_number}</span></td>
                                                 <td>{item.station?.station_name}</td>
                                             </tr>
-                                        ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No call logs for this student yet.</td>
-                                        </tr>
-                                    )}
+                                        ))}
+                                        {studentLogs === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No call logs for this student yet.
+                          </td>
+                        </tr>)} 
                                 </tbody>
                             </table>
                             {loading2 && <Loader/>}

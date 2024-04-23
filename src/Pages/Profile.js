@@ -69,7 +69,7 @@ const Profile = props => {
                                         {user.school_user?<tr>
                                             <td className="py-2 px-0"> <span className="w-50">School</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.school_user?.school?.school_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{user.school}</span> </td>
                                         </tr>:""}
                                        
                                     </tbody>}
