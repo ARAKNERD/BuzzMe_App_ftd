@@ -30,6 +30,7 @@ const ParentProfile = props => {
     const handleInActive = ()=> setActive(false)
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
+    const [loading3,setLoading3] = useState(false)
 
     const setParentUpdate = () =>{
         handleActive()
@@ -52,8 +53,9 @@ const ParentProfile = props => {
             nin: NIN,
             parent_id: id
         };
+        setLoading3(true)
             const server_response = await ajaxParent.updateParent(data);
-            console.log(server_response)
+            setLoading3(false)
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 getParentProfile(id);
@@ -62,28 +64,6 @@ const ParentProfile = props => {
                 toast.error(server_response.message); 
             } 
     }
-
-    // const handleUpdate = async(event) => {
-
-    //     event.preventDefault();
-    //     var data = {
-
-    //         parent_name: parentName,
-    //         alternative_contact: alternativeContact,
-    //         main_contact: mainContact,
-    //         address: address,
-    //         nin: NIN,
-    //         parent_id: id
-    //     };
-       
-    //     const server_response = await ajaxParent.updateParent(data)
-    //     console.log(server_response)
-    //     if(server_response.status === "OK"){
-            
-    //         toast.success(server_response.message)
-            
-    //     }
-    // };
 
     const getParentProfile =async()=>{
         
@@ -199,8 +179,8 @@ const ParentProfile = props => {
                                        
                                     </div>
                                 </div>
-              
-						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Guardian Details</button>
+                                {loading3 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
+                                {!loading3 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update Guardian Details</button>)}
 						    </form>
 					               
 				        </div>
@@ -276,8 +256,7 @@ const ParentProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(children) && children.length > 0 ? (
-                                        children.map((item, key) => (
+                                    {Array.isArray(children) && children.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
@@ -286,12 +265,12 @@ const ParentProfile = props => {
                                                 <td>{item.student?.student_code}</td>
                                                 <td>{item.student?.group?.group_name}</td>
                                             </tr>
-                                        ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="5" style={{textAlign:"center"}}>No children registered yet.</td>
-                                        </tr>
-                                    )}
+                                        ))}
+                                        {children === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No students attached to this parent yet.
+                          </td>
+                        </tr>)}
                                 </tbody>
                             </table>
                             {loading2 && <Loader/>}

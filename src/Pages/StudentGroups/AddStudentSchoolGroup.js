@@ -6,16 +6,20 @@ import AuthContext from "../../Context/AuthContext";
 function AddStudentSchoolGroup(props) {
   const {user} = useContext(AuthContext);
   const [groupName, setGroupName] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
 
   const handleAdd = async (e) => {
     e.preventDefault();
 
     if (groupName.length > 0) {
+      setLoading(true)
       const server_response = await ajaxStudentGroup.createGroup(
         groupName,
         user.school
       );
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         props.g();
@@ -68,11 +72,12 @@ function AddStudentSchoolGroup(props) {
                   </div>
                 </div>
                 <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
-                  <button
+                {loading && (<button type="submit" className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+                  {!loading && <button
                     type="submit"
                     className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Student Group
-                  </button>
+                  </button>}
                 </div>
               </form>
             </div>

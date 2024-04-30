@@ -11,7 +11,7 @@ import toast, {Toaster} from "react-hot-toast";
 
 function ViewParents() {
 
-  const [parentList, setParentList] = useState("");
+  const [parentList, setParentList] = useState(false);
   const [parentSearch, setParentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
@@ -19,6 +19,8 @@ function ViewParents() {
   const [loading2, setLoading2] = useState(false);
   const [modal, setModal] = useStateCallback(false);
   const [query, setQuery] = useState("");
+  const [first, setFirst] = useState("");
+
 
 
   const data2 = {
@@ -32,6 +34,8 @@ function ViewParents() {
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setParentList(server_response.details.list);
+      setFirst(server_response.details.meta.offset_count);
+
     } else {
       setParentList("404");
     }
@@ -169,10 +173,10 @@ function ViewParents() {
                   </thead>
                   <tbody>
                   {parentSearch && Array.isArray(parentSearch) ? (
-                      parentSearch.length > 0 ? (
+                      
                         parentSearch.map((item, key) => (
                           <tr key={key}>
-                          <th scope='row'>{key+1}</th>
+                          <th scope='row'>{key + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
                           {item.parent_name}
@@ -181,17 +185,10 @@ function ViewParents() {
                           <td>{item.address}</td>
                         </tr>
                         ))
-                      ) : (
-                        <tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No parents or guardians match the search query.
-                          </td>
-                        </tr>
-                      )
-                    ) : Array.isArray(parentList) && parentList.length > 0 ? (
-                      parentList.map((item, key) => (
+                     
+                    ) : Array.isArray(parentList) && parentList.map((item, key) => (
                         <tr key={key}>
-                          <th scope='row'>{key+1}</th>
+                          <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
                           {item.parent_name}
@@ -199,14 +196,12 @@ function ViewParents() {
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" style={{textAlign: "center"}}>
-                          No parents or guardians registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {parentList === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                   <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       

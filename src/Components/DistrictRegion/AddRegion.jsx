@@ -6,6 +6,8 @@ import ajaxRegion from "../../util/remote/ajaxRegion";
 function AddRegion() {
   const {getRegionList} = useContext(RegionContext);
   const [regionName, setRegionName] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -14,7 +16,9 @@ function AddRegion() {
       const data = {
         region_name: regionName,
       };
+      setLoading(true)
       const server_response = await ajaxRegion.createRegion(data);
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getRegionList();
@@ -63,12 +67,13 @@ function AddRegion() {
                     />
                   </div>
                 </div>
-                <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
-                  <button
+                <div className="mt-5">
+                {loading && (<button type="submit" className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+                  {!loading && <button
                     type="submit"
                     className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Region
-                  </button>
+                  </button>}
                 </div>
               </form>
             </div>

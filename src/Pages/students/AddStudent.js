@@ -16,6 +16,8 @@ function AddStudent(props) {
   const [regNo, setRegNo] = useState("");
   const [gender, setGender] = useState("");
   const [names, setNames] = useState("");
+  const [loading, setLoading] = useState(false)
+
 
   const getStudentsToday = async () => {
     var data = {
@@ -41,8 +43,9 @@ function AddStudent(props) {
         names: names,
         gender: gender,
       };
-
+setLoading(true)
       const server_response = await ajaxStudent.createStudent(data);
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getStudentsToday();
@@ -156,12 +159,13 @@ function AddStudent(props) {
                   </div>
                 </div>
                 <div className="col-12 form-group mg-t-8">
-                  <button
+                {loading && (<button type="submit" style={{float: "right"}} className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+                  {!loading && <button
                     style={{float: "right"}}
                     type="submit"
                     className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Student Details
-                  </button>
+                  </button>}
                 </div>
               </form>
             </div>

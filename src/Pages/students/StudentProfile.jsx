@@ -39,6 +39,7 @@ const StudentProfile = props => {
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
     const [loading4,setLoading4] = useState(false)
+    const [loading5,setLoading5] = useState(false)
 
     const data = {
         student_id: id
@@ -82,9 +83,9 @@ const StudentProfile = props => {
             gender: gender,
             group_id: group,       
         };
-       
+       setLoading5(true)
         const server_response = await ajaxStudent.updateStudent(data)
-        console.log(server_response)
+        setLoading5(false)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getStudentProfile(id)
@@ -240,7 +241,8 @@ const StudentProfile = props => {
                                     </div>
                                 </div>
               
-						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Student Details</button>
+						        {loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
+                                {!loading5 && <button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update Student Details</button>}
 						    </form>
 					               
 				        </div>
