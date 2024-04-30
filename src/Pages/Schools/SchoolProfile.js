@@ -44,6 +44,7 @@ const SchoolProfile = props => {
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
     const [loading4,setLoading4] = useState(false)
+    const [loading5,setLoading5] = useState(false)
 
     const data = {
         school_id: id
@@ -91,8 +92,9 @@ const SchoolProfile = props => {
           address: address,
           school_id: id
         };
-       
+       setLoading5(true)
         const server_response = await ajaxSchool.updateSchool(data)
+        setLoading5(false)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getSchoolProfile()
@@ -309,8 +311,9 @@ const SchoolProfile = props => {
                                         
                                     </div>
                                 </div>
-              
-						        <button className="btn btn-primary" style={{width:"100%"}}>Update School Details</button>
+                                {loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled ><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
+                                {!loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update School Details</button>)}
+						       
 						    </form>
 					               
 				        </div>

@@ -1,10 +1,8 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Toaster, toast} from "react-hot-toast";
 import ajaxParent from "../../util/remote/ajaxParent";
 import AppContainer from "../../Components/Structure/AppContainer";
-import AuthContext from "../../Context/AuthContext";
 import Loader from "../../Components/Common/Loader";
-import TableHeader from "../../Components/Common/TableHeader";
 import { Link } from "react-router-dom";
 
 function AddParent() {
@@ -16,6 +14,7 @@ function AddParent() {
   const [mainContact, setMainContact] = useState("");
   const [names, setNames] = useState("");
   const [loading, setLoading] = useState(false)
+  const [loading2, setLoading2] = useState(false)
 
 
   const handleAdd = async (e) => {
@@ -29,8 +28,9 @@ function AddParent() {
         alternative_contact: alternativeContact,
         address: address
       };
-
+      setLoading2(true)
       const server_response = await ajaxParent.createParent(data);
+      setLoading2(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         resetForm();
@@ -183,12 +183,13 @@ function AddParent() {
                   </div>
                 </div>
                 <div className="col-12 form-group mg-t-8">
-                  <button
+                {loading2 && (<button type="submit" style={{float: "right"}} className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+                {!loading2 && (<button
                     style={{float: "right"}}
                     type="submit"
                     className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                     Save Parent Details
-                  </button>
+                  </button>)}
                 </div>
               </form>
             </div>

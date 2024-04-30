@@ -7,6 +7,8 @@ function AddChargeRate() {
   const [rate, setRate] = useState("");
   const [type, setType] = useState("");
   const {getRateList} = useContext(RateContext);
+  const [loading, setLoading] = useState(false);
+
 
   const data = {
     rate: rate,
@@ -17,8 +19,9 @@ function AddChargeRate() {
     e.preventDefault();
 
     if (rate.length > 0 || type.length > 0) {
+      setLoading(true)
       const server_response = await ajaxChargeRate.createChargeRate(data);
-      // console.log(server_response)
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getRateList();
@@ -74,12 +77,13 @@ function AddChargeRate() {
               />
             </div>
           </div>
-          <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
-            <button
+          <div className="mt-5">
+          {loading && (<button type="submit" className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+            {!loading && <button
               type="submit"
               className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
               Save Charge Rate
-            </button>
+            </button>}
           </div>
         </form>
       </div>

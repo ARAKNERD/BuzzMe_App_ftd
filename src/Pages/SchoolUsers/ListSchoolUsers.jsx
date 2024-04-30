@@ -5,9 +5,11 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import ResetPassword from "./ResetPassword";
 import TableHeader from "../../Components/Common/TableHeader";
 import AddSchoolAdmin from "./AddSchoolAdmin";
+import Loader from "../../Components/Common/Loader";
 
 function ListSchoolUsers(props) {
-  const [schoolUsers, setSchoolUsers] = useState([]);
+  const [schoolUsers, setSchoolUsers] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [modal, setModal] = useStateCallback(false);
 
   const getSchoolUsers = async () => {
@@ -15,12 +17,14 @@ function ListSchoolUsers(props) {
       const data = {
         school_id: props.school,
       };
+      setLoading(true)
       const serverResponse = await ajaxSchool.fetchSchoolUserList(data);
+      setLoading(false)
       if (serverResponse.status === "OK") {
         setSchoolUsers(serverResponse.details);
       } else {
         // Handle error condition
-        console.error("Error:", serverResponse.message);
+        setSchoolUsers("404");
       }
     } catch (error) {
       // Handle network or other errors
@@ -68,8 +72,7 @@ function ListSchoolUsers(props) {
               </tr>
             </thead>
             <tbody>
-            {Array.isArray(schoolUsers) && schoolUsers.length > 0 ? (
-                      schoolUsers.map((item, key) => (
+            {Array.isArray(schoolUsers) && schoolUsers.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.names} </td>
@@ -96,16 +99,15 @@ function ListSchoolUsers(props) {
                             </div>
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="3" style={{textAlign: "center"}}>
-                          No school administrators registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {schoolUsers === "404" && (<tr>
+                          <td colSpan="3" style={{textAlign: "center"}}>
+                            No school administrators registered yet.
+                          </td>
+                        </tr>)}
             </tbody>
           </table>
+          {loading && <Loader/>}
         </div>
       </div>
     </div>

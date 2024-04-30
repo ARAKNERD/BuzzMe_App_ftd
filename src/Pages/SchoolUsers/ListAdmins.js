@@ -51,8 +51,7 @@ function ListAdmins() {
               </tr>
             </thead>
             <tbody>
-                    {Array.isArray(adminList) && adminList.length > 0 ? (
-                      adminList.map((item, key) => (
+                    {Array.isArray(adminList) && adminList.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.names} </td>
@@ -77,14 +76,12 @@ function ListAdmins() {
                             </div>
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="3" style={{textAlign: "center"}}>
-                          No system administrators registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {adminList === "404" && (<tr>
+                          <td colSpan="3" style={{textAlign: "center"}}>
+                            No system administrators registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
           </table>
         </div>

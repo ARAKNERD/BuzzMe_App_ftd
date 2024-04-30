@@ -11,6 +11,8 @@ function AddStation(props) {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const {schoolList} = useContext(SchoolContext);
+  const [loading, setLoading] = useState(false)
+
 
   const data = {
     station_number: stationCode,
@@ -24,8 +26,9 @@ function AddStation(props) {
     e.preventDefault();
 
     if (stationCode.length > 0 || stationName.length > 0) {
+      setLoading(true)
       const server_response = await ajaxStation.createStation(data);
-      // console.log(server_response)
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         props.g()
@@ -112,12 +115,13 @@ function AddStation(props) {
               />
             </div>
           </div>
-          <div className="col-xl-12 col-lg-12 col-md-12 form-group mt-5 ">
-            <button
+          <div className="mt-5">
+          {loading && (<button type="submit" style={{float: "right"}} className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+            {!loading && <button
               type="submit"
               className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
               Save Calling Station
-            </button>
+            </button>}
           </div>
         </form>
       </div>

@@ -22,7 +22,7 @@ function AddSchool() {
   const {recentSchools, getSchoolList, getRecentSchools} = useContext(SchoolContext);
   const {userId} = useContext(AuthContext);
   const {districtList} = useContext(DistrictContext);
-
+  const [loading, setLoading] = useState(false)
   const [contact, setContact] = useState("");
   const [schoolName, setSchoolName] = useState("");
   const [district, setDistrict] = useState("");
@@ -44,7 +44,9 @@ function AddSchool() {
     };
 
     if (schoolName.length > 0 || contact.length > 0) {
+      setLoading(true)
       const server_response = await ajaxSchool.createSchool(data);
+      setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getSchoolList();
@@ -149,12 +151,12 @@ function AddSchool() {
               </div>
             </div>
             <div className="mb-4">
-              <input
+            {loading && (<button type="submit" style={{float: "right"}} className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Registering...</button>)}
+              {!loading && <button
                 type="submit"
                 style={{float: "right"}}
                 className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
-                value="Register School"
-              />
+              >Register School</button>}
             </div>
           </form>
         </div>
