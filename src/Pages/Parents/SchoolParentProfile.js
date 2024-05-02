@@ -265,9 +265,9 @@ const SchoolParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.student?.names}</td>
-                                                <td>{item.student?.student_code}</td>
-                                                <td>{item.student?.group?.group_name}</td>
+                                                <td>{item.student_name}</td>
+                                                <td>{item.student_code}</td>
+                                                <td>{item.group?.group_name}</td>
                                             </tr>
                                         ))}
                                     {children === "404" && (<tr>

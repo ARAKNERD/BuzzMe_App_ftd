@@ -85,16 +85,19 @@ export default {
   async listSchoolParents(school_id, page) {
     let data = {
       "school_id":school_id,
-      "page": page
+      "page": page,
     };
     let response = await apiCall("link/parents/school", data);
     return response;
   },
   async searchSchoolParents(data) {
-    let response = await apiCall("link/parents/search", data);
+    let response = await apiCall("link/parents/school", data);
     return response;
   },
-  
+  async fetchTodayGuardians(data) {
+    let response = await apiCall("guardian/today", data);
+    return response;
+  },
 
   
   
