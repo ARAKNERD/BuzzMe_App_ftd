@@ -93,7 +93,7 @@ export default {
     return response;
   },
   async addContact(data) {
-    let response = await apiCall("contact/add", data);
+    let response = await apiCall("relative/add", data);
     return response;
   },
   async getSchoolStudents(parent, school) {

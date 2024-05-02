@@ -13,8 +13,8 @@ const AddContact=(props)=>{
 
     const data={
         student_id: props.studentID,
-        contact_name: contactName,
-        contact_number: contactNumber,
+        parent_name: contactName,
+        main_contact: contactNumber,
         relationship: relationship
     }
 

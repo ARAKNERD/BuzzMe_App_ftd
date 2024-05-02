@@ -45,6 +45,11 @@ const StudentProfile = props => {
         student_id: id
       };
 
+    const data2 = {
+        student_id: id,
+        search: ""
+    };
+
     useEffect(()=>{
          getStudentContacts()
         getStudentProfile();
@@ -136,7 +141,7 @@ const StudentProfile = props => {
 
     const getStudentContacts =async()=>{
         setLoading3(true)
-        const server_response = await ajaxStudent.fetchStudentContacts(data);
+        const server_response = await ajaxStudent.fetchStudentContacts(data2);
         
         setLoading3(false)
         if(server_response.status==="OK"){
@@ -325,8 +330,8 @@ const StudentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.parent?.parent_name}</td>
-                                                <td>{item.parent?.main_contact}</td>
+                                                <td>{item.parent_name}</td>
+                                                <td>{item.main_contact}</td>
                                                 <td>{item.relationship}</td>
                                             </tr>
                                         ))
@@ -371,8 +376,8 @@ const StudentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.contact_name}</td>
-                                                <td>{item.contact_number}</td>
+                                                <td>{item.parent_name}</td>
+                                                <td>{item.main_contact}</td>
                                                 <td>{item.relationship}</td>
                                             </tr>
                                         ))}

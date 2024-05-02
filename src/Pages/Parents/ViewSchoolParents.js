@@ -23,8 +23,9 @@ function ViewSchoolParents() {
 
 
   const data2 = {
-    query: query,
-    school_id : user.school
+    search: query,
+    school_id : user.school,
+    page: page
   };
 
   const getParentList = async () => {
@@ -198,11 +199,11 @@ function ViewSchoolParents() {
                           <tr key={key}>
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
-                          to={`/school-parents/profile/${item.parent?.parent_id}`}>
-                          {item.parent?.parent_name}
+                          to={`/school-parents/profile/${item.parent_details?.parent_id}`}>
+                          {item.parent_details?.parent_name}
                         </Link></td>
-                          <td>{item.parent?.main_contact}</td>
-                          <td>{item.parent?.address}</td>
+                          <td>{item.parent_details?.main_contact}</td>
+                          <td>{item.parent_details?.address}</td>
                         </tr>
                         ))
                       
@@ -210,11 +211,11 @@ function ViewSchoolParents() {
                         <tr key={key}>
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
-                          to={`/school-parents/profile/${item.parent?.parent_id}`}>
-                          {item.parent?.parent_name}
+                          to={`/school-parents/profile/${item.parent_details?.parent_id}`}>
+                          {item.parent_details?.parent_name}
                         </Link></td>
-                          <td>{item.parent?.main_contact}</td>
-                          <td>{item.parent?.address}</td>
+                          <td>{item.parent_details?.main_contact}</td>
+                          <td>{item.parent_details?.address}</td>
                         </tr>
                       ))
                    }

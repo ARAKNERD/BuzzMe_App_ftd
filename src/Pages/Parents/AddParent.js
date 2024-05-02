@@ -1,13 +1,15 @@
-import React, {useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Toaster, toast} from "react-hot-toast";
 import ajaxParent from "../../util/remote/ajaxParent";
 import AppContainer from "../../Components/Structure/AppContainer";
 import Loader from "../../Components/Common/Loader";
 import { Link } from "react-router-dom";
+import AuthContext from "../../Context/AuthContext";
+import TableHeader from "../../Components/Common/TableHeader";
 
 function AddParent() {
   const [nin, setNin] = useState("");
-  const [searchedNin, setSearchedNin] = useState("");
+  const [searchedContact, setSearchedContact] = useState("");
   const [ninSearch, setNinSearch] = useState(null);
   const [address, setAddress] = useState("");
   const [alternativeContact, setAlternativeContact] = useState("");
@@ -15,6 +17,10 @@ function AddParent() {
   const [names, setNames] = useState("");
   const [loading, setLoading] = useState(false)
   const [loading2, setLoading2] = useState(false)
+  const {userId} = useContext(AuthContext);
+  const [recentGuardians, setRecentGuardians] = useState(false);
+
+
 
 
   const handleAdd = async (e) => {
@@ -26,14 +32,17 @@ function AddParent() {
         main_contact: mainContact,
         parent_name: names,
         alternative_contact: alternativeContact,
-        address: address
+        address: address,
+        registered_by: userId
       };
       setLoading2(true)
       const server_response = await ajaxParent.createParent(data);
+      console.log(server_response)
       setLoading2(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         resetForm();
+        getRecentGuardians();
       } else {
         toast.error(server_response.message);
       }
@@ -45,9 +54,9 @@ function AddParent() {
 
   const searchNin =async(e)=>{
     e.preventDefault();  
-    if (searchedNin.length > 0) {
+    if (searchedContact.length > 0) {
     var data = {
-      query: searchedNin
+      query: searchedContact
     };
     setLoading(true)
     const server_response = await ajaxParent.searchNIN(data);
@@ -55,16 +64,32 @@ function AddParent() {
     if(server_response.status==="OK"){
         //store results
         setNinSearch(server_response.details);
-
+        
     }else{
         toast.error(server_response.message);
         setNinSearch(false);
-        setSearchedNin("")
+        setMainContact(searchedContact);
     }
 } else {
     toast.error("Please enter a National Identification Number!");
   }
 }
+
+const getRecentGuardians =async()=>{
+
+  const server_response = await ajaxParent.fetchTodayGuardians();
+  if(server_response.status==="OK"){
+     //store results
+     setRecentGuardians(server_response.details);
+  }else{
+     //communicate error
+     setRecentGuardians("404");
+  }
+}
+
+useEffect(()=>{
+  getRecentGuardians();
+}, [])
 
   const resetForm = () => {
     setNames("");
@@ -84,7 +109,7 @@ function AddParent() {
             <div className="card-body">
               <div>
                 <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian check</h5>
-                <p style={{color:"#042954"}}><small>Check whether parent or guardian is already registered in the system.<br/>When checking with a contact, please start with 256....</small></p>
+                <p style={{color:"#042954"}}><small>Check whether parent or guardian is already registered in the system.</small></p>
          
               </div>
 
@@ -93,9 +118,9 @@ function AddParent() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={searchedNin}
-                      onChange={(e) => setSearchedNin(e.target.value)}
-                      placeholder="Enter the NIN or contact of parent / guardian..."
+                      value={searchedContact}
+                      onChange={(e) => setSearchedContact(e.target.value)}
+                      placeholder="Enter the contact of parent / guardian..."
                       className="form-control"
                     />
                   </div>
@@ -114,7 +139,7 @@ function AddParent() {
          
         </div>
         <div className="col-lg-12 col-md-12">
-        {ninSearch ===false && ( // Only show the search form if ninSearch is false
+        {ninSearch ===false && (<>
             <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
@@ -194,6 +219,47 @@ function AddParent() {
               </form>
             </div>
           </div>
+          <div className="card height-auto">
+          <div className="card-body">
+            <div className="heading-layout1">
+            <TableHeader
+                    title="Parents Registered Today"
+                    subtitle="List of the parents registered today"
+                  />
+            </div>
+  
+            <div className="table-responsive">
+              <table className="table display data-table text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Parent Name</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {Array.isArray(recentGuardians) && recentGuardians.map((item, key) => (
+                          <tr key={key}>
+                            <td>{key + 1}</td>
+                            <td><Link
+                          to={`/parents/profile/${item.parent_id}`}>
+                          {item.parent_name}
+                        </Link></td>
+                            <td>{item.main_contact}</td>
+                            <td>{item.address}</td>
+                          </tr>
+                        ))}
+                        {recentGuardians === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div></>
           )}
       {ninSearch && ( // Show the parent info if ninSearch is true
       
