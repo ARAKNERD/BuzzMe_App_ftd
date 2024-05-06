@@ -169,8 +169,7 @@ function GroupStudents()
           </thead>
           <tbody>
           {studentSearch && Array.isArray(studentSearch) ? 
-              ( studentSearch.length > 0 ?
-                  ( studentSearch.map((item, key) => (
+              ( studentSearch.map((item, key) => (
                     <tr key={key}>
                     <td>{key + first + 1}</td>
                     <td><Link
@@ -183,15 +182,7 @@ function GroupStudents()
                   </tr>
                   )))
               : (
-                <tr>
-                <td colSpan="5" style={{textAlign: "center"}}>
-                  No students match the search query.
-                </td>
-              </tr>
-              )
-          ) : (
-          Array.isArray(studentList) && studentList.length > 0 ? (
-            studentList.map((student, key) => (
+          Array.isArray(studentList) && studentList.map((student, key) => (
               <tr key={key}>
                 <td>{key + first + 1}</td>
                 <td><Link
@@ -206,11 +197,12 @@ function GroupStudents()
                 </td>
               </tr>
                 ))
-              ): (
-                <tr>
-                  <td colSpan="5" style={{textAlign:"center"}}>No students registered in this group yet.</td>
-                </tr>
-          ))}
+             )}
+             {studentList === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No students registered within this group yet.
+                          </td>
+                        </tr>)}
           </tbody>
           <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
 

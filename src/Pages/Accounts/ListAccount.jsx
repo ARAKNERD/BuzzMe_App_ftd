@@ -46,8 +46,7 @@ function ListAccount() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(accountList) && accountList.length > 0 ? (
-                      accountList.map((item, key) => (
+                    {Array.isArray(accountList) && accountList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.account_code}</td>
@@ -71,14 +70,12 @@ function ListAccount() {
                             </div>
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="4" style={{textAlign: "center"}}>
-                          No wallet accounts registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {accountList === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No wallet accounts registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
                 {!accountList && <Loader />}

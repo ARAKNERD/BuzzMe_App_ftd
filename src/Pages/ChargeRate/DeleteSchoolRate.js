@@ -2,20 +2,19 @@ import { useState } from "react"
 import { toast } from 'react-hot-toast';
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
-import ajaxStation from "../../util/remote/ajaxStation";
+import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 
-
-const TurnOnStation=(props)=>{
+const DeleteSchoolRate=(props)=>{
 
     const [loading, setLoading] = useState(false)
     const data = {
-        station_id: props.stationID,
+        id: props.rateID,
       };
 
     const handleUpdate = async(e) =>{
         e.preventDefault()
         setLoading(true)
-        const server_response = await ajaxStation.turnOnStation(data);
+        const server_response = await ajaxChargeRate.deleteSchoolRate(data);
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);
@@ -45,8 +44,8 @@ const TurnOnStation=(props)=>{
 
     return(
         <SystemModal
-            title="Turn On Station"
-            id="model-on"
+            title="Delete School rate"
+            id="model-delete-sch-rate"
             size="md"
             footer={RenderFooter}
         >
@@ -55,8 +54,8 @@ const TurnOnStation=(props)=>{
         <div className="bg-white">
 			    <div className="alert text-center">
 				    <i className="fe fe-alert-circle fs-50 text-warning"></i>
-			        <h3 className="mt-2 mb-1">Are you sure you want to turn on this calling station?</h3>
-				    <p className="mb-3 mb-3 tx-inverse">This station will now be able to make calls.</p>
+			        <h3 className="mt-2 mb-1">Are you sure you want to delete this school rate?</h3>
+				    <p className="mb-3 mb-3 tx-inverse">This school will now use the default rate for this communication type.</p>
 				</div>
 			</div>
         </div>
@@ -65,4 +64,4 @@ const TurnOnStation=(props)=>{
     )
 }
 
-export default TurnOnStation
+export default DeleteSchoolRate

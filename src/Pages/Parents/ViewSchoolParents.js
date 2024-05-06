@@ -8,17 +8,21 @@ import toast, {Toaster} from "react-hot-toast";
 import AuthContext from "../../Context/AuthContext";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { RenderSecure } from "../../util/script/RenderSecure";
 
 function ViewSchoolParents() {
-  const {user} = useContext(AuthContext);
+  const {user, userId} = useContext(AuthContext);
   const [parentList, setParentList] = useState(false);
+  const [parentsRegistered, setParentsRegistered] = useState(false);
   const [parentSearch, setParentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
+  const [displayRegistered, setDisplayRegistered] = useState(false);
 
 
 
@@ -42,9 +46,28 @@ function ViewSchoolParents() {
     }
   };
 
-  const refreshData = () =>{
-    getParentList()
-  }
+  const getParentsRegistered = async () => {
+    setLoading(true)
+    const server_response = await ajaxParent.listRegisteredParents(userId,page);
+    setLoading(false)
+    console.log(server_response)
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setParentsRegistered(server_response.details.list);
+      setFirst(server_response.details.meta.offset_count);
+
+    } else {
+      setParentsRegistered("404");
+    }
+  };
+
+  const refreshData = () => {
+    if (displayRegistered) {
+      getParentsRegistered();
+    } else {
+      getParentList();
+    }
+  };
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -73,8 +96,16 @@ function ViewSchoolParents() {
 
 
   useEffect(() => {
-    getParentList();
-  }, [user.school, page]);
+    if (displayRegistered) {
+      getParentsRegistered();
+    } else {
+      getParentList();
+    }
+  }, [user.school, userId, page, displayRegistered]);
+
+  const toggleDisplay = () => {
+    setDisplayRegistered(!displayRegistered);
+  };
 
   const setNextPageNumber = () =>{
     if(meta.length===page){
@@ -142,7 +173,7 @@ function ViewSchoolParents() {
             <div class="heading-layout1 mg-b-25">
               <TableHeader
                 title="Parents List"
-                subtitle="List of all the parents sorted in ascending order"    
+                subtitle={displayRegistered ? "List of registered parents" : "List of all the parents sorted in ascending order"}   
               />
                            <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -150,6 +181,7 @@ function ViewSchoolParents() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                            <RenderSecure code="SCHOOL-USER-VIEW"><Link class="dropdown-item" onClick={toggleDisplay}><i class="fas fa-redo-alt text-orange-peel"></i>{displayRegistered ? "View All Parents" : "View Registered Parents"}</Link></RenderSecure>
                                             <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
                                         </div>
                                     </div>
@@ -193,7 +225,42 @@ function ViewSchoolParents() {
                     
                     </tr>
                   </thead>
+                  {displayRegistered?
                   <tbody>
+                  {parentSearch && Array.isArray(parentSearch) ? (
+                        parentSearch.map((item, key) => (
+                          <tr key={key}>
+                          <th scope='row'>{key + first + 1}</th>
+                          <td><Link
+                          to={`/school-parents/profile/${item.parent_details?.parent_id}`}>
+                          {item.parent_details?.parent_name}
+                        </Link></td>
+                          <td>{item.parent_details?.main_contact}</td>
+                          <td>{item.parent_details?.address}</td>
+                        </tr>
+                        ))
+                      
+                    ) : Array.isArray(parentsRegistered) && parentsRegistered.map((item, key) => (
+                        <tr key={key}>
+                          <th scope='row'>{key + first + 1}</th>
+                          <td><Link
+                          to={`/school-parents/profile/${item.parent_id}`}>
+                          {item.parent_name}
+                        </Link></td>
+                          <td>{item.main_contact}</td>
+                          <td>{item.address}</td>
+                        </tr>
+                      ))
+                   }
+                   {parentsRegistered === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
+                  </tbody>
+                  
+                  
+                  :<tbody>
                   {parentSearch && Array.isArray(parentSearch) ? (
                         parentSearch.map((item, key) => (
                           <tr key={key}>
@@ -224,7 +291,7 @@ function ViewSchoolParents() {
                             No parents or guardians registered yet.
                           </td>
                         </tr>)}
-                  </tbody>
+                  </tbody>}
                   <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       
       
