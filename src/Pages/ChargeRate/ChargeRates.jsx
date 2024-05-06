@@ -9,18 +9,51 @@ import {Toaster, toast} from "react-hot-toast";
 import RateContext from "../../Context/RateContext";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
+import UpdateSchoolRate from "./UpdateSchoolRate";
+import DeleteSchoolRate from "./DeleteSchoolRate";
 
 function ChargeRates() {
   const {rateList, getRateList} = useContext(RateContext);
+  const [schoolRates, setSchoolRates] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const refreshData = () =>{
     getRateList();
+    getSchoolRates();
   }
+
+  const getSchoolRates = async () => {
+    setLoading(true)
+    const server_response = await ajaxChargeRate.fetchSchoolRateList();
+    setLoading(false)
+    if (server_response.status === "OK") {
+      setSchoolRates(server_response.details);
+    }else {
+      setSchoolRates("404");
+    }
+  };
+
+  useEffect(() => {
+    getSchoolRates();
+  }, []);
 
   const [modal, setModal] = useStateCallback(false);
 
   const handleUpdate=(e,item)=>{
     setModal(false, ()=>setModal(<UpdateChargeRate rateID={item.rate_id} g={getRateList} isOpen={true} rate={item.rate} type={item.type}/>))
+  }
+
+  const handleUpdate2=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateSchoolRate rateID={item.rate_id} g={getSchoolRates} isOpen={true} rate={item.rate} type={item.type}/>))
+  }
+
+  const handleDelete2=(e,item)=>{
+    setModal(false, ()=>setModal(<DeleteSchoolRate rateID={item.rate_id} g={getSchoolRates} isOpen={true}/>))
   }
 
   return (
@@ -29,12 +62,12 @@ function ChargeRates() {
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <AddChargeRate />
+          <AddChargeRate g={getSchoolRates} />
         </div>
         <div className="col-lg-8">
-          <div className="card custom-card">
-            <div className="card-body map-card">
-              <div class="heading-layout1 mg-b-25">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+                        <div className="card-body map-card">
+                        <div class="heading-layout1 mg-b-25">
                 <TableHeader
                   title="Charge Rates"
                   subtitle="List of all the charge rates"
@@ -48,9 +81,91 @@ function ChargeRates() {
                                         </div>
                                     </div>
               </div>
+                              
+                            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row>
+              <Col sm={12}>
+                <Nav variant="pills" className="flex-row mb-1">
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="first">
+                      School Rates{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="second">
+                      Default Rates{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
 
-              <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
+              <Col sm={12}>
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                  <div className="border-top mt-1"></div>
+                    <div className="table-responsive">
+                    <table className="table table-hover text-nowrap mg-b-0">
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>School</th>
+                      <th>Type</th>
+                      <th>Rate</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Array.isArray(schoolRates) && schoolRates.map((item, key) => (
+                        <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.school?.school_name}</td>
+                          <td>{item.type}</td>
+                          <td>{item.rate}</td>
+
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={(e) => handleUpdate2(e,item)}>
+                                   <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
+                                  Edit School Rate
+                                </Link>
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={(e) => handleDelete2(e,item)}>
+                                   <i className="fa fa-trash mr-1" style={{color:"red"}}></i>
+                                  Delete School Rate
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                      {schoolRates === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No school rates registered yet.
+                          </td>
+                        </tr>)}
+                  </tbody>
+                </table>
+                {loading && <Loader />}
+                            </div>
+                  </Tab.Pane>
+
+                  <Tab.Pane eventKey="second">
+                  <div className="border-top mt-1"></div>
+                   <div className="table-responsive">
+                   <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
                       <th>No.</th>
@@ -60,8 +175,7 @@ function ChargeRates() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(rateList) && rateList.length > 0 ? (
-                      rateList.map((item, key) => (
+                    {Array.isArray(rateList) && rateList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.type}</td>
@@ -81,27 +195,30 @@ function ChargeRates() {
                                   className="dropdown-item"
                                   to="#"
                                   onClick={(e) => handleUpdate(e,item)}>
-                                   <i className="far fa-edit mr-1"></i>
-                                  Edit Rate
+                                   <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
+                                  Edit Default Rate
                                 </Link>
                               </div>
                             </div>
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="3" style={{textAlign: "center"}}>
-                          No charge rates registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
                   </tbody>
                 </table>
                 {!rateList && <Loader />}
-              </div>
-            </div>
-          </div>
+                            </div>
+
+                   
+                   
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>                
+                            
+                              
+                        </div>
+			        </div>
         </div>
       </div>
     </AppContainer>

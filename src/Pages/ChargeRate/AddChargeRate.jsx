@@ -1,13 +1,21 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 import RateContext from "../../Context/RateContext";
 import {toast} from "react-hot-toast";
+import SchoolContext from "../../Context/SchoolContext";
+import Select from "react-select";
 
-function AddChargeRate() {
+
+function AddChargeRate(props) {
   const [rate, setRate] = useState("");
   const [type, setType] = useState("");
+  const [school, setSchool] = useState("");
+  const [category, setCategory] = useState("");
   const {getRateList} = useContext(RateContext);
+  const {schoolList} = useContext(SchoolContext);
+
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
 
 
   const data = {
@@ -15,22 +23,44 @@ function AddChargeRate() {
     type: type,
   };
 
+  const data2 = {
+    rate: rate,
+    type: type,
+    school: school
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
-
-    if (rate.length > 0 || type.length > 0) {
-      setLoading(true)
-      const server_response = await ajaxChargeRate.createChargeRate(data);
-      setLoading(false)
-      if (server_response.status === "OK") {
-        toast.success(server_response.message);
-        getRateList();
-        resetForm();
+    if(category ==="Default"){
+      if (rate.length > 0 || type.length > 0) {
+        setLoading(true)
+        const server_response = await ajaxChargeRate.createChargeRate(data);
+        setLoading(false)
+        if (server_response.status === "OK") {
+          toast.success(server_response.message);
+          getRateList();
+          resetForm();
+        } else {
+          toast.error(server_response.message);
+        }
       } else {
-        toast.error(server_response.message);
+        toast.error("Complete all fields and try again");
       }
-    } else {
-      toast.error("Complete all fields and try again");
+    }else{
+      if (rate.length > 0 || type.length > 0) {
+        setLoading2(true)
+        const server_response = await ajaxChargeRate.createSchoolRate(data2);
+        setLoading2(false)
+        if (server_response.status === "OK") {
+          toast.success(server_response.message);
+          props.g()
+          resetForm();
+        } else {
+          toast.error(server_response.message);
+        }
+      } else {
+        toast.error("Complete all fields and try again");
+      }
     }
   };
 
@@ -53,18 +83,44 @@ function AddChargeRate() {
           method="post"
           class="new-added-form">
           <div className="row">
+          <div className="col-lg-12 col-12 form-group">
+              <label htmlFor="">Rate Type <span style={{color:"red"}}>*</span> </label>
+              <select
+                      className="col-12 form-control"
+                      value={category}
+                      style={{border: "1px solid grey"}}
+                      onChange={(e) => setCategory(e.target.value)}>
+                      <option value={true}>Select...</option>
+                      <option value="Default">Default Rate</option>
+                      <option value="School">School Rate</option>
+                    </select>
+            </div>
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Charge Type <span style={{color:"red"}}>*</span> </label>
+              <label htmlFor="">Communication Type <span style={{color:"red"}}>*</span> </label>
               <select
                       className="col-12 form-control"
                       value={type}
                       style={{border: "1px solid grey"}}
                       onChange={(e) => setType(e.target.value)}>
-                      <option value={true}>Select..</option>
+                      <option value={true}>Select...</option>
                       <option value="SMS">Message / SMS</option>
                       <option value="CALL">Phone Call</option>
                     </select>
             </div>
+            {category === "Default"? "" :<div className="col-lg-12 col-12 form-group">
+                <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
+                <Select
+                    onChange={(e) => setSchool(e.school_id)}
+                    getOptionLabel={(option) => option.school_name}
+                    getOptionValue={(option) => option.school_id}
+                    isSearchable
+                    options={Array.isArray(schoolList) ? schoolList : []}
+                    value={
+                        Array.isArray(schoolList) &&
+                        schoolList.find((value) => value.school_id === school)
+                    }
+                />
+            </div>}
             <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Cost <span style={{color:"red"}}>*</span></label>
               <input
@@ -78,8 +134,8 @@ function AddChargeRate() {
             </div>
           </div>
           <div className="mt-5">
-          {loading && (<button type="submit" className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
-            {!loading && <button
+          {loading2 && (<button type="submit" className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Saving...</button>)}
+            {!loading2 && <button
               type="submit"
               className="col-xl-12 col-lg-12 col-12 btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
               Save Charge Rate

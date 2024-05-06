@@ -461,9 +461,7 @@ function Dashboard() {
                 </tr>
                       </thead>
                       <tbody>
-                        {Array.isArray(recentSchools) &&
-                        recentSchools.length > 0 ? (
-                          recentSchools.map((item, key) => (
+                        {Array.isArray(recentSchools) && recentSchools.map((item, key) => (
                             <tr key={key}>
                             <td>{key + 1}</td>
                             <td><Link
@@ -473,15 +471,12 @@ function Dashboard() {
                             <td>{item.email}</td>
                             <td>{item.district?.district_name}</td>
                           </tr>
-                          ))
-                        ) : (
-                          <tr>
-                            <td colSpan="4" style={{textAlign: "center"}}>
-                              No schools registered today.
-                            </td>
-                          </tr>
-                        )}
-                        
+                          ))}
+                        {recentSchools === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No schools registered today.
+                          </td>
+                        </tr>)}
                       </tbody>
                     </table>
                   </div>
@@ -532,8 +527,7 @@ function Dashboard() {
                       {loading2 ? (
         <Loader/>
       ) : (
-        Array.isArray(stationList) && stationList.length > 0 ? (
-          stationList.map((item, key) => (
+        Array.isArray(stationList) && stationList.map((item, key) => (
             <tr key={key}>
               <td>{key + 1}</td>
               <td>{item.station_name}</td>
@@ -549,14 +543,13 @@ function Dashboard() {
               </td>
             </tr>
           ))
-        ) : (
-          <tr>
-            <td colSpan="4" style={{ textAlign: "center" }}>
-              No calling stations registered.
-            </td>
-          </tr>
-        )
       )}
+      {stationList === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No calling stations registered yet.
+                          </td>
+                        </tr>)}
+
                       </tbody>
                     </table>
 
