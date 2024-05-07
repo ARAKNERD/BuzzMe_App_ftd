@@ -7,6 +7,7 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Select from "react-select";
 import {Link} from "react-router-dom";
 import SchoolContext from "../../Context/SchoolContext";
+import Loader from "../../Components/Common/Loader";
 
 function AdminRegisterStudent(props) {
   const [groupList, setGroupList] = useState(false);
@@ -19,13 +20,16 @@ function AdminRegisterStudent(props) {
   const [gender, setGender] = useState("");
   const [names, setNames] = useState("");
   const [loading, setLoading] = useState(false)
+  const [loading2, setLoading2] = useState(false)
 
   const getStudentsToday = async () => {
     var data = {
       school: "",
       group: "",
     };
+    setLoading2(true)
     const server_response = await ajaxStudent.fetchStudentsToday(data);
+    setLoading2(false)
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
     } else {
@@ -212,8 +216,7 @@ function AdminRegisterStudent(props) {
                 </tr>
               </thead>
               <tbody>
-              {Array.isArray(studentsToday) && studentsToday.length > 0 ? (
-                      studentsToday.map((student, key) => (
+              {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
                           <td>{student.names}</td>
@@ -222,14 +225,15 @@ function AdminRegisterStudent(props) {
                           <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
                           <td>{student.group?.group_name}</td>
                         </tr>
-                      ))
-                    ): (
-                      <tr>
-                        <td colSpan="5" style={{textAlign:"center"}}>No students registered today.</td>
-                      </tr>
-                    )}
+                      ))}
+                      {studentsToday === "404" && (<tr>
+                          <td colSpan="7" style={{textAlign: "center"}}>
+                            No students registered today.
+                          </td>
+                        </tr>)}
               </tbody>
             </table>
+            {loading2 && <Loader/>}
           </div>
         </div>
       </div></div></div>

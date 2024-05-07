@@ -139,7 +139,7 @@ useEffect(()=>{
          
         </div>
         <div className="col-lg-12 col-md-12">
-        {ninSearch ===false && (<>
+        {ninSearch ===false && (
             <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
@@ -219,47 +219,7 @@ useEffect(()=>{
               </form>
             </div>
           </div>
-          <div className="card height-auto">
-          <div className="card-body">
-            <div className="heading-layout1">
-            <TableHeader
-                    title="Parents Registered Today"
-                    subtitle="List of the parents registered today"
-                  />
-            </div>
-  
-            <div className="table-responsive">
-              <table className="table display data-table text-nowrap">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Parent Name</th>
-                    <th>Phone Number</th>
-                    <th>Address</th>
-                  </tr>
-                </thead>
-                <tbody>
-                {Array.isArray(recentGuardians) && recentGuardians.map((item, key) => (
-                          <tr key={key}>
-                            <td>{key + 1}</td>
-                            <td><Link
-                          to={`/parents/profile/${item.parent_id}`}>
-                          {item.parent_name}
-                        </Link></td>
-                            <td>{item.main_contact}</td>
-                            <td>{item.address}</td>
-                          </tr>
-                        ))}
-                        {recentGuardians === "404" && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians registered yet.
-                          </td>
-                        </tr>)}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div></>
+         
           )}
       {ninSearch && ( // Show the parent info if ninSearch is true
       
@@ -333,7 +293,49 @@ useEffect(()=>{
       )}
       {loading && <Loader/>}
         </div>
-        
+        <div className="col-lg-12 col-md-12">
+        <div className="card height-auto">
+          <div className="card-body">
+            <div className="heading-layout1">
+            <TableHeader
+                    title="Parents Registered Today"
+                    subtitle="List of the parents registered today"
+                  />
+            </div>
+  
+            <div className="table-responsive">
+              <table className="table display data-table text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Parent Name</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {Array.isArray(recentGuardians) && recentGuardians.map((item, key) => (
+                          <tr key={key}>
+                            <td>{key + 1}</td>
+                            <td><Link
+                          to={`/parents/profile/${item.parent_id}`}>
+                          {item.parent_name}
+                        </Link></td>
+                            <td>{item.main_contact}</td>
+                            <td>{item.address}</td>
+                          </tr>
+                        ))}
+                        {recentGuardians === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        </div>
       </div>
     </AppContainer>
   );

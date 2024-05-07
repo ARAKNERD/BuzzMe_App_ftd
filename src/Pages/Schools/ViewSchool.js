@@ -173,7 +173,6 @@ useEffect(() => {
               </thead>
               <tbody>
               {schoolSearch && Array.isArray(schoolSearch) ? 
-                    ( schoolSearch.length > 0 ?
                         ( schoolSearch.map((item, key) => (
                           <tr key={key}>
                           <td>{key + 1}</td>
@@ -187,15 +186,7 @@ useEffect(() => {
                         </tr>
                         )))
                     : (
-                      <tr>
-                      <td colSpan="7" style={{textAlign: "center"}}>
-                        No schools match the search query.
-                      </td>
-                    </tr>
-                    )
-                ) : (
-                Array.isArray(schoolList) && schoolList.length > 0 ? (
-                  schoolList.map((item, key) => (
+                Array.isArray(schoolList) && schoolList.map((item, key) => (
                     <tr key={key}>
                       <td>{key + 1}</td>
                       <td><Link
@@ -206,15 +197,12 @@ useEffect(() => {
                       <td>{item.email}</td>
                       <td>{item.district?.district_name}</td>
                     </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="7" style={{textAlign: "center"}}>
-                      No schools registered yet.
-                    </td>
-                  </tr>
-                ))}
-                
+                  )))}
+                {schoolList === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No schools registered yet.
+                          </td>
+                        </tr>)}
               </tbody>
               <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       

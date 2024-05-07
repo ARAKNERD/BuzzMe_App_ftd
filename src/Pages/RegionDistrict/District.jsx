@@ -47,21 +47,18 @@ function District() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(districtList) && districtList.length > 0 ? (
-                      districtList.map((item, key) => (
+                    {Array.isArray(districtList) && districtList.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.district_name} </td>
                           <td>{item.region.region_name} </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="3" style={{textAlign: "center"}}>
-                          No districts registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {districtList === "404" && (<tr>
+                          <td colSpan="3" style={{textAlign: "center"}}>
+                            No districts registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
                 {!districtList && <Loader />}
