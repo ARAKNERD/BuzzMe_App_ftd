@@ -421,7 +421,6 @@ const SchoolProfile = props => {
                                 </thead>
                                 <tbody>
                                 {studentSearch && Array.isArray(studentSearch) ? 
-                    ( studentSearch.length > 0 ?
                         ( studentSearch.map((item, key) => (
                           <tr key={key}>
                           <td>{key + 1}</td>
@@ -430,14 +429,7 @@ const SchoolProfile = props => {
                           <td>{item.reg_no}</td>
                         </tr>
                         )))
-                    : (
-                      <tr>
-                      <td colSpan="5" style={{textAlign: "center"}}>
-                        No students match the search query.
-                      </td>
-                    </tr>
-                    )
-                ) : (
+                    :  (
                                     Array.isArray(schoolStudents) && schoolStudents.map((item, key) => (
                                             
                                              <tr key={key} >
@@ -448,7 +440,11 @@ const SchoolProfile = props => {
                                             </tr>
                                         ))
                                     )}
-                        
+                        {schoolStudents === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No students registered in this school yet.
+                          </td>
+                        </tr>)}
                                 </tbody>
                                 <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       
@@ -491,8 +487,7 @@ const SchoolProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(schoolStations) && schoolStations.length > 0 ? (
-                                        schoolStations.map((item, key) => (
+                                    {Array.isArray(schoolStations) && schoolStations.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <td>{key + 1}</td>
@@ -500,12 +495,12 @@ const SchoolProfile = props => {
                           <td>{item.station_code}</td>
                           <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
                                             </tr>
-                                        ))
-                                    ): (
-                                        <tr>
-                                            <td colSpan="4" style={{textAlign:"center"}}>No calling stations installed within the school yet.</td>
-                                        </tr>
-                                    )}
+                                        ))}
+                                        {schoolStations === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No calling stations installed within the school yet.
+                          </td>
+                        </tr>)}
                                 </tbody>
                             </table>
                             {loading4 && <Loader/>}

@@ -9,9 +9,6 @@ import Loader from "../../Components/Common/Loader";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faRefresh } from "@fortawesome/free-solid-svg-icons";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import SchoolContext from "../../Context/SchoolContext";
 
 
@@ -27,11 +24,6 @@ const AdminImportStudents = () => {
   const {schoolList} = useContext(SchoolContext);
 
   const navigation = useNavigate();
-
-  const AddGroupOption = {
-    group_id: 'add_new',
-    group_name: '- - - Register New Student Group - - -',
-  };
 
   const schoolData = {
     school_id: school,
@@ -174,7 +166,7 @@ const AdminImportStudents = () => {
             </div>
             {!loading && !saved && (
                 <>
-                <div className="col-lg-6 col-md-6">
+                <div className="col-lg-6 col-md-6 mb-2" >
                     <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
                     <Select
                       onChange={(e) => setSchool(e.school_id)}
@@ -188,34 +180,24 @@ const AdminImportStudents = () => {
                       }
                     />
                 </div>
-                <div className="col-lg-6 col-md-6">
-                <label htmlFor="">Student Group 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id="refresh-tooltip">Refresh Student Groups</Tooltip>}>
-                     <FontAwesomeIcon icon={faRefresh} onClick={getGroups} style={{marginLeft:"4px"}} /></OverlayTrigger></label>
-                <Select
-                  onChange={(selectedOption) => {
-                    if (selectedOption.group_id === 'add_new') {
-                      window.open('/class-groups', '_blank');
-                    } else {
-                      setGroup(selectedOption.group_id);
-                    }
-                  }}
-                  getOptionLabel={(option) => option.group_name}
-                  getOptionValue={(option) => option.group_id}
-                  isSearchable
-                  options={Array.isArray(groupList) ? [...groupList, AddGroupOption] : []}
-                  value={
-                    Array.isArray(groupList) &&
-                    groupList.find((value) => value.group_id === group)
-                  }
-                />
+                <div className="col-lg-6 col-md-6 mb-2">
+                <label htmlFor="">Student Group <span style={{color:"red"}}>*</span> </label>
+                     <Select
+                      onChange={(e) => setGroup(e.group_id)}
+                      getOptionLabel={(option) => option.group_name}
+                      getOptionValue={(option) => option.group_id}
+                      isSearchable
+                      options={Array.isArray(groupList) ? groupList : []}
+                      value={
+                        Array.isArray(groupList) &&
+                        groupList.find((value) => value.group_id === group)
+                      }
+                    />
               </div>
               <button
                 style={{ width: "100%" }}
                 onClick={() => saveData()}
-                className="btn btn-primary"
+                className="btn-fill-md text-light bg-dodger-blue"
               >
                 Save Student List
               </button></>
@@ -224,8 +206,8 @@ const AdminImportStudents = () => {
             {!loading && saved && (
               <button
                 style={{ width: "100%" }}
-                // onClick={() => saveData()}
-                className="btn btn-primary"
+                disabled
+                className="btn-fill-md text-light bg-dodger-blue"
               >
                 List Already Saved
               </button>
@@ -234,8 +216,8 @@ const AdminImportStudents = () => {
             {loading && (
               <button
                 style={{ width: "100%" }}
-                // onClick={() => saveData()}
-                className="btn btn-primary"
+                disabled
+                className="btn-fill-md text-light bg-dodger-blue"
               >
                 Loading .......
               </button>

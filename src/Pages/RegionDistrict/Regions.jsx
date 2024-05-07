@@ -46,20 +46,17 @@ function Regions() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(regionList) && regionList.length > 0 ? (
-                      regionList.map((item, key) => (
+                    {Array.isArray(regionList) && regionList.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.region_name} </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="2" style={{textAlign: "center"}}>
-                          No regions registered yet.
-                        </td>
-                      </tr>
-                    )}
+                      ))}
+                      {regionList === "404" && (<tr>
+                          <td colSpan="2" style={{textAlign: "center"}}>
+                            No regions registered yet.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
                 {!regionList && <Loader />}

@@ -182,8 +182,7 @@ function AddSchool() {
                 </tr>
               </thead>
               <tbody>
-              {Array.isArray(recentSchools) && recentSchools.length > 0 ? (
-                      recentSchools.map((item, key) => (
+              {Array.isArray(recentSchools) && recentSchools.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td><Link
@@ -194,12 +193,12 @@ function AddSchool() {
                           <td>{item.email}</td>
                           <td>{item.district?.district_name}</td>
                         </tr>
-                      ))
-                    ): (
-                      <tr>
-                        <td colSpan="5" style={{textAlign:"center"}}>No schools registered today.</td>
-                      </tr>
-                    )}
+                      ))}
+                      {recentSchools === "404" && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No schools registered today.
+                          </td>
+                        </tr>)}
               </tbody>
             </table>
           </div>
