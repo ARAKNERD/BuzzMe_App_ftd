@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import toast, {Toaster} from "react-hot-toast";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -6,8 +6,22 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
+import ajaxBank from "../../util/remote/ajaxBank";
+
 
 function AllTransactions() {
+  const [transactionList, setTransactionList] = useState(false);
+
+  const getTransactions = async () => {
+    const server_response = await ajaxBank.fetchBankTransactions();
+    console.log(server_response)
+    if (server_response.status === "OK") {
+      setTransactionList(server_response.details);
+
+    }else {
+      setTransactionList("404");
+    }
+  };
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -34,8 +48,12 @@ function AllTransactions() {
     pdf.save("airtime_data.pdf");
   };
 
+  useEffect(() => {
+    getTransactions();
+  }, []);
+
   return (
-    <AppContainer title="Airtime Transactions">
+    <AppContainer title="All Transactions">
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="row">
@@ -45,8 +63,8 @@ function AllTransactions() {
       <div className="card-body">
       <div class="heading-layout1 mg-b-25">
         <TableHeader
-            title="Airtime Transactions"
-            subtitle="List of all the airtime payments sorted by the most recent"    
+            title="All Transactions"
+            subtitle="List of all the transactions made sorted by the most recent"    
               />
               <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -111,12 +129,26 @@ function AllTransactions() {
                 <th>Status</th>
                 <th>Amount</th>
                 <th>Student</th>
-                <th>Contact</th>
                 
               </tr>
             </thead>
             <tbody>
-                    
+            {Array.isArray(transactionList) && transactionList.map((item, key) => (
+                        <tr>
+                          <td>{item.created_at?.long_date}</td>
+                          <td>{item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
+                          item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
+
+                          
+                          <td>{item.cash_in}</td>
+                          <td>{item.student.names}</td>
+                        </tr>
+                      ))}
+                      {transactionList === "404" && (<tr>
+                          <td colSpan="3" style={{textAlign: "center"}}>
+                            No transactions made yet.
+                          </td>
+                        </tr>)}
             </tbody>
           </table>
         </div>

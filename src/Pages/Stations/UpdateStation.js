@@ -25,7 +25,6 @@ const UpdateStation=(props)=>{
         if(stationName.length>0 || stationNumber.length>0){
             setLoading(true)
             const server_response = await ajaxStation.updateStation(data);
-            console.log(server_response)
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);

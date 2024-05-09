@@ -81,7 +81,6 @@ const AdminImportStudents = () => {
     setLoading(true);
     const server_response = await ajaxStudent.importStudents(schoolData);
     setLoading(false);
-    // console.log(server_response);
     if (server_response.status === "OK") {
       toast.success(server_response.message);
       setSaved(true);

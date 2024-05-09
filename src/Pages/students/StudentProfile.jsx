@@ -13,6 +13,10 @@ import AddContact from './AddContact';
 import ajaxParent from '../../util/remote/ajaxParent';
 import AttachParent from '../Parents/AttachParent';
 import { RenderSecure } from '../../util/script/RenderSecure';
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -40,6 +44,11 @@ const StudentProfile = props => {
     const [loading3,setLoading3] = useState(false)
     const [loading4,setLoading4] = useState(false)
     const [loading5,setLoading5] = useState(false)
+    const [activeTab, setActiveTab] = useState('first');
+
+    const handleSelectTab = (selectedTab) => {
+        setActiveTab(selectedTab);
+    };
 
     const data = {
         student_id: id
@@ -172,7 +181,7 @@ const StudentProfile = props => {
                     {studentProfile && <div className="box-body" style={{position:"relative"}}>
                         <div className="user-pic text-center" >
                         <div class="main-profile-overview widget-user-image text-center">
-							<div class="main-img-user"><img alt="avatar" src={
+							<div class="main-img-user"><img alt="avatar" style={{height:"90px"}} src={
                       process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
                     }/></div>
 						</div>
@@ -195,7 +204,8 @@ const StudentProfile = props => {
                         </div>
                     </div></RenderSecure>
                 </div>
-
+                <div className='row'>
+                <div className="col-6 col-xl-6">
                 {active?
                     <div className="box left-dot mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                         <div className="box-header  border-0 pd-0">
@@ -300,23 +310,44 @@ const StudentProfile = props => {
                         </div>
                     </div>
  
- }
- <div className='row'>
-<div className="col-6 col-xl-6">
-                <div className="card height-auto" >
-                    <div className="card-body map-card">
+ }</div>
+ <div className="col-6 col-xl-6">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+                        <div className="card-body map-card">
                         <TableHeader
-                            title="Parents / Guardians"
-                            subtitle="List of the parents or guardians attached to the student" 
-                            viewButton={
+                            title="Address Book"
+                            subtitle="List of all the student's contacts" 
+                            viewButton={<>{activeTab === "first" && (
                                 <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Attach Parent</a>
-                               
-                            } 
+                            )}
+                            {activeTab === "second" && (
+                                <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Add Contact</a>
+                            )}</>} 
                                 
-                        />
-                        <div className="border-top mt-3"></div>                    
-                        <div className="table-responsive">
-                            <table className="table table-hover text-nowrap mg-b-0">
+                        />  
+                            <Tab.Container id="left-tabs-example" defaultActiveKey="first" onSelect={handleSelectTab}>
+            <Row>
+              <Col sm={12}>
+                <Nav variant="pills" className="flex-row mt-3">
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="first">
+                      Guardians{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="second">
+                      Contacts{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
+
+              <Col sm={12}>
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                  <div className="border-top mt-1"></div>
+                    <div className="table-responsive">
+                    <table className="table table-hover text-nowrap mg-b-0">
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
@@ -344,25 +375,13 @@ const StudentProfile = props => {
                                 </tbody>
                             </table>
                             {loading4 && <Loader/>}
-                        </div>
-                              
-                    </div>
-			    </div></div>
-                <div className="col-6 col-xl-6">
-                <div className="card height-auto" >
-                    <div className="card-body map-card">
-                        <TableHeader
-                            title="Student Contacts"
-                            subtitle="List of all the student's contacts" 
-                            viewButton={
-                                <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Add Contact</a>
-                               
-                            } 
-                                
-                        />
-                        <div className="border-top mt-3"></div>                    
-                        <div className="table-responsive">
-                            <table className="table table-hover text-nowrap mg-b-0">
+                            </div>
+                  </Tab.Pane>
+
+                  <Tab.Pane eventKey="second">
+                  <div className="border-top mt-1"></div>
+                   <div className="table-responsive">
+                   <table className="table table-hover text-nowrap mg-b-0">
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
@@ -389,10 +408,20 @@ const StudentProfile = props => {
                                 </tbody>
                             </table>
                             {loading3 && <Loader/>}
-                        </div>
+                            </div>
+
+                   
+                   
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>                
+                            
                               
-                    </div>
-			    </div></div></div>
+                        </div>
+			        </div>
+        </div></div>
 
                 <div className="card height-auto" >
                     <div className="card-body map-card">

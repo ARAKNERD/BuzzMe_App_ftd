@@ -37,7 +37,6 @@ function AddParent() {
       };
       setLoading2(true)
       const server_response = await ajaxParent.createParent(data);
-      console.log(server_response)
       setLoading2(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);

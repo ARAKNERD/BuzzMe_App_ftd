@@ -18,7 +18,6 @@ export const PermissionProvider = (props)=> {
    const getPermissionList =async()=>{
 
       const server_response = await ajaxPermission.fetchDistributionList(data);
-    //   console.log(server_response)
       if(server_response.status==="OK"){
          //store results
          setPermissionList(server_response.details);
