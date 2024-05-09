@@ -40,6 +40,18 @@ export default {
     return response;
   },
 
+  async turnOnStaffLogin(data) 
+  {
+    let response = await apiCall("school/staff/on", data);
+    return response;
+  },
+
+  async turnOffStaffLogin(data) 
+  {
+    let response = await apiCall("school/staff/off", data);
+    return response;
+  },
+
   // SCHOOL USERS
 
   async fetchSchoolUserList(data) {

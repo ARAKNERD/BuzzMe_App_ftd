@@ -51,9 +51,10 @@ const AttachParent=(props)=>{
     const searchParent =async(e)=>{
         e.preventDefault();  
         if (query.length > 0) {
-        var data = {
-          search: query
-        };
+          const strippedQuery = query.slice(1);
+          var data = {
+              search: strippedQuery
+          };
         setLoading2(true)
         const server_response = await ajaxParent.searchTerms(data);
         setLoading2(false)

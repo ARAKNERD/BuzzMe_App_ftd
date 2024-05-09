@@ -50,7 +50,6 @@ function ViewSchoolParents() {
     setLoading(true)
     const server_response = await ajaxParent.listRegisteredParents(userId,page);
     setLoading(false)
-    console.log(server_response)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setParentsRegistered(server_response.details.list);

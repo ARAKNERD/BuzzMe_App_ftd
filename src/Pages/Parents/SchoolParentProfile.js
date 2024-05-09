@@ -89,7 +89,6 @@ const SchoolParentProfile = props => {
         setLoading2(true)
         const server_response = await ajaxStudent.getSchoolStudents(parent, user.school);
         setLoading2(false)
-        console.log(server_response)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
         }else{
