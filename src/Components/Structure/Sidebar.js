@@ -55,18 +55,19 @@ const Sidebar = (props) => {
                   <span><b>Schools</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
+                <li className="nav-item">
+                    <Link to="/schools/add" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      Register School
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link to="/schools/view" className="nav-link">
                       <i className="fas fa-angle-right" />
                       View Schools
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link to="/schools/add" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      Add School
-                    </Link>
-                  </li>
+                  
                 </ul>
               </li>
             </RenderSecure>
@@ -217,6 +218,7 @@ const Sidebar = (props) => {
                   </li>
                 </ul>
               </li>
+              </RenderSecure>
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
@@ -224,7 +226,7 @@ const Sidebar = (props) => {
                   <span><b>System Users</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
-
+                <RenderSecure code="ADMIN-VIEW">
                   <li className="nav-item">
                     <Link to="/school_admin/view" className="nav-link">
                       <i className="fas fa-angle-right" />
@@ -236,10 +238,17 @@ const Sidebar = (props) => {
                       <i className="fas fa-angle-right" />
                       View System Admins
                     </Link>
-                  </li>
+                  </li></RenderSecure>
+                  <RenderSecure code="SCHOOL-USER-VIEW">
+                  <li className="nav-item">
+                    <Link to="/booth-assistants" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View Booth Assistants
+                    </Link>
+                  </li></RenderSecure>
                 </ul>
               </li>
-            </RenderSecure>
+           
           </ul>
         </div>
       </div>

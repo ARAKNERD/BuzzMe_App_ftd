@@ -97,7 +97,7 @@ const AddStudentParent=(props)=>{
                 <label htmlFor="">Select Student</label>
                 <Select
                       onChange={(e) => setStudent(e.id)}
-                      getOptionLabel={(option) => `${option.names} - ${option.school.school_name}`}
+                      getOptionLabel={(option) => `${option.first_name} ${option.last_name} - ${option.school.school_name}`}
                       getOptionValue={(option) => option.id}
                       isSearchable
                       options={Array.isArray(studentList) ? studentList : []}

@@ -7,6 +7,7 @@ import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import TableHeader from "../../Components/Common/TableHeader";
 import Select from "react-select";
 import {Link} from "react-router-dom";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 function AddStudent(props) {
   const {user} = useContext(AuthContext);
@@ -15,7 +16,8 @@ function AddStudent(props) {
   const [group, setGroup] = useState("");
   const [regNo, setRegNo] = useState("");
   const [gender, setGender] = useState("");
-  const [names, setNames] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false)
 
 
@@ -35,12 +37,13 @@ function AddStudent(props) {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (names.length > 0 && gender.length > 0) {
+    if (firstName.length > 0 && gender.length > 0) {
       var data = {
         group: group,
         school: user.school,
         reg_no: regNo,
-        names: names,
+        first_name: firstName,
+        last_name: lastName,
         gender: gender,
       };
 setLoading(true)
@@ -61,7 +64,8 @@ setLoading(true)
   
 
   const resetForm = () => {
-    setNames("");
+    setFirstName("");
+    setLastName("");
     setRegNo("");
   };
 
@@ -109,13 +113,24 @@ setLoading(true)
               <form onSubmit={(e) => handleAdd(e)} method="post">
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Student Names <span style={{color:"red"}}>*</span></label>
+                    <label>First Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
-                      value={names}
+                      value={firstName}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter name of student.."
-                      onChange={(e) => setNames(e.target.value)}
+                      placeholder="Enter first name of student.."
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
+                    <label>Last Name <span style={{color:"red"}}>*</span></label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      style={{border: "1px solid grey"}}
+                      placeholder="Enter last name of student.."
+                      onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
                   </div>
@@ -187,21 +202,25 @@ setLoading(true)
             <table className="table display data-table text-nowrap">
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Student Code</th>
-                  <th>Registration Number</th>
-                  <th>Student Group</th>
+                <th>ID</th>
+                <th>Names</th>
+                <th>Student Code</th>
+                <th>Student Group</th>
+                <th>Account Status</th>
                 </tr>
               </thead>
               <tbody>
               {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
-                          <td>{student.names}</td>
+                          <td>{student.first_name} {student.last_name}</td>
                           <td>{student.student_code}</td>
-                          <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
                           <td>{student.group?.group_name}</td>
+                          <td>{student.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                          <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="refresh-tooltip">Default pin is {student.default_pin}</Tooltip>}>
+                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
                         </tr>
                       ))
                     }

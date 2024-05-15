@@ -31,6 +31,8 @@ const StudentProfile = props => {
     const [groupList, setGroupList] = useState(false);
     const [group, setGroup] = useState("");
     const [regNo, setRegNo] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [names, setNames] = useState("");
     const [gender, setGender] = useState("");
     const [studentID,setStudentID] = useState("")
@@ -80,7 +82,8 @@ const StudentProfile = props => {
 
     const setUserUpdate = () =>{
         handleActive()
-        setNames(studentProfile.names)
+        setFirstName(studentProfile.first_name)
+        setLastName(studentProfile.last_name)
         setGroup(studentProfile.group?.group_id)
         setGender(studentProfile.gender)
         setRegNo(studentProfile.reg_no)
@@ -92,7 +95,8 @@ const StudentProfile = props => {
         event.preventDefault()
         var data = {
             student_id: id,
-            names: names,
+            first_name: firstName,
+            last_name: lastName,
             reg_no: regNo,
             gender: gender,
             group_id: group,       
@@ -186,7 +190,7 @@ const StudentProfile = props => {
                     }/></div>
 						</div>
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
-                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{studentProfile.names}</h5>
+                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{studentProfile.first_name} {studentProfile.last_name}</h5>
                                 <h6 className="pro-user-desc text-muted fs-14">{studentProfile.group?.group_name}</h6>
                             </div>
                         </div>
@@ -217,13 +221,14 @@ const StudentProfile = props => {
 						        <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">Names:<span style={{color:"red"}}>*</span></label>
-                                            <input type="text" value={names} onChange={(e)=>setNames(e.target.value)} className="form-control"/>
+                                            <label htmlFor="">First Name:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Registration Number:</label>
-                                            <input type="text" value={regNo} onChange={(e)=>setRegNo(e.target.value)} className="form-control"/>
+                                            <label htmlFor="">Last Name:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} className="form-control"/>
 							            </div>
+                                       
                                        
                                     </div>
                                 </div>
@@ -255,7 +260,15 @@ const StudentProfile = props => {
                                         
                                     </div>
                                 </div>
-              
+                                <div className="form-group">
+                                    <div className="row row-sm">
+                                    <div className="col-sm-6">
+                                            <label htmlFor="">Registration Number:</label>
+                                            <input type="text" value={regNo} onChange={(e)=>setRegNo(e.target.value)} className="form-control"/>
+							            </div>
+                                        
+                                    </div>
+                                </div>
 						        {loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
                                 {!loading5 && <button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update Student Details</button>}
 						    </form>
@@ -275,7 +288,7 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Names </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.names}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.first_name} {studentProfile.last_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Gender</span> </td>
@@ -361,7 +374,7 @@ const StudentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.parent_name}</td>
+                                                <td>{item.first_name} {item.last_name}</td>
                                                 <td>{item.main_contact}</td>
                                                 <td>{item.relationship}</td>
                                             </tr>
@@ -393,9 +406,9 @@ const StudentProfile = props => {
                                 <tbody>
                                     {Array.isArray(studentContacts) && studentContacts.map((item, key) => (
                                             
-                                             <tr key={key} >
+                                             <tr key={key}>
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.parent_name}</td>
+                                                <td>{item.first_name} {item.last_name}</td>
                                                 <td>{item.main_contact}</td>
                                                 <td>{item.relationship}</td>
                                             </tr>

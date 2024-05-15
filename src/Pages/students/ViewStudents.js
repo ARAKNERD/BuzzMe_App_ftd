@@ -8,9 +8,11 @@ import toast, {Toaster} from "react-hot-toast";
 import {Link, useParams} from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons";
+import { faAddressCard, faUserLock } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
 
 function ViewStudents() {
   const {user} = useContext(AuthContext);
@@ -44,6 +46,7 @@ function ViewStudents() {
     const server_response = await ajaxStudent.setDefaultPin(item.account_id);
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
+      getStudentList();
     }
   };
 
@@ -204,10 +207,10 @@ function ViewStudents() {
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Name</th>
+                      <th>Names</th>
                       <th>Student Code</th>
-                      <th>Registration Number</th>
-                      <th>Student Card</th>
+                      <th>Student Group</th>
+                      <th>Account Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -220,19 +223,17 @@ function ViewStudents() {
 
                             <td>
                               <Link to={`/school-students/profile/${item.id}`}>
-                                {item.names}
+                                {item.first_name} {item.last_name}
                               </Link>
                             </td>
                             <td className="text-dark">{item.student_code}</td>
-                            <td className="text-dark">{item.reg_no}</td>
-                            <td>
-                              <Link
-                                className="btn btn-info"
-                                target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school}`}>
-                                View
-                              </Link>
-                            </td>
+                            <td className="text-dark">{item.group?.group_name}</td>
+                            <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                          <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
+                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
+                            
                             <td>
                             <div className="dropdown">
                               <Link
@@ -252,6 +253,11 @@ function ViewStudents() {
 
                                 Set Default Pin
                               </Link>
+                              <Link className="dropdown-item" target="_blank "
+                                to={`/students/student_card/${item.id}/null/${user.school}`}>
+                              <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
+                              Get BuzzTime Card
+                            </Link>
 </div>
                             </div>
                           </td>
@@ -263,21 +269,17 @@ function ViewStudents() {
                          <td style={{width:"5px"}}>{key + first + 1}</td>
                           <td>
                             <Link to={`/school-students/profile/${item.id}`}>
-                              {item.names}
+                            {item.first_name} {item.last_name}
                             </Link>
                           </td>
                           <td className="text-dark">{item.student_code}</td>
-                          <td className="text-dark">{item.reg_no}</td>
-                          <td>
-                            
-                              <Link
-                                className="btn btn-info"
-                                target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school}`}>
-                                View
-                              </Link>
-                            
-                          </td>
+                          <td className="text-dark">{item.group?.group_name}</td>
+                         
+                          <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                          <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
+                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
                           <td>
                             <div className="dropdown">
                               <Link
@@ -296,6 +298,11 @@ function ViewStudents() {
                                 <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
                                 Set Default Pin
                               </Link>
+                              <Link className="dropdown-item" target="_blank "
+                                to={`/students/student_card/${item.id}/null/${user.school}`}>
+                              <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
+                              Get BuzzTime Card
+                            </Link>
 </div>
                             </div>
                           </td>

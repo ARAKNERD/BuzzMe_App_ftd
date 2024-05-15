@@ -14,7 +14,8 @@ const ParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
     const {id} = useParams();
     const [children, setChildren] = useState(false);
-    const [parentName, setParentName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [mainContact,setMainContact] =useState("")
     const [alternativeContact,setAlternativeContact] =useState("")
     const [address,setAddress] =useState("")
@@ -34,7 +35,8 @@ const ParentProfile = props => {
 
     const setParentUpdate = () =>{
         handleActive()
-        setParentName(parentProfile.parent_name)
+        setFirstName(parentProfile.first_name)
+        setLastName(parentProfile.last_name)
         setMainContact(parentProfile.main_contact)
         setAlternativeContact(parentProfile.alternative_contact)
         setAddress(parentProfile.address)
@@ -46,7 +48,8 @@ const ParentProfile = props => {
         e.preventDefault()
         var data = {
 
-            parent_name: parentName,
+            first_name: firstName,
+            last_name: lastName,
             alternative_contact: alternativeContact,
             main_contact: mainContact,
             address: address,
@@ -118,7 +121,7 @@ const ParentProfile = props => {
                     }/></div>
 						</div>
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
-                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{parentProfile.parent_name}</h5>
+                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{parentProfile.first_name} {parentProfile.last_name}</h5>
                             </div>
                         </div>
                     </div>}
@@ -147,31 +150,36 @@ const ParentProfile = props => {
 						        <div className="form-group">
 						            <div className="row row-sm">
 								        <div className="col-sm-6">
-                                            <label htmlFor="">Names:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={parentName} onChange={(e)=>setParentName(e.target.value)} className="form-control"/>
+                                            <label htmlFor="">First Name:<span className="tx-danger">*</span></label>
+                                            <input type="text" defaultValue={firstName} onChange={(e)=>setFirstName(e.target.value)} className="form-control"/>
 							            </div>
                                         <div className="col-sm-6">
-                                            <label htmlFor="">Main Contact:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={mainContact} onChange={(e)=>setMainContact(e.target.value)} className="form-control"/>
+                                            <label htmlFor="">Last Name:<span className="tx-danger">*</span></label>
+                                            <input type="text" defaultValue={lastName} onChange={(e)=>setLastName(e.target.value)} className="form-control"/>
 							            </div>
                                        
                                     </div>
                                 </div>
                                 <div className="form-group">
 						            <div className="row row-sm">
+                                    <div className="col-sm-6">
+                                            <label htmlFor="">Main Contact:<span className="tx-danger">*</span></label>
+                                            <input type="text" defaultValue={mainContact} onChange={(e)=>setMainContact(e.target.value)} className="form-control"/>
+							            </div>
 								        <div className="col-sm-6">
                                             <label htmlFor="">Alternative Contact:<span className="tx-danger">*</span></label>
                                             <input type="text" defaultValue={alternativeContact} onChange={(e)=>setAlternativeContact(e.target.value)} className="form-control"/>
 							            </div>
-                                        <div className="col-sm-6">
-                                            <label htmlFor="">Address:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
-							            </div>
+                                       
                                        
                                     </div>
                                 </div>
                                 <div className="form-group">
 						            <div className="row row-sm">
+                                    <div className="col-sm-6">
+                                            <label htmlFor="">Address:<span className="tx-danger">*</span></label>
+                                            <input type="text" defaultValue={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
+							            </div>
 								        <div className="col-sm-6">
                                             <label htmlFor="">NIN:<span className="tx-danger">*</span></label>
                                             <input type="text" defaultValue={NIN} onChange={(e)=>setNIN(e.target.value)} className="form-control"/>
@@ -198,7 +206,7 @@ const ParentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Names </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{parentProfile.parent_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{parentProfile.first_name} {parentProfile.last_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Main Contact</span> </td>
@@ -260,7 +268,7 @@ const ParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.student?.names}</td>
+                                                <td>{item.student?.first_name} {item.student?.last_name}</td>
                                                 <td>{item.student?.school?.school_name}</td>
                                                 <td>{item.student?.student_code}</td>
                                                 <td>{item.student?.group?.group_name}</td>

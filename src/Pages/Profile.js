@@ -59,7 +59,7 @@ const Profile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Names </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.admin?user.admin?.names:user.school_user?.names}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{user.admin?user.admin?.first_name:user.school_user?.first_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Role Name</span> </td>

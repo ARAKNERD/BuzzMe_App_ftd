@@ -15,8 +15,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import TurnOnStation from "./TurnOnStation";
 import TurnOffStation from "./TurnOffStation";
-import TurnOnStaffLogin from "../Schools/TurnOnStaffLogin";
-import TurnOffStaffLogin from "../Schools/TurnOffStaffLogin";
 
 
 function ListStations() {
@@ -53,12 +51,6 @@ function ListStations() {
   const stationOff=(e,item)=>{
     setModal(false, ()=>setModal(<TurnOffStation stationID={item.station_id} g={getStations} isOpen={true}/>))
   }
-  const staffOn=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOnStaffLogin schoolID={user.school} isOpen={true}/>))
-  }
-  const staffOff=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOffStaffLogin schoolID={user.school} isOpen={true}/>))
-  }
 
   const refreshData = () =>{
     getStations();
@@ -89,9 +81,7 @@ function ListStations() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                            <RenderSecure code="SCHOOL-USER-VIEW">{user.school?.staff_login === 1?<Link class="dropdown-item" onClick={staffOff} ><i class="fas fa-redo-alt text-orange-peel"></i>Turn Off Staff Login</Link>:
-                                            <Link class="dropdown-item" onClick={staffOn} ><i class="fas fa-redo-alt text-orange-peel"></i>Turn On Staff Login</Link>}
-                                            </RenderSecure>
+                                        
                                         </div>
                                     </div>
               </div>

@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
-import ajaxStudent from "../../util/remote/ajaxStudent";
 import ajaxParent from "../../util/remote/ajaxParent";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
@@ -13,7 +12,8 @@ const AttachParent=(props)=>{
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [parent,setParent] =useState("")
-    const [parentName,setParentName] =useState("")
+    const [firstName,setFirstName] =useState("")
+    const [lastName,setLastName] =useState("")
     const [relationship,setRelationship] =useState("")
     const [query, setQuery] = useState("");
     const [querySearch, setQuerySearch] = useState(null);
@@ -45,7 +45,8 @@ const AttachParent=(props)=>{
         e.preventDefault()
         handleActive1()
         setParent(item.parent_id)
-        setParentName(item.parent_name)
+        setFirstName(item.first_name)
+        setLastName(item.last_name)
     }
 
     const searchParent =async(e)=>{
@@ -129,7 +130,7 @@ const AttachParent=(props)=>{
                           <td>:</td>
                           <td className="py-2 px-0">
                             {" "}
-                            <span className="">{parentName}</span>{" "}
+                            <span className="">{firstName} {lastName}</span>{" "}
                           </td>
                         </tr>
                         <tr>
@@ -199,7 +200,7 @@ const AttachParent=(props)=>{
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.parent_name}</td>
+                                                <td>{item.first_name} {item.last_name}</td>
                                                 <td>{item.main_contact}</td>
                                                 <td>{item.nin}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 

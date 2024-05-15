@@ -8,12 +8,15 @@ const AddContact=(props)=>{
 
     const [loading, setLoading] = useState(false)
     const [contactNumber,setContactNumber] =useState("")
+    const [contactFirstName,setContactFirstName] =useState("")
+    const [contactLastName,setContactLastName] =useState("")
     const [contactName,setContactName] =useState("")
     const [relationship,setRelationship] =useState("")
 
     const data={
         student_id: props.studentID,
-        parent_name: contactName,
+        first_name: contactFirstName,
+        last_name: contactLastName,
         main_contact: contactNumber,
         relationship: relationship
     }
@@ -25,7 +28,8 @@ const AddContact=(props)=>{
             const server_response = await ajaxStudent.addContact(data);
             setLoading(false);
             if(server_response.status==="OK"){
-                setContactName("");
+                setContactFirstName("");
+                setContactLastName("");
                 setContactNumber("");
                 setRelationship("");
                 toast.success(server_response.message);
@@ -66,8 +70,12 @@ const AddContact=(props)=>{
         >
 
             <div className="mb-4 form-group border-1">
-                <label htmlFor="">Contact Name <span style={{color:"red"}}>*</span></label>
-                <input onChange={(e)=>setContactName(e.target.value)} value={contactName} type="text" placeholder="Enter names of contact.." className="form-control"/>
+                <label htmlFor="">First Name <span style={{color:"red"}}>*</span></label>
+                <input onChange={(e)=>setContactFirstName(e.target.value)} value={contactFirstName} type="text" placeholder="Enter first name of contact.." className="form-control"/>
+            </div>
+            <div className="mb-4 form-group border-1">
+                <label htmlFor="">Last Name <span style={{color:"red"}}>*</span></label>
+                <input onChange={(e)=>setContactLastName(e.target.value)} value={contactLastName} type="text" placeholder="Enter last name of contact.." className="form-control"/>
             </div>
             <div className="mb-4 form-group border-1">
                 <label htmlFor="">Contact Number <span style={{color:"red"}}>*</span></label>

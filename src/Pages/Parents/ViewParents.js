@@ -3,7 +3,6 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { Link} from "react-router-dom";
-import UpdateParent from "./UpdateParent";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxParent from "../../util/remote/ajaxParent";
 import toast, {Toaster} from "react-hot-toast";
@@ -17,7 +16,6 @@ function ViewParents() {
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [modal, setModal] = useStateCallback(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
 
@@ -49,10 +47,6 @@ function ViewParents() {
   useEffect(() => {
     getParentList();
   }, [page]);
-
-  const handleModal=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateParent parentID={item.parent?.parent_id} parentName={item.parent?.parent_name} nin={item.parent?.nin} address={item.parent?.address} mainContact={item.parent?.main_contact} alternativeContact={item.parent?.alternative_contact} g={getParentList} isOpen={true}/>))
-  }
 
   const setNextPageNumber = () =>{
     if(meta.length===page){
@@ -114,7 +108,7 @@ function ViewParents() {
   return(
   <AppContainer title="Parents">
     <Toaster position="top-center" reverseOrder={false} />
-          {modal}      
+             
 				<div className="col-lg-12">
           <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
             <div className="card-body map-card">
@@ -179,7 +173,7 @@ function ViewParents() {
                           <th scope='row'>{key + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.parent_name}
+                          {item.first_name} {item.last_name}
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
@@ -191,7 +185,7 @@ function ViewParents() {
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.parent_name}
+                          {item.first_name} {item.last_name}
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>

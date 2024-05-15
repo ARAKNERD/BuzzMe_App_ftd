@@ -1,27 +1,31 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { toast } from 'react-hot-toast';
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
-import ajaxAdmin from "../../util/remote/ajaxAdmin";
+import ajaxSchool from "../../util/remote/ajaxSchool";
+import AuthContext from "../../Context/AuthContext";
 
-const AddAdmin=(props)=>{
+const AddBoothAssistant=(props)=>{
 
     const [loading, setLoading] = useState(false)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
-    const [username, setUsername] = useState("")
+    const [contact, setContact] = useState("")
+    const {user} = useContext(AuthContext);
+
 
     const handleAdd = async (e) => {
       e.preventDefault();
   
-      if (firstName.length > 0 ||lastName.length > 0|| username.length >0) {
+      if (firstName.length > 0 || contact.length >0) {
         const data = {
           first_name: firstName,
           last_name: lastName,
-          username: username
+          contact: contact,
+          school: user.school
         };
         setLoading(true)
-        const server_response = await ajaxAdmin.createAdmin(data);
+        const server_response = await ajaxSchool.createBoothAssistant(data);
         setLoading(false)
         if (server_response.status === "OK") {
           toast.success(server_response.message, {duration: 5000});
@@ -36,9 +40,9 @@ const AddAdmin=(props)=>{
     };
 
     const resetForm = () => {
-      setUsername("");
       setFirstName("");
       setLastName("");
+      setContact("");
     };
     
 
@@ -53,15 +57,15 @@ const AddAdmin=(props)=>{
                     <button 
                         type="button" 
                         className={`btn-fill-md text-light bg-dodger-blue`} 
-                        onClick={handleAdd}>Register Admin<i class="fas fa-check mg-l-15"></i></button>
+                        onClick={handleAdd}>Register Assistant<i class="fas fa-check mg-l-15"></i></button>
                     </>
         }
     }
 
     return(
         <SystemModal
-            title="Register Administrator"
-            id="model-register-admin"
+            title="Register Booth Assistant"
+            id="model-register-booth-asst"
             size="md"
             footer={RenderFooter}
         >
@@ -71,28 +75,28 @@ const AddAdmin=(props)=>{
                     <input
                       type="text"
                       value={firstName}
-                      placeholder="Enter first name of administrator.."
+                      placeholder="Enter first name of booth assistant.."
                       onChange={(e) => setFirstName(e.target.value)}
                       className="form-control"
                     />
             </div>
             <div className="mb-4 col-12 form-group">
-            <label htmlFor="">Last Name<span style={{color:"red"}}>*</span></label>
+            <label htmlFor="">Last Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
                       value={lastName}
-                      placeholder="Enter last name of administrator.."
+                      placeholder="Enter last name of booth assistant.."
                       onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
             </div>
             <div className="mb-4 col-12 form-group">
-            <label htmlFor="">Username <span style={{color:"red"}}>*</span></label>
+            <label htmlFor="">Contact <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
-                      value={username}
-                      placeholder="Enter username.."
-                      onChange={(e) => setUsername(e.target.value)}
+                      value={contact}
+                      placeholder="Enter contact.."
+                      onChange={(e) => setContact(e.target.value)}
                       className=" colo-12 form-control"
                     />
             </div>
@@ -101,4 +105,4 @@ const AddAdmin=(props)=>{
     )
 }
 
-export default AddAdmin
+export default AddBoothAssistant

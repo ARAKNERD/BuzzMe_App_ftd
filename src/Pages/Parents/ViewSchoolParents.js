@@ -232,7 +232,7 @@ function ViewSchoolParents() {
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/school-parents/profile/${item.parent_details?.parent_id}`}>
-                          {item.parent_details?.parent_name}
+                          {item.parent_details?.first_name} {item.parent_details?.last_name}
                         </Link></td>
                           <td>{item.parent_details?.main_contact}</td>
                           <td>{item.parent_details?.address}</td>
@@ -244,7 +244,7 @@ function ViewSchoolParents() {
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/school-parents/profile/${item.parent_id}`}>
-                          {item.parent_name}
+                          {item.first_name} {item.last_name}
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
@@ -278,7 +278,7 @@ function ViewSchoolParents() {
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/school-parents/profile/${item.parent_details?.parent_id}`}>
-                          {item.parent_details?.parent_name}
+                          {item.parent_details?.first_name} {item.parent_details?.last_name}
                         </Link></td>
                           <td>{item.parent_details?.main_contact}</td>
                           <td>{item.parent_details?.address}</td>
