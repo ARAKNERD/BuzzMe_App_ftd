@@ -18,7 +18,8 @@ function AdminRegisterStudent(props) {
   const [regNo, setRegNo] = useState("");
   const [school, setSchool] = useState("");
   const [gender, setGender] = useState("");
-  const [names, setNames] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false)
   const [loading2, setLoading2] = useState(false)
 
@@ -40,12 +41,13 @@ function AdminRegisterStudent(props) {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (names.length > 0 && gender.length > 0) {
+    if (firstName.length > 0 && gender.length > 0) {
       var data = {
         group: group,
         school: school,
         reg_no: regNo,
-        names: names,
+        first_name: firstName,
+        last_name: lastName,
         gender: gender,
       };
       setLoading(true)
@@ -66,7 +68,8 @@ function AdminRegisterStudent(props) {
   
 
   const resetForm = () => {
-    setNames("");
+    setFirstName("");
+    setLastName("");
     setRegNo("");
   };
 
@@ -115,13 +118,24 @@ function AdminRegisterStudent(props) {
               <form onSubmit={(e) => handleAdd(e)} method="post">
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Student Names <span style={{color:"red"}}>*</span></label>
+                    <label>First Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
-                      value={names}
+                      value={firstName}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter name of student.."
-                      onChange={(e) => setNames(e.target.value)}
+                      placeholder="Enter first name of student.."
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
+                    <label>Last Name <span style={{color:"red"}}>*</span></label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      style={{border: "1px solid grey"}}
+                      placeholder="Enter last name of student.."
+                      onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
                   </div>
@@ -129,6 +143,7 @@ function AdminRegisterStudent(props) {
                     <label>Gender <span style={{color:"red"}}>*</span></label>
 
                     <select
+                    style={{border: "1px solid grey"}}
                       className="col-12 form-control"
                       value={gender}
                       onChange={(e) => setGender(e.target.value)}>
@@ -219,7 +234,7 @@ function AdminRegisterStudent(props) {
               {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
-                          <td>{student.names}</td>
+                          <td>{student.first_name} {student.last_name}</td>
                           <td>{student.school?.school_name}</td>
                           <td>{student.student_code}</td>
                           <td>{student.reg_no?student.reg_no:"Not recorded"}</td>

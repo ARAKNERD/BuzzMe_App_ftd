@@ -166,6 +166,7 @@ setLoading(true)
                     <select
                       className="col-12 form-control"
                       value={gender}
+                      style={{border: "1px solid grey"}}
                       onChange={(e) => setGender(e.target.value)}>
                       <option value={true}>Select..</option>
                       <option value="Male">Male</option>
