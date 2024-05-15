@@ -149,4 +149,18 @@ export default {
     let response = await apiCall("school/profile", data);
     return response;
   },
+
+  async fetchBoothAssistants(school) {
+    let data = {
+      "school": school
+    };
+    let response = await apiCall("booth_assistant/list", data);
+    return response;
+  },
+
+  async createBoothAssistant(data) {
+    let response = await apiCall("booth_assistant/add", data);
+
+    return response;
+  },
 };

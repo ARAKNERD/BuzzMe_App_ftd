@@ -22,4 +22,10 @@ export default {
 
     return response;
   },
+
+  async updateGroup(data) 
+  {
+    let response = await apiCall("group/update", data);
+    return response;
+  },
 };

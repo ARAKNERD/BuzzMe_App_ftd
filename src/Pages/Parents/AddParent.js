@@ -14,7 +14,8 @@ function AddParent() {
   const [address, setAddress] = useState("");
   const [alternativeContact, setAlternativeContact] = useState("");
   const [mainContact, setMainContact] = useState("");
-  const [names, setNames] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false)
   const [loading2, setLoading2] = useState(false)
   const {userId} = useContext(AuthContext);
@@ -26,11 +27,12 @@ function AddParent() {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (names.length > 0 && nin.length > 0) {
+    if (firstName.length > 0 && nin.length > 0) {
       var data = {
         nin: nin,
         main_contact: mainContact,
-        parent_name: names,
+        first_name: firstName,
+        last_name: lastName,
         alternative_contact: alternativeContact,
         address: address,
         registered_by: userId
@@ -91,7 +93,8 @@ useEffect(()=>{
 }, [])
 
   const resetForm = () => {
-    setNames("");
+    setFirstName("");
+    setLastName("");
     setAlternativeContact("");
     setMainContact("");
     setNin("");
@@ -150,13 +153,24 @@ useEffect(()=>{
               <form onSubmit={(e) => handleAdd(e)} method="post">
                 <div className="row">
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Parent / Guardian Names <span style={{color:"red"}}>*</span></label>
+                    <label>First Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
-                      value={names}
+                      value={firstName}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter name of parent or guardian.."
-                      onChange={(e) => setNames(e.target.value)}
+                      placeholder="Enter first name of parent or guardian.."
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
+                    <label>Last Name <span style={{color:"red"}}>*</span></label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      style={{border: "1px solid grey"}}
+                      placeholder="Enter last name of parent or guardian.."
+                      onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
                   </div>
@@ -239,7 +253,7 @@ useEffect(()=>{
                       <td>:</td>
                       <td className="py-2 px-0">
                         {" "}
-                        <span className="">{ninSearch.parent_name}</span>{" "}
+                        <span className="">{ninSearch.first_name} {ninSearch.last_name}</span>{" "}
                       </td>
                     </tr>
                     <tr>
@@ -307,7 +321,7 @@ useEffect(()=>{
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Parent Name</th>
+                    <th>Parent Names</th>
                     <th>Phone Number</th>
                     <th>Address</th>
                   </tr>
@@ -318,7 +332,7 @@ useEffect(()=>{
                             <td>{key + 1}</td>
                             <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.parent_name}
+                          {item.first_name} {item.last_name}
                         </Link></td>
                             <td>{item.main_contact}</td>
                             <td>{item.address}</td>

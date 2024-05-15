@@ -1,60 +1,91 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AppContainer from "../../Components/Structure/AppContainer";
-import AddAdmin from "./AddAdmin";
-import AdminContext from "../../Context/AdminContext";
+import { Toaster } from "react-hot-toast";
+import ajaxSchool from "../../util/remote/ajaxSchool";
+import AuthContext from "../../Context/AuthContext";
 import useStateCallback from "../../util/customHooks/useStateCallback";
+import AddBoothAssistant from "./AddBoothAssistant";
 import TableHeader from "../../Components/Common/TableHeader";
+import Loader from "../../Components/Common/Loader";
 import ResetPassword from "./ResetPassword";
-import toast, {Toaster} from "react-hot-toast";
 
-function ListAdmins() {
-
-    const {adminList, getAdminList} = useContext(AdminContext);
+function ListBoothAssistants() {
+    const [boothAssistants, setBoothAssistants] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [modal, setModal] = useStateCallback(false);
+    const {user} = useContext(AuthContext);
 
-    const handleAdd=()=>{
-        setModal(false, ()=>setModal(<AddAdmin g={getAdminList}  isOpen={true}/>))
-    }
 
-    const handleUpdate=(e,item)=>{
+    const getBoothAssistants = async () => {
+        try {
+          setLoading(true)
+          const serverResponse = await ajaxSchool.fetchBoothAssistants(user.school);
+          setLoading(false)
+          console.log(serverResponse)
+          if (serverResponse.status === "OK") {
+            setBoothAssistants(serverResponse.details);
+          } else {
+            // Handle error condition
+            setBoothAssistants("404");
+          }
+        } catch (error) {
+          // Handle network or other errors
+          console.error("Error:", error);
+        }
+      };
+    
+      useEffect(() => {
+        getBoothAssistants();
+      }, [user.school]);
+    
+      const handleUpdate=(e,item)=>{
         setModal(false, ()=>setModal(<ResetPassword accountID={item.account_id} isOpen={true}/>))
       }
+    
+      const handleAdd=()=>{
+        setModal(false, ()=>setModal(<AddBoothAssistant g={getBoothAssistants}  isOpen={true}/>))
+    }
   return (
-    <AppContainer title="System Administrators">
-      <Toaster position="top-center" reverseOrder={false} />
-
-    {modal}
+    <AppContainer title="Booth Assistants">
+       <Toaster
+                position="top-center"
+                reverseOrder={false}
+          />
       <div className="row">
         <div className="col-lg-12 col-md-12 mt-3">
         <div className="card height-auto">
-   
+      {modal}
       <div className="card-body">
         <TableHeader
-            title="System Administrators List"
-            subtitle="List of all the different system administrators" 
-            viewButton={
-                <a href="#" onClick={handleAdd} className="btn btn-info" style={{float:"right"}}>Add Administrator</a>
-                   
-            }   
+                title="Booth Assistants List"
+                subtitle="List of all the different booth assistants"  
+                viewButton={
+                  <a href="#" onClick={handleAdd} className="btn btn-info" style={{float:"right"}}>Add Booth Assistant</a>
+                     
+              } 
               />
-        {/* Search form */}
-        {/* Table */}
         <div className="border-top mt-3"></div>
+
         <div className="table-responsive">
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Names</th>
+                <th>School Name</th>
+                <th>Username</th>
                 <th>Actions</th>
+                 
               </tr>
             </thead>
             <tbody>
-                    {Array.isArray(adminList) && adminList.map((item, key) => (
+            {Array.isArray(boothAssistants) && boothAssistants.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
-                          <td>{item.first_name} {item.last_name}</td>
+                          <td>{item.first_name} {item.last_name} </td>
+                          <td>{item.school.school_name}</td>
+                          <td>{item.username}</td>
                           <td>
                             <div className="dropdown">
                               <Link
@@ -77,13 +108,14 @@ function ListAdmins() {
                           </td>
                         </tr>
                       ))}
-                      {adminList === "404" && (<tr>
+                      {boothAssistants === "404" && (<tr>
                           <td colSpan="3" style={{textAlign: "center"}}>
-                            No system administrators registered yet.
+                            No booth assistants registered yet.
                           </td>
                         </tr>)}
-                  </tbody>
+            </tbody>
           </table>
+          {loading && <Loader/>}
         </div>
       </div>
     </div>
@@ -93,4 +125,4 @@ function ListAdmins() {
   );
 }
 
-export default ListAdmins;
+export default ListBoothAssistants;

@@ -7,13 +7,21 @@ import AuthContext from "../../Context/AuthContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Loader from "../../Components/Common/Loader";
 import SchoolContext from "../../Context/SchoolContext";
+import UpdateGroupName from "./UpdateGroupName";
+import useStateCallback from "../../util/customHooks/useStateCallback";
 
 function SchoolStudentGroups() {
   const { schoolGroups, getGroups } = useContext(SchoolContext);
   const {user} = useContext(AuthContext);
+  const [modal, setModal] = useStateCallback(false);
+
+  const updateName=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateGroupName groupID={item.group_id} group_name={item.group_name} g={getGroups} isOpen={true}/>))
+}
 
   return (
     <AppContainer title="Student Groups">
+      {modal}
       <div className="row">
         <div className="col-lg-4">
           <AddStudentSchoolGroup g={getGroups}/>
@@ -80,6 +88,27 @@ function SchoolStudentGroups() {
                               to={`/students/student_card/null/${item.group_id}/${user.school}`}>
                               students codeslips
                             </Link>
+                          </td>
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                               
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateName(e,item)}>
+                                <i className="far fa-edit mr-1"></i>
+                                 Change Group Name
+                              </Link>
+                              </div>
+                            </div>
                           </td>
                         </tr>
                       ))
