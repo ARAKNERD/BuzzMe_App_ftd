@@ -75,7 +75,7 @@ function ListSchoolUsers(props) {
             {Array.isArray(schoolUsers) && schoolUsers.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
-                          <td>{item.names} </td>
+                          <td>{item.first_name} {item.last_name}</td>
                           <td>{item.school.school_name}</td>
                           <td>{item.school.contact}</td>
                           <td>

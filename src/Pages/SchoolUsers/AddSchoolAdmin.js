@@ -9,7 +9,8 @@ import Select from "react-select";
 const AddSchoolAdmin=(props)=>{
 
     const [loading, setLoading] = useState(false)
-    const [names, setNames] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("")
     const {schoolList} = useContext(SchoolContext);
     const [school, setSchool] = useState("")
@@ -17,9 +18,10 @@ const AddSchoolAdmin=(props)=>{
     const handleAdd = async (e) => {
       e.preventDefault();
   
-      if (names.length > 0 || username.length >0) {
+      if (firstName.length > 0 || username.length >0) {
         const data = {
-          names: names,
+          first_name: firstName,
+          last_name: lastName,
           username: username,
           school: school
         };
@@ -39,7 +41,8 @@ const AddSchoolAdmin=(props)=>{
     };
 
     const resetForm = () => {
-      setNames("");
+      setFirstName("");
+      setLastName("");
       setUsername("");
     };
     
@@ -69,12 +72,22 @@ const AddSchoolAdmin=(props)=>{
         >
 
           <div className="mb-4 col-12 form-group">
-            <label htmlFor="">Names <span style={{color:"red"}}>*</span></label>
+            <label htmlFor="">First Name <span style={{color:"red"}}>*</span></label>
                     <input
                       type="text"
-                      value={names}
-                      placeholder="Enter name of administrator.."
-                      onChange={(e) => setNames(e.target.value)}
+                      value={firstName}
+                      placeholder="Enter first name of school administrator.."
+                      onChange={(e) => setFirstName(e.target.value)}
+                      className="form-control"
+                    />
+            </div>
+            <div className="mb-4 col-12 form-group">
+            <label htmlFor="">Last Name <span style={{color:"red"}}>*</span></label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      placeholder="Enter last name of school administrator.."
+                      onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
             </div>
