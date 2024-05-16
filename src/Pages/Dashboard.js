@@ -184,7 +184,7 @@ function Dashboard() {
                                         <img src={process.env.PUBLIC_URL + "/assets/img/figure/user55.png"} alt="School Admin"/>
                                         </div>
                                         <div class="media-body">
-                                            <h3 class="item-title">{user.school_user?.names}</h3>
+                                            <h3 class="item-title">{user.school_user?.first_name} {user.school_user?.last_name}</h3>
                                             <p>School Administrator</p>
                                         </div>
                                     </div>
@@ -337,8 +337,8 @@ function Dashboard() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           {user.school_user?"":<td>{item.school?.school_name}</td>}
-                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
-                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
+                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
 
                         </tr>
                         
@@ -399,7 +399,7 @@ function Dashboard() {
               {Array.isArray(studentsToday) && studentsToday.map((student, key) => (
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
-                          <td>{student.names}</td>
+                          <td>{student.first_name} {student.last_name}</td>
                           <td>{student.student_code}</td>
                           <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
                           <td>{student.group?.group_name}</td>
@@ -531,7 +531,7 @@ function Dashboard() {
             <tr key={key}>
               <td>{key + 1}</td>
               <td>{item.station_name}</td>
-              {user.school_user ? null : <td>{item.school?.school_name}</td>}
+              {user.school_user ? null : <td>{item.school?item.school.school_name:"Not installed"}</td>}
               <td>
                 {item.status === "1" ? (
                   <span className="badge badge-success">Active</span>

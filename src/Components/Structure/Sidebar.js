@@ -227,6 +227,12 @@ const Sidebar = (props) => {
                 </Link>
                 <ul className="nav sub-group-menu">
                 <RenderSecure code="ADMIN-VIEW">
+                <li className="nav-item">
+                    <Link to="/booth-assistants" className="nav-link">
+                      <i className="fas fa-angle-right" />
+                      View Booth Assistants
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link to="/school_admin/view" className="nav-link">
                       <i className="fas fa-angle-right" />
@@ -239,13 +245,7 @@ const Sidebar = (props) => {
                       View System Admins
                     </Link>
                   </li></RenderSecure>
-                  <RenderSecure code="SCHOOL-USER-VIEW">
-                  <li className="nav-item">
-                    <Link to="/booth-assistants" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      View Booth Assistants
-                    </Link>
-                  </li></RenderSecure>
+                  
                 </ul>
               </li>
            

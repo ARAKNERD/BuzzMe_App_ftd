@@ -150,10 +150,7 @@ export default {
     return response;
   },
 
-  async fetchBoothAssistants(school) {
-    let data = {
-      "school": school
-    };
+  async fetchBoothAssistants(data) {
     let response = await apiCall("booth_assistant/list", data);
     return response;
   },

@@ -116,7 +116,7 @@ const ParentProfile = props => {
                     {parentProfile && <div className="box-body" style={{position:"relative"}}>
                         <div className="user-pic text-center" >
                         <div class="main-profile-overview widget-user-image text-center">
-							<div class="main-img-user"><img alt="avatar" src={
+							<div class="main-img-user"><img alt="avatar" style={{height:"90px"}} src={
                       process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
                     }/></div>
 						</div>

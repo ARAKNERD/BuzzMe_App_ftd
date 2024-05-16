@@ -40,7 +40,7 @@ function ListStations() {
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} stationNumber={item.station_code} startTime={item.start_time} endTime={item.end_time} g={getStations} isOpen={true}/>))
+    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} school={item.school.school_name} g={getStations} isOpen={true}/>))
   }
   const updateHours=(e,item)=>{
     setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
@@ -92,7 +92,7 @@ function ListStations() {
                     <tr>
                       <th>No.</th>
                       <th>Station Name</th>
-                      <th>Station / IMEI Numbers</th>
+                      <th>Station Code</th>
                       {user.school_user?"":<th>School</th>}
                       <th>Active Hours</th>
                       <th>Status</th>
@@ -105,10 +105,12 @@ function ListStations() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
-                          {user.school_user?"":<td>{item.school?.school_name}</td>}
-                          <td>{item.start_time} - {item.end_time}</td>
-                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:
-                          item.status==="0"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
+                          <td>
+                            {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
+                          </td>
+                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
+                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
 
                           <td>
                             <div className="dropdown">
@@ -120,23 +122,22 @@ function ListStations() {
                                 <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
-                                <RenderSecure code="SCHOOL-USER-VIEW">
                                 <Link
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => updateHours(e,item)}>
-                                <FontAwesomeIcon icon={faClock} style={{ color: "grey", marginRight: "3px" }} />
+                                <FontAwesomeIcon icon={faClock} style={{ color: "green", marginRight: "3px" }} />
                                  Change Active Hours
-                              </Link></RenderSecure>
+                              </Link>
                               <RenderSecure code="ADMIN-VIEW">
                                 <Link
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => updateStation(e,item)}>
-                                <i className="far fa-edit mr-1"></i>
+                                <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
                                  Update Station Details
                               </Link></RenderSecure>
-                              {item.status==="1"?<Link
+                              {item.status==="300"?<Link
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => stationOff(e,item)}>

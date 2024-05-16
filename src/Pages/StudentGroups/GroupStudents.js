@@ -174,10 +174,10 @@ function GroupStudents()
                     <td>{key + first + 1}</td>
                     <td><Link
                     to={`/students/profile/${item.id}`}>
-                    {item.names}
+                    {item.first_name} {item.last_name}
                   </Link></td>
                     <td className="text-dark">{item.student_code}</td>
-                    <td className="text-dark">{item.reg_no}</td>
+                    <td className="text-dark">{item.reg_no?item.reg_no:"Not registered"}</td>
                  
                   </tr>
                   )))
@@ -187,13 +187,13 @@ function GroupStudents()
                 <td>{key + first + 1}</td>
                 <td><Link
                     to={`/students/profile/${student.id}`}>
-                    {student.names}
+                    {student.first_name} {student.last_name}
                   </Link></td>
                 <td className="text-dark">
                   {student.student_code}
                 </td>
                 <td className="text-dark">
-                  {student.reg_no}
+                  {student.reg_no?student.reg_no:"Not registered"}
                 </td>
               </tr>
                 ))

@@ -19,8 +19,11 @@ function ListBoothAssistants() {
 
     const getBoothAssistants = async () => {
         try {
+          const data = {
+            school: ""
+          };
           setLoading(true)
-          const serverResponse = await ajaxSchool.fetchBoothAssistants(user.school);
+          const serverResponse = await ajaxSchool.fetchBoothAssistants(data);
           setLoading(false)
           console.log(serverResponse)
           if (serverResponse.status === "OK") {
@@ -37,7 +40,7 @@ function ListBoothAssistants() {
     
       useEffect(() => {
         getBoothAssistants();
-      }, [user.school]);
+      }, []);
     
       const handleUpdate=(e,item)=>{
         setModal(false, ()=>setModal(<ResetPassword accountID={item.account_id} isOpen={true}/>))
