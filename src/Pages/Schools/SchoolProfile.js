@@ -424,9 +424,9 @@ const SchoolProfile = props => {
                         ( studentSearch.map((item, key) => (
                           <tr key={key}>
                           <td>{key + 1}</td>
-                          <td>{item.names}</td>
+                          <td>{item.first_name} {item.last_name}</td>
                           <td>{item.student_code}</td>
-                          <td>{item.reg_no}</td>
+                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
                         </tr>
                         )))
                     :  (
@@ -434,9 +434,9 @@ const SchoolProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.names}</td>
-                                                <td className="text-dark">{item.student_code}</td>
-                                                <td className="text-dark">{item.reg_no}</td>
+                                                <td>{item.first_name} {item.last_name}</td>
+                          <td>{item.student_code}</td>
+                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
                                             </tr>
                                         ))
                                     )}

@@ -88,9 +88,9 @@ setLoading(true)
                       <h2>{student.school.school_name}</h2>
                       <h6>
                         {" "}
-                        <u> student codeslip </u>
+                        {/* <u> student codeslip </u> */}
                       </h6>
-                      <p>Name: {student.names}</p>
+                      <p>Name: {student.first_name} {student.last_name}</p>
                       <p>
                         Student Code: <strong>{student.student_code}</strong>
                       </p>

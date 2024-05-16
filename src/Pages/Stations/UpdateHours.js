@@ -60,11 +60,11 @@ const UpdateHours=(props)=>{
             footer={RenderFooter}
         >
 
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">Start Time</label>
                 <input onChange={(e)=>setStartTime(e.target.value)} style={{border: "1px solid grey"}} value={startTime} type="time" className="form-control"/>
             </div>
-            <div className="mb-4">
+            <div className="mb-4 form-group border-1">
                 <label htmlFor="">End Time</label>
                 <input onChange={(e)=>setEndTime(e.target.value)} style={{border: "1px solid grey"}} value={endTime} type="time" className="form-control"/>
             </div>

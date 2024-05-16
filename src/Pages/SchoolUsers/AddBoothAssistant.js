@@ -3,7 +3,8 @@ import { toast } from 'react-hot-toast';
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import ajaxSchool from "../../util/remote/ajaxSchool";
-import AuthContext from "../../Context/AuthContext";
+import SchoolContext from "../../Context/SchoolContext";
+import Select from "react-select";
 
 const AddBoothAssistant=(props)=>{
 
@@ -11,7 +12,8 @@ const AddBoothAssistant=(props)=>{
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [contact, setContact] = useState("")
-    const {user} = useContext(AuthContext);
+    const {schoolList} = useContext(SchoolContext);
+    const [school, setSchool] = useState("")
 
 
     const handleAdd = async (e) => {
@@ -22,7 +24,7 @@ const AddBoothAssistant=(props)=>{
           first_name: firstName,
           last_name: lastName,
           contact: contact,
-          school: user.school
+          school: school
         };
         setLoading(true)
         const server_response = await ajaxSchool.createBoothAssistant(data);
@@ -98,6 +100,20 @@ const AddBoothAssistant=(props)=>{
                       placeholder="Enter contact.."
                       onChange={(e) => setContact(e.target.value)}
                       className=" colo-12 form-control"
+                    />
+            </div>
+            <div className="mb-4 col-12 form-group">
+            <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
+                    <Select
+                      onChange={(e) => setSchool(e.school_id)}
+                      getOptionLabel={(option) => option.school_name}
+                      getOptionValue={(option) => option.school_id}
+                      isSearchable
+                      options={Array.isArray(schoolList) ? schoolList : []}
+                      value={
+                        Array.isArray(schoolList) &&
+                        schoolList.find((value) => value.school_id === school)
+                      }
                     />
             </div>
        

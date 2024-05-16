@@ -1,28 +1,28 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxStation from "../../util/remote/ajaxStation";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
+import SchoolContext from "../../Context/SchoolContext";
+import Select from "react-select";
+
 
 const UpdateStation=(props)=>{
 
     const [loading, setLoading] = useState(false)
-    const [stationNumber, setStationNumber] = useState(props.stationNumber);
     const [stationName, setStationName] = useState(props.stationName);
-    const [startTime, setStartTime] = useState(props.startTime);
-    const [endTime, setEndTime] = useState(props.endTime);
+    const [school, setSchool] = useState(props.school);
+    const {schoolList} = useContext(SchoolContext);
 
     const data={
         station_id: props.stationID,
-        start_time: startTime,
-        end_time: endTime,
-        station_number: stationNumber,
+        school_id: school,
         station_name: stationName
     }
 
     const handleUpdate = async(e) =>{
         e.preventDefault()
-        if(stationName.length>0 || stationNumber.length>0){
+        if(stationName.length>0){
             setLoading(true)
             const server_response = await ajaxStation.updateStation(data);
             setLoading(false);
@@ -69,17 +69,20 @@ const UpdateStation=(props)=>{
                 <input onChange={(e)=>setStationName(e.target.value)} value={stationName} type="text" className="form-control"/>
             </div>
             <div className="mb-4 form-group border-1">
-                <label htmlFor="">Station / IMEI Number</label>
-                <input onChange={(e)=>setStationNumber(e.target.value)} value={stationNumber} type="text" className="form-control"/>
+                <label htmlFor="">School</label>
+                <Select
+                      onChange={(e) => setSchool(e.school_id)}
+                      getOptionLabel={(option) => option.school_name}
+                      getOptionValue={(option) => option.school_id}
+                      isSearchable
+                      options={Array.isArray(schoolList) ? schoolList : []}
+                      value={
+                        Array.isArray(schoolList) &&
+                        schoolList.find((value) => value.school_id === school)
+                      }
+                    />
             </div>
-            <div className="mb-4 form-group border-1">
-                <label htmlFor="">Start Time</label>
-                <input onChange={(e)=>setStartTime(e.target.value)} value={startTime} type="time" className="form-control"/>
-            </div>
-            <div className="mb-4 form-group border-1">
-                <label htmlFor="">End Time</label>
-                <input onChange={(e)=>setEndTime(e.target.value)} value={endTime} type="time" className="form-control"/>
-            </div>
+           
        
         </SystemModal>
     )

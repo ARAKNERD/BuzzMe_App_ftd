@@ -79,14 +79,14 @@ const ImportStudents = () => {
 
   const saveData = async () => {
     let confirm = window.confirm(
-      "Are you sure you want to the save the students List Above"
+      "Are you sure you want to the save the students list above?"
     );
     if (!confirm) {
       return;
     }
     setLoading(true);
     const server_response = await ajaxStudent.importStudents(schoolData);
-    setLoading(false);
+    console.log(server_response)
     if (server_response.status === "OK") {
       toast.success(server_response.message);
       setSaved(true);
@@ -128,7 +128,7 @@ const ImportStudents = () => {
       >
         <div {...getRootProps()} style={dropzoneStyles}>
           <input {...getInputProps()} />
-          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 3 </b>columns in this order; Student Names, Registration Number and Gender. </p>
+          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 4 </b>columns in this order; First Name, Last Name, Registration Number and Gender. </p>
           <p>Drag & drop an Excel file here, or click to select one</p>
          
 
