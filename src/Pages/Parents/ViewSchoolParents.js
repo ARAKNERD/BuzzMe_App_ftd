@@ -35,6 +35,7 @@ function ViewSchoolParents() {
   const getParentList = async () => {
     setLoading(true)
     const server_response = await ajaxParent.listSchoolParents(user.school,page);
+    console.log(server_response)
     setLoading(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);

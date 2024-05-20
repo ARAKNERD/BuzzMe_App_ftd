@@ -8,6 +8,8 @@ import TableHeader from "../../Components/Common/TableHeader";
 import Select from "react-select";
 import {Link} from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 
 function AddStudent(props) {
   const {user} = useContext(AuthContext);
@@ -32,6 +34,11 @@ function AddStudent(props) {
     } else {
       setStudentsToday("404");
     }
+  };
+
+  const AddGroupOption = {
+    group_id: 'add_new',
+    group_name: '- - - Register New Student Group - - -',
   };
 
   const handleAdd = async (e) => {
@@ -135,18 +142,28 @@ setLoading(true)
                     />
                   </div>
                   <div className="col-lg-6 col-md-6">
-                    <label htmlFor="">Student Group <span style={{color:"red"}}>*</span></label>
-                    <Select
-                      onChange={(e) => setGroup(e.group_id)}
-                      getOptionLabel={(option) => option.group_name}
-                      getOptionValue={(option) => option.group_id}
-                      isSearchable
-                      options={Array.isArray(groupList) ? groupList : []}
-                      value={
-                        Array.isArray(groupList) &&
-                        groupList.find((value) => value.group_id === group)
-                      }
-                    />
+                    <label htmlFor="">Student Group<span style={{color:"red"}}>*</span> 
+                <OverlayTrigger
+                  placement="top"
+                  overlay={<Tooltip id="refresh-tooltip">Refresh Student Groups</Tooltip>}>
+                     <FontAwesomeIcon icon={faRefresh} onClick={getGroups} style={{marginLeft:"4px"}} /></OverlayTrigger></label>
+                <Select
+                  onChange={(selectedOption) => {
+                    if (selectedOption.group_id === 'add_new') {
+                      window.open('/class-groups', '_blank');
+                    } else {
+                      setGroup(selectedOption.group_id);
+                    }
+                  }}
+                  getOptionLabel={(option) => option.group_name}
+                  getOptionValue={(option) => option.group_id}
+                  isSearchable
+                  options={Array.isArray(groupList) ? [...groupList, AddGroupOption] : []}
+                  value={
+                    Array.isArray(groupList) &&
+                    groupList.find((value) => value.group_id === group)
+                  }
+                />
                   </div>
 
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">

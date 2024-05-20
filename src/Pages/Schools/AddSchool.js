@@ -5,22 +5,12 @@ import SchoolContext from "../../Context/SchoolContext";
 import Select from "react-select";
 import {Toaster, toast} from "react-hot-toast";
 import DistrictContext from "../../Context/DistrictContext";
-import AuthContext from "../../Context/AuthContext";
 import { Link } from "react-router-dom";
 import TableHeader from "../../Components/Common/TableHeader";
 
 function AddSchool() {
-  // gets the current date
-  const getCurrentDate = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
 
   const {recentSchools, getSchoolList, getRecentSchools} = useContext(SchoolContext);
-  const {userId} = useContext(AuthContext);
   const {districtList} = useContext(DistrictContext);
   const [loading, setLoading] = useState(false)
   const [contact, setContact] = useState("");
@@ -28,7 +18,7 @@ function AddSchool() {
   const [district, setDistrict] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [dateRegistered, setDateRegistered] = useState(getCurrentDate());
+  
   // console.log(dateRegistered);
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -38,9 +28,7 @@ function AddSchool() {
       contact: contact,
       email: email,
       address: address,
-      district: district,
-      date_registered: dateRegistered,
-      registered_by: userId,
+      district: district
     };
 
     if (schoolName.length > 0 || contact.length > 0) {
@@ -137,16 +125,6 @@ function AddSchool() {
                     Array.isArray(districtList) &&
                     districtList.find((value) => value.district_id === district)
                   }
-                />
-              </div>
-              <div className="col-lg-6 col-md-6 col-12 form-group">
-                <label htmlFor="">Date Registered <span style={{color:"red"}}>*</span></label>
-                <input
-                  type="date"
-                  value={dateRegistered || getCurrentDate()}
-                  // value={dateRegistered}
-                  onChange={(e) => setDateRegistered(e.target.value)}
-                  className="form-control"
                 />
               </div>
             </div>

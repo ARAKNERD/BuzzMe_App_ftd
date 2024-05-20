@@ -7,6 +7,7 @@ import { RegionProvider } from './RegionContext';
 import { AdminProvider } from './AdminContext';
 import { RateProvider } from './RateContext';
 import { WalletAccountProvider } from './WalletAccountContext';
+import { RelationshipProvider } from './RelationshipContext';
 
 
 const SuperProvider=(props)=>{
@@ -20,8 +21,10 @@ const SuperProvider=(props)=>{
                             <AdminProvider>
                               <RateProvider>
                                 <WalletAccountProvider>
+                                  <RelationshipProvider>
                  
                                   {props.children}
+                                  </RelationshipProvider>
                                 </WalletAccountProvider>
                               </RateProvider>
                             </AdminProvider>

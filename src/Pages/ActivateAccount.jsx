@@ -26,9 +26,8 @@ function ActivateAccount() {
     e.preventDefault();
 
     if (pass === cpass) {
-      const hashedPassword = btoa(pass);
 
-      const data = {account_id: user_id, secure_string: hashedPassword};
+      const data = {account_id: user_id, secure_string: pass};
 
       const server_response = await ajaxUser.ActivateUserAccount(data);
       setLoading(true);
