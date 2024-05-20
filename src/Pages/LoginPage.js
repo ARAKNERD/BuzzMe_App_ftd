@@ -19,12 +19,9 @@ function Login() {
     e.preventDefault();
     setLoading(true);
 
-    var harshed_password = btoa(pass);
-    // var harshed_password = pass;
-
     const data = {
       username: username,
-      password: harshed_password,
+      password: pass,
     };
     const server_response = await ajaxUser.loginUser(data);
     setLoading(false);

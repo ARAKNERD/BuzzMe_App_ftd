@@ -106,6 +106,10 @@ export default {
     let response = await apiCall("guardian/registered", data);
     return response;
   },
+  async listRelations(data) {
+    let response = await apiCall("relationship/list", data);
+    return response;
+  },
 
   
   

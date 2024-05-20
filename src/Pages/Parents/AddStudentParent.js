@@ -6,6 +6,7 @@ import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import Select from "react-select";
 import AuthContext from "../../Context/AuthContext";
+import RelationshipContext from "../../Context/RelationshipContext";
 
 
 const AddStudentParent=(props)=>{
@@ -15,24 +16,13 @@ const AddStudentParent=(props)=>{
     const [student,setStudent] =useState("")
     const [relationship,setRelationship] =useState("")
     const [studentList,setStudentList] =useState(false)
+    const {relationList} = useContext(RelationshipContext);
 
     const data={
         student_id: student,
         parent_id: props.parentID,
-        relationship: relationship
+        relationship_id: relationship
     }
-
-    const relationshipList = [
-        {
-            relationship: 'Mother',
-        },
-        {
-            relationship: 'Father',
-        },
-        {
-            relationship: 'Guardian',
-        }
-    ];
 
     const getStudentList = async () => {
         var data = {
@@ -43,6 +33,7 @@ const AddStudentParent=(props)=>{
         };
         setLoading2(true)
         const server_response = await ajaxStudent.fetchStudentCardList(data);
+        console.log(server_response)
         setLoading2(false)
         if (server_response.status === "OK") {
           setStudentList(server_response.details);
@@ -110,16 +101,16 @@ const AddStudentParent=(props)=>{
                     />
             </div>
             <div className="mb-4">
-                <label htmlFor="">Relationship</label>
+                <label htmlFor="">Relationship to Student</label>
                 <Select
-                      onChange={(e) => setRelationship(e.relationship)}
+                      onChange={(e) => setRelationship(e.id)}
                       getOptionLabel={(option) => option.relationship}
-                      getOptionValue={(option) => option.relationship}
+                      getOptionValue={(option) => option.id}
                       isSearchable
-                      options={Array.isArray(relationshipList) ? relationshipList : []}
+                      options={Array.isArray(relationList) ? relationList : []}
                       value={
-                        Array.isArray(relationshipList) &&
-                        relationshipList.find((value) => value.relationship === relationship)
+                        Array.isArray(relationList) &&
+                        relationList.find((value) => value.id === relationship)
                       }
                     />
             </div>

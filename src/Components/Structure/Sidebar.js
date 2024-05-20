@@ -219,6 +219,7 @@ const Sidebar = (props) => {
                 </ul>
               </li>
               </RenderSecure>
+              <RenderSecure code="ADMIN-VIEW">
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
@@ -226,7 +227,7 @@ const Sidebar = (props) => {
                   <span><b>System Users</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
-                <RenderSecure code="ADMIN-VIEW">
+                
                 <li className="nav-item">
                     <Link to="/booth-assistants" className="nav-link">
                       <i className="fas fa-angle-right" />
@@ -244,11 +245,11 @@ const Sidebar = (props) => {
                       <i className="fas fa-angle-right" />
                       View System Admins
                     </Link>
-                  </li></RenderSecure>
+                  </li>
                   
                 </ul>
               </li>
-           
+              </RenderSecure>
           </ul>
         </div>
       </div>

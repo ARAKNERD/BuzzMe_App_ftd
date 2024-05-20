@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxParent from "../../util/remote/ajaxParent";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import Select from "react-select";
 import TableHeader from "../../Components/Common/TableHeader";
+import RelationshipContext from "../../Context/RelationshipContext";
 
 
 const AttachParent=(props)=>{
@@ -17,6 +18,7 @@ const AttachParent=(props)=>{
     const [relationship,setRelationship] =useState("")
     const [query, setQuery] = useState("");
     const [querySearch, setQuerySearch] = useState(null);
+    const {relationList} = useContext(RelationshipContext);
 
     const [active1,setActive1] = useState(false)
     const handleActive1 = ()=> setActive1(true)
@@ -26,20 +28,8 @@ const AttachParent=(props)=>{
     const data={
         student_id: props.studentID,
         parent_id: parent,
-        relationship: relationship
+        relationship_id: relationship
     }
-
-    const relationshipList = [
-        {
-            relationship: 'Mother',
-        },
-        {
-            relationship: 'Father',
-        },
-        {
-            relationship: 'Guardian',
-        }
-    ];
 
     const setDetails = (e,item) =>{
         e.preventDefault()
@@ -119,7 +109,7 @@ const AttachParent=(props)=>{
                 <div className="box-title fs-20 font-w600">Parent / Guardian Information</div>
               </div>
               <div className="box-body pt-20 user-profile">
-                <div className="table-responsive">
+                <div className="table">
                   <table className="table mb-5 mw-100 color-span">
                       <tbody>
                         <tr>
@@ -143,18 +133,19 @@ const AttachParent=(props)=>{
                             {" "}
                             <span className="">
                             <Select
-                      onChange={(e) => setRelationship(e.relationship)}
+                      onChange={(e) => setRelationship(e.id)}
                       getOptionLabel={(option) => option.relationship}
-                      getOptionValue={(option) => option.relationship}
+                      getOptionValue={(option) => option.id}
                       isSearchable
-                      options={Array.isArray(relationshipList) ? relationshipList : []}
+                      options={Array.isArray(relationList) ? relationList : []}
                       value={
-                        Array.isArray(relationshipList) &&
-                        relationshipList.find((value) => value.relationship === relationship)
+                        Array.isArray(relationList) &&
+                        relationList.find((value) => value.id === relationship)
                       }
                     /></span>{" "}
                           </td>
                         </tr>
+                       
                       </tbody>
                   </table>
                 </div>
