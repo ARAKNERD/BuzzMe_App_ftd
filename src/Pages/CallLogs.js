@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import toast, {Toaster} from "react-hot-toast";
 import AppContainer from "../Components/Structure/AppContainer";
@@ -6,8 +6,25 @@ import TableHeader from "../Components/Common/TableHeader";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import ajaxCallStation from "../util/remote/ajaxCallStation";
 
 function CallLogs() {
+
+  const [logsList, setLogsList] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+
+
+  const getLogsList = async () => {
+    setLoading2(true);
+    const server_response = await ajaxCallStation.listCallLogs();
+    setLoading2(false);
+    console.log(server_response)
+    if (server_response.status === "OK") {
+      setLogsList(server_response.details);
+    }else {
+      setLogsList("404");
+    }
+  };
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -33,6 +50,10 @@ function CallLogs() {
     // Save the PDF
     pdf.save("call_log_data.pdf");
   };
+
+  useEffect(() => {
+    getLogsList();
+  }, []);
 
   return (
     <AppContainer title="Call Logs">
@@ -114,6 +135,35 @@ function CallLogs() {
               </tr>
             </thead>
             <tbody>
+            {logsList && Array.isArray(logsList) ? (
+                     
+                     logsList.map((item, key) => (
+                       <tr key={key}>
+
+                         <td>{item.created_at.long_date}</td>
+                         <td className="text-dark">{item.student?.first_name} {item.student?.last_name}</td>
+                         <td className="text-dark">{item.contact?.first_name} {item.contact?.last_name}</td>
+                         <td>{item.duration}</td>
+                         
+                         
+                       </tr>
+                     ))
+                   
+                 ) : Array.isArray(logsList) && logsList.map((item, key) => (
+                     <tr key={key}>
+                      <td>{item.created_at.long_date}</td>
+                         <td className="text-dark">{item.student?.first_name} {item.student?.last_name}</td>
+                         <td className="text-dark">{item.contact?.first_name} {item.contact?.last_name}</td>
+                         <td>{item.duration}</td>
+                      
+                     </tr>
+                   ))
+                 }
+                 {logsList === "404" && (<tr>
+                       <td colSpan="6" style={{textAlign: "center"}}>
+                         No call logs found.
+                       </td>
+                     </tr>)}
                     
             </tbody>
           </table>

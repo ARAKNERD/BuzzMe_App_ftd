@@ -23,4 +23,8 @@ export default {
     let response = await apiCall("account/update", data);
     return response;
   },
+  async listCallLogs(data) {
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
 };

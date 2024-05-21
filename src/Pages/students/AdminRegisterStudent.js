@@ -235,10 +235,10 @@ function AdminRegisterStudent(props) {
                         <tr key={key}>
                           <th scope='row'>{key+1}</th>
                           <td>{student.first_name} {student.last_name}</td>
-                          <td>{student.school?.school_name}</td>
+                          <td>{student.school}</td>
                           <td>{student.student_code}</td>
                           <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
-                          <td>{student.group?.group_name}</td>
+                          <td>{student.group}</td>
                         </tr>
                       ))}
                       {studentsToday === "404" && (<tr>

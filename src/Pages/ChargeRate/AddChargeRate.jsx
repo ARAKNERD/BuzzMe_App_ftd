@@ -104,7 +104,8 @@ function AddChargeRate(props) {
                       onChange={(e) => setType(e.target.value)}>
                       <option value={true}>Select...</option>
                       <option value="SMS">Message / SMS</option>
-                      <option value="CALL">Phone Call</option>
+                      <option value="TWILIO">TWILIO Call</option>
+                      <option value="ZEGO">ZEGO Call</option>
                     </select>
             </div>
             {category === "Default"? "" :<div className="col-lg-12 col-12 form-group">

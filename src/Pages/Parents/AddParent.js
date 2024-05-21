@@ -12,6 +12,7 @@ function AddParent() {
   const [searchedContact, setSearchedContact] = useState("");
   const [ninSearch, setNinSearch] = useState(null);
   const [address, setAddress] = useState("");
+  const [gender, setGender] = useState("");
   const [alternativeContact, setAlternativeContact] = useState("");
   const [mainContact, setMainContact] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -35,7 +36,7 @@ function AddParent() {
         last_name: lastName,
         alternative_contact: alternativeContact,
         address: address,
-        registered_by: userId
+        gender: gender
       };
       setLoading2(true)
       const server_response = await ajaxParent.createParent(data);
@@ -207,6 +208,19 @@ useEffect(()=>{
                       onChange={(e) => setAlternativeContact(e.target.value)}
                       className="form-control"
                     />
+                  </div>
+                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
+                    <label>Gender <span style={{color:"red"}}>*</span></label>
+
+                    <select
+                      className="col-12 form-control"
+                      value={gender}
+                      style={{border: "1px solid grey"}}
+                      onChange={(e) => setGender(e.target.value)}>
+                      <option value={true}>Select..</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
                     <label>Address <span style={{color:"red"}}>*</span> </label>

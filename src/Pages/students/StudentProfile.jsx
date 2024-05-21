@@ -191,7 +191,7 @@ const StudentProfile = props => {
 						</div>
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
                                 <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{studentProfile.first_name} {studentProfile.last_name}</h5>
-                                <h6 className="pro-user-desc text-muted fs-14">{studentProfile.group?.group_name}</h6>
+                                <h6 className="pro-user-desc text-muted fs-14">{studentProfile.group}</h6>
                             </div>
                         </div>
                     </div>}
@@ -308,12 +308,12 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Group Name</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.group?.group_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.group}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">School Name</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.school?.school_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.school}</span> </td>
                                         </tr>
                                        
                                     </tbody>}
@@ -374,9 +374,9 @@ const StudentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.first_name} {item.last_name}</td>
+                                                <td>{item.full_name}</td>
                                                 <td>{item.main_contact}</td>
-                                                <td>{item.relationship?.relationship}</td>
+                                                <td>{item.relationship}</td>
                                             </tr>
                                         ))
                                    }
@@ -408,9 +408,9 @@ const StudentProfile = props => {
                                             
                                              <tr key={key}>
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.first_name} {item.last_name}</td>
+                                                <td>{item.full_name}</td>
                                                 <td>{item.main_contact}</td>
-                                                <td>{item.relationship?.relationship}</td>
+                                                <td>{item.relationship}</td>
                                             </tr>
                                         ))}
                                        {studentContacts === "404" && (<tr>

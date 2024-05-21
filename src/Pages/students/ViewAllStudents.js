@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 function ViewAllStudents() {
   const [studentList, setStudentList] = useState(false);
@@ -37,6 +38,7 @@ function ViewAllStudents() {
     const server_response = await ajaxStudent.setDefaultPin(item.account_id);
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
+      getStudentList();
     }
   };
 
@@ -189,9 +191,10 @@ function ViewAllStudents() {
                     <tr>
                       <th>ID</th>
                       <th>Name</th>
+                      <th>Gender</th>
                       <th>School</th>
                       <th>Student Code</th>
-                      
+                      <th>Account Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -206,10 +209,15 @@ function ViewAllStudents() {
                                 {item.first_name} {item.last_name}
                               </Link>
                             </td>
-                            <td className="text-dark">{item.school?.school_name}</td>
+                            <td className="text-dark">{item.gender}</td>
+                            <td className="text-dark">{item.school}</td>
                             <td className="text-dark">{item.student_code}</td>
                             
-                            
+                            <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                          <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
+                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
                             <td>
                             <div className="dropdown">
                               <Link
@@ -250,9 +258,14 @@ function ViewAllStudents() {
                               {item.first_name} {item.last_name}
                             </Link>
                           </td>
-                          <td className="text-dark">{item.school?.school_name}</td>
+                          <td className="text-dark">{item.gender}</td>
+                          <td className="text-dark">{item.school}</td>
                           <td className="text-dark">{item.student_code}</td>
-                        
+                        <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                        <OverlayTrigger
+                        placement="top"
+                        overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
+                           <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
                           <td>
                             <div className="dropdown">
                               <Link

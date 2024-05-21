@@ -208,6 +208,7 @@ function ViewStudents() {
                     <tr>
                       <th>ID</th>
                       <th>Names</th>
+                      <th>Gender</th>
                       <th>Student Code</th>
                       <th>Student Group</th>
                       <th>Account Status</th>
@@ -226,6 +227,7 @@ function ViewStudents() {
                                 {item.first_name} {item.last_name}
                               </Link>
                             </td>
+                            <td className="text-dark">{item.gender}</td>
                             <td className="text-dark">{item.student_code}</td>
                             <td className="text-dark">{item.group?.group_name}</td>
                             <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
@@ -272,6 +274,7 @@ function ViewStudents() {
                             {item.first_name} {item.last_name}
                             </Link>
                           </td>
+                          <td className="text-dark">{item.gender}</td>
                           <td className="text-dark">{item.student_code}</td>
                           <td className="text-dark">{item.group?.group_name}</td>
                          
