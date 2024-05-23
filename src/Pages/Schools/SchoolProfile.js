@@ -51,7 +51,7 @@ const SchoolProfile = props => {
       };
 
       const data2 = {
-        query: query,
+        search: query,
         school_id: id,
       };
 
@@ -64,6 +64,7 @@ const SchoolProfile = props => {
       getSchoolStudents()
       getSchoolStations();
       getSchoolProfile();
+      searchStudents()
       
     }, [])
 
@@ -142,12 +143,10 @@ const SchoolProfile = props => {
       if (e) {
           e.preventDefault();
       }
-      if (!query) {
-          toast.error("Please enter name of student.");
-      } else {
           setLoading(true);
           const server_response = await ajaxStudent.searchStudent(data2);
           setLoading(false);
+          console.log(server_response)
           if (server_response.status === "OK") {
               if (server_response.details.length === 0) {
                   setStudentSearch([]);
@@ -157,7 +156,6 @@ const SchoolProfile = props => {
           } else {
               setStudentSearch([]);
           }
-      }
   };
 
     const getLocation = () => {
@@ -178,12 +176,6 @@ const SchoolProfile = props => {
    setStudentSearch(false)
    setQuery('')
   }
-  
-  useEffect(() => {
-      if (query) {
-          searchStudents();
-      }
-  }, [query]);
 
   const setNextPageNumber = () =>{
     if(meta.length===page){
@@ -385,7 +377,12 @@ const SchoolProfile = props => {
               <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                 <input
                   type="text"
-                  value={query} onChange={(e) => setQuery(e.target.value)}
+                  value={query} onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (e.target.value === '') {
+                      setStudents(e);
+                    }
+                  }}
                   placeholder="Search for student name..."
                   style={{border: "1px solid grey"}}
 
@@ -443,6 +440,11 @@ const SchoolProfile = props => {
                         {schoolStudents === "404" && (<tr>
                           <td colSpan="4" style={{textAlign: "center"}}>
                             No students registered in this school yet.
+                          </td>
+                        </tr>)}
+                        {studentSearch.length === 0 && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No search result(s) found.
                           </td>
                         </tr>)}
                                 </tbody>

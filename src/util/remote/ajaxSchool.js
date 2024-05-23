@@ -23,7 +23,7 @@ export default {
   },
 
   async searchSchoolList(data) {
-    let response = await apiCall("school/search", data);
+    let response = await apiCall("school/page", data);
     return response;
   },
 

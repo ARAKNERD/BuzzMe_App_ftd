@@ -7,7 +7,7 @@ export default {
     let data = {
       "page": page
     };
-    let response = await apiCall("guardian/list", data);
+    let response = await apiCall("link/parents/school", data);
     return response;
   },
   async fetchParentInfo(parent_id) 
@@ -75,7 +75,7 @@ export default {
     return response;
   },
   async searchGuardian(data) {
-    let response = await apiCall("guardian/search", data);
+    let response = await apiCall("link/parents/school", data);
     return response;
   },
   async listParents(data) {

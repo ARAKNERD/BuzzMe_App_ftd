@@ -7,20 +7,61 @@ import "jspdf-autotable";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import ajaxBank from "../../util/remote/ajaxBank";
+import Loader from "../../Components/Common/Loader";
 
 
 function AllTransactions() {
   const [transactionList, setTransactionList] = useState(false);
+  const [transactionSearch, setTransactionSearch] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [loading2, setLoading2] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const getTransactions = async () => {
+    setLoading(true);
     const server_response = await ajaxBank.fetchBankTransactions();
-    console.log(server_response)
+    setLoading(false);
     if (server_response.status === "OK") {
       setTransactionList(server_response.details);
 
     }else {
       setTransactionList("404");
     }
+  };
+
+  const searchTransactions = async (e) => {
+    if (e) {
+        e.preventDefault();
+    }
+      var data = {
+        search: searchTerm,
+        from: startDate,
+        to: endDate
+      };
+        setLoading2(true);
+        const server_response = await ajaxBank.searchBankTransactions(data);
+        setLoading2(false);
+        if (server_response.status === "OK") {
+            if (server_response.details.length === 0) {
+                setTransactionSearch([]);
+            } else {
+                setTransactionSearch(server_response.details);
+            }
+        } else {
+            setTransactionSearch([]);
+        }
+    
+};
+
+  const setTransactions = (e) => {
+    e.preventDefault();
+    setTransactionSearch(false);
+    setSearchTerm("");
+    setStartDate("");
+    setEndDate("");
   };
 
   const exportToPDF = () => {
@@ -50,6 +91,7 @@ function AllTransactions() {
 
   useEffect(() => {
     getTransactions();
+    searchTransactions();
   }, []);
 
   return (
@@ -81,19 +123,25 @@ function AllTransactions() {
                   <div className="col-lg-4">
                     <input
                       type="text"
-                      placeholder="Enter phone number..."
+                      placeholder="Enter student name or student code..."
                       style={{border: "1px solid grey"}}
+                      value={searchTerm} onChange={(e) => {
+                        setSearchTerm(e.target.value);
+                        if (e.target.value === '') {
+                          setTransactions(e);
+                        }
+                      }}
                       className="form-control"
                     /></div>
-                  <div className="col-lg-4">
+                  {/* <div className="col-lg-4">
                   <OverlayTrigger
                   placement="top"
                   overlay={<Tooltip id="refresh-tooltip">Start date for search</Tooltip>}><input
                       type="date"
                       style={{border: "1px solid grey"}}
                       className="form-control"
-                    /></OverlayTrigger></div>
-                    <div className="col-lg-4">
+                    /></OverlayTrigger></div> */}
+                    {/* <div className="col-lg-4">
                     <OverlayTrigger
                   placement="top"
                   overlay={<Tooltip id="refresh-tooltip">End date for search</Tooltip>}><input
@@ -101,19 +149,31 @@ function AllTransactions() {
                       placeholder="Select start date..."
                       style={{border: "1px solid grey"}}
                       className="form-control"
-                    /></OverlayTrigger></div>
+                    /></OverlayTrigger></div> */}
+                    <div className="col-lg-8">
+                      <div class="flex-fill position-relative">
+                        <div class="input-group input-daterange" id="datepicker">
+                          <input type="date" style={{border: "1px solid grey"}} class="form-control" value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)} placeholder="start date"/>
+                          <span class="input-group-text" style={{marginLeft: "-1px", borderTopLeftRadius:"0", borderTopRightRadius:"0", borderBottomLeftRadius:"0", borderBottomRightRadius:"0"}}>to</span>
+                          <input type="date" style={{border: "1px solid grey"}} value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)} class="form-control" placeholder="end date"/>
+                        </div>
+                      </div>
+                    </div>
                     </div>
                   </div>
 
                   <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <button
                       type="submit"
+                      onClick={(e) => searchTransactions(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue ml-3">
                       SEARCH
                     </button>
                     <button
                       type="submit"
-                      
+                      onClick={(e) => setTransactions(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-3">
                       RESET
                     </button>
@@ -125,32 +185,56 @@ function AllTransactions() {
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
-                <th>Date & Time</th>
-                <th>Status</th>
-                <th>Amount</th>
-                <th>Student</th>
+                <th style={{width:"10px"}}>Transaction Time</th>
+                <th style={{textAlign:"center"}}>Transaction Type</th>
+                
+                <th style={{textAlign:"center"}}>Amount</th>
+                <th style={{textAlign:"right"}}>Student Details</th>
                 
               </tr>
             </thead>
             <tbody>
-            {Array.isArray(transactionList) && transactionList.map((item, key) => (
-                        <tr>
-                          <td>{item.created_at?.long_date}</td>
-                          <td>{item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
-                          item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-
+            {transactionSearch && Array.isArray(transactionSearch) ? (
+                      
+                      transactionSearch.map((item, key) => (
+                        <tr key={key}>
+                          <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
+                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account?.account_code}</span></td>
                           
-                          <td>{item.cash_in}</td>
-                          <td>{item.student.names}</td>
+                          <td style={{textAlign:"center"}}><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account?.account_code ==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                          {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
+                          item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
+                          <td style={{textAlign:"right"}}>{item.full_name}<br/><small>{item.school_name}</small></td>
+                        </tr>
+                      ))
+                   
+                  ) :Array.isArray(transactionList) && transactionList.map((item, key) => (
+                        <tr key={key}>
+                          <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
+                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account?.account_code}</span></td>
+                          
+                          <td style={{textAlign:"center"}}><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account?.account_code ==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                          {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
+                          item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
+                          <td style={{textAlign:"right"}}>{item.full_name}<br/><small>{item.school_name}</small></td>
                         </tr>
                       ))}
                       {transactionList === "404" && (<tr>
-                          <td colSpan="3" style={{textAlign: "center"}}>
+                          <td colSpan="4" style={{textAlign: "center"}}>
                             No transactions made yet.
                           </td>
                         </tr>)}
+                        {transactionSearch.length === 0 && (
+  <tr>
+    <td colSpan="4" style={{ textAlign: "center" }}>
+      No transactions made yet.
+    </td>
+  </tr>
+)}
             </tbody>
           </table>
+          {loading && <Loader/>}
+          {loading2 && <Loader/>}
         </div>
       </div>
     </div>

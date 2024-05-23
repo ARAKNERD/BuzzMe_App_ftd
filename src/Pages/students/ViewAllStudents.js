@@ -31,6 +31,9 @@ function ViewAllStudents() {
       setStudentList(server_response.details.list);
       setFirst(server_response.details.meta.offset_count);
     }
+    else {
+      setStudentList("404");
+    }
   };
 
   const getDefaultPin = async (e,item) => {
@@ -72,15 +75,13 @@ function ViewAllStudents() {
   }, [page]);
 
   const data2 = {
-    query: query
+    search: query
   };
   const searchStudents = async (e) => {
     if (e) {
       e.preventDefault();
     }
-    if (!query) {
-      toast.error("Please enter name of student.");
-    } else {
+    
       setLoading(true);
       const server_response = await ajaxStudent.searchStudent(data2);
       setLoading(false);
@@ -93,7 +94,7 @@ function ViewAllStudents() {
       } else {
         setStudentSearch([]);
       }
-    }
+    
   };
 
   const setStudents = (e) => {
@@ -103,10 +104,8 @@ function ViewAllStudents() {
   };
 
   useEffect(() => {
-    if (query) {
       searchStudents();
-    }
-  }, [query]);
+  }, []);
 
   const setNextPageNumber = () => {
     if (meta.length === page) {
@@ -162,8 +161,12 @@ function ViewAllStudents() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
+                      value={query} onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (e.target.value === '') {
+                          setStudents(e);
+                        }
+                      }}
                       placeholder="Search for student name..."
                       className="form-control"
                     />
@@ -200,7 +203,6 @@ function ViewAllStudents() {
                   </thead>
                   <tbody>
                     {studentSearch && Array.isArray(studentSearch) ? (
-                      studentSearch.length > 0 ? (
                         studentSearch.map((item, key) => (
                           <tr key={key}>
                             <td style={{width:"5px"}}>{key + first + 1}</td>
@@ -242,13 +244,6 @@ function ViewAllStudents() {
                           </td>
                           </tr>
                         ))
-                      ) : (
-                        <tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No students match the search query.
-                          </td>
-                        </tr>
-                      )
                     ) : Array.isArray(studentList) &&
                       studentList.map((item, key) => (
                         <tr key={key}>
@@ -290,6 +285,16 @@ function ViewAllStudents() {
                         </tr>
                       ))
                     }
+                    {studentList === "404" && (<tr>
+                          <td colSpan="6" style={{textAlign: "center"}}>
+                            No students registered in this school yet.
+                          </td>
+                        </tr>)}
+                        {studentSearch.length === 0 && (<tr>
+                          <td colSpan="6" style={{textAlign: "center"}}>
+                            No search result(s) found.
+                          </td>
+                        </tr>)}
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

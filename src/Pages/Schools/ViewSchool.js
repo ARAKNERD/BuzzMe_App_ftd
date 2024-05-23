@@ -87,11 +87,9 @@ function ViewSchool() {
     if (e) {
         e.preventDefault();
     }
-    if (!query) {
-        toast.error("Please enter name of school.");
-    } else {
-      var data = {
-        query: query
+    var data = {
+        search: query,
+        page: page
       };
         setLoading(true);
         const server_response = await ajaxSchool.searchSchoolList(data);
@@ -100,19 +98,24 @@ function ViewSchool() {
             if (server_response.details.length === 0) {
                 setSchoolSearch([]);
             } else {
-                setSchoolSearch(server_response.details);
+              setMeta(server_response.details.meta.list_of_pages);
+              setSchoolSearch(server_response.details.list);
             }
         } else {
             setSchoolSearch([]);
         }
-    }
+    
+};
+
+const setSchools = (e) => {
+  e.preventDefault();
+  setSchoolSearch(false);
+  setQuery("");
 };
 
 useEffect(() => {
-    if (query) {
         searchSchools();
-    }
-}, [query]);
+}, []);
 
 useEffect(() => {
   getSchoolList();
@@ -140,24 +143,35 @@ useEffect(() => {
           </div>
           <form className="mg-b-20">
             <div className="row gutters-8">
-              <div className="col-11-xxxl col-xl-9 col-lg-9 col-9 form-group">
+              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                 <input
                   type="text"
                   style={{border: "1px solid grey"}}
 
-                  value={query} onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search for school..."
+                  value={query} onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (e.target.value === '') {
+                      setSchools(e);
+                    }
+                  }}
+                  placeholder="Search for school name..."
                   className="form-control"
                 />
               </div>
-              <div className="col-1-xxxl col-xl-3 col-lg-3 col-3 form-group">
-                <button
-                  type="submit"
-                  onClick={(e) => searchSchools(e)}
-                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  SEARCH
-                </button>
-              </div>
+              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <button
+                      type="submit"
+                      onClick={(e) => searchSchools(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                      SEARCH
+                    </button>
+                    <button
+                      type="submit"
+                      onClick={(e) => setSchools(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-2">
+                      RESET
+                    </button>
+                  </div>
             </div>
           </form>
           <div className="table-responsive">
@@ -201,6 +215,11 @@ useEffect(() => {
                 {schoolList === "404" && (<tr>
                           <td colSpan="5" style={{textAlign: "center"}}>
                             No schools registered yet.
+                          </td>
+                        </tr>)}
+                        {schoolSearch.length === 0 && (<tr>
+                          <td colSpan="5" style={{textAlign: "center"}}>
+                            No search result(s) found.
                           </td>
                         </tr>)}
               </tbody>

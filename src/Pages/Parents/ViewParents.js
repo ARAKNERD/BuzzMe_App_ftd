@@ -22,7 +22,8 @@ function ViewParents() {
 
 
   const data2 = {
-    query: query
+    search: query,
+    page: page
   };
 
   const getParentList = async () => {
@@ -75,9 +76,6 @@ function ViewParents() {
     if (e) {
       e.preventDefault();
     }
-    if (!query) {
-      toast.error("Please enter name of parent or guardian.");
-    } else {
       setLoading2(true);
       const server_response = await ajaxParent.searchGuardian(data2);
       setLoading2(false);
@@ -85,12 +83,13 @@ function ViewParents() {
         if (server_response.details.length === 0) {
           setParentSearch([]);
         } else {
-          setParentSearch(server_response.details);
+          setMeta(server_response.details.meta.list_of_pages);
+          setParentSearch(server_response.details.list);
+          setFirst(server_response.details.meta.offset_count);
         }
       } else {
         setParentSearch([]);
       }
-    }
   };
 
   const setParents = (e) => {
@@ -100,10 +99,8 @@ function ViewParents() {
   };
 
   useEffect(() => {
-    if (query) {
       searchParents();
-    }
-  }, [query]);
+  }, []);
 
   return(
   <AppContainer title="Parents">
@@ -131,8 +128,12 @@ function ViewParents() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
+                      value={query} onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (e.target.value === '') {
+                          setParents(e);
+                        }
+                      }}
                       placeholder="Search for parent or guardian name..."
                       className="form-control"
                     />
@@ -173,7 +174,7 @@ function ViewParents() {
                           <th scope='row'>{key + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.first_name} {item.last_name}
+                          {item.full_name}
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
@@ -185,15 +186,20 @@ function ViewParents() {
                           <th scope='row'>{key + first + 1}</th>
                           <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.first_name} {item.last_name}
+                          {item.full_name}
                         </Link></td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
                         </tr>
                       ))}
                       {parentList === "404" && (<tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
+                          <td colSpan="4" style={{textAlign: "center"}}>
                             No parents or guardians registered yet.
+                          </td>
+                        </tr>)}
+                        {parentSearch.length === 0 && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No search result(s) found.
                           </td>
                         </tr>)}
                   </tbody>

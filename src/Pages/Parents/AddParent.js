@@ -346,7 +346,7 @@ useEffect(()=>{
                             <td>{key + 1}</td>
                             <td><Link
                           to={`/parents/profile/${item.parent_id}`}>
-                          {item.first_name} {item.last_name}
+                          {item.full_name}
                         </Link></td>
                             <td>{item.main_contact}</td>
                             <td>{item.address}</td>
