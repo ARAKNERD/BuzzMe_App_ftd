@@ -191,7 +191,7 @@ const AttachParent=(props)=>{
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.first_name} {item.last_name}</td>
+                                                <td>{item.full_name}</td>
                                                 <td>{item.main_contact}</td>
                                                 <td>{item.nin}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 

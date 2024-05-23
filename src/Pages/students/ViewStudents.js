@@ -55,16 +55,13 @@ function ViewStudents() {
   }, [user.school, page]);
 
   const data2 = {
-    query: query,
+    search: query,
     school_id: user.school,
   };
   const searchStudents = async (e) => {
     if (e) {
       e.preventDefault();
     }
-    if (!query) {
-      toast.error("Please enter name of student.");
-    } else {
       setLoading(true);
       const server_response = await ajaxStudent.searchStudent(data2);
       setLoading(false);
@@ -77,7 +74,6 @@ function ViewStudents() {
       } else {
         setStudentSearch([]);
       }
-    }
   };
 
   const exportToPDF = () => {
@@ -111,10 +107,8 @@ function ViewStudents() {
   };
 
   useEffect(() => {
-    if (query) {
       searchStudents();
-    }
-  }, [query]);
+  }, []);
 
   // ----------------------handles the view -----students printable codeslip -modal
   // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -178,9 +172,13 @@ function ViewStudents() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={query}
+                      value={query} onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (e.target.value === '') {
+                          setStudents(e);
+                        }
+                      }}
                       style={{border: "1px solid grey"}}
-                      onChange={(e) => setQuery(e.target.value)}
                       placeholder="Search for student name..."
                       className="form-control"
                     />
@@ -229,7 +227,7 @@ function ViewStudents() {
                             </td>
                             <td className="text-dark">{item.gender}</td>
                             <td className="text-dark">{item.student_code}</td>
-                            <td className="text-dark">{item.group?.group_name}</td>
+                            <td className="text-dark">{item.group}</td>
                             <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
                           <OverlayTrigger
                           placement="top"
@@ -276,7 +274,7 @@ function ViewStudents() {
                           </td>
                           <td className="text-dark">{item.gender}</td>
                           <td className="text-dark">{item.student_code}</td>
-                          <td className="text-dark">{item.group?.group_name}</td>
+                          <td className="text-dark">{item.group}</td>
                          
                           <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
                           <OverlayTrigger
@@ -315,6 +313,11 @@ function ViewStudents() {
                     {studentList === "404" && (<tr>
                           <td colSpan="6" style={{textAlign: "center"}}>
                             No students registered in this school yet.
+                          </td>
+                        </tr>)}
+                        {studentSearch.length === 0 && (<tr>
+                          <td colSpan="6" style={{textAlign: "center"}}>
+                            No search result(s) found.
                           </td>
                         </tr>)}
                   </tbody>

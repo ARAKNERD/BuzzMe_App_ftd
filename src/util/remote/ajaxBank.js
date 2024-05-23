@@ -8,6 +8,10 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
+  async searchBankTransactions(data) {
+    let response = await apiCall("bank/list", data);
+    return response;
+  },
 
 
 

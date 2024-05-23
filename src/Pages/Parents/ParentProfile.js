@@ -37,8 +37,6 @@ const ParentProfile = props => {
         handleActive()
         setFirstName(parentProfile.first_name)
         setLastName(parentProfile.last_name)
-        setMainContact(parentProfile.main_contact)
-        setAlternativeContact(parentProfile.alternative_contact)
         setAddress(parentProfile.address)
         setNIN(parentProfile.nin)
         setParentID(parentProfile.parent_id)
@@ -50,8 +48,6 @@ const ParentProfile = props => {
 
             first_name: firstName,
             last_name: lastName,
-            alternative_contact: alternativeContact,
-            main_contact: mainContact,
             address: address,
             nin: NIN,
             parent_id: id
@@ -163,20 +159,6 @@ const ParentProfile = props => {
                                 <div className="form-group">
 						            <div className="row row-sm">
                                     <div className="col-sm-6">
-                                            <label htmlFor="">Main Contact:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={mainContact} onChange={(e)=>setMainContact(e.target.value)} className="form-control"/>
-							            </div>
-								        <div className="col-sm-6">
-                                            <label htmlFor="">Alternative Contact:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={alternativeContact} onChange={(e)=>setAlternativeContact(e.target.value)} className="form-control"/>
-							            </div>
-                                       
-                                       
-                                    </div>
-                                </div>
-                                <div className="form-group">
-						            <div className="row row-sm">
-                                    <div className="col-sm-6">
                                             <label htmlFor="">Address:<span className="tx-danger">*</span></label>
                                             <input type="text" defaultValue={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
 							            </div>
@@ -268,10 +250,10 @@ const ParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.student?.first_name} {item.student?.last_name}</td>
-                                                <td>{item.student?.school?.school_name}</td>
+                                                <td>{item.student?.full_name}</td>
+                                                <td>{item.student?.school}</td>
                                                 <td>{item.student?.student_code}</td>
-                                                <td>{item.student?.group?.group_name}</td>
+                                                <td>{item.student?.group}</td>
                                             </tr>
                                         ))}
                                         {children === "404" && (<tr>

@@ -196,7 +196,12 @@ const Sidebar = (props) => {
 
 
             <RenderSecure code="ADMIN-VIEW">
-            <li
+            <li className="nav-item">
+                <Link to="/transactions/all" className="nav-link">
+                  <span><b>Transactions</b></span>
+                </Link>
+              </li>
+            {/* <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
@@ -204,12 +209,7 @@ const Sidebar = (props) => {
                 </Link>
                 <ul className="nav sub-group-menu">
 
-                  <li className="nav-item">
-                    <Link to="/transactions/airtime" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      Airtime Transactions
-                    </Link>
-                  </li>
+                  
                   <li className="nav-item">
                     <Link to="/transactions/all" className="nav-link">
                       <i className="fas fa-angle-right" />
@@ -217,7 +217,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li> */}
               </RenderSecure>
               <RenderSecure code="ADMIN-VIEW">
               <li

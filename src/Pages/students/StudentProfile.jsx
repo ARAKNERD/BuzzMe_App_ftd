@@ -288,7 +288,7 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Names </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.first_name} {studentProfile.last_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.full_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Gender</span> </td>
@@ -459,9 +459,9 @@ const StudentProfile = props => {
                                     {Array.isArray(studentLogs) && studentLogs.map((item, key) => (
                                             
                                              <tr key={key} >
-                                                <th scope="row">{item.created_at}</th>
+                                                <th scope="row">{item.created_at?.long_date}</th>
                                                 <th scope="row">{item.duration}</th>
-                                                <td><span>{item.contact?.contact_name}</span><br/><span>{item.contact?.contact_number}</span></td>
+                                                <td><span>{item.contact?.full_name}</span><br/><span>{item.contact?.main_contact}</span></td>
                                                 <td>{item.station?.station_name}</td>
                                             </tr>
                                         ))}

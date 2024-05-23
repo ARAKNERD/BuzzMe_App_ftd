@@ -272,7 +272,7 @@ const SchoolParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.first_name} {item.last_name}</td>
+                                                <td>{item.full_name}</td>
                                                 <td>{item.student_code}</td>
                                                 <td>{item.group?.group_name}</td>
                                             </tr>
