@@ -19,10 +19,18 @@ import TurnOffStation from "./TurnOffStation";
 
 function ListStations() {
     const [stationList, setStationList] = useState(false);
+    const [stationSearch, setStationSearch] = useState(false);
     const [modal, setModal] = useStateCallback(false);
     const {user} = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
+    const [loading2, setLoading2] = useState(false);
+    const [query, setQuery] = useState("");
 
+
+    const data2 = {
+      search: query,
+      school_id: user.school?user.school:""
+    };
     const getStations = async () => {
       setLoading(true);
       const server_response = await ajaxStation.fetchStationList(user.school?user.school:"");
@@ -33,10 +41,38 @@ function ListStations() {
         setStationList("404");
       }
     };
+
+    const searchStations = async (e) => {
+      if (e) {
+        e.preventDefault();
+      }
+        setLoading2(true);
+        const server_response = await ajaxStation.searchStation(data2);
+        setLoading2(false);
+        if (server_response.status === "OK") {
+          if (server_response.details.length === 0) {
+            setStationSearch([]);
+          } else {
+            setStationSearch(server_response.details);
+          }
+        } else {
+          setStationSearch("404");
+        }
+    };
+
+    const setStations = (e) => {
+      e.preventDefault();
+      setStationSearch(false);
+      setQuery("");
+    };
   
     useEffect(() => {
       getStations();
     }, [user.school?user.school:""]);
+
+    useEffect(() => {
+      searchStations();
+    }, []);
 
 
   const updateStation=(e,item)=>{
@@ -85,7 +121,32 @@ function ListStations() {
                                         </div>
                                     </div>
               </div>
-
+              <form className="mg-b-20">
+                <div className="row gutters-8">
+                  <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <input
+                      type="text"
+                      value={query} onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (e.target.value === '') {
+                          setStations(e);
+                        }
+                      }}
+                      placeholder="Search for station name or station code..."
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <button
+                      type="submit"
+                      onClick={(e) => searchStations(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                      SEARCH
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div className="border-top mt-3"></div>
               <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
@@ -100,7 +161,64 @@ function ListStations() {
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(stationList) && stationList.map((item, key) => (
+                  {stationSearch && Array.isArray(stationSearch) ? (
+                      
+                      stationSearch.map((item, key) => (
+                        <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.station_name}</td>
+                          <td>{item.station_code}</td>
+                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
+                          <td>
+                            {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
+                          </td>
+                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
+                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateHours(e,item)}>
+                                <FontAwesomeIcon icon={faClock} style={{ color: "green", marginRight: "3px" }} />
+                                 Change Active Hours
+                              </Link>
+                              <RenderSecure code="ADMIN-VIEW">
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateStation(e,item)}>
+                                <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
+                                 Update Station Details
+                              </Link></RenderSecure>
+                              {item.status==="300"?<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => stationOff(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                                 Turn Off
+                              </Link>:<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => stationOn(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                                 Turn On
+                              </Link>}</div>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                   
+                  ) :Array.isArray(stationList) && stationList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
@@ -159,9 +277,15 @@ function ListStations() {
                             No calling stations registered yet.
                           </td>
                         </tr>)}
+                        {stationSearch.length === 0 && (<tr>
+                          <td colSpan="7" style={{textAlign: "center"}}>
+                            No search result(s) found.
+                          </td>
+                        </tr>)}
                   </tbody>
                 </table>
                 {loading && <Loader />}
+                {loading2 && <Loader />}
               </div>
             </div>
           </div>

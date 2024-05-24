@@ -42,9 +42,8 @@ const AttachParent=(props)=>{
     const searchParent =async(e)=>{
         e.preventDefault();  
         if (query.length > 0) {
-          const strippedQuery = query.slice(1);
           var data = {
-              search: strippedQuery
+              search: query
           };
         setLoading2(true)
         const server_response = await ajaxParent.searchTerms(data);
@@ -57,7 +56,7 @@ const AttachParent=(props)=>{
             setQuerySearch(false);
         }
     } else {
-        toast.error("Please enter a NIN or phone number!");
+        toast.error("Please enter a phone number!");
       }
     }
 
@@ -155,7 +154,7 @@ const AttachParent=(props)=>{
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Enter NIN or phone number of parent / guardian..."
+                      placeholder="Enter phone number of parent / guardian..."
                       className="form-control"
                     />
                   </div>

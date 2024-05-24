@@ -63,9 +63,12 @@ function SchoolStudentGroups() {
                         No.
                       </th>
                       <th scope="col">Names</th>
-                      <th scope="col">Actions</th>
+                      <th scope="col">Students List</th>
                       <th scope="col">
-                        Group <br /> codeslips{" "}
+                        BuzzTime Cards
+                      </th>
+                      <th scope="col">
+                        Actions
                       </th>
                     </tr>
                   </thead>
@@ -86,7 +89,7 @@ function SchoolStudentGroups() {
                             <Link
                               className="btn btn-info"
                               to={`/students/student_card/null/${item.group_id}/${user.school}`}>
-                              students codeslips
+                              View Cards
                             </Link>
                           </td>
                           <td>

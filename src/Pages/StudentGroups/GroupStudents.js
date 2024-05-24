@@ -22,8 +22,8 @@ function GroupStudents()
   const [query, setQuery] = useState("");
   
   const data2 = {
-    query: query,
-    group_id: id,
+    search: query,
+    group_id: id
   };
   
   
@@ -48,12 +48,10 @@ function GroupStudents()
     if (e) {
       e.preventDefault();
     }
-    if (!query) {
-      toast.error("Please enter name of student.");
-    } else {
       setLoading(true);
       const server_response = await ajaxStudent.searchStudent(data2);
       setLoading(false);
+      console.log(server_response)
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
           setStudentSearch([]);
@@ -63,7 +61,7 @@ function GroupStudents()
       } else {
         setStudentSearch([]);
       }
-    }
+  
   };
   
   const setStudents = (e) =>{
@@ -73,10 +71,8 @@ function GroupStudents()
   }
   
   useEffect(() => {
-    if (query) {
       searchStudents();
-    }
-  }, [query]);
+  }, []);
   
     // ----------------------handles the view -----students printable codeslip -modal
   const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -135,7 +131,12 @@ function GroupStudents()
         <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
           <input
             type="text"
-            value={query} onChange={(e) => setQuery(e.target.value)}
+            value={query} onChange={(e) => {
+              setQuery(e.target.value);
+              if (e.target.value === '') {
+                setStudents(e);
+              }
+            }}
             placeholder="Search for student name..."
             className="form-control"
           />
@@ -203,6 +204,11 @@ function GroupStudents()
                             No students registered within this group yet.
                           </td>
                         </tr>)}
+                        {studentSearch.length===0 && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No search result(s) found.
+                          </td>
+                        </tr>)}
           </tbody>
           <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
 
@@ -220,6 +226,7 @@ function GroupStudents()
           </div>
         </table>
         {loading2 && <Loader/>}
+        {loading && <Loader/>}
       </div>
     </div>
     </div>

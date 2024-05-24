@@ -84,7 +84,7 @@ const StudentProfile = props => {
         handleActive()
         setFirstName(studentProfile.first_name)
         setLastName(studentProfile.last_name)
-        setGroup(studentProfile.group?.group_id)
+        setGroup(studentProfile.group_id)
         setGender(studentProfile.gender)
         setRegNo(studentProfile.reg_no)
         setStudentID(studentProfile.id)
