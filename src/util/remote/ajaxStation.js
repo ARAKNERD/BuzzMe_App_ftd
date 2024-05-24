@@ -48,5 +48,10 @@ export default {
     let response = await apiCall("station/update/hours", data);
     return response;
   },
+  async searchStation(data) 
+  {
+    let response = await apiCall("station/list", data);
+    return response;
+  },
   
 };

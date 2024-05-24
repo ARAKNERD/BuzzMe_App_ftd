@@ -134,7 +134,7 @@ function ViewParents() {
                           setParents(e);
                         }
                       }}
-                      placeholder="Search for parent or guardian name..."
+                      placeholder="Search for parent first or last name..."
                       className="form-control"
                     />
                   </div>
