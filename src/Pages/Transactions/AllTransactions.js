@@ -51,7 +51,7 @@ function AllTransactions() {
                 setTransactionSearch(server_response.details);
             }
         } else {
-            setTransactionSearch([]);
+            setTransactionSearch("404");
         }
     
 };
@@ -227,7 +227,7 @@ function AllTransactions() {
                         {transactionSearch.length === 0 && (
   <tr>
     <td colSpan="4" style={{ textAlign: "center" }}>
-      No transactions made yet.
+      No search result(s) found.
     </td>
   </tr>
 )}

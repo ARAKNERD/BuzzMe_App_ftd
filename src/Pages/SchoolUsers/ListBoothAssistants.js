@@ -112,7 +112,7 @@ function ListBoothAssistants() {
                         </tr>
                       ))}
                       {boothAssistants === "404" && (<tr>
-                          <td colSpan="3" style={{textAlign: "center"}}>
+                          <td colSpan="5" style={{textAlign: "center"}}>
                             No booth assistants registered yet.
                           </td>
                         </tr>)}

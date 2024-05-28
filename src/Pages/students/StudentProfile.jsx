@@ -129,7 +129,7 @@ const StudentProfile = props => {
     const getStudentParents =async()=>{
         
         setLoading4(true)
-        const server_response = await ajaxParent.listParents(data);
+        const server_response = await ajaxParent.listStudentParents(data);
         setLoading4(false)
         if(server_response.status==="OK"){
             //store results

@@ -2,14 +2,6 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async fetchParentList(page) 
-  {
-    let data = {
-      "page": page
-    };
-    let response = await apiCall("link/parents/school", data);
-    return response;
-  },
   async fetchParentInfo(parent_id) 
   {
     let data = {
@@ -78,8 +70,32 @@ export default {
     let response = await apiCall("link/parents/school", data);
     return response;
   },
-  async listParents(data) {
+  async listParents(page) {
+    let data = {
+      "page": page,
+    };
+    let response = await apiCall("guardian/list", data);
+    return response;
+  },
+  async listRelatives(page) {
+    let data = {
+      "page": page,
+    };
+    let response = await apiCall("relative/list", data);
+    return response;
+  },
+
+  async listStudentParents(data) {
     let response = await apiCall("link/parents/list", data);
+    return response;
+  },
+
+  async searchAllParents(data) {
+    let response = await apiCall("guardian/list", data);
+    return response;
+  },
+  async searchAllRelatives(data) {
+    let response = await apiCall("relative/list", data);
     return response;
   },
   async listSchoolParents(school_id, page) {
