@@ -118,7 +118,7 @@ const Sidebar = (props) => {
                       <span className="sidemenu-label">View Parents</span>
                     </Link>
                   </li>
-                  
+                 
                 </ul>
               </li>
             </RenderSecure>
@@ -170,7 +170,13 @@ const Sidebar = (props) => {
                       <span className="sidemenu-label">View Parents</span>
                     </Link>
                   </li>
-                  
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/relatives">
+                      <FontAwesomeIcon icon={faAngleRight} />
+
+                      <span className="sidemenu-label">View Relatives</span>
+                    </Link>
+                  </li>
                 </ul>
               </li>
               </RenderSecure>

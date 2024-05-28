@@ -101,7 +101,7 @@ function ListSchoolUsers(props) {
                         </tr>
                       ))}
                       {schoolUsers === "404" && (<tr>
-                          <td colSpan="3" style={{textAlign: "center"}}>
+                          <td colSpan="5" style={{textAlign: "center"}}>
                             No school administrators registered yet.
                           </td>
                         </tr>)}

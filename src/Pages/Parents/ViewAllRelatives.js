@@ -8,10 +8,10 @@ import ajaxParent from "../../util/remote/ajaxParent";
 import toast, {Toaster} from "react-hot-toast";
 
 
-function ViewParents() {
+function ViewAllRelatives() {
 
-  const [parentList, setParentList] = useState(false);
-  const [parentSearch, setParentSearch] = useState(false);
+  const [relativeList, setRelativeList] = useState(false);
+  const [relativeSearch, setRelativeSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
   const [loading, setLoading] = useState(false);
@@ -26,27 +26,27 @@ function ViewParents() {
     page: page
   };
 
-  const getParentList = async () => {
+  const getRelativeList = async () => {
     setLoading(true)
-    const server_response = await ajaxParent.listParents(page);
+    const server_response = await ajaxParent.listRelatives(page);
     setLoading(false)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
-      setParentList(server_response.details.list);
+      setRelativeList(server_response.details.list);
       setFirst(server_response.details.meta.offset_count);
 
     } else {
-      setParentList("404");
+      setRelativeList("404");
     }
   };
 
   const refreshData = () =>{
-    getParentList()
+    getRelativeList()
   }
 
 
   useEffect(() => {
-    getParentList();
+    getRelativeList();
   }, [page]);
 
   const setNextPageNumber = () =>{
@@ -72,38 +72,38 @@ function ViewParents() {
     setPage(item)
   }
 
-  const searchParents = async (e) => {
+  const searchRelatives = async (e) => {
     if (e) {
       e.preventDefault();
     }
       setLoading2(true);
-      const server_response = await ajaxParent.searchAllParents(data2);
+      const server_response = await ajaxParent.searchAllRelatives(data2);
       setLoading2(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
-          setParentSearch([]);
+          setRelativeSearch([]);
         } else {
           setMeta(server_response.details.meta.list_of_pages);
-          setParentSearch(server_response.details.list);
+          setRelativeSearch(server_response.details.list);
           setFirst(server_response.details.meta.offset_count);
         }
       } else {
-        setParentSearch("404");
+        setRelativeSearch("404");
       }
   };
 
-  const setParents = (e) => {
+  const setRelatives = (e) => {
     e.preventDefault();
-    setParentSearch(false);
+    setRelativeSearch(false);
     setQuery("");
   };
 
   useEffect(() => {
-      searchParents();
+      searchRelatives();
   }, []);
 
   return(
-  <AppContainer title="Parents">
+  <AppContainer title="Relatives">
     <Toaster position="top-center" reverseOrder={false} />
              
 				<div className="col-lg-12">
@@ -111,8 +111,8 @@ function ViewParents() {
             <div className="card-body map-card">
             <div class="heading-layout1 mg-b-25">
               <TableHeader
-                title="Parents List"
-                subtitle="List of all the parents sorted in ascending order"    
+                title="Relatives List"
+                subtitle="List of all the relatives sorted in ascending order"    
               />
                            <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -131,23 +131,23 @@ function ViewParents() {
                       value={query} onChange={(e) => {
                         setQuery(e.target.value);
                         if (e.target.value === '') {
-                          setParents(e);
+                          setRelatives(e);
                         }
                       }}
-                      placeholder="Search for parent first or last name..."
+                      placeholder="Search for relative first or last name..."
                       className="form-control"
                     />
                   </div>
                   <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <button
                       type="submit"
-                      onClick={(e) => searchParents(e)}
+                      onClick={(e) => searchRelatives(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                       SEARCH
                     </button>
                     <button
                       type="submit"
-                      onClick={(e) => setParents(e)}
+                      onClick={(e) => setRelatives(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-2">
                       RESET
                     </button>
@@ -167,37 +167,35 @@ function ViewParents() {
                     </tr>
                   </thead>
                   <tbody>
-                  {parentSearch && Array.isArray(parentSearch) ? (
+                  {relativeSearch && Array.isArray(relativeSearch) ? (
                       
-                        parentSearch.map((item, key) => (
+                        relativeSearch.map((item, key) => (
                           <tr key={key}>
                           <th scope='row'>{key + 1}</th>
-                          <td><Link
-                          to={`/parents/profile/${item.parent_id}`}>
+                          <td>
                           {item.full_name}
-                        </Link></td>
+                        </td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
                         </tr>
                         ))
                      
-                    ) : Array.isArray(parentList) && parentList.map((item, key) => (
+                    ) : Array.isArray(relativeList) && relativeList.map((item, key) => (
                         <tr key={key}>
                           <th scope='row'>{key + first + 1}</th>
-                          <td><Link
-                          to={`/parents/profile/${item.parent_id}`}>
+                          <td>
                           {item.full_name}
-                        </Link></td>
+                        </td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
                         </tr>
                       ))}
-                      {parentList === "404" && (<tr>
+                      {relativeList === "404" && (<tr>
                           <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians registered yet.
+                            No relatives registered yet.
                           </td>
                         </tr>)}
-                        {parentSearch.length === 0 && (<tr>
+                        {relativeSearch.length === 0 && (<tr>
                           <td colSpan="4" style={{textAlign: "center"}}>
                             No search result(s) found.
                           </td>
@@ -229,4 +227,4 @@ function ViewParents() {
   )
 }
 
-export default ViewParents;
+export default ViewAllRelatives;

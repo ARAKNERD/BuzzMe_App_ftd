@@ -48,6 +48,7 @@ import CallLogs from "./Pages/CallLogs";
 import AirtimeTransactions from "./Pages/Transactions/AirtimeTransactions";
 import AllTransactions from "./Pages/Transactions/AllTransactions";
 import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
+import ViewAllRelatives from "./Pages/Parents/ViewAllRelatives";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -185,6 +186,8 @@ function App(props) {
               <Route path="/transactions/airtime" element={<AirtimeTransactions />} />
               <Route path="/transactions/all" element={<AllTransactions />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
+              <Route path="/relatives" element={<ViewAllRelatives />} />
+
 
             </>
           )}
