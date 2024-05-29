@@ -41,12 +41,8 @@ function Dashboard() {
   };
 
   const getStudentsToday = async () => {
-    var data = {
-      school: user.school,
-      group: "",
-    };
     setLoading(true);
-    const server_response = await ajaxStudent.fetchStudentsToday(data);
+    const server_response = await ajaxStudent.fetchStudentsToday(user.school);
     setLoading(false);
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
@@ -82,8 +78,11 @@ function Dashboard() {
 
   useEffect(() => {
     getSchoolsNumber();
-    getStudentsToday();
   }, []);
+
+  useEffect(() => {
+    getStudentsToday();
+  }, [user.school]);
 
   useEffect(() => {
     getStudentsNumber();
@@ -402,7 +401,7 @@ function Dashboard() {
                           <td>{student.first_name} {student.last_name}</td>
                           <td>{student.student_code}</td>
                           <td>{student.reg_no?student.reg_no:"Not recorded"}</td>
-                          <td>{student.group?.group_name}</td>
+                          <td>{student.group}</td>
                         </tr>
                       ))
                     }

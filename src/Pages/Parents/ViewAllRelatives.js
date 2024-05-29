@@ -6,6 +6,9 @@ import { Link} from "react-router-dom";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxParent from "../../util/remote/ajaxParent";
 import toast, {Toaster} from "react-hot-toast";
+import { faPersonArrowUpFromLine } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 
 function ViewAllRelatives() {
@@ -163,6 +166,7 @@ function ViewAllRelatives() {
                       <th scope="col">Names</th>
                       <th scope="col">Contact</th>
                       <th scope="col">Address</th>
+                      <th scope="col">Actions</th>
                     
                     </tr>
                   </thead>
@@ -177,6 +181,27 @@ function ViewAllRelatives() {
                         </td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                
+                                <Link
+                                className="dropdown-item"
+                                to="#">
+                                <FontAwesomeIcon icon={faPersonArrowUpFromLine} style={{ color: "teal", marginRight: "3px" }} />
+
+                                Upgrade to Parent Status
+                              </Link>
+</div>
+                            </div>
+                          </td>
                         </tr>
                         ))
                      
@@ -188,6 +213,27 @@ function ViewAllRelatives() {
                         </td>
                           <td>{item.main_contact}</td>
                           <td>{item.address}</td>
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                
+                                <Link
+                                className="dropdown-item"
+                                to="#">
+                                <FontAwesomeIcon icon={faPersonArrowUpFromLine} style={{ color: "teal", marginRight: "3px" }} />
+
+                                Upgrade to Parent Status
+                              </Link>
+</div>
+                            </div>
+                          </td>
                         </tr>
                       ))}
                       {relativeList === "404" && (<tr>

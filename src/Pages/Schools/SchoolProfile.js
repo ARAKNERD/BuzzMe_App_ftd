@@ -10,6 +10,9 @@ import TableHeader from '../../Components/Common/TableHeader';
 import DistrictContext from '../../Context/DistrictContext';
 import ajaxSchool from '../../util/remote/ajaxSchool';
 import ajaxStation from '../../util/remote/ajaxStation';
+import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
+import AuthContext from '../../Context/AuthContext';
+import AddGroup from '../StudentGroups/AddGroup';
 
 const SchoolProfile = props => {
     const [schoolProfile, setSchoolProfile] = useState(false);
@@ -20,9 +23,11 @@ const SchoolProfile = props => {
   const [studentSearch, setStudentSearch] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
+  const {user} = useContext(AuthContext);
 
     const {districtList} = useContext(DistrictContext);
   const [query, setQuery] = useState("");
+  const [groupList, setGroupList] = useState(false);
 
 
 
@@ -127,6 +132,15 @@ const SchoolProfile = props => {
         }
     };
 
+    const getGroups = async () => {
+        const server_response = await ajaxStudentGroup.fetchGroupList(id);
+        if (server_response.status === "OK") {
+          setGroupList(server_response.details);
+        }else {
+          setGroupList("404");
+        }
+      };
+
     const getSchoolStations =async()=>{
         setLoading4(false)
         const server_response = await ajaxStation.fetchStationList(id);
@@ -202,6 +216,13 @@ const SchoolProfile = props => {
   useEffect(()=>{
     getSchoolStudents()
   }, [id, page])
+  useEffect(()=>{
+    getGroups()
+  }, [id])
+
+  const handleModal3=()=>{
+    setModal(false, ()=>setModal(<AddGroup schoolID={id} g={getGroups} isOpen={true}/>))
+}
     return (
         <AppContainer title={"School Profile"} >
             <Toaster
@@ -238,7 +259,8 @@ const SchoolProfile = props => {
                         </div>
                     </div>
                 </div>
-
+                <div className='row'>
+                <div className="col-7 col-xl-7">
                 {active?
                     <div className="box left-dot mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                         <div className="box-header  border-0 pd-0">
@@ -362,7 +384,49 @@ const SchoolProfile = props => {
                             </div>
                         </div>
                     </div>
-                }
+                }</div>
+                <div className="col-5 col-xl-5">
+          <div className="card custom-card" style={{borderRadius: "10px"}}>
+                        <div className="card-body map-card">
+                        <TableHeader
+                            title="Student Groups"
+                            subtitle="List of all the student groups" 
+                            viewButton={
+                                <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Add Student Group</a>    
+                            }        
+                        />  
+                        <div className="border-top mt-3"></div>
+
+<div className="table-responsive">
+  <table className="table display data-table text-nowrap">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Group Name</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+    {Array.isArray(groupList) && groupList.map((item, key) => (
+                <tr>
+                  <td>{key + 1}</td>
+                  <td>{item.group_name}</td>
+                </tr>
+              ))}
+              {groupList === "404" && (<tr>
+                  <td colSpan="2" style={{textAlign: "center"}}>
+                    No groups registered yet.
+                  </td>
+                </tr>)}
+    </tbody>
+  </table>
+  {loading && <Loader/>}
+</div>              
+                            
+                              
+                        </div>
+			        </div>
+        </div></div>
 
                 <div className="card height-auto" >
                     <div className="card-body map-card">

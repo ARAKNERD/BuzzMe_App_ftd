@@ -24,12 +24,8 @@ function AdminRegisterStudent(props) {
   const [loading2, setLoading2] = useState(false)
 
   const getStudentsToday = async () => {
-    var data = {
-      school: "",
-      group: "",
-    };
     setLoading2(true)
-    const server_response = await ajaxStudent.fetchStudentsToday(data);
+    const server_response = await ajaxStudent.fetchAllStudentsToday();
     setLoading2(false)
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);

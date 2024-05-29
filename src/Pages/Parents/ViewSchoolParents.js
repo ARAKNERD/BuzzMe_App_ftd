@@ -107,7 +107,7 @@ function ViewSchoolParents() {
           setFirst(server_response.details.meta.offset_count);
         }
       } else {
-        setParentSearch([]);
+        setParentSearch("404");
       }
   };
 
@@ -197,7 +197,7 @@ function ViewSchoolParents() {
                         <tr key={key}>
                         <th scope='row'>{key + 1}</th>
                         <td><Link
-                        to={`/parents/profile/${item.parent_id}`}>
+                        to={`/school-parents/profile/${item.parent_id}`}>
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>
@@ -209,7 +209,7 @@ function ViewSchoolParents() {
                       <tr key={key}>
                         <th scope='row'>{key + first + 1}</th>
                         <td><Link
-                        to={`/parents/profile/${item.parent_id}`}>
+                        to={`/school-parents/profile/${item.parent_id}`}>
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>

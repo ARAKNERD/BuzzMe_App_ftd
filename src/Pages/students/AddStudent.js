@@ -24,11 +24,7 @@ function AddStudent(props) {
 
 
   const getStudentsToday = async () => {
-    var data = {
-      school: user.school,
-      group: "",
-    };
-    const server_response = await ajaxStudent.fetchStudentsToday(data);
+    const server_response = await ajaxStudent.fetchStudentsToday(user.school);
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
     } else {
@@ -87,11 +83,8 @@ setLoading(true)
 
   useEffect(() => {
     getGroups();
-  }, [user.school]);
-
-  useEffect(() => {
     getStudentsToday();
-  }, []);
+  }, [user.school]);
   return (
     <AppContainer title="Add Student">
       <Toaster position="top-center" reverseOrder={false} />

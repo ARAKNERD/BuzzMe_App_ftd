@@ -10,6 +10,7 @@ import useStateCallback from '../../util/customHooks/useStateCallback';
 import AddStudentParent from './AddStudentParent';
 import AuthContext from '../../Context/AuthContext';
 import ajaxStudent from '../../util/remote/ajaxStudent';
+import SchoolAddStudentParent from './SchoolAddStudentParent';
 
 const SchoolParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
@@ -101,7 +102,7 @@ const SchoolParentProfile = props => {
     }
 
     const handleModal2=()=>{
-        setModal(false, ()=>setModal(<AddStudentParent parentID={parent} schoolID={user.school} g={getChildren} isOpen={true}/>))
+        setModal(false, ()=>setModal(<SchoolAddStudentParent parentID={parent} schoolID={user.school} g={getChildren} isOpen={true}/>))
     }
 
     useEffect(()=>{
