@@ -10,6 +10,7 @@ export const RenderSecure = (props) => {
           return <>{props.children}</>;
         } else {
           return <></>;
+          
         }
       }}
     </AuthConsumer>

@@ -6,6 +6,7 @@ import Loader from "../../Components/Common/Loader";
 import { Link } from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 import TableHeader from "../../Components/Common/TableHeader";
+import { RenderSecure } from "../../util/script/RenderSecure";
 
 function AddParent() {
   const [nin, setNin] = useState("");
@@ -320,6 +321,7 @@ useEffect(()=>{
       )}
       {loading && <Loader/>}
         </div>
+        <RenderSecure code="ADMIN-VIEW">
         <div className="col-lg-12 col-md-12">
         <div className="card height-auto">
           <div className="card-body">
@@ -362,7 +364,7 @@ useEffect(()=>{
             </div>
           </div>
         </div>
-        </div>
+        </div></RenderSecure>
       </div>
     </AppContainer>
   );

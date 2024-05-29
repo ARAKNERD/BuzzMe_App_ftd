@@ -21,11 +21,6 @@ function GroupStudents()
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   
-  const data2 = {
-    search: query,
-    group_id: id
-  };
-  
   
   const getStudentList = async () => {
     setLoading2(true)
@@ -49,7 +44,7 @@ function GroupStudents()
       e.preventDefault();
     }
       setLoading(true);
-      const server_response = await ajaxStudent.searchStudent(data2);
+      const server_response = await ajaxStudent.searchGroupStudent(query, id);
       setLoading(false);
       console.log(server_response)
       if (server_response.status === "OK") {

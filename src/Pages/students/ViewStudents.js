@@ -54,16 +54,12 @@ function ViewStudents() {
     getStudentList();
   }, [user.school, page]);
 
-  const data2 = {
-    search: query,
-    school_id: user.school,
-  };
   const searchStudents = async (e) => {
     if (e) {
       e.preventDefault();
     }
       setLoading(true);
-      const server_response = await ajaxStudent.searchStudent(data2);
+      const server_response = await ajaxStudent.searchStudent(query, user.school);
       setLoading(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
@@ -72,7 +68,7 @@ function ViewStudents() {
           setStudentSearch(server_response.details);
         }
       } else {
-        setStudentSearch([]);
+        setStudentSearch("404");
       }
   };
 
@@ -209,7 +205,7 @@ function ViewStudents() {
                       <th>Gender</th>
                       <th>Student Code</th>
                       <th>Student Group</th>
-                      <th>Account Status</th>
+                      <th>Default Pin</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -231,8 +227,8 @@ function ViewStudents() {
                             <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
                           <OverlayTrigger
                           placement="top"
-                          overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
-                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
+                          overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
+                             <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
                             
                             <td>
                             <div className="dropdown">
@@ -279,8 +275,8 @@ function ViewStudents() {
                           <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
                           <OverlayTrigger
                           placement="top"
-                          overlay={<Tooltip id="refresh-tooltip">Default pin is {item.default_pin}</Tooltip>}>
-                             <span class="badge badge-danger">NOT SECURE</span></OverlayTrigger>}</td>
+                          overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
+                             <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
                           <td>
                             <div className="dropdown">
                               <Link
