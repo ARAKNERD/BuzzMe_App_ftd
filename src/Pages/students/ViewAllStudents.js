@@ -74,16 +74,14 @@ function ViewAllStudents() {
     getStudentList();
   }, [page]);
 
-  const data2 = {
-    search: query
-  };
+  
   const searchStudents = async (e) => {
     if (e) {
       e.preventDefault();
     }
     
       setLoading(true);
-      const server_response = await ajaxStudent.searchStudent(data2);
+      const server_response = await ajaxStudent.searchAllStudents(query);
       setLoading(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
@@ -92,7 +90,7 @@ function ViewAllStudents() {
           setStudentSearch(server_response.details);
         }
       } else {
-        setStudentSearch([]);
+        setStudentSearch("404");
       }
     
   };

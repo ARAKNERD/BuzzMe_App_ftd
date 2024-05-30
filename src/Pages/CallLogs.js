@@ -141,9 +141,9 @@ function CallLogs() {
                        <tr key={key}>
 
                          <td>{item.created_at.long_date}</td>
-                         <td className="text-dark">{item.student?.first_name} {item.student?.last_name}</td>
-                         <td className="text-dark">{item.contact?.first_name} {item.contact?.last_name}</td>
-                         <td>{item.duration}</td>
+                         <td className="text-dark">{item.student}</td>
+                         <td className="text-dark">{item.contact_name}</td>
+                         <td>{item.duration} minutes</td>
                          
                          
                        </tr>
@@ -152,9 +152,9 @@ function CallLogs() {
                  ) : Array.isArray(logsList) && logsList.map((item, key) => (
                      <tr key={key}>
                       <td>{item.created_at.long_date}</td>
-                         <td className="text-dark">{item.student?.first_name} {item.student?.last_name}</td>
-                         <td className="text-dark">{item.contact?.first_name} {item.contact?.last_name}</td>
-                         <td>{item.duration}</td>
+                         <td className="text-dark">{item.student}</td>
+                         <td className="text-dark">{item.contact_name}</td>
+                         <td>{item.duration} minutes</td>
                       
                      </tr>
                    ))
