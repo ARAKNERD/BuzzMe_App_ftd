@@ -84,6 +84,13 @@ export default {
 
     return response;
   },
+  async searchAllStudents(search) {
+    let data = {
+      search: search
+    };
+    let response = await apiCall("student/search", data);
+    return response;
+  },
   async searchStudent(search, school_id) {
     let data = {
       search: search,
