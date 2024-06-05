@@ -107,6 +107,7 @@ const ParentProfile = props => {
                 reverseOrder={false}
             />
             {modal}
+            <div className="row">
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {parentProfile && <div className="box-body" style={{position:"relative"}}>
@@ -270,7 +271,7 @@ const ParentProfile = props => {
 			    </div>
 
 
-            </div>
+            </div></div>
 
         </AppContainer>
     )

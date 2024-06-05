@@ -27,4 +27,15 @@ export default {
     let response = await apiCall("call_log/list", data);
     return response;
   },
+  async countLogsToday(data) {
+    let response = await apiCall("call_log/count/today", data);
+    return response;
+  },
+  async countSchoolLogsToday(school) {
+    let data = {
+      school_id: school
+    };
+    let response = await apiCall("call_log/count/today", data);
+    return response;
+  },
 };
