@@ -168,7 +168,7 @@ const SchoolProfile = props => {
                   setStudentSearch(server_response.details);
               }
           } else {
-              setStudentSearch([]);
+              setStudentSearch("404");
           }
   };
 
@@ -230,7 +230,7 @@ const SchoolProfile = props => {
                 reverseOrder={false}
             />
             {modal}
-
+            <div className="row">
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {schoolProfile && <div className="box-body" style={{position:"relative"}}>
@@ -579,7 +579,7 @@ const SchoolProfile = props => {
 
                 
 
-            </div>
+            </div> </div>
 
         </AppContainer>
     )

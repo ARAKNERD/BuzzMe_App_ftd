@@ -46,7 +46,6 @@ function GroupStudents()
       setLoading(true);
       const server_response = await ajaxStudent.searchGroupStudent(query, id);
       setLoading(false);
-      console.log(server_response)
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
           setStudentSearch([]);
@@ -105,7 +104,7 @@ function GroupStudents()
       <Toaster position="top-center" reverseOrder={false} />
 
       {ViewStudentSlip}
-
+      <div className="row">
       <div className="col-lg-12">
         <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
           <div className="card-body map-card">
@@ -225,7 +224,7 @@ function GroupStudents()
       </div>
     </div>
     </div>
-</div>
+      </div></div>
     </AppContainer>
   );
 }

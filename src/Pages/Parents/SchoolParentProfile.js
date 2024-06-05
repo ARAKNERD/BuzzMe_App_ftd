@@ -117,12 +117,14 @@ const SchoolParentProfile = props => {
                 reverseOrder={false}
             />
             {modal}
+            <div className="row">
+
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {parentProfile && <div className="box-body" style={{position:"relative"}}>
                         <div className="user-pic text-center" >
                         <div class="main-profile-overview widget-user-image text-center">
-							<div class="main-img-user"><img alt="avatar" src={
+							<div class="main-img-user"><img alt="avatar" style={{height:"90px"}} src={
                       process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
                     }/></div>
 						</div>
@@ -292,7 +294,7 @@ const SchoolParentProfile = props => {
 			    </div>
 
 
-            </div>
+            </div></div>
 
         </AppContainer>
     )

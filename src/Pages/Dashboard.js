@@ -19,6 +19,9 @@ function Dashboard() {
 
   const [schoolsNumber, setSchoolsNumber] = useState(false);
   const [studentsNumber, setStudentsNumber] = useState(false);
+  const [logsNumber, setLogsNumber] = useState(false);
+  const [schoolLogsNumber, setSchoolLogsNumber] = useState(false);
+
   const {user} = useContext(AuthContext);
   const [studentsToday, setStudentsToday] = useState(false);
 
@@ -75,13 +78,35 @@ function Dashboard() {
       setSchoolsNumber("404");
     }
   };
+  const getLogsNumber = async () => {
+    const server_response = await ajaxCallStation.countLogsToday();
 
+    if (server_response.status === "OK") {
+      //store results
+      setLogsNumber(server_response.details);
+    } else {
+      //communicate error
+      setLogsNumber("404");
+    }
+  };
+  const getSchoolLogsNumber = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsToday(user.school);
+    if (server_response.status === "OK") {
+      //store results
+      setSchoolLogsNumber(server_response.details);
+    } else {
+      //communicate error
+      setSchoolLogsNumber("404");
+    }
+  };
   useEffect(() => {
     getSchoolsNumber();
+    getLogsNumber();
   }, []);
 
   useEffect(() => {
     getStudentsToday();
+    getSchoolLogsNumber();
   }, [user.school]);
 
   useEffect(() => {
@@ -158,7 +183,7 @@ function Dashboard() {
                   <div class="col-6">
                     <div class="item-content">
                       <div class="item-title">Calls Today</div>
-                      <div class="item-number"><span></span><span class="counter" data-num="193000">00</span></div>
+                      <div class="item-number"><span></span><span class="counter" data-num="193000">{logsNumber ? logsNumber.total_p : "..."}</span></div>
                     </div>
                   </div>
                 </div>
@@ -242,7 +267,7 @@ function Dashboard() {
                                 <div class="col-6">
                                     <div class="item-content">
                                         <div class="item-title">Calls Today</div>
-                                        <div class="item-number"><span class="counter">00</span></div>
+                                        <div class="item-number"><span class="counter">{schoolLogsNumber ? schoolLogsNumber.total_p : "..."}</span></div>
                                     </div>
                                 </div>
                             </div>

@@ -22,18 +22,18 @@ const Profile = props => {
             />
 
             {modal}
-
+            <div className="row">
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {user && <div className="box-body" style={{position:"relative"}}>
                         <div className="user-pic text-center" >
                         <div class="main-profile-overview widget-user-image text-center">
-							<div class="main-img-user"><img alt="avatar" src={
+							<div class="main-img-user"><img alt="avatar" style={{height:"90px"}} src={
                       process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
                     }/></div>
 						</div>
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
-                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{user.admin?user.admin?.names:user.school_user?.names}</h5>
+                                <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{user.admin?user.admin?.first_name:user.school_user?.first_name}</h5>
                                 <h6 className="pro-user-desc text-muted fs-14">{user.role?.role_name}</h6>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ const Profile = props => {
                             </div>
                         </div>
                     </div>
-            </div>
+            </div></div>
 
         </AppContainer>
     )

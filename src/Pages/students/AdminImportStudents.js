@@ -108,6 +108,7 @@ const AdminImportStudents = () => {
 
   return (
     <AppContainer title="Import Students">
+      <div className="row">
     <div className="col-12 col-xl-12">
       <Toaster position="top-center" reverseOrder={false} />
       <div
@@ -228,7 +229,7 @@ const AdminImportStudents = () => {
           </div>
         )}
       </div>
-    </div>
+    </div></div>
     </AppContainer>
   );
 };

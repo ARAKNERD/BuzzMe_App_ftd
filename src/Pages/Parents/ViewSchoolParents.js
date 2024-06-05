@@ -127,7 +127,8 @@ function ViewSchoolParents() {
 
   return(
   <AppContainer title="Parents">
-    <Toaster position="top-center" reverseOrder={false} />     
+    <Toaster position="top-center" reverseOrder={false} />   
+    <div className="row">
 				<div className="col-lg-12">
           <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
             <div className="card-body map-card">
@@ -247,7 +248,7 @@ function ViewSchoolParents() {
               </div>
             </div>
 			    </div>
-				</div>
+				</div></div>  
     
     </AppContainer>
   )

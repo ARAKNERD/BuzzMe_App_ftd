@@ -102,7 +102,7 @@ function ViewSchool() {
               setSchoolSearch(server_response.details.list);
             }
         } else {
-            setSchoolSearch([]);
+            setSchoolSearch("404");
         }
     
 };
