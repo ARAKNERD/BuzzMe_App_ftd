@@ -103,7 +103,7 @@ function ViewParents() {
   }, []);
 
   return(
-  <AppContainer title="Parents">
+  <AppContainer title="Contacts">
     <Toaster position="top-center" reverseOrder={false} />
     <div className="row"> 
 				<div className="col-lg-12">
@@ -111,8 +111,8 @@ function ViewParents() {
             <div className="card-body map-card">
             <div class="heading-layout1 mg-b-25">
               <TableHeader
-                title="Parents List"
-                subtitle="List of all the parents sorted in ascending order"    
+                title="Contacts List"
+                subtitle="List of all the contacts sorted in ascending order"    
               />
                            <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -134,7 +134,7 @@ function ViewParents() {
                           setParents(e);
                         }
                       }}
-                      placeholder="Search for parent first or last name..."
+                      placeholder="Search for contact first or last name..."
                       className="form-control"
                     />
                   </div>
