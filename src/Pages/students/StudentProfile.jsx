@@ -9,14 +9,8 @@ import useStateCallback from '../../util/customHooks/useStateCallback';
 import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
 import AuthContext from '../../Context/AuthContext';
 import TableHeader from '../../Components/Common/TableHeader';
-import AddContact from './AddContact';
-import ajaxParent from '../../util/remote/ajaxParent';
 import AttachParent from '../Parents/AttachParent';
 import { RenderSecure } from '../../util/script/RenderSecure';
-import Col from "react-bootstrap/Col";
-import Nav from "react-bootstrap/Nav";
-import Row from "react-bootstrap/Row";
-import Tab from "react-bootstrap/Tab";
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -24,7 +18,6 @@ const StudentProfile = props => {
     const {id} = useParams();
     const [studentLogs, setStudentLogs] = useState(false);
     const [studentContacts, setStudentContacts] = useState(false);
-    const [studentParents, setStudentParents] = useState(false);
     const {user} = useContext(AuthContext);
 
 
@@ -44,13 +37,7 @@ const StudentProfile = props => {
     const [loading,setLoading] = useState(false)
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
-    const [loading4,setLoading4] = useState(false)
     const [loading5,setLoading5] = useState(false)
-    const [activeTab, setActiveTab] = useState('first');
-
-    const handleSelectTab = (selectedTab) => {
-        setActiveTab(selectedTab);
-    };
 
     const data = {
         student_id: id
@@ -65,7 +52,6 @@ const StudentProfile = props => {
          getStudentContacts()
         getStudentProfile();
         getStudentLogs();
-        getStudentParents();
       
     }, [])
 
@@ -126,19 +112,6 @@ const StudentProfile = props => {
             setStudentProfile("404");
         }
     }
-    const getStudentParents =async()=>{
-        
-        setLoading4(true)
-        const server_response = await ajaxParent.listStudentParents(data);
-        setLoading4(false)
-        if(server_response.status==="OK"){
-            //store results
-            setStudentParents(server_response.details);
-        }else{
-            //communicate error
-            setStudentParents("404");
-        }
-    }
 
     const getStudentLogs =async()=>{
         setLoading2(true)
@@ -165,11 +138,8 @@ const StudentProfile = props => {
         }
     }
 
-    const handleModal2=()=>{
-        setModal(false, ()=>setModal(<AddContact studentID={id} g={getStudentContacts} isOpen={true}/>))
-    }
     const handleModal3=()=>{
-        setModal(false, ()=>setModal(<AttachParent studentID={id} g={getStudentParents} h={getStudentContacts} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AttachParent studentID={id} h={getStudentContacts} isOpen={true}/>))
     }
  
     return (
@@ -330,68 +300,13 @@ const StudentProfile = props => {
                         <TableHeader
                             title="Address Book"
                             subtitle="List of all the student's contacts" 
-                            viewButton={<>{activeTab === "first" && (
-                                <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Attach Parent</a>
-                            )}
-                            {activeTab === "second" && (
-                                <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Add Contact</a>
-                            )}</>} 
+                            viewButton={(
+                                <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Add Contact</a>
+                            )} 
                                 
                         />  
-                            <Tab.Container id="left-tabs-example" defaultActiveKey="first" onSelect={handleSelectTab}>
-            <Row>
-              <Col sm={12}>
-                <Nav variant="pills" className="flex-row mt-3">
-                  <Nav.Item>
-                    <Nav.Link size="sm" eventKey="first">
-                      Guardians{" "}
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link size="sm" eventKey="second">
-                      Contacts{" "}
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav>
-              </Col>
-
-              <Col sm={12}>
-                <Tab.Content>
-                  <Tab.Pane eventKey="first">
-                  <div className="border-top mt-1"></div>
-                    <div className="table-responsive">
-                    <table className="table table-hover text-nowrap mg-b-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">No.</th>
-                                        <th scope="col"> Names</th>
-                                        <th scope="col"> Contact Number</th>
-                                        <th scope="col"> Relationship</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array.isArray(studentParents) && studentParents.map((item, key) => (
-                                            
-                                             <tr key={key} >
-                                                <th scope="row">{key+1}</th>
-                                                <td>{item.full_name}</td>
-                                                <td>{item.main_contact}</td>
-                                                <td>{item.relationship}</td>
-                                            </tr>
-                                        ))
-                                   }
-                                   {studentParents === "404" && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians attached to this student yet.
-                          </td>
-                        </tr>)}
-                                </tbody>
-                            </table>
-                            {loading4 && <Loader/>}
-                            </div>
-                  </Tab.Pane>
-
-                  <Tab.Pane eventKey="second">
+                           
+                  
                   <div className="border-top mt-1"></div>
                    <div className="table-responsive">
                    <table className="table table-hover text-nowrap mg-b-0">
@@ -421,15 +336,7 @@ const StudentProfile = props => {
                                 </tbody>
                             </table>
                             {loading3 && <Loader/>}
-                            </div>
-
-                   
-                   
-                  </Tab.Pane>
-                </Tab.Content>
-              </Col>
-            </Row>
-          </Tab.Container>                
+                            </div>               
                             
                               
                         </div>

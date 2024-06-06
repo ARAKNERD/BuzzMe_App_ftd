@@ -104,7 +104,7 @@ useEffect(()=>{
   };
 
   return (
-    <AppContainer title="Register Parent / Guardian">
+    <AppContainer title="Register Contact">
       <Toaster position="top-center" reverseOrder={false} />
 
       <div className="row">
@@ -112,8 +112,8 @@ useEffect(()=>{
         <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h5 style={{marginBottom:0}} className="card-title">Parent / Guardian check</h5>
-                <p style={{color:"#042954"}}><small>Check whether parent or guardian is already registered in the system.</small></p>
+                <h5 style={{marginBottom:0}} className="card-title">Contact check</h5>
+                <p style={{color:"#042954"}}><small>Check whether contact is already registered in the system.</small></p>
          
               </div>
 
@@ -124,7 +124,7 @@ useEffect(()=>{
                       type="text"
                       value={searchedContact}
                       onChange={(e) => setSearchedContact(e.target.value)}
-                      placeholder="Enter the contact of parent / guardian..."
+                      placeholder="Enter the phone number of contact..."
                       className="form-control"
                     />
                   </div>
@@ -147,7 +147,7 @@ useEffect(()=>{
             <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-                <h5 style={{marginBottom:0}} className="card-title">Register New Parent / Guardian</h5>
+                <h5 style={{marginBottom:0}} className="card-title">Register New Contact</h5>
             <p><small><i>Note: All fields marked <span style={{color:"red"}}>*</span> are required.</i></small></p>
 
               </div>
@@ -160,7 +160,7 @@ useEffect(()=>{
                       type="text"
                       value={firstName}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter first name of parent or guardian.."
+                      placeholder="Enter first name of contact.."
                       onChange={(e) => setFirstName(e.target.value)}
                       className="form-control"
                     />
@@ -171,19 +171,19 @@ useEffect(()=>{
                       type="text"
                       value={lastName}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter last name of parent or guardian.."
+                      placeholder="Enter last name of contact.."
                       onChange={(e) => setLastName(e.target.value)}
                       className="form-control"
                     />
                   </div>
 
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Main Contact <span style={{color:"red"}}>*</span> </label>
+                    <label>Main Phone Number <span style={{color:"red"}}>*</span> </label>
                     <input
                       type="text"
                       value={mainContact}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter main contact of parent or guardian.."
+                      placeholder="Enter main number of contact.."
                       onChange={(e) => setMainContact(e.target.value)}
                       className="form-control"
                     />
@@ -194,18 +194,18 @@ useEffect(()=>{
                       type="text"
                       value={nin}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter NIN of parent or guardian.."
+                      placeholder="Enter NIN of contact.."
                       onChange={(e) => setNin(e.target.value)}
                       className="form-control"
                     />
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Alternative Contact </label>
+                    <label>Alternative Phone Number </label>
                     <input
                       type="text"
                       value={alternativeContact}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter alternative contact of parent or guardian.."
+                      placeholder="Enter alternative number of contact.."
                       onChange={(e) => setAlternativeContact(e.target.value)}
                       className="form-control"
                     />
@@ -229,7 +229,7 @@ useEffect(()=>{
                       type="text"
                       value={address}
                       style={{border: "1px solid grey"}}
-                      placeholder="Enter address of parent or guardian.."
+                      placeholder="Enter address of contact.."
                       onChange={(e) => setAddress(e.target.value)}
                       className="form-control"
                     />
@@ -241,7 +241,7 @@ useEffect(()=>{
                     style={{float: "right"}}
                     type="submit"
                     className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                    Save Parent Details
+                    Save Contact Details
                   </button>)}
                 </div>
               </form>
@@ -253,7 +253,7 @@ useEffect(()=>{
       
         <div className="box left-dot mb-30" style={{ marginBottom: "30px", backgroundColor: "white", padding: "25px", boxShadow: "10px", borderRadius: "10px" }}>
           <div className="box-header  border-0 pd-0">
-            <div className="box-title fs-20 font-w600">Parent Information</div>
+            <div className="box-title fs-20 font-w600">Contact Information</div>
           </div>
           <div className="box-body pt-20 user-profile">
             <div className="table-responsive">
@@ -327,8 +327,8 @@ useEffect(()=>{
           <div className="card-body">
             <div className="heading-layout1">
             <TableHeader
-                    title="Parents Registered Today"
-                    subtitle="List of the parents registered today"
+                    title="Contacts Registered Today"
+                    subtitle="List of the contacts registered today"
                   />
             </div>
   
@@ -337,7 +337,7 @@ useEffect(()=>{
                 <thead>
                   <tr>
                     <th>ID</th>
-                    <th>Parent Names</th>
+                    <th>Contact Names</th>
                     <th>Phone Number</th>
                     <th>Address</th>
                   </tr>
@@ -356,7 +356,7 @@ useEffect(()=>{
                         ))}
                         {recentGuardians === "404" && (<tr>
                           <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians registered yet.
+                            No contacts registered yet.
                           </td>
                         </tr>)}
                 </tbody>

@@ -99,7 +99,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <span><b>Parents</b></span>
+                  <span><b>Contacts</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                 <li className="nav-item">
@@ -107,7 +107,7 @@ const Sidebar = (props) => {
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">
-                        Register Parent
+                        Register Contact
                       </span>
                     </Link>
                   </li>
@@ -115,7 +115,7 @@ const Sidebar = (props) => {
                     <Link className="nav-link" to="/school-parents">
                       <FontAwesomeIcon icon={faAngleRight} />
 
-                      <span className="sidemenu-label">View Parents</span>
+                      <span className="sidemenu-label">View Contacts</span>
                     </Link>
                   </li>
                  
@@ -151,7 +151,7 @@ const Sidebar = (props) => {
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
-                  <span><b>Parents</b></span>
+                  <span><b>Contacts</b></span>
                 </Link>
                 <ul className="nav sub-group-menu">
                 <li className="nav-item">
@@ -159,7 +159,7 @@ const Sidebar = (props) => {
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">
-                        Register Parent
+                        Register Contact
                       </span>
                     </Link>
                   </li>
@@ -167,16 +167,10 @@ const Sidebar = (props) => {
                     <Link className="nav-link" to={"/parents"}>
                       <FontAwesomeIcon icon={faAngleRight} />
 
-                      <span className="sidemenu-label">View Parents</span>
+                      <span className="sidemenu-label">View Contacts</span>
                     </Link>
                   </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/relatives">
-                      <FontAwesomeIcon icon={faAngleRight} />
-
-                      <span className="sidemenu-label">View Relatives</span>
-                    </Link>
-                  </li>
+                  
                 </ul>
               </li>
               </RenderSecure>
