@@ -4579,6 +4579,7 @@ ul {
 =========================================================================*/
 /*=============== 7.1 Dashboard Page One ==================*/
 .dashboard-page-one {
+  margin-top: 95px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

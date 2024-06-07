@@ -57,8 +57,6 @@ const SchoolParentProfile = props => {
 
             first_name: firstName,
             last_name: lastName,
-            alternative_contact: alternativeContact,
-            main_contact: mainContact,
             address: address,
             nin: NIN,
             parent_id: parent
@@ -111,7 +109,7 @@ const SchoolParentProfile = props => {
     }, [parent, user.school])
  
     return (
-        <AppContainer title={"Guardian Profile"} >
+        <AppContainer title={"Contact Profile"} >
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -150,7 +148,7 @@ const SchoolParentProfile = props => {
                 {active?
                     <div className="box left-dot mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                         <div className="box-header  border-0 pd-0">
-                            <div className="box-title fs-20 font-w600"> Update Guardian Information</div>
+                            <div className="box-title fs-20 font-w600"> Update Contact Information</div>
                         </div>
                         <br/>
                         <div className="box-body pt-20 user-profile">
@@ -171,20 +169,6 @@ const SchoolParentProfile = props => {
                                 <div className="form-group">
 						            <div className="row row-sm">
                                     <div className="col-sm-6">
-                                            <label htmlFor="">Main Contact:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={mainContact} onChange={(e)=>setMainContact(e.target.value)} className="form-control"/>
-							            </div>
-								        <div className="col-sm-6">
-                                            <label htmlFor="">Alternative Contact:<span className="tx-danger">*</span></label>
-                                            <input type="text" defaultValue={alternativeContact} onChange={(e)=>setAlternativeContact(e.target.value)} className="form-control"/>
-							            </div>
-                                        
-                                       
-                                    </div>
-                                </div>
-                                <div className="form-group">
-						            <div className="row row-sm">
-                                    <div className="col-sm-6">
                                             <label htmlFor="">Address:<span className="tx-danger">*</span></label>
                                             <input type="text" defaultValue={address} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
 							            </div>
@@ -196,7 +180,7 @@ const SchoolParentProfile = props => {
                                     </div>
                                 </div>
               
-						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Guardian Details</button>
+						        <button className="btn btn-primary" style={{ width: "100%" }}>Update Contact Details</button>
 						    </form>
 					               
 				        </div>
@@ -205,7 +189,7 @@ const SchoolParentProfile = props => {
                 :
                     <div className="box left-dot mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                         <div className="box-header  border-0 pd-0">
-                            <div className="box-title fs-20 font-w600">Guardian Information</div>
+                            <div className="box-title fs-20 font-w600">Contact Information</div>
                         </div>
                         <div className="box-body pt-20 user-profile">
                             <div className="table-responsive">
@@ -249,7 +233,7 @@ const SchoolParentProfile = props => {
                     <div className="card-body map-card">
                         <TableHeader
                             title="Students"
-                            subtitle="List of the students under the parent's or guardian's care"
+                            subtitle="List of the students under the contact's care"
                             viewButton={
                                 <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Attach Student</a>
                                

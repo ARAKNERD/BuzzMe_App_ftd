@@ -104,7 +104,7 @@ function ViewStudents() {
 
   useEffect(() => {
       searchStudents();
-  }, []);
+  }, [user.school]);
 
   // ----------------------handles the view -----students printable codeslip -modal
   // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -135,8 +135,229 @@ function ViewStudents() {
     <AppContainer title="Students">
       <Toaster position="top-center" reverseOrder={false} />
 
+ 
       <div className="row">
-        <div className="col-12">
+      
+        <div className="col-lg-12">
+          <div className="card custom-card">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
+                <TableHeader
+                   title="Students List"
+                  subtitle="List of all the students sorted in ascending order"
+                />
+                <div class="dropdown">
+                                        <a class="dropdown-toggle" href="#" role="button" 
+                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <Link class="dropdown-item" onClick={getStudentList} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                                        
+                                        </div>
+                                    </div>
+              </div>
+              <form className="mg-b-20">
+              <div className="row gutters-8">
+                  <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <input
+                      type="text"
+                      value={query} onChange={(e) => {
+                        setQuery(e.target.value);
+                        if (e.target.value === '') {
+                          setStudents(e);
+                        }
+                      }}
+                      style={{border: "1px solid grey"}}
+                      placeholder="Search for student name..."
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                    <button
+                      type="submit"
+                      onClick={(e) => searchStudents(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                      SEARCH
+                    </button>
+                    <button
+                      type="submit"
+                      onClick={(e) => setStudents(e)}
+                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-2">
+                      RESET
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <div className="border-top mt-3"></div>
+              <div className="table-responsive">
+                <table className="table table-hover text-nowrap mg-b-0">
+                  <thead>
+                  <tr>
+                      <th>ID</th>
+                      <th>Names</th>
+                      <th>Gender</th>
+                      <th>Student Code</th>
+                      <th>Student Group</th>
+                      <th>Default Pin</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {studentSearch && Array.isArray(studentSearch) ? (
+                      
+                      studentSearch.map((item, key) => (
+                        <tr key={key}>
+                           <td style={{width:"5px"}}>{key + first + 1}</td>
+
+                            <td>
+                              <Link to={`/school-students/profile/${item.id}`}>
+                                {item.first_name} {item.last_name}
+                              </Link>
+                            </td>
+                            <td className="text-dark">{item.gender}</td>
+                            <td className="text-dark">{item.student_code}</td>
+                            <td className="text-dark">{item.group}</td>
+                            <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                          <OverlayTrigger
+                          placement="top"
+                          overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
+                             <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
+                            
+                            <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                                
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => getDefaultPin(e,item)}>
+                                <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
+
+                                Set Default Pin
+                              </Link>
+                              <Link className="dropdown-item" target="_blank "
+                                to={`/students/student_card/${item.id}/null/${user.school}`}>
+                              <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
+                              Get BuzzTime Card
+                            </Link>
+</div>
+                            </div>
+                          </td>
+                          </tr>
+                      ))
+                   
+                  ) :Array.isArray(studentList) && studentList.map((item, key) => (
+                    <tr key={key}>
+                    <td style={{width:"5px"}}>{key + first + 1}</td>
+                     <td>
+                       <Link to={`/school-students/profile/${item.id}`}>
+                       {item.first_name} {item.last_name}
+                       </Link>
+                     </td>
+                     <td className="text-dark">{item.gender}</td>
+                     <td className="text-dark">{item.student_code}</td>
+                     <td className="text-dark">{item.group}</td>
+                    
+                     <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+                     <OverlayTrigger
+                     placement="top"
+                     overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
+                        <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
+                     <td>
+                       <div className="dropdown">
+                         <Link
+                           to="#"
+                           className="dropdown-toggle"
+                           data-toggle="dropdown"
+                           aria-expanded="false">
+                           <span className="flaticon-more-button-of-three-dots"></span>
+                         </Link>
+                         <div className="dropdown-menu dropdown-menu-right">
+                           
+                           <Link
+                           className="dropdown-item"
+                           to="#"
+                           onClick={(e) => getDefaultPin(e,item)}>
+                           <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
+                           Set Default Pin
+                         </Link>
+                         <Link className="dropdown-item" target="_blank "
+                           to={`/students/student_card/${item.id}/null/${user.school}`}>
+                         <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
+                         Get BuzzTime Card
+                       </Link>
+</div>
+                       </div>
+                     </td>
+                   </tr>
+                      ))}
+                      {studentList === "404" && (<tr>
+                          <td colSpan="7" style={{textAlign: "center"}}>
+                            No calling stations registered yet.
+                          </td>
+                        </tr>)}
+                        {studentSearch.length === 0 && (<tr>
+                          <td colSpan="7" style={{textAlign: "center"}}>
+                            No search result(s) found.
+                          </td>
+                        </tr>)}
+                  </tbody>
+                  <div
+                    className="align-items-center justify-content-center pos-absolute"
+                    style={{left: "50%"}}>
+                    <button
+                      className="btn btn-dark"
+                      style={{borderRight: "1px solid yellow"}}
+                      onClick={setPreviousPageNumber}>
+                      <i className="fa fa-angle-left mr-2"></i> Prev
+                    </button>
+                    {Array.isArray(meta) &&
+                      meta.map((item) =>
+                        page === item ? (
+                          <button
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-primary">
+                            {item}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => setPageNumber(e, item)}
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-dark">
+                            {item}
+                          </button>
+                        )
+                      )}
+
+                    <button
+                      style={{borderRight: "1px solid yellow"}}
+                      className="btn btn-dark"
+                      onClick={setNextPageNumber}>
+                      Next<i className="fa fa-angle-right ml-2"></i>
+                    </button>
+                  </div>
+                </table>
+                {loading && <Loader />}
+                {loading2 && <Loader />}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </AppContainer>
+  );
+}
+
+export default ViewStudents;
+{/* <div className="col-12">
           <div
             className="card custom-card"
             style={{marginTop: "25px", borderRadius: "10px"}}>
@@ -357,10 +578,4 @@ function ViewStudents() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </AppContainer>
-  );
-}
-
-export default ViewStudents;
+        </div> */}

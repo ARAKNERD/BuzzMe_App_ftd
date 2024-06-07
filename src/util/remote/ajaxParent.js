@@ -106,7 +106,12 @@ export default {
     let response = await apiCall("link/parents/school", data);
     return response;
   },
-  async searchSchoolParents(data) {
+  async searchSchoolParents(search, school_id, page) {
+    let data = {
+      "search":search,
+      "school_id":school_id,
+      "page": page,
+    };
     let response = await apiCall("link/parents/school", data);
     return response;
   },
