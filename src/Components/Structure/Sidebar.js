@@ -27,7 +27,7 @@ const Sidebar = (props) => {
   };
   return (
     <>
-      <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color">
+      <div className="sidebar-main sidebar-menu-one sidebar-expand-md sidebar-color position-fixed" style={{ left: 0, marginTop: "90px" }}>
         <div className="mobile-sidebar-header d-md-none">
           <div className="header-logo">
             <Link to="/">

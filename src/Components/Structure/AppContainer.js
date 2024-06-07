@@ -26,7 +26,7 @@ export default function AppContainer(props) {
           {/* Sidebar Area */}
           <Sidebar />
 
-          <div className="dashboard-content-one">
+          <div className="dashboard-content-one" style={{ paddingLeft: "280px" }} >
             {/* Page Header */}
             <PageHeader title={props.title} />
 

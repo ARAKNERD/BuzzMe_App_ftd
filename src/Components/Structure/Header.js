@@ -27,12 +27,12 @@ export default function Header(props) {
   return (
     <>
       {/* Header Menu Area Start Here */}
-      <div className="navbar navbar-expand-md header-menu-one bg-light">
+      <div className="navbar navbar-expand-md header-menu-one bg-light fixed-top">
         <div className="nav-bar-header-one">
           <div className="header-logo">
             <a href="/">
               <img
-                src={process.env.PUBLIC_URL + "/assets/img/logo.png"}
+                src={process.env.PUBLIC_URL + "/assets/img/logo5.png"}
                 alt="logo"
                 style={{width: "190px", height: "80px"}}
               />
@@ -135,145 +135,7 @@ export default function Header(props) {
                 </div>
               </div>
             </li>
-            {/* <li className="navbar-item dropdown header-message">
-              <a
-                className="navbar-nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                <i className="far fa-envelope" />
-                <div className="item-title d-md-none text-16 mg-l-10">
-                  Message
-                </div>
-                <span>0</span>
-              </a>
-
-              <div className="dropdown-menu dropdown-menu-right">
-                <div className="item-header">
-                  <h6 className="item-title">0 Message</h6>
-                </div>
-                <div className="item-content">
-                  <div className="media">
-                    <div className="item-img bg-skyblue author-online">
-                      <img src="./assets/img/figure/student11.png" alt="img" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="item-title">
-                        <a href="#">
-                          <span className="item-name">Maria Zaman</span>
-                          <span className="item-time">18:30</span>
-                        </a>
-                      </div>
-                      <p>
-                        What is the reason of buy this item. Is it usefull for
-                        me.....
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media">
-                    <div className="item-img bg-yellow author-online">
-                      <img src="./assets/img/figure/student12.png" alt="img" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="item-title">
-                        <a href="#">
-                          <span className="item-name">Benny Roy</span>
-                          <span className="item-time">10:35</span>
-                        </a>
-                      </div>
-                      <p>
-                        What is the reason of buy this item. Is it usefull for
-                        me.....
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media">
-                    <div className="item-img bg-pink">
-                      <img src="./assets/img/figure/student13.png" alt="img" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="item-title">
-                        <a href="#">
-                          <span className="item-name">Steven</span>
-                          <span className="item-time">02:35</span>
-                        </a>
-                      </div>
-                      <p>
-                        What is the reason of buy this item. Is it usefull for
-                        me.....
-                      </p>
-                    </div>
-                  </div>
-                  <div className="media">
-                    <div className="item-img bg-violet-blue">
-                      <img src="./assets/img/figure/student11.png" alt="img" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="item-title">
-                        <a href="#">
-                          <span className="item-name">Joshep Joe</span>
-                          <span className="item-time">12:35</span>
-                        </a>
-                      </div>
-                      <p>
-                        What is the reason of buy this item. Is it usefull for
-                        me.....
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li className="navbar-item dropdown header-notification">
-              <a
-                className="navbar-nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                <i className="far fa-bell" />
-                <div className="item-title d-md-none text-16 mg-l-10">
-                  Notification
-                </div>
-                <span>8</span>
-              </a>
-
-              <div className="dropdown-menu dropdown-menu-right">
-                <div className="item-header">
-                  <h6 className="item-title">0 Notifiacations</h6>
-                </div>
-                <div className="item-content">
-                  <div className="media">
-                    <div className="item-icon bg-skyblue">
-                      <i className="fas fa-check" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="post-title">Complete Today Task</div>
-                      <span>1 Mins ago</span>
-                    </div>
-                  </div>
-                  <div className="media">
-                    <div className="item-icon bg-orange">
-                      <i className="fas fa-calendar-alt" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="post-title">Director Metting</div>
-                      <span>20 Mins ago</span>
-                    </div>
-                  </div>
-                  <div className="media">
-                    <div className="item-icon bg-violet-blue">
-                      <i className="fas fa-cogs" />
-                    </div>
-                    <div className="media-body space-sm">
-                      <div className="post-title">Update Password</div>
-                      <span>45 Mins ago</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li> */}
+            
           </ul>
         </div>
       </div>
