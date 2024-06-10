@@ -174,7 +174,7 @@ function ViewParents() {
                         <tr key={key}>
                         <th scope='row' style={{width:"5px"}}>{key + 1}</th>
                         <td><Link
-                        to={`/school-parents/profile/${item.parent_id}`}>
+                        to={`/parents/profile/${item.parent_id}`}>
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>
@@ -186,7 +186,7 @@ function ViewParents() {
                     <tr key={key}>
                         <th scope='row' style={{width:"5px"}}>{key + first + 1}</th>
                         <td><Link
-                        to={`/school-parents/profile/${item.parent_id}`}>
+                        to={`/parents/profile/${item.parent_id}`}>
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>

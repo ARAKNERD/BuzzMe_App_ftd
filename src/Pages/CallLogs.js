@@ -18,7 +18,6 @@ function CallLogs() {
     setLoading2(true);
     const server_response = await ajaxCallStation.listCallLogs();
     setLoading2(false);
-    console.log(server_response)
     if (server_response.status === "OK") {
       setLogsList(server_response.details);
     }else {
