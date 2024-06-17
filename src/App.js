@@ -49,6 +49,7 @@ import AirtimeTransactions from "./Pages/Transactions/AirtimeTransactions";
 import AllTransactions from "./Pages/Transactions/AllTransactions";
 import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
 import ViewAllRelatives from "./Pages/Parents/ViewAllRelatives";
+import SchoolDashboard from "./Pages/SchoolDashboard";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -65,7 +66,9 @@ function App(props) {
     checkLogin();
   }, []);
 
+  const role = functions.checkRole();
   const secure = functions.checkSecureAccount();
+
 
   return (
     <SuperProvider>
@@ -83,6 +86,7 @@ function App(props) {
               />
             </>
           )}
+
           {loggedIn && secure * 1 === 0 && (
             <>
               <Route path="/Activate/account" element={<ActivateAccount />} />
@@ -92,8 +96,7 @@ function App(props) {
               />
             </>
           )}
-
-          {loggedIn && secure * 1 === 1 && (
+          {loggedIn && role * 1 < 3 && (
             <>
               <Route path="*" element={<Dashboard />} />
               <Route path="/" element={<Dashboard />} />
@@ -107,6 +110,29 @@ function App(props) {
                 path="/login"
                 element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}
               />
+            </>
+          )}
+
+          {loggedIn && role * 1 === 3 && (
+            <>
+              <Route path="*" element={<SchoolDashboard />} />
+              <Route path="/" element={<SchoolDashboard />} />
+              <Route
+                path="/"
+                element={
+                  !loggedIn ? <Navigate replace to="/login" /> : <SchoolDashboard />
+                }
+              />
+              <Route
+                path="/login"
+                element={loggedIn ? <Navigate replace to="/" /> : <LoginPage />}
+              />
+            </>
+          )}
+
+          {loggedIn && (
+            <>
+              
               {/* School routes */}
               <Route path="/schools/view" element={<ViewSchool />} />
               <Route path="/schools/add" element={<AddSchool />} />

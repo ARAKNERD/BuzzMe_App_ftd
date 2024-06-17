@@ -69,6 +69,10 @@ export default {
     let response = await apiCall("student/count", data);
     return response;
   },
+  async fetchAllStudentsNumber(data) {
+    let response = await apiCall("student/count", data);
+    return response;
+  },
   async fetchStudentData(data) {
     let response = await apiCall("student/studentInfo", data);
 

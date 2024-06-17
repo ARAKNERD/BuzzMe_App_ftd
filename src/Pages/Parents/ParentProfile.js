@@ -82,7 +82,6 @@ const ParentProfile = props => {
         setLoading2(true)
         const server_response = await ajaxParent.fetchChildren(id);
         setLoading2(false)
-        console.log(server_response)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
         }else{

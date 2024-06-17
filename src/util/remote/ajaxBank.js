@@ -4,12 +4,27 @@ import apiCall from "./apiCall";
 export default {
  
 
-  async fetchBankTransactions(data) {
+  async fetchBankTransactions(page) {
+    let data = {
+      page: page
+    };
     let response = await apiCall("bank/list", data);
     return response;
   },
   async searchBankTransactions(data) {
     let response = await apiCall("bank/list", data);
+    return response;
+  },
+  async fetchRecentTransactions(data) {
+    let response = await apiCall("bank/recent", data);
+    return response;
+  },
+  async fetchBuzzTimeUsed(data) {
+    let response = await apiCall("buzz_time/used", data);
+    return response;
+  },
+  async fetchBuzzTimeLoaded(data) {
+    let response = await apiCall("buzz_time/loaded", data);
     return response;
   },
 

@@ -18,14 +18,16 @@ function AllTransactions() {
   const [endDate, setEndDate] = useState("");
   const [loading2, setLoading2] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [page,setPage] = useState(1)
+  const [meta,setMeta] = useState("")
 
   const getTransactions = async () => {
     setLoading(true);
-    const server_response = await ajaxBank.fetchBankTransactions();
+    const server_response = await ajaxBank.fetchBankTransactions(page);
     setLoading(false);
     if (server_response.status === "OK") {
-      setTransactionList(server_response.details);
+      setMeta(server_response.details.meta.list_of_pages);
+      setTransactionList(server_response.details.list);
 
     }else {
       setTransactionList("404");
@@ -39,7 +41,8 @@ function AllTransactions() {
       var data = {
         search: searchTerm,
         from: startDate,
-        to: endDate
+        to: endDate,
+        page: page
       };
         setLoading2(true);
         const server_response = await ajaxBank.searchBankTransactions(data);
@@ -48,7 +51,8 @@ function AllTransactions() {
             if (server_response.details.length === 0) {
                 setTransactionSearch([]);
             } else {
-                setTransactionSearch(server_response.details);
+              setMeta(server_response.details.meta.list_of_pages);
+              setTransactionSearch(server_response.details.list);
             }
         } else {
             setTransactionSearch("404");
@@ -89,10 +93,35 @@ function AllTransactions() {
     pdf.save("airtime_data.pdf");
   };
 
+  const setNextPageNumber = () =>{
+    if(meta.length===page){
+      
+    }
+    else{
+      setPage(page+1)
+    }
+    
+  }
+
+  const setPreviousPageNumber = () =>{
+    if(page===1){
+      
+    }
+    else{
+      setPage(page-1)
+    }
+    
+  }
+  const setPageNumber = (e,item) =>{
+    setPage(item)
+  }
+
   useEffect(() => {
-    getTransactions();
     searchTransactions();
   }, []);
+  useEffect(() => {
+    getTransactions();
+  }, [page]);
 
   return (
     <AppContainer title="All Transactions">
@@ -123,7 +152,7 @@ function AllTransactions() {
                   <div className="col-lg-4">
                     <input
                       type="text"
-                      placeholder="Enter student name or student code..."
+                      placeholder="Enter student name..."
                       style={{border: "1px solid grey"}}
                       value={searchTerm} onChange={(e) => {
                         setSearchTerm(e.target.value);
@@ -199,12 +228,12 @@ function AllTransactions() {
                       transactionSearch.map((item, key) => (
                         <tr key={key}>
                           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account?.account_code}</span></td>
+                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account}</span></td>
                           
                           <td style={{textAlign:"center"}}><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account?.account_code ==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
                           {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                           item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                          <td style={{textAlign:"right"}}>{item.full_name}<br/><small>{item.school_name}</small></td>
+                          <td style={{textAlign:"right"}}>{item.student}<br/><small>{item.school}</small></td>
                         </tr>
                       ))
                    
@@ -232,6 +261,20 @@ function AllTransactions() {
   </tr>
 )}
             </tbody>
+            <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+      <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+            {Array.isArray(meta) && meta.map((item)=>
+            page===item?
+            <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+            :
+            <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+            )}
+  
+  
+            <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                  </div>
           </table>
           {loading && <Loader/>}
           {loading2 && <Loader/>}
