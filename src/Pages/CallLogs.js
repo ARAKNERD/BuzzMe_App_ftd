@@ -12,14 +12,16 @@ function CallLogs() {
 
   const [logsList, setLogsList] = useState(false);
   const [loading2, setLoading2] = useState(false);
-
+  const [page,setPage] = useState(1)
+  const [meta,setMeta] = useState("")
 
   const getLogsList = async () => {
     setLoading2(true);
-    const server_response = await ajaxCallStation.listCallLogs();
+    const server_response = await ajaxCallStation.listCallLogs(page);
     setLoading2(false);
     if (server_response.status === "OK") {
-      setLogsList(server_response.details);
+      setMeta(server_response.details.meta.list_of_pages);
+      setLogsList(server_response.details.list);
     }else {
       setLogsList("404");
     }
@@ -50,9 +52,32 @@ function CallLogs() {
     pdf.save("call_log_data.pdf");
   };
 
+  const setNextPageNumber = () =>{
+    if(meta.length===page){
+      
+    }
+    else{
+      setPage(page+1)
+    }
+    
+  }
+
+  const setPreviousPageNumber = () =>{
+    if(page===1){
+      
+    }
+    else{
+      setPage(page-1)
+    }
+    
+  }
+  const setPageNumber = (e,item) =>{
+    setPage(item)
+  }
+
   useEffect(() => {
     getLogsList();
-  }, []);
+  }, [page]);
 
   return (
     <AppContainer title="Call Logs">
@@ -142,7 +167,7 @@ function CallLogs() {
                          <td>{item.created_at.long_date}</td>
                          <td className="text-dark">{item.student}</td>
                          <td className="text-dark">{item.contact_name}</td>
-                         <td>{item.duration} minutes</td>
+                         <td>{item.duration_format}</td>
                          
                          
                        </tr>
@@ -165,6 +190,20 @@ function CallLogs() {
                      </tr>)}
                     
             </tbody>
+            <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+          {Array.isArray(meta) && meta.map((item)=>
+          page===item?
+          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+          :
+          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+          )}
+
+
+					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                </div>
           </table>
         </div>
       </div>

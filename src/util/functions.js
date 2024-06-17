@@ -51,6 +51,15 @@ export default {
       return 0;
     }
   },
+  checkRole() {
+    if (localStorage.getItem("buzzMe@user")) {
+      const access_token = localStorage.getItem("buzzMe@user");
+      const decorded_token = this.parseJwt(access_token);
+      return decorded_token["data"]["role_id"];
+    } else {
+      return 0;
+    }
+  },
 
   db_date(objDate) {
     const month = (objDate.getMonth() + 1).toString();

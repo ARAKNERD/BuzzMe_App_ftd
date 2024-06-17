@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import ajaxUser from "../util/remote/ajaxUser";
 import Loader from "../Components/Common/Loader";
 import Alert from "../Components/Common/Alert";
+import functions from "../util/functions";
 
 function Login() {
   const navigate = useNavigate();
@@ -11,11 +12,13 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState("");
   const [passView, setPassV] = useState(false);
+
   const togglePasswordVisibility = () => {
     setPassV(!passView);
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setLoading(true);
 
@@ -27,11 +30,22 @@ function Login() {
     setLoading(false);
 
     if (server_response.status === "OK") {
-      localStorage.setItem("buzzMe@user", server_response.details);
-      navigate("/");
-      window.location.reload();
 
+      localStorage.setItem("buzzMe@user", server_response.details);
       setInfo(<Alert type="success" message={server_response.message} />);
+
+      const access_token = localStorage.getItem('buzzMe@user');
+      const decorded_token = functions.parseJwt(access_token);
+      const role = decorded_token['data']['role_id'];
+      const secure = decorded_token['data']['secure'];
+      if(secure === "0"){
+        navigate("/Activate/account");
+        window.location.reload();
+      }
+     else {
+        navigate('/');
+        window.location.reload();
+        }
     } else {
       setInfo(<Alert type="danger" message={server_response.message} />);
     }

@@ -18,12 +18,18 @@ export default {
     let response = await apiCall("station/count", data);
     return response;
   },
-
+  async countAllStations(data) {
+    let response = await apiCall("station/count", data);
+    return response;
+  },
   async updateAccount(data) {
     let response = await apiCall("account/update", data);
     return response;
   },
-  async listCallLogs(data) {
+  async listCallLogs(page) {
+    let data = {
+      page: page
+    };
     let response = await apiCall("call_log/list", data);
     return response;
   },
@@ -36,6 +42,18 @@ export default {
       school_id: school
     };
     let response = await apiCall("call_log/count/today", data);
+    return response;
+  },
+  async countWeeklyCalls(data) {
+    let response = await apiCall("call_log/weekly", data);
+    return response;
+  },
+  async countLogsThisWeek(data) {
+    let response = await apiCall("call_log/count/this_week", data);
+    return response;
+  },
+  async countLogsThisMonth(data) {
+    let response = await apiCall("call_log/count/this_month", data);
     return response;
   },
 };
