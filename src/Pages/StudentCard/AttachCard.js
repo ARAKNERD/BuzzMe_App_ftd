@@ -1,26 +1,21 @@
 import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxStudent from "../../util/remote/ajaxStudent";
-import ajaxParent from "../../util/remote/ajaxParent";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
-import Select from "react-select";
-import RelationshipContext from "../../Context/RelationshipContext";
 import TableHeader from "../../Components/Common/TableHeader";
+import ajaxCard from "../../util/remote/ajaxCard";
+import {Link} from "react-router-dom";
 
 
-const AddStudentParent=(props)=>{
+const AttachCard=(props)=>{
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
     const [student,setStudent] =useState("")
     const [fullName,setFullName] =useState("")
-    const [studentCode,setStudentCode] =useState("")
     const [page, setPage] = useState(1);
-
-    const [relationship,setRelationship] =useState("")
     const [query, setQuery] = useState("");
     const [querySearch, setQuerySearch] = useState(null);
-    const {relationList} = useContext(RelationshipContext);
 
     const [active1,setActive1] = useState(false)
     const handleActive1 = ()=> setActive1(true)
@@ -28,8 +23,7 @@ const AddStudentParent=(props)=>{
 
     const data={
         student_id: student,
-        parent_id: props.parentID,
-        relationship_id: relationship
+        card_id: props.cardID,
     }
 
     const setDetails = (e,item) =>{
@@ -37,14 +31,18 @@ const AddStudentParent=(props)=>{
         handleActive1()
         setStudent(item.id)
         setFullName(item.full_name)
-        setStudentCode(item.student_code)
+    }
+
+    const backPage = (e) =>{
+        e.preventDefault()
+        handleInActive1()
     }
 
     const setStudents = (e) => {
-      e.preventDefault();
-      setQuerySearch(false);
-      setQuery("");
-    };
+        e.preventDefault();
+        setQuerySearch(false);
+        setQuery("");
+      };
 
     const searchStudent =async(e)=>{
         e.preventDefault();  
@@ -66,19 +64,20 @@ const AddStudentParent=(props)=>{
 
     const handleAdd = async(e) =>{
         e.preventDefault()
-        if (relationship.length > 0) {
+        if (student.length > 0) {
             setLoading(true)
-            const server_response = await ajaxParent.addGuardianStudent(data);
+            const server_response = await ajaxCard.attachCard(data);
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 props.g();
+                props.h();
             }
             else{
                 toast.error(server_response.message); 
             }
         } else {
-            toast.error("Please select the relationship to the student!");
+            toast.error("Please select a student!");
           } 
     }
     
@@ -94,86 +93,50 @@ const AddStudentParent=(props)=>{
                     {active1 &&<button 
                         type="button" 
                         className={`btn-fill-md text-light bg-dodger-blue`} 
-                        onClick={handleAdd}>Attach Student<i class="fas fa-check mg-l-15"></i></button>}
+                        onClick={handleAdd}>Assign Card<i class="fas fa-check mg-l-15"></i></button>}
                     </>
         }
     }
 
     return(
         <SystemModal
-            title="Attach Student"
-            id="model-new-stu-guardian"
+            title="Assign Card"
+            id="model-assign-card"
             size="lg"
             footer={RenderFooter}
         >
 
-{active1?<><div className="box-header  border-0 pd-0">
-                <div className="box-title fs-20 font-w600">Student Information</div>
-              </div>
-              <div className="box-body pt-20 user-profile">
-                <div className="table">
-                  <table className="table mb-5 mw-100 color-span">
-                      <tbody>
-                        <tr>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="w-50">Names </span>{" "}
-                          </td>
-                          <td>:</td>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="">{fullName}</span>{" "}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="w-50">Student Code</span>{" "}
-                          </td>
-                          <td>:</td>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="">{studentCode}</span>{" "}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="w-50">Relationship to Student </span>{" "}
-                          </td>
-                          <td>:</td>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="">
-                            <Select
-                      onChange={(e) => setRelationship(e.id)}
-                      getOptionLabel={(option) => option.relationship}
-                      getOptionValue={(option) => option.id}
-                      isSearchable
-                      options={Array.isArray(relationList) ? relationList : []}
-                      value={
-                        Array.isArray(relationList) &&
-                        relationList.find((value) => value.id === relationship)
-                      }
-                    /></span>{" "}
-                          </td>
-                        </tr>
-                       
-                      </tbody>
-                  </table>
-                </div>
+{active1?<><div className="pl-20">
+    <a href="#" onClick={backPage}  className="btn btn-info mr-2"><i className="far fa-circle-left mr-1"></i>Student Search</a>
+          </div>
+              <div className="rfid_card_body">
+              
+                <div class="rfid_card">
+	                <div class="rfid_card__info">
+		                <div class="rfid_card__logo">Buzz Time Card</div>
+		                    <div class="rfid_card__number">
+			                    <span class="rfid_card__digit-group">{props.cardNumber}</span>
+		                    </div>
+		                    <div class="rfid_card__name">{fullName}</div>
+		                    {/* <div class="rfid_card__vendor" role="img" aria-labelledby="card-vendor">
+			                    <span id="card-vendor" class="card__vendor-sr">Mastercard</span>
+		                    </div> */}
+	</div>
+	
+</div>
               </div></>:<><div className="row gutters-8">
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
                       value={query}
+                      style={{border: "1px solid grey"}}
                       onChange={(e) => {
                         setQuery(e.target.value);
                         if (e.target.value === '') {
                           setStudents(e);
                         }
                       }}
-                      placeholder="Search for student name..."
+                      placeholder="Search for name of student..."
                       className="form-control"
                     />
                   </div>
@@ -199,7 +162,6 @@ const AddStudentParent=(props)=>{
                                     <tr>
                                         <th scope="col">No.</th>
                                         <th scope="col"> Names</th>
-                                        <th scope="col"> Student Code</th>
                                         <th scope="col"> School</th>
                                         <th scope="col"> Actions</th>
                                     </tr>
@@ -210,7 +172,6 @@ const AddStudentParent=(props)=>{
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
                                                 <td>{item.full_name}</td>
-                                                <td>{item.student_code}</td>
                                                 <td>{item.school}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 
                                                 ><i class="fas fa-check"></i></button></td>
@@ -232,4 +193,4 @@ const AddStudentParent=(props)=>{
     )
 }
 
-export default AddStudentParent
+export default AttachCard

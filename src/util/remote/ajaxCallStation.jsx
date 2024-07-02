@@ -56,4 +56,11 @@ export default {
     let response = await apiCall("call_log/count/this_month", data);
     return response;
   },
+  async countStudentLogs(student) {
+    let data = {
+      student: student
+    };
+    let response = await apiCall("call_log/count", data);
+    return response;
+  },
 };

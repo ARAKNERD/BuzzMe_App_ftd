@@ -69,6 +69,7 @@ const AttachParent=(props)=>{
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 props.h();
+                props.j();
             }
             else{
                 toast.error(server_response.message); 

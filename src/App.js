@@ -50,6 +50,7 @@ import AllTransactions from "./Pages/Transactions/AllTransactions";
 import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
 import ViewAllRelatives from "./Pages/Parents/ViewAllRelatives";
 import SchoolDashboard from "./Pages/SchoolDashboard";
+import ListCards from "./Pages/StudentCard/ListCards";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -100,6 +101,9 @@ function App(props) {
             <>
               <Route path="*" element={<Dashboard />} />
               <Route path="/" element={<Dashboard />} />
+              <Route path="/students/register" element={<AdminRegisterStudent />} />
+              <Route path="/students" element={<ViewAllStudents />} />
+              <Route path="/contacts" element={<ViewParents />} />
               <Route
                 path="/"
                 element={
@@ -117,6 +121,9 @@ function App(props) {
             <>
               <Route path="*" element={<SchoolDashboard />} />
               <Route path="/" element={<SchoolDashboard />} />
+              <Route path="/students/register" element={<AddStudent />} />
+              <Route path="/students" element={<ViewStudents />} />
+              <Route path="/contacts" element={<ViewSchoolParents />} />
               <Route
                 path="/"
                 element={
@@ -162,22 +169,22 @@ function App(props) {
               <Route path="/accounts/add" element={<AddAccount />} />
               {/* End Account routes */}
               {/* Parents */}
-              <Route path="/parents" element={<ViewParents />} />
-              <Route path="/school-parents" element={<ViewSchoolParents />} />
+             
+              
               <Route path="/parents/add" element={<AddParent />} />
               <Route path="/parents/profile/:id" element={<ParentProfile />} />
               <Route path="/school-parents/profile/:parent/" element={<SchoolParentProfile />} />
               {/* End parent */}
               {/* Students */}
-              <Route path="/school-students" element={<ViewStudents />} />
-              <Route path="/students" element={<ViewAllStudents />} />
+              
+              
               
               <Route
                 path="/students/student_card/:student_id?/:group_id?/:school_id?"
                 element={<StudentCards />}
               />
-              <Route path="/students/add" element={<AddStudent />} />
-              <Route path="/students/register" element={<AdminRegisterStudent />} />
+              
+              
               <Route path="/students/import" element={<ImportStudents />} />
               <Route path="/students/upload" element={<AdminImportStudents />} />
               <Route
@@ -213,6 +220,7 @@ function App(props) {
               <Route path="/transactions/all" element={<AllTransactions />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
               <Route path="/relatives" element={<ViewAllRelatives />} />
+              <Route path="/buzz-cards" element={<ListCards />} />
 
 
             </>

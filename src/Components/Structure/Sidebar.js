@@ -1,13 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import {Link} from "react-router-dom";
 import {RenderSecure} from "../../util/script/RenderSecure";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleRight} from "@fortawesome/free-solid-svg-icons";
-import AuthContext from "../../Context/AuthContext";
 
 
 const Sidebar = (props) => {
-  const {user} = useContext(AuthContext);
   const toggleDropdown = (e) => {
     // e.preventDefault();
     // Toggle the "show" class on the main menu item
@@ -70,59 +68,9 @@ const Sidebar = (props) => {
                   
                 </ul>
               </li>
+              
             </RenderSecure>
-
-            <RenderSecure code="SCHOOL-USER-VIEW">
-              <li
-                className="nav-item sidebar-nav-item"
-                onClick={(e) => toggleDropdown(e)}>
-                <Link to="#" className="nav-link">
-                  <span><b>Students</b></span>
-                </Link>
-                <ul className="nav sub-group-menu">
-                  <li className="nav-item">
-                    <Link to="/students/add" className="nav-link">
-                      <FontAwesomeIcon icon={faAngleRight} />
-                      Register Student
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/school-students">
-                      <FontAwesomeIcon icon={faAngleRight} />
-
-                      <span className="sidemenu-label">View Students</span>
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-              <li
-                className="nav-item sidebar-nav-item"
-                onClick={(e) => toggleDropdown(e)}>
-                <Link to="#" className="nav-link">
-                  <span><b>Contacts</b></span>
-                </Link>
-                <ul className="nav sub-group-menu">
-                <li className="nav-item">
-                    <Link className="nav-link" to="/parents/add">
-                      <FontAwesomeIcon icon={faAngleRight} />
-
-                      <span className="sidemenu-label">
-                        Register Contact
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/school-parents">
-                      <FontAwesomeIcon icon={faAngleRight} />
-
-                      <span className="sidemenu-label">View Contacts</span>
-                    </Link>
-                  </li>
-                 
-                </ul>
-              </li>
-            </RenderSecure>
-            <RenderSecure code="ADMIN-VIEW">
+          
              
               <li
                 className="nav-item sidebar-nav-item"
@@ -164,7 +112,7 @@ const Sidebar = (props) => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to={"/parents"}>
+                    <Link className="nav-link" to={"/contacts"}>
                       <FontAwesomeIcon icon={faAngleRight} />
 
                       <span className="sidemenu-label">View Contacts</span>
@@ -173,7 +121,7 @@ const Sidebar = (props) => {
                   
                 </ul>
               </li>
-              </RenderSecure>
+             
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">
@@ -196,30 +144,17 @@ const Sidebar = (props) => {
 
 
             <RenderSecure code="ADMIN-VIEW">
+            
             <li className="nav-item">
                 <Link to="/transactions/all" className="nav-link">
                   <span><b>Transactions</b></span>
                 </Link>
               </li>
-            {/* <li
-                className="nav-item sidebar-nav-item"
-                onClick={(e) => toggleDropdown(e)}>
-                <Link to="#" className="nav-link">
-                  <span><b>Transactions</b></span>
+              <li className="nav-item">
+                <Link to="/buzz-cards" className="nav-link">
+                  <span><b>Buzz Cards</b></span>
                 </Link>
-                <ul className="nav sub-group-menu">
-
-                  
-                  <li className="nav-item">
-                    <Link to="/transactions/all" className="nav-link">
-                      <i className="fas fa-angle-right" />
-                      View All Transactions
-                    </Link>
-                  </li>
-                </ul>
-              </li> */}
-              </RenderSecure>
-              <RenderSecure code="ADMIN-VIEW">
+              </li>
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>

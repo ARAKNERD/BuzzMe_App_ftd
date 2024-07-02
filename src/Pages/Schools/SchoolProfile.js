@@ -13,6 +13,11 @@ import ajaxStation from '../../util/remote/ajaxStation';
 import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
 import AuthContext from '../../Context/AuthContext';
 import AddGroup from '../StudentGroups/AddGroup';
+import ajaxCallStation from '../../util/remote/ajaxCallStation';
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
 
 const SchoolProfile = props => {
     const [schoolProfile, setSchoolProfile] = useState(false);
@@ -21,8 +26,13 @@ const SchoolProfile = props => {
     const [schoolStudents, setSchoolStudents] = useState(false);
     const [schoolStations, setSchoolStations] = useState(false);
   const [studentSearch, setStudentSearch] = useState(false);
+  const [studentCount, setStudentCount] = useState(false);
+  const [stationCount, setStationCount] = useState(false);
+
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
+  const [page1,setPage1] = useState(1)
+  const [meta1,setMeta1] = useState("")
   const {user} = useContext(AuthContext);
 
     const {districtList} = useContext(DistrictContext);
@@ -46,6 +56,8 @@ const SchoolProfile = props => {
     const handleActive = ()=> setActive(true)
     const handleInActive = ()=> setActive(false)
     const [loading,setLoading] = useState(false)
+    const [loading1,setLoading1] = useState(false)
+
     const [loading2,setLoading2] = useState(false)
     const [loading3,setLoading3] = useState(false)
     const [loading4,setLoading4] = useState(false)
@@ -104,6 +116,7 @@ const SchoolProfile = props => {
         if(server_response.status === "OK"){
             toast.success(server_response.message)
             getSchoolProfile()
+            handleInActive()
         }
     };
 
@@ -132,8 +145,28 @@ const SchoolProfile = props => {
         }
     };
 
+    const countSchoolStudents = async () => {
+      const server_response = await ajaxStudent.fetchStudentNumber(id);
+      if (server_response.status === "OK") {
+          setStudentCount(server_response.details);
+      } else {
+          setStudentCount("404");
+      }
+  };
+
+  const countSchoolStations = async () => {
+    const server_response = await ajaxCallStation.callStation_count(id);
+    if (server_response.status === "OK") {
+        setStationCount(server_response.details);
+    } else {
+        setStationCount("404");
+    }
+};
+
     const getGroups = async () => {
+      setLoading1(true)
         const server_response = await ajaxStudentGroup.fetchGroupList(id);
+        setLoading1(false)
         if (server_response.status === "OK") {
           setGroupList(server_response.details);
         }else {
@@ -143,10 +176,11 @@ const SchoolProfile = props => {
 
     const getSchoolStations =async()=>{
         setLoading4(false)
-        const server_response = await ajaxStation.fetchStationList(id);
+        const server_response = await ajaxStation.fetchStationList(id,page1);
         setLoading4(false)
         if(server_response.status==="OK"){
-            setSchoolStations(server_response.details);
+          setMeta1(server_response.details.meta.list_of_pages)
+          setSchoolStations(server_response.details.list);
         }else{
             //communicate error
             setSchoolStations("404");
@@ -158,14 +192,15 @@ const SchoolProfile = props => {
           e.preventDefault();
       }
           setLoading(true);
-          const server_response = await ajaxStudent.searchStudent(data2);
+          const server_response = await ajaxStudent.searchSchoolStudents(query,id,page);
           setLoading(false);
           console.log(server_response)
           if (server_response.status === "OK") {
               if (server_response.details.length === 0) {
                   setStudentSearch([]);
               } else {
-                  setStudentSearch(server_response.details);
+                setMeta(server_response.details.meta.list_of_pages);
+                setStudentSearch(server_response.details.list);
               }
           } else {
               setStudentSearch("404");
@@ -213,11 +248,35 @@ const SchoolProfile = props => {
   const setPageNumber = (e,item) =>{
     setPage(item)
   }
+  const setNextPageNumber1 = () =>{
+    if(meta1.length===page1){
+      
+    }
+    else{
+      setPage1(page1+1)
+    }
+    
+  }
+
+  const setPreviousPageNumber1 = () =>{
+    if(page1===1){
+      
+    }
+    else{
+      setPage1(page1-1)
+    }
+    
+  }
+  const setPageNumber1 = (e,item) =>{
+    setPage1(item)
+  }
   useEffect(()=>{
     getSchoolStudents()
   }, [id, page])
   useEffect(()=>{
     getGroups()
+    countSchoolStudents()
+    countSchoolStations()
   }, [id])
 
   const handleModal3=()=>{
@@ -230,16 +289,409 @@ const SchoolProfile = props => {
                 reverseOrder={false}
             />
             {modal}
-            <div className="row">
+            <section class="section profile">
+      <div class="row">
+        <div class="col-xl-5">
+        <div className="row">
+        <div class="col-lg-12">
+          <div class="cards">
+            <div class="card-body profile-card pt-4 d-flex flex-column gradient-my-blue">
+
+            {/* <div class="main-img-user mb-2"><img alt="avatar" style={{height:"90px"}} src={
+                      process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
+                    }/></div> */}
+              <h3 style={{color:"white"}}>{schoolProfile.school_name}</h3>
+              <h5 style={{color:"white"}}>{schoolProfile.district?.district_name}</h5>
+              <div class="social-links mt-2 align-items-center ">
+              {active?
+                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
+                            :
+                                <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
+                            }
+              </div>
+              
+            </div>
+            
+          </div></div>
+          <div class="col-lg-12">
+          <div class="cards pt-3">
+            <div class="card-body profile-card pt-4 d-flex flex-column">
+            {active?
+                    <>
+                        <div className="box-header  border-0 pd-0">
+                            <div className="box-title fs-20 font-w600"> Update School Information</div>
+                        </div>
+                        <br/>
+					        <form onSubmit={handleUpdate}>
+						        <div className="form-group">
+						            <div className="row row-sm">
+								        <div className="col-sm-12">
+                                            <label htmlFor="">School Name:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" value={schoolName} style={{border: "1px solid grey"}} onChange={(e)=>setSchoolName(e.target.value)} className="form-control"/>
+							            </div></div>
+                                </div>
+                                <div className="form-group">
+						            <div className="row row-sm">
+                        <div className="col-sm-6">
+                                            <label htmlFor="">Contact:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" value={contact} style={{border: "1px solid grey"}} onChange={(e)=>setContact(e.target.value)} className="form-control"/>
+							            </div>
+								        <div className="col-sm-6">
+                                            <label htmlFor="">Email:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" defaultValue={email} style={{border: "1px solid grey"}} onChange={(e)=>setEmail(e.target.value)} className="form-control"/>
+							            </div>
+                                       
+                                    </div>
+                                </div>
+                                <div className="form-group">
+						            <div className="row row-sm">
+                                        <div className="col-sm-6">
+                                            <label htmlFor="">Address:<span style={{color:"red"}}>*</span></label>
+                                            <input type="text" defaultValue={address} style={{border: "1px solid grey"}} onChange={(e)=>setAddress(e.target.value)} className="form-control"/>
+							            </div>
+                          <div className="col-sm-6">
+                                            <label htmlFor="">District:<span style={{color:"red"}}>*</span></label>
+                                            <Select
+                                                onChange={(e)=>setDistrict(e.district_id)}
+                                                getOptionLabel ={(option)=>option.district_name}
+                                                getOptionValue ={(option)=>option.district_id}
+                                                isSearchable
+                                                options={districtList}
+                                                defaultValue={Array.isArray(districtList) && districtList.find(( value ) => value.district_id===district)}
+                                            />
+							            </div>   
+                                    </div>
+                                </div>
+                                <div className="form-group">
+						            <div className="row row-sm">
+								        <div className="col-sm-6">
+                                            <label htmlFor="">Latitude Co-ordinates:</label>
+                                            <input type="text" defaultValue={lat} style={{border: "1px solid grey"}} onChange={(e)=>setLat(e.target.value)} readOnly className="form-control"/>
+							            </div>
+                                        <div className="col-sm-6">
+                                            <label htmlFor="">Longitude Co-ordinates:</label>
+                                            <input type="text" defaultValue={longitude} style={{border: "1px solid grey"}} onChange={(e)=>setLongitude(e.target.value)} readOnly className="form-control"/>
+							            </div>
+                                       
+                                    </div>
+                                </div>
+                                
+						        {loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
+                                {!loading5 && <button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update School Details</button>}
+						    </form>
+					               
+				        
+                    </>:
+                <>
+            <div className="box-header  border-0 pd-0">
+                <div className="box-title fs-20 font-w600">School Information</div>
+            </div>
+            <table className="table mb-0 mw-100 color-span">
+                                    {schoolProfile && <tbody>
+                                      <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">School Name </span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.school_name}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Contact</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.contact}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Email</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.email}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Address</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.address}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">District</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.district?.district_name}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Latitude Co-ordinates</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.lat?schoolProfile.lat:"Not yet updated"}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Longitude Co-ordinates</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.lng?schoolProfile.lng:"Not yet updated"}</span> </td>
+                                        </tr>
+                                       
+                                    </tbody>}
+                                </table>{loading2 && <Loader/>
+                                }
+                                </>}
+          
+              
+            </div>
+            
+          </div></div>
+          </div>
+
+
+        </div>
+        <div className='col-xl-7'>
+        <div className="row">
+            <div class="col-lg-12">
+							<div class="card custom-card " style={{paddingBottom:"10px"}}>
+              <div className="card-body map-card gradient-orange-peel">
+              <div class="item-title mb-2" style={{color:"white"}}><b>SUMMARY</b></div>
+								<div class="row" >
+									<div class="col-xl-6 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										<div class="text-center" >
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{studentCount ? studentCount.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Students Registered</p>
+										</div>
+									</div>
+									<div class="col-xl-6 col-lg-12 col-sm-6 pr-0 pl-0">
+										<div class="text-center">
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{stationCount ? stationCount.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Active Stations</p>
+										</div>
+									</div>
+								
+								</div></div>
+							</div></div>
+                            <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body pt-3">
+            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row>
+              <Col sm={12}>
+                <Nav variant="pills" className="flex-row mb-1">
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="first">
+                      Student List{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="second">
+                      Student Groups{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="third">
+                      Calling Stations{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
+
+              <Col sm={12}>
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                  <form className="mg-t-10">
+            <div className="row gutters-8">
+              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                <input
+                  type="text"
+                  value={query} onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (e.target.value === '') {
+                      setStudents(e);
+                    }
+                  }}
+                  placeholder="Search for student name..."
+                  style={{border: "1px solid grey"}}
+
+                  className="form-control"
+                />
+              </div>
+              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                <button
+                  type="submit"
+                  onClick={(e) => searchStudents(e)}
+                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                  SEARCH
+                </button>
+               
+              </div>
+            </div>
+          </form>
+                 
+                    <div className="table-responsive">
+                    <table className="table table-hover text-nowrap mg-b-0">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" >No.</th>
+                                        <th>Names</th>
+                                        <th>Student Code</th>
+                                        <th>Registration Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {studentSearch && Array.isArray(studentSearch) ? 
+                        ( studentSearch.map((item, key) => (
+                          <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.first_name} {item.last_name}</td>
+                          <td>{item.student_code}</td>
+                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
+                        </tr>
+                        )))
+                    :  (
+                                    Array.isArray(schoolStudents) && schoolStudents.map((item, key) => (
+                                            
+                                             <tr key={key} >
+                                                <th scope="row">{key+1}</th>
+                                                <td>{item.first_name} {item.last_name}</td>
+                          <td>{item.student_code}</td>
+                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
+                                            </tr>
+                                        ))
+                                    )}
+                        {schoolStudents === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No students registered in this school yet.
+                          </td>
+                        </tr>)}
+                        {studentSearch.length === 0 && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No search result(s) found.
+                          </td>
+                        </tr>)}
+                                </tbody>
+                                <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+          {Array.isArray(meta) && meta.map((item)=>
+          page===item?
+          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+          :
+          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+          )}
+
+
+					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                </div>
+                            </table>
+                            {loading3 && <Loader/>}
+                            </div>
+                  </Tab.Pane>
+
+                  <Tab.Pane eventKey="second">
+                  <TableHeader
+                            subtitle="List of all the student groups" 
+                            viewButton={
+                                <a href="#" onClick={handleModal3} className="btn btn-info" style={{float:"right"}}>Add Student Group</a>    
+                            }        
+                        /> 
+                  <div className="border-top mt-1"></div>
+                   <div className="table-responsive">
+                   <table className="table display data-table text-nowrap">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Group Name</th>
+         
+      </tr>
+    </thead>
+    <tbody>
+    {Array.isArray(groupList) && groupList.map((item, key) => (
+                <tr>
+                  <td>{key + 1}</td>
+                  <td>{item.group_name}</td>
+                </tr>
+              ))}
+              {groupList === "404" && (<tr>
+                  <td colSpan="2" style={{textAlign: "center"}}>
+                    No groups registered yet.
+                  </td>
+                </tr>)}
+    </tbody>
+  </table>
+                                    {loading1 && <Loader/>}
+                            </div>
+
+                   
+                   
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="third">
+                 
+                  <div className="border-top mt-1"></div>
+                   <div className="table-responsive">
+                   <table className="table table-hover text-nowrap mg-b-0">
+                                <thead>
+                                    <tr>
+                                    <th>No.</th>
+                      <th>Station Name</th>
+                      <th>Station Code</th>
+                      <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {Array.isArray(schoolStations) && schoolStations.map((item, key) => (
+                                            
+                                             <tr key={key} >
+                                                <td>{key + 1}</td>
+                          <td>{item.station_name}</td>
+                          <td>{item.station_code}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Active</span>:<span class="badge badge-danger">Offline</span>}</td>
+                                            </tr>
+                                        ))}
+                                        {schoolStations === "404" && (<tr>
+                          <td colSpan="4" style={{textAlign: "center"}}>
+                            No calling stations installed within the school yet.
+                          </td>
+                        </tr>)}
+                                </tbody>
+                                <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber1}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+          {Array.isArray(meta1) && meta1.map((item)=>
+          page===item?
+          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+          :
+          <button onClick={(e)=>setPageNumber1(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+          )}
+
+
+					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber1}>Next<i className='fa fa-angle-right ml-2'></i></button>
+                </div>
+                            </table>
+                            {loading4 && <Loader/>}
+                            </div>
+
+                   
+                   
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container>  
+
+            </div>
+          </div>
+
+        </div></div>
+        </div>
+
+        
+      </div>
+      
+    </section>
+            
+
+        </AppContainer>
+    )
+}
+
+export default SchoolProfile;
+{/* <div className="row">
             <div className="col-12 col-xl-12">
                 <div className="box user-pro-list overflow-hidden mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                     {schoolProfile && <div className="box-body" style={{position:"relative"}}>
                         <div className="user-pic text-center" >
-                        {/* <div class="main-profile-overview widget-user-image text-center">
-							<div class="main-img-user"><img alt="avatar" src={
-                      process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
-                    }/></div>
-						</div> */}
                             <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
                                 <h3 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{schoolProfile.school_name}</h3>
                                 <h6 className="pro-user-desc text-muted fs-14">{schoolProfile.district?.district_name}</h6>
@@ -420,7 +872,6 @@ const SchoolProfile = props => {
                 </tr>)}
     </tbody>
   </table>
-  {loading && <Loader/>}
 </div>              
                             
                               
@@ -579,10 +1030,4 @@ const SchoolProfile = props => {
 
                 
 
-            </div> </div>
-
-        </AppContainer>
-    )
-}
-
-export default SchoolProfile;
+            </div> </div> */}

@@ -20,12 +20,12 @@ function SchoolDashboard() {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [stationList, setStationList] = useState(false);
-  const [limit, setLimit] = useState(3);
+  const [limit, setLimit] = useState(5);
 
 
   const getStations = async () => {
     setLoading2(true);
-    const server_response = await ajaxStation.fetchFewStations(user.school?user.school:"",limit);
+    const server_response = await ajaxStation.fetchFewStations(user.school,limit);
     setLoading2(false);
     if (server_response.status === "OK") {
       setStationList(server_response.details);
@@ -36,7 +36,7 @@ function SchoolDashboard() {
 
   const getStudentsToday = async () => {
     setLoading(true);
-    const server_response = await ajaxStudent.fetchStudentsToday(user.school);
+    const server_response = await ajaxStudent.fetchStudentsTodayLimit(user.school,limit);
     setLoading(false);
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
@@ -46,9 +46,7 @@ function SchoolDashboard() {
   };
 
   const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchStudentNumber(
-      user.school ? user.school : ""
-    );
+    const server_response = await ajaxStudent.fetchStudentNumber(user.school);
 
     if (server_response.status === "OK") {
       //store results
@@ -71,13 +69,14 @@ function SchoolDashboard() {
 
   useEffect(() => {
     getStudentsToday();
+    getStudentsNumber();
     getSchoolLogsNumber();
   }, [user.school]);
 
   useEffect(() => {
-    getStudentsNumber();
+    
     getStations();
-  }, [user.school ? user.school : ""]);
+  }, [user.school, limit]);
 
   return (
     <div>

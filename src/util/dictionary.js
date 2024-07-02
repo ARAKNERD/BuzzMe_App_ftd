@@ -59,6 +59,7 @@ const dictionary = {
   },
 
   _exportConfigBtnFormats: ["excel", "pdf", "csv", "print"],
+  _trans_type: "Transaction Typesss",
 };
 
 export default dictionary;

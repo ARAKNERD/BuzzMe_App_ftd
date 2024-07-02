@@ -2,10 +2,11 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async fetchStationList(school) 
+  async fetchStationList(school, page) 
   {
     let data = {
       school_id: school,
+      page: page
     };
     let response = await apiCall("station/list", data);
     return response;
@@ -48,8 +49,13 @@ export default {
     let response = await apiCall("station/update/hours", data);
     return response;
   },
-  async searchStation(data) 
+  async searchStation(school, search, page) 
   {
+    let data = {
+      school_id: school,
+      search: search,
+      page: page
+    };
     let response = await apiCall("station/list", data);
     return response;
   },

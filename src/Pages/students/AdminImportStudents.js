@@ -123,7 +123,7 @@ const AdminImportStudents = () => {
       >
         <div {...getRootProps()} style={dropzoneStyles}>
           <input {...getInputProps()} />
-          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 3 </b>columns in this order; Student Names, Registration Number and Gender. </p>
+          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 4 </b>columns in this order; First Name, Last Name, Registration Number and Gender. </p>
           <p>Drag & drop an Excel file here, or click to select one</p>
          
 
