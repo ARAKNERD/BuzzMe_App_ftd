@@ -41,6 +41,14 @@ export default {
     let response = await apiCall("student/today", data);
     return response;
   },
+  async fetchStudentsTodayLimit(school,limit) {
+    let data = {
+      "school":school,
+      "limit":limit
+    };
+    let response = await apiCall("student/today", data);
+    return response;
+  },
   async fetchAllStudentsToday(data) {
     let response = await apiCall("student/today", data);
     return response;
@@ -88,19 +96,21 @@ export default {
 
     return response;
   },
-  async searchAllStudents(search) {
-    let data = {
-      search: search
-    };
-    let response = await apiCall("student/search", data);
-    return response;
-  },
-  async searchStudent(search, school_id) {
+  async searchAllStudents(search, page) {
     let data = {
       search: search,
-      school_id: school_id
+      page: page
     };
-    let response = await apiCall("student/search", data);
+    let response = await apiCall("student/list", data);
+    return response;
+  },
+  async searchSchoolStudents(search, school_id, page) {
+    let data = {
+      search: search,
+      school_id: school_id,
+      page: page
+    };
+    let response = await apiCall("student/list", data);
     return response;
   },
   async searchGroupStudent(search, group_id) {
@@ -139,6 +149,13 @@ export default {
       school_id: school,
     };
     let response = await apiCall("student/search", data);
+    return response;
+  },
+  async countStudentContacts(student) {
+    let data = {
+      student_id: student,
+    };
+    let response = await apiCall("contact/student/count", data);
     return response;
   },
   

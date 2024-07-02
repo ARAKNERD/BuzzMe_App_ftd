@@ -106,6 +106,8 @@ function AddChargeRate(props) {
                       <option value="SMS">Message / SMS</option>
                       <option value="TWILIO">TWILIO Call</option>
                       <option value="ZEGO">ZEGO Call</option>
+                      {category === "School"? "":<option value="ACTIVATION">Account Activation</option>}
+                      
                     </select>
             </div>
             {category === "Default"? "" :<div className="col-lg-12 col-12 form-group">

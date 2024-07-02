@@ -7,6 +7,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
+import Loader from "../Components/Common/Loader";
 
 function CallLogs() {
 
@@ -205,6 +206,7 @@ function CallLogs() {
 					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
                 </div>
           </table>
+          {loading2 && <Loader/>}
         </div>
       </div>
     </div>

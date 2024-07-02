@@ -27,6 +27,14 @@ export default {
     let response = await apiCall("buzz_time/loaded", data);
     return response;
   },
+  async fetchStudentWalletTransactions(student,page) {
+    let data = {
+      student_id: student,
+      page: page
+    };
+    let response = await apiCall("bank/list", data);
+    return response;
+  },
 
 
 

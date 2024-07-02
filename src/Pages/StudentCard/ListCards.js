@@ -4,95 +4,83 @@ import {Link} from "react-router-dom";
 import {Toaster} from "react-hot-toast";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
-import ajaxStation from "../../util/remote/ajaxStation";
-import AddStation from "./AddStation";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import { RenderSecure } from "../../util/script/RenderSecure";
-import AuthContext from "../../Context/AuthContext";
-import UpdateStation from "./UpdateStation";
-import UpdateHours from "./UpdateHours";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-solid-svg-icons";
-import TurnOnStation from "./TurnOnStation";
-import TurnOffStation from "./TurnOffStation";
+import ajaxCard from "../../util/remote/ajaxCard";
+import ActivateCard from "./ActivateCard";
+import DeActivateCard from "./DeActivateCard";
+import RegisterCard from "./RegisterCard";
+import AttachCard from "./AttachCard";
 
 
-function ListStations() {
-    const [stationList, setStationList] = useState(false);
-    const [stationSearch, setStationSearch] = useState(false);
+function ListCards() {
+    const [cardList, setCardList] = useState(false);
+    const [cardSearch, setCardSearch] = useState(false);
     const [modal, setModal] = useStateCallback(false);
-    const {user} = useContext(AuthContext);
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [query, setQuery] = useState("");
     const [page,setPage] = useState(1)
     const [meta,setMeta] = useState("")
 
-    const data2 = {
-      search: query,
-      school_id: user.school?user.school:""
-    };
-    const getStations = async () => {
+    const getCards = async () => {
       setLoading(true);
-      const server_response = await ajaxStation.fetchStationList(user.school?user.school:"",page);
+      const server_response = await ajaxCard.fetchCardList(page);
       setLoading(false);
       if (server_response.status === "OK") {
         setMeta(server_response.details.meta.list_of_pages);
-        setStationList(server_response.details.list);
+        setCardList(server_response.details.list);
       }else {
-        setStationList("404");
+        setCardList("404");
       }
     };
 
-    const searchStations = async (e) => {
+    const searchCard = async (e) => {
       if (e) {
         e.preventDefault();
       }
         setLoading2(true);
-        const server_response = await ajaxStation.searchStation(user.school?user.school:"",query,page);
+        const server_response = await ajaxCard.searchCard(query,page);
         setLoading2(false);
         if (server_response.status === "OK") {
           if (server_response.details.length === 0) {
-            setStationSearch([]);
+            setCardSearch([]);
           } else {
             setMeta(server_response.details.meta.list_of_pages);
-            setStationList(server_response.details.list);
+            setCardSearch(server_response.details.list);
           }
         } else {
-          setStationSearch("404");
+          setCardSearch("404");
         }
     };
 
-    const setStations = (e) => {
+    const setCards = (e) => {
       e.preventDefault();
-      setStationSearch(false);
+      setCardSearch(false);
       setQuery("");
     };
   
     useEffect(() => {
-      getStations();
-    }, [user.school?user.school:"", page]);
+      getCards();
+    }, [page]);
 
     useEffect(() => {
-      searchStations();
-    }, [user.school?user.school:"",page]);
+      searchCard();
+    }, [page]);
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} school={item.school.school_name} g={getStations} isOpen={true}/>))
+    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} isOpen={true}/>))
   }
-  const updateHours=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
+  const cardOn=(e,item)=>{
+    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} h={searchCard} isOpen={true}/>))
   }
-  const stationOn=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOnStation stationID={item.station_id} g={getStations} isOpen={true}/>))
-  }
-  const stationOff=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOffStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+  const cardOff=(e,item)=>{
+    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} h={searchCard} isOpen={true}/>))
   }
 
   const refreshData = () =>{
-    getStations();
+    getCards();
+    searchCard();
   }
 
   const setNextPageNumber = () => {
@@ -113,23 +101,22 @@ function ListStations() {
   };
 
     return (
-    <AppContainer title="Calling Stations">
+    <AppContainer title="Buzz Cards">
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
-      <RenderSecure code="ADMIN-VIEW">
         <div className="col-lg-4">
-          <AddStation g={getStations} />
+          <RegisterCard g={getCards} />
         </div>
-        </RenderSecure>
+        
 
-        <div className={user.school_user ? "col-lg-12" : "col-lg-8"}>
+        <div className="col-lg-8">
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                  title="Calling Stations"
-                  subtitle="List of all the calling stations"
+                  title="Buzz Cards"
+                  subtitle="List of all the buzz cards"
                 />
                 <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -149,17 +136,17 @@ function ListStations() {
                       value={query} onChange={(e) => {
                         setQuery(e.target.value);
                         if (e.target.value === '') {
-                          setStations(e);
+                          setCards(e);
                         }
                       }}
-                      placeholder="Search for station name or station code..."
+                      placeholder="Search for card number..."
                       className="form-control"
                     />
                   </div>
                   <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <button
                       type="submit"
-                      onClick={(e) => searchStations(e)}
+                      onClick={(e) => searchCard(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                       SEARCH
                     </button>
@@ -172,28 +159,22 @@ function ListStations() {
                   <thead>
                     <tr>
                       <th>No.</th>
-                      <th>Station Name</th>
-                      <th>Station Code</th>
-                      {user.school_user?"":<th>School</th>}
-                      <th>Active Hours</th>
+                      <th>Card Number</th>
+                      <th>Student Name</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {stationSearch && Array.isArray(stationSearch) ? (
+                  {cardSearch && Array.isArray(cardSearch) ? (
                       
-                      stationSearch.map((item, key) => (
+                      cardSearch.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
-                          <td>{item.station_name}</td>
-                          <td>{item.station_code}</td>
-                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
-                          <td>
-                            {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
-                          </td>
-                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
-                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                          <td>{item.card_number}</td>
+                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+                          :<span class="badge badge-danger">De-activated</span>}</td>
 
                           <td>
                             <div className="dropdown">
@@ -205,50 +186,40 @@ function ListStations() {
                                 <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateHours(e,item)}>
-                                <FontAwesomeIcon icon={faClock} style={{ color: "green", marginRight: "3px" }} />
-                                 Change Active Hours
-                              </Link>
-                              <RenderSecure code="ADMIN-VIEW">
+                               
+                              
                                 <Link
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => updateStation(e,item)}>
-                                <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
-                                 Update Station Details
-                              </Link></RenderSecure>
-                              {item.status==="300"?<Link
+                                <i className="fa fa-square-plus mr-1"></i>
+                                 Attach Student
+                              </Link>
+                              {item.status==="1"?<Link
                                 className="dropdown-item"
                                 to="#"
-                                onClick={(e) => stationOff(e,item)}>
+                                onClick={(e) => cardOff(e,item)}>
                                 <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 Turn Off
+                                 De-Activate Card
                               </Link>:<Link
                                 className="dropdown-item"
                                 to="#"
-                                onClick={(e) => stationOn(e,item)}>
+                                onClick={(e) => cardOn(e,item)}>
                                 <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                 Turn On
+                                Activate Card
                               </Link>}</div>
                             </div>
                           </td>
                         </tr>
                       ))
                    
-                  ) :Array.isArray(stationList) && stationList.map((item, key) => (
+                  ) :Array.isArray(cardList) && cardList.map((item, key) => (
                         <tr key={key}>
                           <td>{key + 1}</td>
-                          <td>{item.station_name}</td>
-                          <td>{item.station_code}</td>
-                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
-                          <td>
-                            {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
-                          </td>
-                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
-                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                          <td>{item.card_number}</td>
+                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+                          :<span class="badge badge-danger">De-activated</span>}</td>
 
                           <td>
                             <div className="dropdown">
@@ -260,44 +231,38 @@ function ListStations() {
                                 <span className="flaticon-more-button-of-three-dots"></span>
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateHours(e,item)}>
-                                <FontAwesomeIcon icon={faClock} style={{ color: "green", marginRight: "3px" }} />
-                                 Change Active Hours
-                              </Link>
-                              <RenderSecure code="ADMIN-VIEW">
+                               
+                              
                                 <Link
                                 className="dropdown-item"
                                 to="#"
                                 onClick={(e) => updateStation(e,item)}>
-                                <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
-                                 Update Station Details
-                              </Link></RenderSecure>
-                              {item.status==="300"?<Link
+                                <i className="fa fa-square-plus  mr-1"></i>
+                                 Attach Student
+                              </Link>
+                              {item.status==="1"?<Link
                                 className="dropdown-item"
                                 to="#"
-                                onClick={(e) => stationOff(e,item)}>
+                                onClick={(e) => cardOff(e,item)}>
                                 <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 Turn Off
+                                 De-Activate Card
                               </Link>:<Link
                                 className="dropdown-item"
                                 to="#"
-                                onClick={(e) => stationOn(e,item)}>
+                                onClick={(e) => cardOn(e,item)}>
                                 <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                 Turn On
+                                Activate Card
                               </Link>}</div>
                             </div>
                           </td>
                         </tr>
                       ))}
-                      {stationList === "404" && (<tr>
+                      {cardList === "404" && (<tr>
                           <td colSpan="7" style={{textAlign: "center"}}>
-                            No calling stations registered yet.
+                            No buzz cards registered yet.
                           </td>
                         </tr>)}
-                        {stationSearch.length === 0 && (<tr>
+                        {cardSearch.length === 0 && (<tr>
                           <td colSpan="7" style={{textAlign: "center"}}>
                             No search result(s) found.
                           </td>
@@ -349,4 +314,4 @@ function ListStations() {
   );
 }
 
-export default ListStations;
+export default ListCards;

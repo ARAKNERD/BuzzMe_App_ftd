@@ -77,7 +77,7 @@ function ViewParents() {
       e.preventDefault();
     }
       setLoading2(true);
-      const server_response = await ajaxParent.searchAllParents(data2);
+      const server_response = await ajaxParent.searchAllParents(query, page);
       setLoading2(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
@@ -100,7 +100,7 @@ function ViewParents() {
 
   useEffect(() => {
       searchParents();
-  }, []);
+  }, [page]);
 
   return(
   <AppContainer title="Contacts">
@@ -135,7 +135,7 @@ function ViewParents() {
                           setParents(e);
                         }
                       }}
-                      placeholder="Search for contact name..."
+                      placeholder="Search for contact first or last name..."
                       className="form-control"
                     />
                   </div>
@@ -172,7 +172,7 @@ function ViewParents() {
                       
                       parentSearch.map((item, key) => (
                         <tr key={key}>
-                        <th scope='row' style={{width:"5px"}}>{key + 1}</th>
+                        <th scope='row' style={{width:"5px"}}>{key + first + 1}</th>
                         <td><Link
                         to={`/parents/profile/${item.parent_id}`}>
                         {item.full_name}
@@ -204,39 +204,19 @@ function ViewParents() {
                         </td>
                       </tr>)}
                   </tbody>
-                  <div
-                    className="align-items-center justify-content-center pos-absolute"
-                    style={{left: "50%"}}>
-                    <button
-                      className="btn btn-dark"
-                      style={{borderRight: "1px solid yellow"}}
-                      onClick={setPreviousPageNumber}>
-                      <i className="fa fa-angle-left mr-2"></i> Prev
-                    </button>
-                    {Array.isArray(meta) &&
-                      meta.map((item) =>
-                        page === item ? (
-                          <button
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-primary">
-                            {item}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => setPageNumber(e, item)}
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-dark">
-                            {item}
-                          </button>
-                        )
-                      )}
-
-                    <button
-                      style={{borderRight: "1px solid yellow"}}
-                      className="btn btn-dark"
-                      onClick={setNextPageNumber}>
-                      Next<i className="fa fa-angle-right ml-2"></i>
-                    </button>
+                  <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+      
+      
+      <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+            {Array.isArray(meta) && meta.map((item)=>
+            page===item?
+            <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
+            :
+            <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+            )}
+  
+  
+            <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
                   </div>
                 </table>
                 {loading && <Loader />}

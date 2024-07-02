@@ -8,6 +8,8 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import ajaxBank from "../../util/remote/ajaxBank";
 import Loader from "../../Components/Common/Loader";
+import LanguageContext from "../../Context/LanguageContext";
+import dictionary from "../../util/dictionary";
 
 
 function AllTransactions() {
@@ -20,6 +22,9 @@ function AllTransactions() {
   const [loading, setLoading] = useState(false);
   const [page,setPage] = useState(1)
   const [meta,setMeta] = useState("")
+  const {translate} = useContext(LanguageContext);
+
+  
 
   const getTransactions = async () => {
     setLoading(true);
@@ -34,6 +39,8 @@ function AllTransactions() {
     }
   };
 
+  
+  
   const searchTransactions = async (e) => {
     if (e) {
         e.preventDefault();
@@ -162,23 +169,6 @@ function AllTransactions() {
                       }}
                       className="form-control"
                     /></div>
-                  {/* <div className="col-lg-4">
-                  <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id="refresh-tooltip">Start date for search</Tooltip>}><input
-                      type="date"
-                      style={{border: "1px solid grey"}}
-                      className="form-control"
-                    /></OverlayTrigger></div> */}
-                    {/* <div className="col-lg-4">
-                    <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id="refresh-tooltip">End date for search</Tooltip>}><input
-                      type="date"
-                      placeholder="Select start date..."
-                      style={{border: "1px solid grey"}}
-                      className="form-control"
-                    /></OverlayTrigger></div> */}
                     <div className="col-lg-8">
                       <div class="flex-fill position-relative">
                         <div class="input-group input-daterange" id="datepicker">
@@ -214,11 +204,13 @@ function AllTransactions() {
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
-                <th style={{width:"10px"}}>Transaction Time</th>
-                <th style={{textAlign:"center"}}>Transaction Type</th>
-                
-                <th style={{textAlign:"center"}}>Amount</th>
-                <th style={{textAlign:"right"}}>Student Details</th>
+                <th style={{width:"10px"}}>{translate("Welcome Andrew")}</th>
+                <th>Student Details</th>
+                <th>Phone Number</th>
+                <th>Amount</th>
+               
+                <th>Transaction Type</th>
+                <th>Internal Reference</th>
                 
               </tr>
             </thead>
@@ -228,24 +220,33 @@ function AllTransactions() {
                       transactionSearch.map((item, key) => (
                         <tr key={key}>
                           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account}</span></td>
-                          
-                          <td style={{textAlign:"center"}}><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account?.account_code ==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                          <td>{item.student}<br/><small>{item.school}</small></td>
+                          <td>{item.phone_number?item.phone_number:"N/A"}</td>
+                          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account==="ACCOUNT ACTIVATION"||item.account==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
                           {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                           item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                          <td style={{textAlign:"right"}}>{item.student}<br/><small>{item.school}</small></td>
+                          
+                          <td><span class="badge badge-info">{item.account}</span></td>
+                          <td>{item.internal_ref}</td>
+                        
+                          
+                          
                         </tr>
                       ))
                    
                   ) :Array.isArray(transactionList) && transactionList.map((item, key) => (
                         <tr key={key}>
                           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                          <td style={{textAlign:"center"}}><span class="badge badge-info">{item.account?.account_code}</span></td>
-                          
-                          <td style={{textAlign:"center"}}><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account?.account_code ==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                          <td>{item.student}<br/><small>{item.school}</small></td>
+                          <td>{item.phone_number?item.phone_number:"N/A"}</td>
+                          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account==="ACCOUNT ACTIVATION"||item.account==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
                           {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                           item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                          <td style={{textAlign:"right"}}>{item.full_name}<br/><small>{item.school_name}</small></td>
+                          <td><span class="badge badge-info">{item.account}</span></td>
+                          <td>{item.internal_ref}</td>
+                     
+                          
+                          
                         </tr>
                       ))}
                       {transactionList === "404" && (<tr>

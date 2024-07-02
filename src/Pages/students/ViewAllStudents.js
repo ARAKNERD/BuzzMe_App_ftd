@@ -42,6 +42,7 @@ function ViewAllStudents() {
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
       getStudentList();
+      searchStudents();
     }
   };
 
@@ -81,13 +82,14 @@ function ViewAllStudents() {
     }
     
       setLoading(true);
-      const server_response = await ajaxStudent.searchAllStudents(query);
+      const server_response = await ajaxStudent.searchAllStudents(query, page);
       setLoading(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
           setStudentSearch([]);
         } else {
-          setStudentSearch(server_response.details);
+          setMeta(server_response.details.meta.list_of_pages);
+          setStudentSearch(server_response.details.list);
         }
       } else {
         setStudentSearch("404");
@@ -99,11 +101,12 @@ function ViewAllStudents() {
     e.preventDefault();
     setStudentSearch(false);
     setQuery("");
+    getStudentList();
   };
 
   useEffect(() => {
       searchStudents();
-  }, []);
+  }, [page]);
 
   const setNextPageNumber = () => {
     if (meta.length === page) {

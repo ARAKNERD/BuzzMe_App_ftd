@@ -90,7 +90,11 @@ export default {
     return response;
   },
 
-  async searchAllParents(data) {
+  async searchAllParents(search, page) {
+    let data = {
+      "search":search,
+      "page": page,
+    };
     let response = await apiCall("guardian/list", data);
     return response;
   },
