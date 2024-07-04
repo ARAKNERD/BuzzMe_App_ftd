@@ -158,5 +158,21 @@ export default {
     let response = await apiCall("contact/student/count", data);
     return response;
   },
+  async searchStudentByNumber(number) {
+    let data = {
+      number: number,
+    };
+    let response = await apiCall("student/search/code", data);
+    return response;
+  },
+  async transferStudent(student_id, school_to, group_to) {
+    let data = {
+      student_id: student_id,
+      school_to: school_to,
+      group_to: group_to
+    };
+    let response = await apiCall("student/transfer", data);
+    return response;
+  },
   
 };

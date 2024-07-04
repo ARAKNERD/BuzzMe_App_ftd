@@ -51,6 +51,7 @@ import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
 import ViewAllRelatives from "./Pages/Parents/ViewAllRelatives";
 import SchoolDashboard from "./Pages/SchoolDashboard";
 import ListCards from "./Pages/StudentCard/ListCards";
+import TransferStudent from "./Pages/students/TransferStudent";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -221,6 +222,8 @@ function App(props) {
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
               <Route path="/relatives" element={<ViewAllRelatives />} />
               <Route path="/buzz-cards" element={<ListCards />} />
+              <Route path="/students/transfer" element={<TransferStudent />} />
+
 
 
             </>

@@ -92,6 +92,12 @@ const Sidebar = (props) => {
                       <span className="sidemenu-label">View Students</span>
                     </Link>
                   </li>
+                  <li className="nav-item">
+                    <Link to="/students/transfer" className="nav-link">
+                      <FontAwesomeIcon icon={faAngleRight} />
+                      Transfer Student
+                    </Link>
+                  </li>
                 </ul>
               </li>
             

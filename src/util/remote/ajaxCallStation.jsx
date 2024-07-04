@@ -26,9 +26,18 @@ export default {
     let response = await apiCall("account/update", data);
     return response;
   },
-  async listCallLogs(page) {
+  async listZegoCallLogs(page, type) {
     let data = {
-      page: page
+      page: page,
+      type: type
+    };
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
+  async listTwilioCallLogs(page, type) {
+    let data = {
+      page: page,
+      type: type
     };
     let response = await apiCall("call_log/list", data);
     return response;
