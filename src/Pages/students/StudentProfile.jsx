@@ -20,6 +20,7 @@ import ajaxBank from '../../util/remote/ajaxBank';
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
+    const [studentTransfers, setStudentTransfers] = useState(false);
     const [modal, setModal] = useStateCallback(false);
     const {id} = useParams();
     const [studentLogs, setStudentLogs] = useState(false);
@@ -51,6 +52,8 @@ const StudentProfile = props => {
     const [loading4,setLoading4] = useState(false)
 
     const [loading5,setLoading5] = useState(false)
+    const [loading6,setLoading6] = useState(false)
+
 
     const data = {
         student_id: id
@@ -150,6 +153,18 @@ const StudentProfile = props => {
         }
     }
 
+    const getStudentTransfers =async()=>{
+        setLoading6(true)
+        const server_response = await ajaxStudent.listStudentTransfers(id);
+        setLoading6(false)
+        if(server_response.status==="OK"){
+            setStudentTransfers(server_response.details);
+        }else{
+            //communicate error
+            setStudentTransfers("404");
+        }
+    }
+
     const countContacts =async()=>{
         const server_response = await ajaxStudent.countStudentContacts(id);
         if(server_response.status==="OK"){
@@ -215,6 +230,7 @@ const StudentProfile = props => {
     useEffect(() => {
         countContacts();
         countLogs();
+        getStudentTransfers();
     }, [id]);
     useEffect(() => {
         getWalletTransactions();
@@ -254,6 +270,104 @@ const StudentProfile = props => {
           <div class="col-lg-12">
           <div class="cards pt-3">
             <div class="card-body profile-card pt-4 d-flex flex-column">
+            <div className="box-header  border-0 pd-0">
+                            <div className="box-title fs-20 font-w600">Schools Attended</div>
+                        </div>
+            <div class="activity-block">
+            <ul className="task-list" style={{ listStyle: "none", position: "relative", margin: "0", paddingTop:"10px", paddingLeft: "10px" }}>
+    <li style={{ position: "relative", paddingLeft: "25px", marginBottom:"40px"}}>
+        <i className="task-icon" style={{ top: 0, left: 0, width: "12px", height: "12px", position: "absolute", borderRadius: "50%", padding: "2px", zIndex: "2", backgroundColor:"#ff7200"}}></i>
+        <h6 style={{marginBottom: "5px"}}>{studentProfile.school}
+            {/* <small className="float-right text-muted tx-11">29 Oct 2019</small> */}
+            </h6>
+        <span className="text-muted tx-12" style={{fontSize: "12px"}}>{studentProfile.school_district}</span>
+        {/* Vertical line */}
+        <div className="vertical-line" style={{ position: "absolute", left: "5px", top: "0", height:"120px", width: "1px", backgroundColor: "#ccc", zIndex: "1" }}></div>
+    </li>
+    {Array.isArray(studentTransfers) && studentTransfers.map((item, key) => (
+    <li style={{ position: "relative", paddingLeft: "25px", marginBottom:"40px"}}>
+        <i className="task-icon" style={{ top: 0, left: 0, width: "12px", height: "12px", position: "absolute", borderRadius: "50%", padding: "2px", zIndex: "2", backgroundColor:"#ff7200"}}></i>
+        <h6 style={{marginBottom: "5px"}}>{item.school_from}
+            {/* <small className="float-right text-muted tx-11">29 Oct 2019</small> */}
+            </h6>
+        <span className="text-muted tx-12" style={{fontSize: "12px"}}>{item.school_from_district}</span>
+        {/* Vertical line */}
+        <div className="vertical-line" style={{ position: "absolute", left: "5px", top: "0", height:"120px", width: "1px", backgroundColor: "#ccc", zIndex: "1" }}></div>
+    </li>))}
+    
+</ul>
+			</div>
+          
+              
+            </div>
+            
+          </div></div>
+          </div>
+
+
+        </div>
+        <div className='col-xl-8'>
+        <div className="row">
+            <div class="col-lg-12">
+							<div class="card custom-card " style={{paddingBottom:"10px"}}>
+              <div className="card-body map-card gradient-orange-peel">
+              <div class="item-title mb-2" style={{color:"white"}}><b>SUMMARY</b></div>
+								<div class="row" >
+									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										<div class="text-center" >
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{contactCount ? contactCount.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Contacts</p>
+										</div>
+									</div>
+                                    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										<div class="text-center" >
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{logsCount ? logsCount.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Calls Made</p>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0">
+										<div class="text-center">
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{studentProfile.wallet_balance}</span></h2>
+											<p class="mb-0 text-light"> Wallet Balance</p>
+										</div>
+									</div>
+								
+								</div></div>
+							</div></div>
+                            <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body pt-3">
+            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row>
+              <Col sm={12}>
+                <Nav variant="pills" className="flex-row mb-1">
+                  <Nav.Item>
+                  <Nav.Link size="sm" eventKey="first">
+                      Student Bio-Data{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="second">
+                      Student Contacts{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="third">
+                      Call Logs{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="fourth">
+                      Student Transactions{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
+
+              <Col sm={12}>
+                <Tab.Content>
+                <Tab.Pane eventKey="first">
             {active?
                     <>
                         <div className="box-header  border-0 pd-0">
@@ -327,9 +441,7 @@ const StudentProfile = props => {
 				        
                     </>:
                 <>
-            <div className="box-header  border-0 pd-0">
-                <div className="box-title fs-20 font-w600">Student Information</div>
-            </div>
+            
             <table className="table mb-0 mw-100 color-span">
                                     {studentProfile && <tbody>
                                         <tr>
@@ -368,70 +480,9 @@ const StudentProfile = props => {
                                 </table>{loading && <Loader/>}</>}
           
               
-            </div>
             
-          </div></div>
-          </div>
-
-
-        </div>
-        <div className='col-xl-8'>
-        <div className="row">
-            <div class="col-lg-12">
-							<div class="card custom-card " style={{paddingBottom:"10px"}}>
-              <div className="card-body map-card gradient-orange-peel">
-              <div class="item-title mb-2" style={{color:"white"}}><b>SUMMARY</b></div>
-								<div class="row" >
-									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
-										<div class="text-center" >
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{contactCount ? contactCount.total_p : "..."}</span></h2>
-											<p class="mb-0 text-light"> Contacts</p>
-										</div>
-									</div>
-                                    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
-										<div class="text-center" >
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{logsCount ? logsCount.total_p : "..."}</span></h2>
-											<p class="mb-0 text-light"> Calls Made</p>
-										</div>
-									</div>
-									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0">
-										<div class="text-center">
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{studentProfile.wallet_balance}</span></h2>
-											<p class="mb-0 text-light"> Wallet Balance</p>
-										</div>
-									</div>
-								
-								</div></div>
-							</div></div>
-                            <div class="col-lg-12">
-
-          <div class="card">
-            <div class="card-body pt-3">
-            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
-            <Row>
-              <Col sm={12}>
-                <Nav variant="pills" className="flex-row mb-1">
-                  <Nav.Item>
-                    <Nav.Link size="sm" eventKey="first">
-                      Student Contacts{" "}
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link size="sm" eventKey="second">
-                      Call Logs{" "}
-                    </Nav.Link>
-                  </Nav.Item>
-                  <Nav.Item>
-                    <Nav.Link size="sm" eventKey="third">
-                      Student Transactions{" "}
-                    </Nav.Link>
-                  </Nav.Item>
-                </Nav>
-              </Col>
-
-              <Col sm={12}>
-                <Tab.Content>
-                  <Tab.Pane eventKey="first">
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="second">
                   <TableHeader
                   subtitle="List of all the student's contacts" 
                             viewButton={(
@@ -472,7 +523,7 @@ const StudentProfile = props => {
                             </div>
                   </Tab.Pane>
 
-                  <Tab.Pane eventKey="second">
+                  <Tab.Pane eventKey="third">
                   <div className="border-top mt-1"></div>
                    <div className="table-responsive">
                                     <table className="table table-hover text-nowrap mg-b-0" id='seventh'>
@@ -507,7 +558,7 @@ const StudentProfile = props => {
                    
                    
                   </Tab.Pane>
-                  <Tab.Pane eventKey="third">
+                  <Tab.Pane eventKey="fourth">
                  
                   <div className="border-top mt-1"></div>
                    <div className="table-responsive">

@@ -174,5 +174,12 @@ export default {
     let response = await apiCall("student/transfer", data);
     return response;
   },
+  async listStudentTransfers(student_id) {
+    let data = {
+      student_id: student_id
+    };
+    let response = await apiCall("student/list/transfers", data);
+    return response;
+  },
   
 };
