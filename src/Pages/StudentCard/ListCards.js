@@ -14,6 +14,10 @@ import AttachCard from "./AttachCard";
 
 function ListCards() {
     const [cardList, setCardList] = useState(false);
+    const [allCards, setAllCards] = useState(false);
+    const [activeCards, setActiveCards] = useState(false);
+    const [inactiveCards, setInactiveCards] = useState(false);
+
     const [cardSearch, setCardSearch] = useState(false);
     const [modal, setModal] = useStateCallback(false);
     const [loading, setLoading] = useState(false);
@@ -53,6 +57,37 @@ function ListCards() {
         }
     };
 
+    const getAllCards = async () => {
+      const server_response = await ajaxCard.countAllCards();
+      if (server_response.status === "OK") {
+        //store results
+        setAllCards(server_response.details);
+      } else {
+        //communicate error
+        setAllCards("404");
+      }
+    };
+    const getActiveCards = async () => {
+      const server_response = await ajaxCard.countActiveCards();
+      if (server_response.status === "OK") {
+        //store results
+        setActiveCards(server_response.details);
+      } else {
+        //communicate error
+        setActiveCards("404");
+      }
+    };
+    const getInactiveCards = async () => {
+      const server_response = await ajaxCard.countInactiveCards();
+      if (server_response.status === "OK") {
+        //store results
+        setInactiveCards(server_response.details);
+      } else {
+        //communicate error
+        setInactiveCards("404");
+      }
+    };
+
     const setCards = (e) => {
       e.preventDefault();
       setCardSearch(false);
@@ -66,6 +101,12 @@ function ListCards() {
     useEffect(() => {
       searchCard();
     }, [page]);
+
+    useEffect(() => {
+      getAllCards();
+      getActiveCards();
+      getInactiveCards();
+    }, []);
 
 
   const updateStation=(e,item)=>{
@@ -111,6 +152,34 @@ function ListCards() {
         
 
         <div className="col-lg-8">
+        <div className="row">
+            <div class="col-lg-12">
+							<div class="card custom-card " style={{paddingBottom:"10px"}}>
+              <div className="card-body map-card gradient-my-blue">
+              <div class="item-title mb-2" style={{color:"white"}}><b>SUMMARY</b></div>
+								<div class="row" >
+									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										<div class="text-center" >
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{allCards ? allCards.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Total Cards</p>
+										</div>
+									</div>
+                                    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										<div class="text-center" >
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{activeCards ? activeCards.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Active Cards</p>
+										</div>
+									</div>
+									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0">
+										<div class="text-center">
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{inactiveCards ? inactiveCards.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Inactive Cards</p>
+										</div>
+									</div>
+								
+								</div></div>
+							</div></div>
+              <div class="col-lg-12">
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
@@ -307,7 +376,7 @@ function ListCards() {
                 {loading2 && <Loader />}
               </div>
             </div>
-          </div>
+          </div></div></div>
         </div>
       </div>
     </AppContainer>

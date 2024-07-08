@@ -278,10 +278,10 @@ const StudentProfile = props => {
     <li style={{ position: "relative", paddingLeft: "25px", marginBottom:"40px"}}>
         <i className="task-icon" style={{ top: 0, left: 0, width: "12px", height: "12px", position: "absolute", borderRadius: "50%", padding: "2px", zIndex: "2", backgroundColor:"#ff7200"}}></i>
         <h6 style={{marginBottom: "5px"}}>{studentProfile.school}
-            {/* <small className="float-right text-muted tx-11">29 Oct 2019</small> */}
+            <small className="float-right text-muted tx-11">CURRENT</small>
             </h6>
         <span className="text-muted tx-12" style={{fontSize: "12px"}}>{studentProfile.school_district}</span>
-        {/* Vertical line */}
+       
         <div className="vertical-line" style={{ position: "absolute", left: "5px", top: "0", height:"120px", width: "1px", backgroundColor: "#ccc", zIndex: "1" }}></div>
     </li>
     {Array.isArray(studentTransfers) && studentTransfers.map((item, key) => (
@@ -291,7 +291,7 @@ const StudentProfile = props => {
             {/* <small className="float-right text-muted tx-11">29 Oct 2019</small> */}
             </h6>
         <span className="text-muted tx-12" style={{fontSize: "12px"}}>{item.school_from_district}</span>
-        {/* Vertical line */}
+       
         <div className="vertical-line" style={{ position: "absolute", left: "5px", top: "0", height:"120px", width: "1px", backgroundColor: "#ccc", zIndex: "1" }}></div>
     </li>))}
     
@@ -370,10 +370,10 @@ const StudentProfile = props => {
                 <Tab.Pane eventKey="first">
             {active?
                     <>
-                        <div className="box-header  border-0 pd-0">
+                        {/* <div className="box-header  border-0 pd-0">
                             <div className="box-title fs-20 font-w600"> Update Student Information</div>
                         </div>
-                        <br/>
+                        <br/> */}
 					        <form onSubmit={handleUpdate}>
 						        <div className="form-group">
 						            <div className="row row-sm">
@@ -589,7 +589,7 @@ const StudentProfile = props => {
                                        ))}
                                        {walletTransactions === "404" && (<tr>
                          <td colSpan="5" style={{textAlign: "center"}}>
-                           No transactions involivng this student yet.
+                           No transactions involving this student yet.
                          </td>
                        </tr>)}
                                         </tbody>

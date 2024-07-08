@@ -42,5 +42,20 @@ export default {
     let response = await apiCall("card/attach", data);
     return response;
   },
+  async countAllCards(data) 
+  {
+    let response = await apiCall("card/count", data);
+    return response;
+  },
+  async countActiveCards(data) 
+  {
+    let response = await apiCall("card/count/active", data);
+    return response;
+  },
+  async countInactiveCards(data) 
+  {
+    let response = await apiCall("card/count/inactive", data);
+    return response;
+  },
   
 };

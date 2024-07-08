@@ -86,7 +86,7 @@ const handleModal=()=>{
             <div className="card custom-card" style={{borderRadius: "10px"}}>
             <div className="card-body">
               <div>
-            <p style={{textAlign:"center"}}>No search results for student with buzz number "{searchedBuzzNo}".</p>
+            <p style={{textAlign:"center"}}>No search results found.</p>
 
               </div>
             </div>

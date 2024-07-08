@@ -281,6 +281,8 @@ function CallLogs() {
                 </div>
           </table>
           {loading2 && <Loader/>}
+          {loading && <Loader/>}
+
         </div>
                 
                   </Tab.Pane>
