@@ -204,7 +204,8 @@ function AllTransactions() {
           <table className="table display data-table text-nowrap">
             <thead>
               <tr>
-                <th style={{width:"10px"}}>{translate("Welcome Andrew")}</th>
+                {/* <th style={{width:"10px"}}>{translate("Welcome Andrew")}</th> */}
+                <th style={{width:"10px"}}>Transaction Date</th>
                 <th>Student Details</th>
                 <th>Phone Number</th>
                 <th>Amount</th>
