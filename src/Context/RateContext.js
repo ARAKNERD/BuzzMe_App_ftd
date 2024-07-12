@@ -9,10 +9,13 @@ export const RateProvider = (props)=> {
 
    
    const [rateList, setRateList] = useState(false);
+   const [typeList, setTypeList] = useState(false);
+
    const [data, setData]= useState({page:"1"})
 
    useEffect(()=>{
          getRateList();
+         getTypeList();
    }, [data])
   
    const getRateList =async()=>{
@@ -26,13 +29,27 @@ export const RateProvider = (props)=> {
          setRateList("404");
       }
    }
+
+   const getTypeList =async()=>{
+
+      const server_response = await ajaxChargeRate.fetchChargeTypeList(data);
+      if(server_response.status==="OK"){
+         //store results
+         setTypeList(server_response.details);
+      }else{
+         //communicate error
+         setTypeList("404");
+      }
+   }
     
     return (
            <RateContext.Provider value={
                {
                     rateList,
+                    typeList,
                   setData,
-                  getRateList
+                  getRateList,
+                  getTypeList
                }
                }>
                {props.children}

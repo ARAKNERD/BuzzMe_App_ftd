@@ -8,69 +8,70 @@ import Loader from "../../Components/Common/Loader";
 import LanguageContext from "../../Context/LanguageContext";
 import dictionary from "../../util/dictionary";
 
-function AllTransactions() {
-  const [transactionList, setTransactionList] = useState(false);
-  const [transactionSearch, setTransactionSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [loading2, setLoading2] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
-  const {translate} = useContext(LanguageContext);
+function CallTransactions() {
+  const [callTransactions, setCallTransactions] = useState(false);
+  const [callSearch, setCallSearch] = useState(false);
+  const [searchTerm1, setSearchTerm1] = useState("");
+  const [startDate1, setStartDate1] = useState("");
+  const [endDate1, setEndDate1] = useState("");
+  const [loading3, setLoading3] = useState(false);
+  const [loading4, setLoading4] = useState(false);
+  const [account,setAccount] = useState(3)
+  const [page1,setPage1] = useState(1)
+  const [meta1,setMeta1] = useState("")
 
-  const getTransactions = async () => {
-    setLoading(true);
-    const server_response = await ajaxBank.fetchBankTransactions(page);
-      setLoading(false);
+  const getCallTransactions = async () => {
+    setLoading3(true);
+      const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
+      setLoading3(false);
       if (server_response.status === "OK") {
-          setMeta(server_response.details.meta.list_of_pages);
-          setTransactionList(server_response.details.list); 
-          if (searchTerm || startDate || endDate) {
-              setTransactionSearch(server_response.details.list); 
+          setMeta1(server_response.details.meta.list_of_pages);
+          setCallTransactions(server_response.details.list); 
+          if (searchTerm1 || startDate1 || endDate1) {
+              setCallSearch(server_response.details.list); 
           }
       } else {
-          setTransactionList("404");
+          setCallTransactions("404");
       }
   };
 
-  const searchTransactions = async (e) => {
-    if (e) {
-        e.preventDefault();
-    }
-      var data = {
-        search: searchTerm,
-        from: startDate,
-        to: endDate,
-        page: page,
-      };
-        setLoading2(true);
-        const server_response = await ajaxBank.searchBankTransactions(data);
-        setLoading2(false);
-        if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setTransactionSearch([]);
-            } else {
-              setMeta(server_response.details.meta.list_of_pages);
-              setTransactionSearch(server_response.details.list);
-            }
-        } else {
-            setTransactionSearch([]);
-        }
-    
+const searchCallTransactions = async (e) => {
+  if (e) {
+      e.preventDefault();
+  }
+    var data = {
+      search: searchTerm1,
+      from: startDate1,
+      to: endDate1,
+      page: page1,
+      account_id: account
+    };
+      setLoading4(true);
+      const server_response = await ajaxBank.searchBankTransactions(data);
+      setLoading4(false);
+      if (server_response.status === "OK") {
+          if (server_response.details.length === 0) {
+              setCallSearch([]);
+          } else {
+            setMeta1(server_response.details.meta.list_of_pages);
+            setCallSearch(server_response.details.list);
+          }
+      } else {
+          setCallSearch([]);
+      }
+  
 };
 
-  const setTransactions = (e) => {
-    e.preventDefault();
-    setSearchTerm("");
-    setStartDate("");
-    setEndDate("");
-    setTransactionSearch([]);
-    setPage(1);
-    getTransactions();
-    
-  };
+const setCall = (e) => {
+  e.preventDefault();
+  setSearchTerm1("");
+  setStartDate1("");
+  setEndDate1("");
+  setCallSearch([]);
+  setPage1(1);
+  getCallTransactions();
+  
+};
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -97,41 +98,41 @@ function AllTransactions() {
     pdf.save("airtime_data.pdf");
   };
 
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
+  const setNextPageNumber1 = () =>{
+    if(meta1.length===page1){
       
     }
     else{
-      setPage(page+1)
+      setPage1(page1+1)
     }
     
   }
 
-  const setPreviousPageNumber = () =>{
-    if(page===1){
+  const setPreviousPageNumber1 = () =>{
+    if(page1===1){
       
     }
     else{
-      setPage(page-1)
+      setPage1(page1-1)
     }
     
   }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
+  const setPageNumber1 = (e,item) =>{
+    setPage1(item)
   }
 
   useEffect(() => {
-    searchTransactions();
+    searchCallTransactions();
   }, []);
   useEffect(() => {
-    getTransactions();
-  }, [page]);
+    getCallTransactions();
+  }, [page1,account]);
 
   return (
       <>
       <div class="heading-layout1 mg-b-5">
         <TableHeader
-            subtitle="List of all the transactions made sorted by the most recent"   
+            subtitle="List of all the call transactions made sorted by the most recent"   
               />
               <div class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" 
@@ -150,10 +151,10 @@ function AllTransactions() {
               type="text"
               placeholder="Enter student name..."
               style={{border: "1px solid grey"}}
-              value={searchTerm} onChange={(e) => {
-                setSearchTerm(e.target.value);
+              value={searchTerm1} onChange={(e) => {
+                setSearchTerm1(e.target.value);
                 if (e.target.value === '') {
-                  setTransactions(e);
+                  setCall(e);
                 }
               }}
               className="form-control"
@@ -161,11 +162,11 @@ function AllTransactions() {
             <div className="col-lg-8">
               <div class="flex-fill position-relative">
                 <div class="input-group input-daterange" id="datepicker">
-                  <input type="date" style={{border: "1px solid grey"}} class="form-control" value={startDate}
-              onChange={(e) => setStartDate(e.target.value)} placeholder="start date"/>
+                  <input type="date" style={{border: "1px solid grey"}} class="form-control" value={startDate1}
+              onChange={(e) => setStartDate1(e.target.value)} placeholder="start date"/>
                   <span class="input-group-text" style={{marginLeft: "-1px", borderTopLeftRadius:"0", borderTopRightRadius:"0", borderBottomLeftRadius:"0", borderBottomRightRadius:"0"}}>to</span>
-                  <input type="date" style={{border: "1px solid grey"}} value={endDate}
-              onChange={(e) => setEndDate(e.target.value)} class="form-control" placeholder="end date"/>
+                  <input type="date" style={{border: "1px solid grey"}} value={endDate1}
+              onChange={(e) => setEndDate1(e.target.value)} class="form-control" placeholder="end date"/>
                 </div>
               </div>
             </div>
@@ -175,13 +176,13 @@ function AllTransactions() {
           <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
             <button
               type="submit"
-              onClick={(e) => searchTransactions(e)}
+              onClick={(e) => searchCallTransactions(e)}
               className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue ml-3">
               SEARCH
             </button>
             <button
               type="submit"
-              onClick={(e) => setTransactions(e)}
+              onClick={(e) => setCall(e)}
               className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-3">
               RESET
             </button>
@@ -198,67 +199,64 @@ function AllTransactions() {
         <th>Student Details</th>
         <th>Phone Number</th>
         <th>Amount</th>
-       
-        <th>Transaction Type</th>
         <th>Internal Reference</th>
         
       </tr>
     </thead>
     <tbody>
-    {transactionSearch.length > 0 ? (
-        transactionSearch.map((item, key) => (
+    {callSearch.length > 0 ? (
+        callSearch.map((item, key) => (
           <tr key={key}>
           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
                   <td>{item.student}<br/><small>{item.school}</small></td>
                   <td>{item.phone_number?item.phone_number:"N/A"}</td>
-                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account==="ACCOUNT ACTIVATION"||item.account==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
                   {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
                   
-                  <td><span class="badge badge-info">{item.account}</span></td>
-                  <td>{item.internal_ref}</td>   
+                  
+                  <td>{item.internal_ref}</td>  
         
         </tr>
         ))
-    ) : transactionList === "404" ? (
+    ) : callTransactions === "404" ? (
         <tr>
-            <td colSpan="6" style={{ textAlign: "center" }}>
-                No transactions made yet.
+            <td colSpan="5" style={{ textAlign: "center" }}>
+                No buzztime load transactions made yet.
             </td>
         </tr>
     ) : (
        
-        (searchTerm || startDate || endDate) && (
+        (searchTerm1 || startDate1 || endDate1) && (
             <tr>
-                <td colSpan="6" style={{ textAlign: "center" }}>
+                <td colSpan="5" style={{ textAlign: "center" }}>
                     No search result(s) found.
                 </td>
             </tr>
         )
     )}
-   
     </tbody>
     <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
 
 
-<button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-    {Array.isArray(meta) && meta.map((item)=>
-    page===item?
+<button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber1}><i className='fa fa-angle-left mr-2'></i> Prev</button>
+    {Array.isArray(meta1) && meta1.map((item)=>
+    page1===item?
     <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
     :
-    <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
+    <button onClick={(e)=>setPageNumber1(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
     )}
 
 
-    <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
+    <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber1}>Next<i className='fa fa-angle-right ml-2'></i></button>
           </div>
   </table>
-  {loading && <Loader/>}
-  {loading2 && <Loader/>}
+  {loading4 && <Loader/>}
+  {loading3 && <Loader/>}
 </div></>
      
   
   );
 }
 
-export default AllTransactions;
+export default CallTransactions;

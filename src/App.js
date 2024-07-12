@@ -44,14 +44,12 @@ import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
 import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
 import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
 import AdminImportStudents from "./Pages/students/AdminImportStudents";
-import CallLogs from "./Pages/CallLogs";
-import AirtimeTransactions from "./Pages/Transactions/AirtimeTransactions";
-import AllTransactions from "./Pages/Transactions/AllTransactions";
 import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
-import ViewAllRelatives from "./Pages/Parents/ViewAllRelatives";
 import SchoolDashboard from "./Pages/SchoolDashboard";
 import ListCards from "./Pages/StudentCard/ListCards";
 import TransferStudent from "./Pages/students/TransferStudent";
+import TransactionsPage from "./Pages/Transactions/TransactionsPage";
+import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -216,11 +214,9 @@ function App(props) {
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/call-logs" element={<CallLogs />} />
-              <Route path="/transactions/airtime" element={<AirtimeTransactions />} />
-              <Route path="/transactions/all" element={<AllTransactions />} />
+              <Route path="/call-logs" element={<CallLogsPage />} />
+              <Route path="/transactions/all" element={<TransactionsPage />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
-              <Route path="/relatives" element={<ViewAllRelatives />} />
               <Route path="/buzz-cards" element={<ListCards />} />
               <Route path="/students/transfer" element={<TransferStudent />} />
 

@@ -37,6 +37,14 @@ export default {
     let response = await apiCall("school_rate/delete", data);
     return response;
   },
+  async createChargeType(data) {
+    let response = await apiCall("type/add", data);
+    return response;
+  },
+  async fetchChargeTypeList(data) {
+    let response = await apiCall("type/list", data);
+    return response;
+  },
 
 
 }

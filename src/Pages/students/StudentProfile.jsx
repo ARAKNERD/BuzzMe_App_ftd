@@ -56,8 +56,15 @@ const StudentProfile = props => {
 
 
     const data = {
-        student_id: id
-      };
+        student_id: id,
+
+    };
+
+    const data4 = {
+        student_id: id,
+        page: "1"
+
+    };
 
     const data2 = {
         student_id: id,
@@ -130,7 +137,7 @@ const StudentProfile = props => {
 
     const getStudentLogs =async()=>{
         setLoading2(true)
-        const server_response = await ajaxStudent.fetchStudentCall_logs(data);
+        const server_response = await ajaxStudent.fetchStudentCall_logs(data4);
         setLoading2(false)
         if(server_response.status==="OK"){
             setStudentLogs(server_response.details);
