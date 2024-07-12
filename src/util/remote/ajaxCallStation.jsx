@@ -26,18 +26,10 @@ export default {
     let response = await apiCall("account/update", data);
     return response;
   },
-  async listZegoCallLogs(page, type) {
+  async listTypeCallLogs(page, type) {
     let data = {
       page: page,
-      type: type
-    };
-    let response = await apiCall("call_log/list", data);
-    return response;
-  },
-  async listTwilioCallLogs(page, type) {
-    let data = {
-      page: page,
-      type: type
+      call_type: type
     };
     let response = await apiCall("call_log/list", data);
     return response;
@@ -70,6 +62,10 @@ export default {
       student: student
     };
     let response = await apiCall("call_log/count", data);
+    return response;
+  },
+  async searchTypeLogs(data) {
+    let response = await apiCall("call_log/list", data);
     return response;
   },
 };

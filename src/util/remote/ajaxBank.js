@@ -11,6 +11,14 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
+  async fetchAccountTransactions(page,account) {
+    let data = {
+      page: page,
+      account_id: account
+    };
+    let response = await apiCall("bank/list", data);
+    return response;
+  },
   async searchBankTransactions(data) {
     let response = await apiCall("bank/list", data);
     return response;

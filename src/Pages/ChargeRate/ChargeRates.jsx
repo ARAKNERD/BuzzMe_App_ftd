@@ -15,16 +15,21 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import UpdateSchoolRate from "./UpdateSchoolRate";
 import DeleteSchoolRate from "./DeleteSchoolRate";
+import AddChargeType from "./AddChargeType";
 
 function ChargeRates() {
   const {rateList, getRateList} = useContext(RateContext);
+  const {getTypeList} = useContext(RateContext);
+
   const [schoolRates, setSchoolRates] = useState(false);
+
   const [loading, setLoading] = useState(false);
 
 
   const refreshData = () =>{
     getRateList();
     getSchoolRates();
+    getTypeList();
   }
 
   const getSchoolRates = async () => {
@@ -55,12 +60,27 @@ function ChargeRates() {
   const handleDelete2=(e,item)=>{
     setModal(false, ()=>setModal(<DeleteSchoolRate rateID={item.rate_id} g={getSchoolRates} isOpen={true}/>))
   }
+  const handleAdd=(e,item)=>{
+    setModal(false, ()=>setModal(<AddChargeType g={getTypeList} isOpen={true}/>))
+  }
 
   return (
     <AppContainer title="Charge Rates">
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
+      <div className="col-lg-12 col-md-12">
+          <div className="pl-20" style={{float: "right"}}>
+          
+              <button
+                type="button"
+                onClick={handleAdd}
+                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
+                <i className="fa-solid fa-plus" /> Add Charge Type
+              </button>
+            
+          </div>
+        </div>
         <div className="col-lg-4">
           <AddChargeRate g={getSchoolRates} />
         </div>

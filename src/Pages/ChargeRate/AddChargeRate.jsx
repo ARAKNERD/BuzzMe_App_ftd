@@ -11,7 +11,7 @@ function AddChargeRate(props) {
   const [type, setType] = useState("");
   const [school, setSchool] = useState("");
   const [category, setCategory] = useState("");
-  const {getRateList} = useContext(RateContext);
+  const {getRateList, typeList} = useContext(RateContext);
   const {schoolList} = useContext(SchoolContext);
 
   const [loading, setLoading] = useState(false);
@@ -84,7 +84,7 @@ function AddChargeRate(props) {
           class="new-added-form">
           <div className="row">
           <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Rate Type <span style={{color:"red"}}>*</span> </label>
+              <label htmlFor="">Rate Category <span style={{color:"red"}}>*</span> </label>
               <select
                       className="col-12 form-control"
                       value={category}
@@ -96,19 +96,18 @@ function AddChargeRate(props) {
                     </select>
             </div>
             <div className="col-lg-12 col-12 form-group">
-              <label htmlFor="">Communication Type <span style={{color:"red"}}>*</span> </label>
-              <select
-                      className="col-12 form-control"
-                      value={type}
-                      style={{border: "1px solid grey"}}
-                      onChange={(e) => setType(e.target.value)}>
-                      <option value={true}>Select...</option>
-                      <option value="SMS">Message / SMS</option>
-                      <option value="TWILIO">TWILIO Call</option>
-                      <option value="ZEGO">ZEGO Call</option>
-                      {category === "School"? "":<option value="ACTIVATION">Account Activation</option>}
-                      
-                    </select>
+              <label htmlFor="">Communication / Charge Type <span style={{color:"red"}}>*</span> </label>
+              <Select
+                      onChange={(e) => setType(e.type)}
+                      getOptionLabel={(option) => option.type}
+                      getOptionValue={(option) => option.type}
+                      isSearchable
+                      options={Array.isArray(typeList) ? typeList : []}
+                      value={
+                        Array.isArray(typeList) &&
+                        typeList.find((value) => value.type === type)
+                      }
+                    />
             </div>
             {category === "Default"? "" :<div className="col-lg-12 col-12 form-group">
                 <label htmlFor="">School <span style={{color:"red"}}>*</span></label>

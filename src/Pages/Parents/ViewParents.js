@@ -163,6 +163,8 @@ function ViewParents() {
                       <th scope="col" className="wd-10p">No.</th>
                       <th scope="col">Names</th>
                       <th scope="col">Contact</th>
+                      <th scope="col">Buzz Number</th>
+
                       <th scope="col">Address</th>
                     
                     </tr>
@@ -178,6 +180,8 @@ function ViewParents() {
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>
+                        <td>{item.buzz_number}</td>
+
                         <td>{item.address}</td>
                       </tr>
                       ))
@@ -190,6 +194,8 @@ function ViewParents() {
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>
+                        <td>{item.buzz_number}</td>
+
                         <td>{item.address}</td>
                       </tr>
                       ))}
@@ -232,121 +238,3 @@ function ViewParents() {
 }
 
 export default ViewParents;
-{/* <div className="col-lg-12">
-          <div className="card custom-card" style={{marginTop:"25px", borderRadius:"10px"}}>
-            <div className="card-body map-card">
-            <div class="heading-layout1 mg-b-25">
-              <TableHeader
-                title="Contacts List"
-                subtitle="List of all the contacts sorted in ascending order"    
-              />
-                           <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-                
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        </div>
-                                    </div>
-                        </div>
-                        <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                    <input
-                      type="text"
-                      value={query} onChange={(e) => {
-                        setQuery(e.target.value);
-                        if (e.target.value === '') {
-                          setParents(e);
-                        }
-                      }}
-                      placeholder="Search for contact first or last name..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                    <button
-                      type="submit"
-                      onClick={(e) => searchParents(e)}
-                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                      SEARCH
-                    </button>
-                    <button
-                      type="submit"
-                      onClick={(e) => setParents(e)}
-                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-2">
-                      RESET
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <div className="border-top mt-3"></div>
-              <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
-                  <thead>
-                    <tr>
-                      <th scope="col" className="wd-10p">No.</th>
-                      <th scope="col">Names</th>
-                      <th scope="col">Contact</th>
-                      <th scope="col">Address</th>
-                    
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {parentSearch && Array.isArray(parentSearch) ? (
-                      
-                        parentSearch.map((item, key) => (
-                          <tr key={key}>
-                          <th scope='row'>{key + 1}</th>
-                          <td><Link
-                          to={`/parents/profile/${item.parent_id}`}>
-                          {item.full_name}
-                        </Link></td>
-                          <td>{item.main_contact}</td>
-                          <td>{item.address}</td>
-                        </tr>
-                        ))
-                     
-                    ) : Array.isArray(parentList) && parentList.map((item, key) => (
-                        <tr key={key}>
-                          <th scope='row'>{key + first + 1}</th>
-                          <td><Link
-                          to={`/parents/profile/${item.parent_id}`}>
-                          {item.full_name}
-                        </Link></td>
-                          <td>{item.main_contact}</td>
-                          <td>{item.address}</td>
-                        </tr>
-                      ))}
-                      {parentList === "404" && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No parents or guardians registered yet.
-                          </td>
-                        </tr>)}
-                        {parentSearch.length === 0 && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
-                  </tbody>
-                  <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
-      
-      
-    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-          {Array.isArray(meta) && meta.map((item)=>
-          page===item?
-          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-          :
-          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-          )}
-
-
-					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
-                </div>
-                </table>
-                {loading && <Loader/>}
-                {loading2 && <Loader/>}
-              </div>
-            </div>
-			    </div>
-				</div> */}

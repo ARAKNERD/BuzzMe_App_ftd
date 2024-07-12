@@ -202,6 +202,11 @@ const ParentProfile = props => {
                                             <td className="py-2 px-0"> <span className="">{parentProfile.alternative_contact?parentProfile.alternative_contact:"Not registered"}</span> </td>
                                         </tr>
                                         <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Buzz Number</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{parentProfile.buzz_number}</span> </td>
+                                        </tr>
+                                        <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Address</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{parentProfile.address}</span> </td>
