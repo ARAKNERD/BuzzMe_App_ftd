@@ -1,60 +1,32 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import AppContainer from "../Components/Structure/AppContainer";
-import ajaxSchool from "../util/remote/ajaxSchool";
-import ajaxStudent from "../util/remote/ajaxStudent";
 import TableHeader from "../Components/Common/TableHeader";
-import {Toaster, toast} from "react-hot-toast";
 import Loader from "../Components/Common/Loader";
 import {Link} from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import WeeklyLogsChart from "./WeeklyLogsChart";
 import ajaxBank from "../util/remote/ajaxBank";
+import StudentContext from "../Context/StudentContext";
+import SchoolContext from "../Context/SchoolContext";
+import ContactContext from "../Context/ContactContext";
+import StationContext from "../Context/StationContext";
 
 function Dashboard() {
 
-  const [schoolsNumber, setSchoolsNumber] = useState(false);
-  const [studentsNumber, setStudentsNumber] = useState(false);
+  
+  const {studentsNumber} = useContext(StudentContext);
+  const {schoolsNumber} = useContext(SchoolContext);
+  const {contactsNumber} = useContext(ContactContext);
+  const {stationNumber} = useContext(StationContext);
+
   const [logsNumber, setLogsNumber] = useState(false);
   const [logsThisWeek, setLogsThisWeek] = useState(false);
   const [logsThisMonth, setLogsThisMonth] = useState(false);
-  const [stationNumber, setStationNumber] = useState(false);
   const [buzzTimeUsed, setBuzzTimeUsed] = useState(false);
   const [buzzTimeLoaded, setBuzzTimeLoaded] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [transactionList, setTransactionList] = useState(false);
-
-
-  const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchAllStudentsNumber();
-    if (server_response.status === "OK") {
-      //store results
-      setStudentsNumber(server_response.details);
-    } else {
-      //communicate error
-      setStudentsNumber("404");
-    }
-  };
-  const getStationNumber = async () => {
-    const server_response = await ajaxCallStation.countAllStations();
-    if (server_response.status === "OK") {
-      //store results
-      setStationNumber(server_response.details);
-    } else {
-      //communicate error
-      setStationNumber("404");
-    }
-  };
-  const getSchoolsNumber = async () => {
-    const server_response = await ajaxSchool.fetchSchoolNumber();
-    if (server_response.status === "OK") {
-      //store results
-      setSchoolsNumber(server_response.details);
-    } else {
-      //communicate error
-      setSchoolsNumber("404");
-    }
-  };
+ 
   const getLogsNumber = async () => {
     const server_response = await ajaxCallStation.countLogsToday();
 
@@ -123,10 +95,7 @@ function Dashboard() {
     }
   };
   useEffect(() => {
-    getStudentsNumber();
-    getSchoolsNumber();
     getLogsNumber();
-    getStationNumber();
     getTransactions();
     getLogsThisMonth();
     getLogsThisWeek();
@@ -137,7 +106,6 @@ function Dashboard() {
   return (
     <div>
       <AppContainer title={"Dashboard"}>
-        <Toaster position="top-center" reverseOrder={false} />
 
           <div class="row gutters-20">
             <div class="col-7-xxxl col-12">
@@ -191,7 +159,7 @@ function Dashboard() {
                                 <div class="col-7">
                                     <div class="item-content">
                                         <div class="item-title" style={{color:"white"}}>Contacts Registered</div>
-                                        <div class="item-number" style={{color:"white"}}><span class="counter">00</span></div>
+                                        <div class="item-number" style={{color:"white"}}><span class="counter">{contactsNumber ? contactsNumber.total_p : "..."}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -227,13 +195,13 @@ function Dashboard() {
 								<div class="row" >
 									<div class="col-xl-6 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
 										<div class="text-center" >
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeLoaded ? buzzTimeLoaded.total_p : "..."}</span></h2>
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeLoaded ? buzzTimeLoaded.total_buzz_time_loaded_c : "..."}</span></h2>
 											<p class="mb-0 text-light"> Buzz Time Loaded</p>
 										</div>
 									</div>
 									<div class="col-xl-6 col-lg-12 col-sm-6 pr-0 pl-0">
 										<div class="text-center">
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeUsed ? buzzTimeUsed.total_p : "..."}</span></h2>
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeUsed ? buzzTimeUsed.total_buzz_time_used_c : "..."}</span></h2>
 											<p class="mb-0 text-light"> Buzz Time Used</p>
 										</div>
 									</div>
