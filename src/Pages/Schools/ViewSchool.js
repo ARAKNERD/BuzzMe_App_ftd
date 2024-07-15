@@ -22,17 +22,44 @@ function ViewSchool() {
     getSchoolList()
   }
 
-  const getSchoolList= async () => {
-    setLoading2(true)
+  const getSchoolList = async () => {
+    setLoading2(true);
     const server_response = await ajaxSchool.fetchSchools(page);
-    setLoading2(false)
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages);
-      setSchoolList(server_response.details.list);
-    } else {
-      setSchoolList("404");
-    }
+      setLoading2(false);
+      if (server_response.status === "OK") {
+          setMeta(server_response.details.meta.list_of_pages);
+          setSchoolList(server_response.details.list); 
+          if (query) {
+              setSchoolSearch(server_response.details.list); 
+          }
+      } else {
+          setSchoolList("404");
+      }
   };
+
+  const searchSchools = async (e) => {
+    if (e) {
+        e.preventDefault();
+    }
+    var data = {
+      search: query,
+      page: page
+    };
+        setLoading(true);
+        const server_response = await ajaxSchool.searchSchoolList(data);
+        setLoading(false);
+        if (server_response.status === "OK") {
+            if (server_response.details.length === 0) {
+                setSchoolSearch([]);
+            } else {
+              setMeta(server_response.details.meta.list_of_pages);
+              setSchoolSearch(server_response.details.list);
+            }
+        } else {
+            setSchoolSearch([]);
+        }
+    
+};
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -81,37 +108,14 @@ function ViewSchool() {
   const setPageNumber = (e,item) =>{
     setPage(item)
   }
-
-
-  const searchSchools = async (e) => {
-    if (e) {
-        e.preventDefault();
-    }
-    var data = {
-        search: query,
-        page: page
-      };
-        setLoading(true);
-        const server_response = await ajaxSchool.searchSchoolList(data);
-        setLoading(false);
-        if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setSchoolSearch([]);
-            } else {
-              setMeta(server_response.details.meta.list_of_pages);
-              setSchoolSearch(server_response.details.list);
-            }
-        } else {
-            setSchoolSearch("404");
-        }
+  const setSchools = (e) => {
+    e.preventDefault();
+    setQuery("");
+    setSchoolSearch([]);
+    setPage(1);
+    getSchoolList();
     
-};
-
-const setSchools = (e) => {
-  e.preventDefault();
-  setSchoolSearch(false);
-  setQuery("");
-};
+  };
 
 useEffect(() => {
         searchSchools();
@@ -186,9 +190,9 @@ useEffect(() => {
                 </tr>
               </thead>
               <tbody>
-              {schoolSearch && Array.isArray(schoolSearch) ? 
-                        ( schoolSearch.map((item, key) => (
-                          <tr key={key}>
+              {schoolSearch.length > 0 ? (
+        schoolSearch.map((item, key) => (
+          <tr key={key}>
                           <td>{key + 1}</td>
                           <td><Link
                           to={`/schools/view/profile/${item.school_id}`}>
@@ -198,30 +202,24 @@ useEffect(() => {
                           <td>{item.email}</td>
                           <td>{item.district?.district_name}</td>
                         </tr>
-                        )))
-                    : (
-                Array.isArray(schoolList) && schoolList.map((item, key) => (
-                    <tr key={key}>
-                      <td>{key + 1}</td>
-                      <td><Link
-                          to={`/schools/view/profile/${item.school_id}`}>
-                          {item.school_name}
-                        </Link></td>
-                      <td>{item.contact}</td>
-                      <td>{item.email}</td>
-                      <td>{item.district?.district_name}</td>
-                    </tr>
-                  )))}
-                {schoolList === "404" && (<tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No schools registered yet.
-                          </td>
-                        </tr>)}
-                        {schoolSearch.length === 0 && (<tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
+        ))
+    ) : schoolList === "404" ? (
+        <tr>
+            <td colSpan="5" style={{ textAlign: "center" }}>
+                No schools registered yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="5" style={{ textAlign: "center" }}>
+                    No search result(s) found.
+                </td>
+            </tr>
+        )
+    )}
+              
               </tbody>
               <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       

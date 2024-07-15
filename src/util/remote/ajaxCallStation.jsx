@@ -59,12 +59,20 @@ export default {
   },
   async countStudentLogs(student) {
     let data = {
-      student: student
+      student_id: student
     };
     let response = await apiCall("call_log/count", data);
     return response;
   },
   async searchTypeLogs(data) {
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
+  async listStudentCallLogs(page, student_id) {
+    let data = {
+      page: page,
+      student_id: student_id
+    };
     let response = await apiCall("call_log/list", data);
     return response;
   },

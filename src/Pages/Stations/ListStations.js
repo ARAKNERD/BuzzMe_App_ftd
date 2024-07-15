@@ -28,45 +28,48 @@ function ListStations() {
     const [page,setPage] = useState(1)
     const [meta,setMeta] = useState("")
 
-    const data2 = {
-      search: query,
-      school_id: user.school?user.school:""
-    };
     const getStations = async () => {
       setLoading(true);
       const server_response = await ajaxStation.fetchStationList(user.school?user.school:"",page);
-      setLoading(false);
-      if (server_response.status === "OK") {
-        setMeta(server_response.details.meta.list_of_pages);
-        setStationList(server_response.details.list);
-      }else {
-        setStationList("404");
-      }
+        setLoading(false);
+        if (server_response.status === "OK") {
+            setMeta(server_response.details.meta.list_of_pages);
+            setStationList(server_response.details.list); 
+            if (query) {
+                setStationSearch(server_response.details.list); 
+            }
+        } else {
+            setStationList("404");
+        }
     };
 
     const searchStations = async (e) => {
       if (e) {
-        e.preventDefault();
+          e.preventDefault();
       }
-        setLoading2(true);
-        const server_response = await ajaxStation.searchStation(user.school?user.school:"",query,page);
-        setLoading2(false);
-        if (server_response.status === "OK") {
-          if (server_response.details.length === 0) {
-            setStationSearch([]);
+          setLoading2(true);
+          const server_response = await ajaxStation.searchStation(user.school?user.school:"",query,page);
+          setLoading2(false);
+          if (server_response.status === "OK") {
+              if (server_response.details.length === 0) {
+                  setStationSearch([]);
+              } else {
+                setMeta(server_response.details.meta.list_of_pages);
+                setStationSearch(server_response.details.list);
+              }
           } else {
-            setMeta(server_response.details.meta.list_of_pages);
-            setStationList(server_response.details.list);
+              setStationSearch([]);
           }
-        } else {
-          setStationSearch("404");
-        }
-    };
+      
+  };
 
     const setStations = (e) => {
       e.preventDefault();
-      setStationSearch(false);
       setQuery("");
+      setStationSearch([]);
+      setPage(1);
+      getStations();
+      
     };
   
     useEffect(() => {
@@ -181,10 +184,9 @@ function ListStations() {
                     </tr>
                   </thead>
                   <tbody>
-                  {stationSearch && Array.isArray(stationSearch) ? (
-                      
-                      stationSearch.map((item, key) => (
-                        <tr key={key}>
+                  {stationSearch.length > 0 ? (
+        stationSearch.map((item, key) => (
+          <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
@@ -236,72 +238,24 @@ function ListStations() {
                             </div>
                           </td>
                         </tr>
-                      ))
-                   
-                  ) :Array.isArray(stationList) && stationList.map((item, key) => (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.station_name}</td>
-                          <td>{item.station_code}</td>
-                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
-                          <td>
-                            {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
-                          </td>
-                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
-                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
-
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateHours(e,item)}>
-                                <FontAwesomeIcon icon={faClock} style={{ color: "green", marginRight: "3px" }} />
-                                 Change Active Hours
-                              </Link>
-                              <RenderSecure code="ADMIN-VIEW">
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateStation(e,item)}>
-                                <i className="far fa-edit mr-1" style={{color:"orange"}}></i>
-                                 Update Station Details
-                              </Link></RenderSecure>
-                              {item.status==="300"?<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => stationOff(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 Turn Off
-                              </Link>:<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => stationOn(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                 Turn On
-                              </Link>}</div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                      {stationList === "404" && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No calling stations registered yet.
-                          </td>
-                        </tr>)}
-                        {stationSearch.length === 0 && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
+        ))
+    ) : stationList === "404" ? (
+        <tr>
+            <td colSpan="6" style={{ textAlign: "center" }}>
+                No calling booths / stations registered yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="6" style={{ textAlign: "center" }}>
+                    No search result(s) found.
+                </td>
+            </tr>
+        )
+    )}
+                  
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

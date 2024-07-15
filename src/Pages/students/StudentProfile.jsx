@@ -77,6 +77,10 @@ const StudentProfile = props => {
         getStudentLogs();
       
     }, [])
+    useEffect(()=>{
+       getStudentLogs();
+     
+   }, [page, id])
 
     const getGroups = async () => {
         const server_response = await ajaxStudentGroup.fetchGroupList(user.school);
@@ -137,10 +141,11 @@ const StudentProfile = props => {
 
     const getStudentLogs =async()=>{
         setLoading2(true)
-        const server_response = await ajaxStudent.fetchStudentCall_logs(data4);
+        const server_response = await ajaxCallStation.listStudentCallLogs(page, id);
         setLoading2(false)
         if(server_response.status==="OK"){
-            setStudentLogs(server_response.details);
+            setMeta(server_response.details.meta.list_of_pages);
+            setStudentLogs(server_response.details.list);
         }else{
             //communicate error
             setStudentLogs("404");
@@ -537,20 +542,21 @@ const StudentProfile = props => {
                                         <thead>
                                         <tr>
                                         <th scope="col">Date</th>
-                                        <th scope="col">Duration</th>
-                                        <th scope="col"> Contact</th>
+                                        <th scope="col">Contact</th>
+                                        <th scope="col"> Duration</th>
                                         <th scope="col"> Calling Station</th>
                                     </tr>
                                         </thead>
                                         <tbody>
                                         {Array.isArray(studentLogs) && studentLogs.map((item, key) => (
                                             
-                                            <tr key={key} >
-                                               <th scope="row">{item.created_at?.long_date}</th>
-                                               <th scope="row">{item.duration}</th>
-                                               <td><span>{item.contact?.full_name}</span><br/><span>{item.contact?.main_contact}</span></td>
-                                               <td>{item.station?.station_name}</td>
-                                           </tr>
+                                            <tr key={key}>
+                <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.created_at.long_date}</td>
+                
+                <td className="text-dark">{item.contact_name}<br /><small>{item.contact}</small></td>
+                <td>{item.duration_format}</td>
+                <td>{item.station_name}<br /><small>{item.school}</small></td>
+            </tr>
                                        ))}
                                        {studentLogs === "404" && (<tr>
                          <td colSpan="4" style={{textAlign: "center"}}>

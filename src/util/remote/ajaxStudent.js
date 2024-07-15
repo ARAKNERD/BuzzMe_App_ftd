@@ -91,11 +91,6 @@ export default {
 
     return response;
   },
-  async fetchStudentCall_logs(data) {
-    let response = await apiCall("call_log/list", data);
-
-    return response;
-  },
   async searchAllStudents(search, page) {
     let data = {
       search: search,
