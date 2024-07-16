@@ -28,7 +28,7 @@ function AddStudentSchoolGroup(props) {
         toast.error(server_response.message);
       }
     } else {
-      toast.error("Complete all fields and try again");
+      toast.error("Please fill in the name of the group");
     }
   };
 

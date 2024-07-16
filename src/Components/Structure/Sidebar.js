@@ -161,6 +161,11 @@ const Sidebar = (props) => {
                   <span><b>Buzz Cards</b></span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link to="/statistics" className="nav-link">
+                  <span><b>Statistics</b></span>
+                </Link>
+              </li>
               <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>

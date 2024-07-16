@@ -291,7 +291,7 @@ function SchoolDashboard() {
                       </a>
 
                       <div class="dropdown-menu dropdown-menu-right">
-                        <Link class="dropdown-item" to={`/school-students`}>
+                        <Link class="dropdown-item" to={`/students`}>
                           <i class="fa-solid fa-eye text-orange-peel"></i>
                           View All
                         </Link>

@@ -108,12 +108,13 @@ export default {
     let response = await apiCall("student/list", data);
     return response;
   },
-  async searchGroupStudent(search, group_id) {
+  async searchGroupStudent(search, group_id, page) {
     let data = {
       search: search,
-      group_id: group_id
+      group_id: group_id,
+      page: page
     };
-    let response = await apiCall("student/search", data);
+    let response = await apiCall("student/list", data);
     return response;
   },
   async fetchStudentCardList(data) {

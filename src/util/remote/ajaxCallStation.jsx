@@ -34,6 +34,15 @@ export default {
     let response = await apiCall("call_log/list", data);
     return response;
   },
+  async listSchoolTypeCallLogs(school, page, type) {
+    let data = {
+      school_id: school,
+      page: page,
+      call_type: type
+    };
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
   async countLogsToday(data) {
     let response = await apiCall("call_log/count/today", data);
     return response;

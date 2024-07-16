@@ -20,53 +20,61 @@ function GroupStudents()
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
-  
-  
+
   const getStudentList = async () => {
-    setLoading2(true)
+    setLoading2(true);
     const server_response = await ajaxStudent.fetchGroupStudents(id, page);
-    setLoading2(false)
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages)
-      setStudentList(server_response.details.list);
-      setFirst(server_response.details.meta.offset_count);
-    } else {
-      setStudentList("404");
+      setLoading2(false);
+      if (server_response.status === "OK") {
+          setFirst(server_response.details.meta.offset_count);
+          setMeta(server_response.details.meta.list_of_pages);
+          setStudentList(server_response.details.list); 
+          if (query) {
+              setStudentSearch(server_response.details.list); 
+          }
+      } else {
+          setStudentList("404");
+      }
+  };
+
+  const searchStudents = async (e) => {
+    if (e) {
+      e.preventDefault();
     }
+      setLoading(true);
+      const server_response = await ajaxStudent.searchGroupStudent(query, id ,page);
+      setLoading(false);
+      if (server_response.status === "OK") {
+        if (server_response.details.length === 0) {
+          setStudentSearch([]);
+        } else {
+          setFirst(server_response.details.meta.offset_count);
+          setMeta(server_response.details.meta.list_of_pages);
+          setStudentSearch(server_response.details.list);
+        }
+      } else {
+        setStudentSearch([]);
+      }
   };
   
   useEffect(() => {
     getStudentList();
   }, [id, page]);
   
-  const searchStudents = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-      setLoading(true);
-      const server_response = await ajaxStudent.searchGroupStudent(query, id);
-      setLoading(false);
-      if (server_response.status === "OK") {
-        if (server_response.details.length === 0) {
-          setStudentSearch([]);
-        } else {
-          setStudentSearch(server_response.details);
-        }
-      } else {
-        setStudentSearch([]);
-      }
   
+  
+  const setStudents = (e) => {
+    e.preventDefault();
+    setQuery("");
+    setStudentSearch([]);
+    setPage(1);
+    getStudentList();
+    
   };
-  
-  const setStudents = (e) =>{
-    e.preventDefault()
-    setStudentSearch(false)
-    setQuery('')
-  }
   
   useEffect(() => {
       searchStudents();
-  }, []);
+  }, [id, page]);
   
     // ----------------------handles the view -----students printable codeslip -modal
   const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -166,10 +174,9 @@ function GroupStudents()
                 </tr>
                   </thead>
                   <tbody>
-                  {studentSearch && Array.isArray(studentSearch) ? (
-                      
-                      studentSearch.map((item, key) => (
-                        <tr key={key}>
+                  {studentSearch.length > 0 ? (
+        studentSearch.map((item, key) => (
+          <tr key={key}>
                         <td>{key + first + 1}</td>
                         <td><Link
                         to={`/students/profile/${item.id}`}>
@@ -179,33 +186,25 @@ function GroupStudents()
                         <td className="text-dark">{item.reg_no?item.reg_no:"Not registered"}</td>
                      
                       </tr>
-                      ))
-                   
-                  ) :Array.isArray(studentList) && studentList.map((student, key) => (
-                    <tr key={key}>
-                <td>{key + first + 1}</td>
-                <td><Link
-                    to={`/students/profile/${student.id}`}>
-                    {student.first_name} {student.last_name}
-                  </Link></td>
-                <td className="text-dark">
-                  {student.student_code}
+        ))
+    ) : studentList === "404" ? (
+        <tr>
+            <td colSpan="4" style={{ textAlign: "center" }}>
+                No students registered yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                    No search result(s) found.
                 </td>
-                <td className="text-dark">
-                  {student.reg_no?student.reg_no:"Not registered"}
-                </td>
-              </tr>
-                      ))}
-                      {studentList === "404" && (<tr>
-                        <td colSpan="4" style={{textAlign: "center"}}>
-                          No parents or guardians registered yet.
-                        </td>
-                      </tr>)}
-                      {studentSearch.length === 0 && (<tr>
-                        <td colSpan="4" style={{textAlign: "center"}}>
-                          No search result(s) found.
-                        </td>
-                      </tr>)}
+            </tr>
+        )
+    )}
+                    
+                  
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

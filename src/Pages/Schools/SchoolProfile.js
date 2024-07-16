@@ -51,6 +51,7 @@ const SchoolProfile = props => {
     const [longitude,setLongitude] = useState("")
     const [address,setAddress] = useState("")
 
+    const [first, setFirst] = useState("");
 
     const [active,setActive] = useState(false)
     const handleActive = ()=> setActive(true)
@@ -81,7 +82,6 @@ const SchoolProfile = props => {
       getSchoolStudents()
       getSchoolStations();
       getSchoolProfile();
-      searchStudents()
       
     }, [])
 
@@ -134,12 +134,16 @@ const SchoolProfile = props => {
     }
 
     const getSchoolStudents = async () => {
-        setLoading3(true)
-        const server_response = await ajaxStudent.fetchStudentList(id,page);
-        setLoading3(false)
+      setLoading3(true);
+      const server_response = await ajaxStudent.fetchStudentList(id, page);
+        setLoading3(false);
         if (server_response.status === "OK") {
-            setMeta(server_response.details.meta.list_of_pages)
-            setSchoolStudents(server_response.details.list);
+            setFirst(server_response.details.meta.offset_count);
+            setMeta(server_response.details.meta.list_of_pages);
+            setSchoolStudents(server_response.details.list); 
+            if (query) {
+                setStudentSearch(server_response.details.list); 
+            }
         } else {
             setSchoolStudents("404");
         }
@@ -187,23 +191,24 @@ const SchoolProfile = props => {
         }
     }
 
-    const searchStudents = async (e) => {
-      if (e) {
-          e.preventDefault();
+  const searchStudents = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+      setLoading(true);
+      const server_response = await ajaxStudent.searchSchoolStudents(query, id, page);
+      setLoading(false);
+      if (server_response.status === "OK") {
+        if (server_response.details.length === 0) {
+          setStudentSearch([]);
+        } else {
+          setFirst(server_response.details.meta.offset_count);
+          setMeta(server_response.details.meta.list_of_pages);
+          setStudentSearch(server_response.details.list);
+        }
+      } else {
+        setStudentSearch([]);
       }
-          setLoading(true);
-          const server_response = await ajaxStudent.searchSchoolStudents(query,id,page);
-          setLoading(false);
-          if (server_response.status === "OK") {
-              if (server_response.details.length === 0) {
-                  setStudentSearch([]);
-              } else {
-                setMeta(server_response.details.meta.list_of_pages);
-                setStudentSearch(server_response.details.list);
-              }
-          } else {
-              setStudentSearch("404");
-          }
   };
 
     const getLocation = () => {
@@ -219,11 +224,15 @@ const SchoolProfile = props => {
         }
     }, [lat,longitude]);
   
-  const setStudents = (e) =>{
-    e.preventDefault()
-   setStudentSearch(false)
-   setQuery('')
-  }
+
+  const setStudents = (e) => {
+    e.preventDefault();
+    setQuery("");
+    setStudentSearch([]);
+    setPage(1);
+    getSchoolStudents();
+    
+  };
 
   const setNextPageNumber = () =>{
     if(meta.length===page){
@@ -278,6 +287,11 @@ const SchoolProfile = props => {
     countSchoolStations()
   }, [id])
 
+  useEffect(()=>{
+    searchStudents()
+    
+  }, [id, page])
+
   const handleModal3=()=>{
     setModal(false, ()=>setModal(<AddGroup schoolID={id} g={getGroups} isOpen={true}/>))
 }
@@ -296,11 +310,8 @@ const SchoolProfile = props => {
           <div class="cards">
             <div class="card-body profile-card pt-4 d-flex flex-column gradient-my-blue">
 
-            {/* <div class="main-img-user mb-2"><img alt="avatar" style={{height:"90px"}} src={
-                      process.env.PUBLIC_URL + "/assets/img/figure/user55.png"
-                    }/></div> */}
-              <h3 style={{color:"white"}}>{schoolProfile.school_name}</h3>
-              <h5 style={{color:"white"}}>{schoolProfile.district?.district_name}</h5>
+              <h3 style={{color:"white"}}>{schoolProfile.school_name?schoolProfile.school_name:"..."}</h3>
+              <h5 style={{color:"white"}}>{schoolProfile.district?schoolProfile.district:"..."}</h5>
               <div class="social-links mt-2 align-items-center ">
               {active?
                                 <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
@@ -527,36 +538,34 @@ const SchoolProfile = props => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {studentSearch && Array.isArray(studentSearch) ? 
-                        ( studentSearch.map((item, key) => (
-                          <tr key={key}>
+                                {studentSearch.length > 0 ? (
+        studentSearch.map((item, key) => (
+          <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
                           <td>{item.student_code}</td>
                           <td>{item.reg_no?item.reg_no:"Not registered"}</td>
                         </tr>
-                        )))
-                    :  (
-                                    Array.isArray(schoolStudents) && schoolStudents.map((item, key) => (
-                                            
-                                             <tr key={key} >
-                                                <th scope="row">{key+1}</th>
-                                                <td>{item.first_name} {item.last_name}</td>
-                          <td>{item.student_code}</td>
-                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
-                                            </tr>
-                                        ))
-                                    )}
-                        {schoolStudents === "404" && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No students registered in this school yet.
-                          </td>
-                        </tr>)}
-                        {studentSearch.length === 0 && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
+        ))
+    ) : schoolStudents === "404" ? (
+        <tr>
+            <td colSpan="4" style={{ textAlign: "center" }}>
+                No students registered in this school yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                    No search result(s) found.
+                </td>
+            </tr>
+        )
+    )}
+
+
+                                
                                 </tbody>
                                 <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
       
@@ -574,6 +583,8 @@ const SchoolProfile = props => {
                 </div>
                             </table>
                             {loading3 && <Loader/>}
+                            {loading && <Loader/>}
+
                             </div>
                   </Tab.Pane>
 
