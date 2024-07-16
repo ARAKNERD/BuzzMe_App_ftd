@@ -26,19 +26,20 @@ function ViewStudents() {
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
 
-
   const getStudentList = async () => {
     setLoading2(true);
     const server_response = await ajaxStudent.fetchStudentList(user.school, page);
-    setLoading2(false);
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages);
-      setStudentList(server_response.details.list);
-      setFirst(server_response.details.meta.offset_count);
-
-    }else {
-      setStudentList("404");
-    }
+      setLoading2(false);
+      if (server_response.status === "OK") {
+          setFirst(server_response.details.meta.offset_count);
+          setMeta(server_response.details.meta.list_of_pages);
+          setStudentList(server_response.details.list); 
+          if (query) {
+              setStudentSearch(server_response.details.list); 
+          }
+      } else {
+          setStudentList("404");
+      }
   };
 
   const getDefaultPin = async (e,item) => {
@@ -65,13 +66,16 @@ function ViewStudents() {
         if (server_response.details.length === 0) {
           setStudentSearch([]);
         } else {
+          setFirst(server_response.details.meta.offset_count);
           setMeta(server_response.details.meta.list_of_pages);
           setStudentSearch(server_response.details.list);
         }
       } else {
-        setStudentSearch("404");
+        setStudentSearch([]);
       }
   };
+
+ 
 
   const exportToPDF = () => {
     const table = document.querySelector(".table"); // Select the table element
@@ -99,9 +103,11 @@ function ViewStudents() {
 
   const setStudents = (e) => {
     e.preventDefault();
-    setStudentSearch(false);
     setQuery("");
+    setStudentSearch([]);
+    setPage(1);
     getStudentList();
+    
   };
 
   useEffect(() => {
@@ -205,10 +211,9 @@ function ViewStudents() {
                     </tr>
                   </thead>
                   <tbody>
-                  {studentSearch && Array.isArray(studentSearch) ? (
-                      
-                      studentSearch.map((item, key) => (
-                        <tr key={key}>
+                  {studentSearch.length > 0 ? (
+        studentSearch.map((item, key) => (
+          <tr key={key}>
                            <td style={{width:"5px"}}>{key + first + 1}</td>
 
                             <td>
@@ -253,63 +258,24 @@ function ViewStudents() {
                             </div>
                           </td>
                           </tr>
-                      ))
-                   
-                  ) :Array.isArray(studentList) && studentList.map((item, key) => (
-                    <tr key={key}>
-                    <td style={{width:"5px"}}>{key + first + 1}</td>
-                     <td>
-                       <Link to={`/school-students/profile/${item.id}`}>
-                       {item.first_name} {item.last_name}
-                       </Link>
-                     </td>
-                     <td className="text-dark">{item.gender}</td>
-                     <td className="text-dark">{item.student_code}</td>
-                     <td className="text-dark">{item.group}</td>
-                    
-                     <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
-                     <OverlayTrigger
-                     placement="top"
-                     overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
-                        <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
-                     <td>
-                       <div className="dropdown">
-                         <Link
-                           to="#"
-                           className="dropdown-toggle"
-                           data-toggle="dropdown"
-                           aria-expanded="false">
-                           <span className="flaticon-more-button-of-three-dots"></span>
-                         </Link>
-                         <div className="dropdown-menu dropdown-menu-right">
-                           
-                           <Link
-                           className="dropdown-item"
-                           to="#"
-                           onClick={(e) => getDefaultPin(e,item)}>
-                           <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
-                           Set Default Pin
-                         </Link>
-                         <Link className="dropdown-item" target="_blank "
-                           to={`/students/student_card/${item.id}/null/${user.school}`}>
-                         <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
-                         Get BuzzTime Card
-                       </Link>
-</div>
-                       </div>
-                     </td>
-                   </tr>
-                      ))}
-                      {studentList === "404" && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No calling stations registered yet.
-                          </td>
-                        </tr>)}
-                        {studentSearch.length === 0 && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
+        ))
+    ) : studentList === "404" ? (
+        <tr>
+            <td colSpan="7" style={{ textAlign: "center" }}>
+                No students registered yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="7" style={{ textAlign: "center" }}>
+                    No search result(s) found.
+                </td>
+            </tr>
+        )
+    )}
+                  
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

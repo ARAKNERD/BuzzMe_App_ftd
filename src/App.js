@@ -50,6 +50,8 @@ import ListCards from "./Pages/StudentCard/ListCards";
 import TransferStudent from "./Pages/students/TransferStudent";
 import TransactionsPage from "./Pages/Transactions/TransactionsPage";
 import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
+import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
+import StatisticsPage from "./Pages/Statistics/StatisticsPage";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -103,6 +105,8 @@ function App(props) {
               <Route path="/students/register" element={<AdminRegisterStudent />} />
               <Route path="/students" element={<ViewAllStudents />} />
               <Route path="/contacts" element={<ViewParents />} />
+              <Route path="/call-logs" element={<CallLogsPage />} />
+
               <Route
                 path="/"
                 element={
@@ -123,6 +127,8 @@ function App(props) {
               <Route path="/students/register" element={<AddStudent />} />
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/contacts" element={<ViewSchoolParents />} />
+              <Route path="/call-logs" element={<SchoolLogsPage />} />
+
               <Route
                 path="/"
                 element={
@@ -214,11 +220,12 @@ function App(props) {
               <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/call-logs" element={<CallLogsPage />} />
               <Route path="/transactions/all" element={<TransactionsPage />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
               <Route path="/buzz-cards" element={<ListCards />} />
               <Route path="/students/transfer" element={<TransferStudent />} />
+              <Route path="/statistics" element={<StatisticsPage />} />
+
 
 
 
