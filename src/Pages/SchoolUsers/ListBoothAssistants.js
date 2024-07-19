@@ -25,7 +25,6 @@ function ListBoothAssistants() {
           setLoading(true)
           const serverResponse = await ajaxSchool.fetchBoothAssistants(data);
           setLoading(false)
-          console.log(serverResponse)
           if (serverResponse.status === "OK") {
             setBoothAssistants(serverResponse.details);
           } else {

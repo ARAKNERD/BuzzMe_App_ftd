@@ -50,7 +50,6 @@ const AttachCard=(props)=>{
         setLoading2(true)
         const server_response = await ajaxStudent.searchAllStudents(query,page);
         setLoading2(false)
-        console.log(server_response)
         if(server_response.status==="OK"){
             //store results
             setQuerySearch(server_response.details.list);
