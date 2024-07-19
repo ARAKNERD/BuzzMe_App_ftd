@@ -20,23 +20,23 @@ function BuzztimeLoadTransactions() {
 
   const getBuzztimeTransactions = async () => {
     setLoading3(true);
-      const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
-      setLoading3(false);
-      if (server_response.status === "OK") {
-          setMeta1(server_response.details.meta.list_of_pages);
-          setBuzztimeTransactions(server_response.details.list); 
-          if (searchTerm1 || startDate1 || endDate1) {
-              setBuzztimeSearch(server_response.details.list); 
-          }
-      } else {
-          setBuzztimeTransactions("404");
+    const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
+    setLoading3(false);
+    if (server_response.status === "OK") {
+      setMeta1(server_response.details.meta.list_of_pages);
+      setBuzztimeTransactions(server_response.details.list); 
+      if (searchTerm1 || startDate1 || endDate1) {
+        setBuzztimeSearch(server_response.details.list); 
       }
+    } else {
+      setBuzztimeTransactions("404");
+    }
   };
 
-const searchBuzztimeLoadTransactions = async (e) => {
-  if (e) {
-      e.preventDefault();
-  }
+  const searchBuzztimeLoadTransactions = async (e) => {
+    if (e) {
+        e.preventDefault();
+    }
     var data = {
       search: searchTerm1,
       from: startDate1,
@@ -44,21 +44,21 @@ const searchBuzztimeLoadTransactions = async (e) => {
       page: page1,
       account_id: account
     };
-      setLoading4(true);
-      const server_response = await ajaxBank.searchBankTransactions(data);
-      setLoading4(false);
-      if (server_response.status === "OK") {
-          if (server_response.details.length === 0) {
-              setBuzztimeSearch([]);
-          } else {
-            setMeta1(server_response.details.meta.list_of_pages);
-            setBuzztimeSearch(server_response.details.list);
-          }
+    setLoading4(true);
+    const server_response = await ajaxBank.searchBankTransactions(data);
+    setLoading4(false);
+    if (server_response.status === "OK") {
+      if (server_response.details.length === 0) {
+        setBuzztimeSearch([]);
       } else {
-          setBuzztimeSearch([]);
+        setMeta1(server_response.details.meta.list_of_pages);
+        setBuzztimeSearch(server_response.details.list);
       }
-  
-};
+    } else {
+      setBuzztimeSearch([]);
+    }
+    
+  };
 
   const setBuzztimeLoad = (e) => {
     e.preventDefault();
@@ -127,19 +127,19 @@ const searchBuzztimeLoadTransactions = async (e) => {
   }, [page1,account]);
 
   return (
-      <>
+    <>
       <div class="heading-layout1 mg-b-5">
         <TableHeader
             subtitle="List of all the buzztime load transactions made sorted by the most recent"   
-              />
-              <div class="dropdown">
-                                <a class="dropdown-toggle" href="#" role="button" 
-                                data-toggle="dropdown" aria-expanded="false">...</a>
-        
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
-                                </div>
-                            </div></div>
+        />
+        <div class="dropdown">
+          <a class="dropdown-toggle" href="#" role="button" 
+          data-toggle="dropdown" aria-expanded="false">...</a>
+          <div class="dropdown-menu dropdown-menu-right">
+              <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+          </div>
+        </div>
+                            </div>
                             <form className="mg-t-20">
         <div className="row gutters-8">
           <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">

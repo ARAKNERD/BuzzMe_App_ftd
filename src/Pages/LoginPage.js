@@ -32,7 +32,7 @@ function Login() {
     if (server_response.status === "OK") {
 
       localStorage.setItem("buzzMe@user", server_response.details);
-      setInfo(<Alert type="success" message={server_response.message} />);
+      
 
       const access_token = localStorage.getItem('buzzMe@user');
       const decorded_token = functions.parseJwt(access_token);
@@ -43,6 +43,7 @@ function Login() {
         window.location.reload();
       }
      else {
+        setInfo(<Alert type="success" message={server_response.message} />);
         navigate('/');
         window.location.reload();
         }
@@ -54,64 +55,43 @@ function Login() {
   return (
     <div>
       <div className="login-page-wrap">
-      <div className="half-image first-half">
-      </div>
-      <div className="half-image second-half">
-        <div className="login-page-content">
-          <div className="login-box">
-            <div className="item-logo">
-              <img src={process.env.PUBLIC_URL + "/assets/img/logo2.png"} />
+        <div className="half-image first-half"></div>
+        <div className="half-image second-half">
+          <div className="login-page-content">
+            <div className="login-box">
+              <div className="item-logo">
+                <img src={process.env.PUBLIC_URL + "/assets/img/logo2.png"} />
+              </div>
+              {loading && <Loader />}
+              {info}
+              <h2 className="text-center">{" "}Admin Login</h2>
+              <form className="login-form" onSubmit={handleSubmit}>
+                <div className="form-group">
+                  <label>Username</label>
+                  <input type="text" placeholder="Enter username" className="form-control" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                  <i className="fas fa-user" />
+                </div>
+                <div className="form-group">
+                  <label>Password</label>
+                  <input type={passView ? "text" : "password"} placeholder="Enter password" className="form-control" value={pass} onChange={(e) => setPass(e.target.value)}/>
+                  <i className={passView ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} onClick={togglePasswordVisibility}/>
+                </div>
+                <div className="form-group">
+                  {loading && (
+                    <button type="submit" disabled className="login-btn">
+                      Signing in..
+                    </button>
+                  )}
+                  {!loading && (
+                    <button type="submit" className="login-btn">
+                      Login
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
-            {loading && <Loader />}
-            {info}
-            <h2 className="text-center">
-              {" "}
-                Admin Login
-            </h2>
-            <form className="login-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Username</label>
-                <input
-                  type="text"
-                  placeholder="Enter username"
-                  className="form-control"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-                <i className="fas fa-user" />
-              </div>
-              <div className="form-group">
-                <label>Password</label>
-                <input
-                  type={passView ? "text" : "password"}
-                  placeholder="Enter password"
-                  className="form-control"
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                />
-                <i
-                  className={
-                    passView ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"
-                  }
-                  onClick={togglePasswordVisibility}
-                />
-              </div>
-
-              <div className="form-group">
-                {loading && (
-                  <button type="submit" disabled className="login-btn">
-                    Signing in..
-                  </button>
-                )}
-                {!loading && (
-                  <button type="submit" className="login-btn">
-                    Login
-                  </button>
-                )}
-              </div>
-            </form>
           </div>
-        </div></div>
+        </div>
       </div>
     </div>
   );
