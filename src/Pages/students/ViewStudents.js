@@ -28,7 +28,7 @@ function ViewStudents() {
 
   const getStudentList = async () => {
     setLoading2(true);
-    const server_response = await ajaxStudent.fetchStudentList(user.school, page);
+    const server_response = await ajaxStudent.fetchStudentList(user.school_id, page);
       setLoading2(false);
       if (server_response.status === "OK") {
           setFirst(server_response.details.meta.offset_count);
@@ -53,14 +53,14 @@ function ViewStudents() {
 
   useEffect(() => {
     getStudentList();
-  }, [user.school, page]);
+  }, [user.school_id, page]);
 
   const searchStudents = async (e) => {
     if (e) {
       e.preventDefault();
     }
       setLoading(true);
-      const server_response = await ajaxStudent.searchSchoolStudents(query, user.school,page);
+      const server_response = await ajaxStudent.searchSchoolStudents(query, user.school_id,page);
       setLoading(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
@@ -112,7 +112,7 @@ function ViewStudents() {
 
   useEffect(() => {
       searchStudents();
-  }, [user.school, page]);
+  }, [user.school_id, page]);
 
   // ----------------------handles the view -----students printable codeslip -modal
   // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -217,7 +217,7 @@ function ViewStudents() {
                            <td style={{width:"5px"}}>{key + first + 1}</td>
 
                             <td>
-                              <Link to={`/school-students/profile/${item.id}`}>
+                              <Link to={`/school-students/profile/${item.id}/${item.account_id}`}>
                                 {item.first_name} {item.last_name}
                               </Link>
                             </td>
@@ -250,7 +250,7 @@ function ViewStudents() {
                                 Set Default Pin
                               </Link>
                               <Link className="dropdown-item" target="_blank "
-                                to={`/students/student_card/${item.id}/null/${user.school}`}>
+                                to={`/students/student_card/${item.id}/null/${user.school_id}`}>
                               <FontAwesomeIcon icon={faAddressCard} style={{ color: "orange", marginRight: "3px" }} />
                               Get BuzzTime Card
                             </Link>

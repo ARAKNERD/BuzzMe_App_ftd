@@ -66,7 +66,6 @@ function ListSchoolUsers(props) {
                 <th>ID</th>
                 <th>Names</th>
                 <th>School Name</th>
-                <th>School Contact</th>
                 <th>Actions</th>
                  
               </tr>
@@ -76,8 +75,7 @@ function ListSchoolUsers(props) {
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
-                          <td>{item.school.school_name}</td>
-                          <td>{item.school.contact}</td>
+                          <td>{item.school_name}</td>
                           <td>
                             <div className="dropdown">
                               <Link

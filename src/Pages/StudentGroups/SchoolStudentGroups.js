@@ -88,7 +88,7 @@ function SchoolStudentGroups() {
                           <td>
                             <Link
                               className="btn btn-info"
-                              to={`/students/student_card/null/${item.group_id}/${user.school}`}>
+                              to={`/students/student_card/null/${item.group_id}/${user.school_id}`}>
                               View Cards
                             </Link>
                           </td>

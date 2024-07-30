@@ -30,7 +30,7 @@ function ListStations() {
 
     const getStations = async () => {
       setLoading(true);
-      const server_response = await ajaxStation.fetchStationList(user.school?user.school:"",page);
+      const server_response = await ajaxStation.fetchStationList(user.role_id==="3"?user.school_id:"",page);
         setLoading(false);
         if (server_response.status === "OK") {
             setMeta(server_response.details.meta.list_of_pages);
@@ -48,7 +48,7 @@ function ListStations() {
           e.preventDefault();
       }
           setLoading2(true);
-          const server_response = await ajaxStation.searchStation(user.school?user.school:"",query,page);
+          const server_response = await ajaxStation.searchStation(user.role_id==="3"?user.school_id:"",query,page);
           setLoading2(false);
           if (server_response.status === "OK") {
               if (server_response.details.length === 0) {
@@ -74,11 +74,11 @@ function ListStations() {
   
     useEffect(() => {
       getStations();
-    }, [user.school?user.school:"", page]);
+    }, [user.role_id==="3"?user.school_id:"",page]);
 
     useEffect(() => {
       searchStations();
-    }, [user.school?user.school:"",page]);
+    }, [user.role_id==="3"?user.school_id:"",page]);
 
 
   const updateStation=(e,item)=>{
@@ -126,7 +126,7 @@ function ListStations() {
         </div>
         </RenderSecure>
 
-        <div className={user.school_user ? "col-lg-12" : "col-lg-8"}>
+        <div className={user.role_id==="3" ? "col-lg-12" : "col-lg-8"}>
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
@@ -177,7 +177,7 @@ function ListStations() {
                       <th>No.</th>
                       <th>Station Name</th>
                       <th>Station Code</th>
-                      {user.school_user?"":<th>School</th>}
+                      {user.role_id==="3"?"":<th>School</th>}
                       <th>Active Hours</th>
                       <th>Status</th>
                       <th>Actions</th>
@@ -190,7 +190,7 @@ function ListStations() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
-                          {user.school_user?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
+                          {user.role_id==="3"?"":<td>{item.school?item.school.school_name:"Not installed"}</td>}
                           <td>
                             {item.start_time? `${item.start_time} - ${item.end_time}` : "Not installed"}
                           </td>

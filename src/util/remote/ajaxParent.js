@@ -123,14 +123,6 @@ export default {
     let response = await apiCall("guardian/today", data);
     return response;
   },
-  async listRegisteredParents(registered_by, page) {
-    let data = {
-      "registered_by":registered_by,
-      "page": page,
-    };
-    let response = await apiCall("guardian/registered", data);
-    return response;
-  },
   async listRelations(data) {
     let response = await apiCall("relationship/list", data);
     return response;

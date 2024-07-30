@@ -22,7 +22,7 @@ function SchoolDashboard() {
 
   const getStations = async () => {
     setLoading2(true);
-    const server_response = await ajaxStation.fetchFewStations(user.school,limit);
+    const server_response = await ajaxStation.fetchFewStations(user.school_id,limit);
     setLoading2(false);
     if (server_response.status === "OK") {
       setStationList(server_response.details);
@@ -33,7 +33,7 @@ function SchoolDashboard() {
 
   const getStudentsToday = async () => {
     setLoading(true);
-    const server_response = await ajaxStudent.fetchStudentsTodayLimit(user.school,limit);
+    const server_response = await ajaxStudent.fetchStudentsTodayLimit(user.school_id,limit);
     setLoading(false);
     if (server_response.status === "OK") {
       setStudentsToday(server_response.details);
@@ -43,7 +43,7 @@ function SchoolDashboard() {
   };
 
   const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchStudentNumber(user.school);
+    const server_response = await ajaxStudent.fetchStudentNumber(user.school_id);
     if (server_response.status === "OK") {
       setStudentsNumber(server_response.details);
     } else {
@@ -52,7 +52,7 @@ function SchoolDashboard() {
   };
 
   const getSchoolLogsNumber = async () => {
-    const server_response = await ajaxCallStation.countSchoolLogsToday(user.school);
+    const server_response = await ajaxCallStation.countSchoolLogsToday(user.school_id);
     if (server_response.status === "OK") {
       setSchoolLogsNumber(server_response.details);
     } else {
@@ -64,11 +64,11 @@ function SchoolDashboard() {
     getStudentsToday();
     getStudentsNumber();
     getSchoolLogsNumber();
-  }, [user.school]);
+  }, [user.school_id]);
 
   useEffect(() => {
     getStations();
-  }, [user.school, limit]);
+  }, [user.school_id, limit]);
 
   return (
     <AppContainer title={"Dashboard"}>
@@ -89,7 +89,7 @@ function SchoolDashboard() {
                     <img src={process.env.PUBLIC_URL + "/assets/img/figure/user55.png"} style={{backgroundColor:"white"}} alt="School Admin"/>
                   </div>
                   <div class="media-body">
-                    <h3 class="item-title" style={{color:"white"}}>{user.school_user?.first_name} {user.school_user?.last_name}</h3>
+                    <h3 class="item-title" style={{color:"white"}}>{user.first_name} {user.last_name}</h3>
                     <p style={{color:"white"}}> School Administrator</p>
                   </div>
                 </div>
@@ -99,12 +99,12 @@ function SchoolDashboard() {
                       <tr>
                         <td className="py-2 px-0" style={{color:"white"}}> <span className="w-50">School Name </span> </td>
                         <td style={{color:"white"}}>:</td>
-                        <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_user?.school?.school_name}</b></span> </td>
+                        <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_name}</b></span> </td>
                       </tr>
                       <tr>
                         <td className="py-2 px-0" style={{color:"white"}}> <span className="w-50">School E-mail</span> </td>
                         <td style={{color:"white"}}>:</td>
-                        <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_user?.school?.email}</b></span> </td>
+                        {/* <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_user?.school?.email}</b></span> </td> */}
                       </tr>
                     </tbody>
                   </table>
@@ -223,7 +223,6 @@ function SchoolDashboard() {
                     <tr>
                       <th>No.</th>
                       <th>Station Name</th>
-                      {user.school_user?"":<th>School</th>}
                       <th>Status</th>
                     </tr>
                   </thead>
@@ -232,7 +231,6 @@ function SchoolDashboard() {
                       <tr key={key}>
                         <td>{key + 1}</td>
                         <td>{item.station_name}</td>
-                        {user.school_user?"":<td>{item.school?.school_name}</td>}
                         <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
                         item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
                       </tr>

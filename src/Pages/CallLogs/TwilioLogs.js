@@ -41,8 +41,8 @@ function TwilioLogs() {
         var data = {
             call_type: "TWILIO",
             page: page,
-            search_student: searchStudent,
-            search_contact: searchContact,
+            search_caller: searchStudent,
+            search_receiver: searchContact,
             from: startDate,
             to: endDate,
     

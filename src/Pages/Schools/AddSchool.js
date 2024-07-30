@@ -169,7 +169,7 @@ function AddSchool() {
                         </Link></td>
                           <td>{item.contact}</td>
                           <td>{item.email}</td>
-                          <td>{item.district?.district_name}</td>
+                          <td>{item.district}</td>
                         </tr>
                       ))}
                       {recentSchools === "404" && (<tr>

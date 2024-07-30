@@ -90,7 +90,7 @@ const SchoolProfile = props => {
       setSchoolName(schoolProfile.school_name)
       setContact(schoolProfile.contact)
       setEmail(schoolProfile.email)
-      setDistrict(schoolProfile.district.district_id)
+      setDistrict(schoolProfile.district_id)
       setLat(schoolProfile.lat)
       setAddress(schoolProfile.address)
       setLongitude(schoolProfile.lng)
@@ -421,7 +421,7 @@ const SchoolProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">District</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{schoolProfile.district?.district_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.district}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Latitude Co-ordinates</span> </td>

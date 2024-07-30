@@ -203,7 +203,7 @@ function ViewAllStudents() {
           <tr key={key}>
           <td style={{width:"5px"}}>{key + first + 1}</td>
           <td>
-            <Link to={`/students/profile/${item.id}`}>
+            <Link to={`/students/profile/${item.id}/${item.account_id}`}>
               {item.first_name} {item.last_name}
             </Link>
           </td>

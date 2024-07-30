@@ -58,7 +58,7 @@ export const SchoolProvider = (props)=> {
 
    const getGroups = async () => {
       setSchoolGroups(false);
-      const server_response = await ajaxStudentGroup.fetchGroupList(user.school);
+      const server_response = await ajaxStudentGroup.fetchGroupList(user.school_id);
       if (server_response.status === "OK") {
          setSchoolGroups(server_response.details);
       }

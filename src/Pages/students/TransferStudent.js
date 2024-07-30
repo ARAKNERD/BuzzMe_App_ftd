@@ -39,7 +39,7 @@ function TransferStudent() {
 }
 
 const handleModal=()=>{
-    setModal(false, ()=>setModal(<CreateTransfer studentID={numberSearch.id} roleID={user.role_id} schoolName={user.school_user?.school?.school_name} schoolID={user.school} g={searchNumber} isOpen={true}/>))
+    setModal(false, ()=>setModal(<CreateTransfer studentID={numberSearch.id} roleID={user.role_id} schoolName={user.school_name} schoolID={user.school_id} g={searchNumber} isOpen={true}/>))
 }
 
   return (

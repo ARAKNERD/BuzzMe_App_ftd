@@ -86,7 +86,7 @@ function ListBoothAssistants() {
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name} </td>
-                          <td>{item.school.school_name}</td>
+                          <td>{item.school_name}</td>
                           <td>{item.username}</td>
                           <td>
                             <div className="dropdown">

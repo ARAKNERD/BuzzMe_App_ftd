@@ -193,11 +193,11 @@ function App(props) {
               <Route path="/students/import" element={<ImportStudents />} />
               <Route path="/students/upload" element={<AdminImportStudents />} />
               <Route
-                path="/students/profile/:id"
+                path="/students/profile/:id/:account_id"
                 element={<StudentProfile />}
               />
               <Route
-                path="/school-students/profile/:id"
+                path="/school-students/profile/:id/:account_id"
                 element={<StudentProfile />}
               />
               {/* End student */}

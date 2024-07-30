@@ -7,7 +7,7 @@ import ajaxStudent from "../../util/remote/ajaxStudent";
 function StudentCodeSlip(props) {
   const {user} = useContext(AuthContext);
   const {student_id, group_id} = useParams();
-  var school = user?.school_user ? user.school_user.school.school_id : "";
+  var school = user.role_id==="3" ? user.school_id : "";
 
   useEffect(() => {
     getStudentList();

@@ -101,7 +101,7 @@ const ParentProfile = props => {
     }
  
     return (
-        <AppContainer title={"Guardian Profile"} >
+        <AppContainer title={"Contact Profile"} >
             <Toaster
                 position="top-center"
                 reverseOrder={false}
@@ -180,7 +180,7 @@ const ParentProfile = props => {
                 :
                     <div className="box left-dot mb-30" style={{marginBottom: "30px", backgroundColor: "white", padding: "25px" ,boxShadow: "10px", borderRadius: "10px"}}>
                         <div className="box-header  border-0 pd-0">
-                            <div className="box-title fs-20 font-w600">Guardian Information</div>
+                            <div className="box-title fs-20 font-w600">Contact Information</div>
                         </div>
                         <div className="box-body pt-20 user-profile">
                             <div className="table-responsive">
@@ -229,7 +229,7 @@ const ParentProfile = props => {
                     <div className="card-body map-card">
                         <TableHeader
                             title="Students"
-                            subtitle="List of the students under the parent's or guardian's care"
+                            subtitle="List of the students under the contact's care"
                             viewButton={
                                 <a href="#" onClick={handleModal2} className="btn btn-info" style={{float:"right"}}>Attach Student</a>
                                
@@ -256,15 +256,15 @@ const ParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.student?.full_name}</td>
-                                                <td>{item.student?.school}</td>
-                                                <td>{item.student?.student_code}</td>
-                                                <td>{item.student?.group}</td>
+                                                <td>{item.full_name}</td>
+                                                <td>{item.school}</td>
+                                                <td>{item.student_code}</td>
+                                                <td>{item.group}</td>
                                             </tr>
                                         ))}
                                         {children === "404" && (<tr>
                           <td colSpan="5" style={{textAlign: "center"}}>
-                            No students attached to this parent yet.
+                            No students attached to this contact yet.
                           </td>
                         </tr>)}
                                 </tbody>

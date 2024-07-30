@@ -24,7 +24,7 @@ function SchoolTwilioLogs() {
 
     const getTwilioLogsList = async () => {
       setLoading(true);
-      const server_response = await ajaxCallStation.listSchoolTypeCallLogs(user.school, page, "TWILIO");
+      const server_response = await ajaxCallStation.listSchoolTypeCallLogs(user.school_id, page, "TWILIO");
       setLoading(false);
       if (server_response.status === "OK") {
           setMeta(server_response.details.meta.list_of_pages);
@@ -42,7 +42,7 @@ function SchoolTwilioLogs() {
             e.preventDefault();
         }
         var data = {
-            school_id: user.school,
+            school_id: user.school_id,
             call_type: "TWILIO",
             page: page,
             search_student: searchStudent,
@@ -130,7 +130,7 @@ function SchoolTwilioLogs() {
   }, []);
   useEffect(() => {
     getTwilioLogsList();
-  }, [user.school, page,"TWILIO"]);
+  }, [user.school_id, page,"TWILIO"]);
 
   return (
       <>
