@@ -220,7 +220,7 @@ const searchSmsTransactions = async (e) => {
     ) : smsTransactions === "404" ? (
         <tr>
             <td colSpan="5" style={{ textAlign: "center" }}>
-                No sms transactions made yet.
+                No messages sent yet.
             </td>
         </tr>
     ) : (

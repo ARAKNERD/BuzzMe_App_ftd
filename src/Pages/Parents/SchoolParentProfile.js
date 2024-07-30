@@ -89,7 +89,7 @@ const SchoolParentProfile = props => {
     const getChildren =async()=>{
         
         setLoading2(true)
-        const server_response = await ajaxStudent.getSchoolStudents(parent, user.school);
+        const server_response = await ajaxStudent.getSchoolStudents(parent, user.school_id);
         setLoading2(false)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
@@ -100,13 +100,13 @@ const SchoolParentProfile = props => {
     }
 
     const handleModal2=()=>{
-        setModal(false, ()=>setModal(<SchoolAddStudentParent parentID={parent} schoolID={user.school} g={getChildren} isOpen={true}/>))
+        setModal(false, ()=>setModal(<SchoolAddStudentParent parentID={parent} schoolID={user.school_id} g={getChildren} isOpen={true}/>))
     }
 
     useEffect(()=>{
         getChildren()
       
-    }, [parent, user.school])
+    }, [parent, user.school_id])
  
     return (
         <AppContainer title={"Contact Profile"} >

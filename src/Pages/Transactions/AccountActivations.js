@@ -210,7 +210,7 @@ function AccountActivations() {
             ) : accountActivations === "404" ? (
               <tr>
                 <td colSpan="5" style={{ textAlign: "center" }}>
-                  No buzztime load transactions made yet.
+                  No account activations made yet.
                 </td>
               </tr>
             ) : (

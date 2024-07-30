@@ -44,7 +44,7 @@ const SchoolAddStudentParent=(props)=>{
         e.preventDefault();  
         if (query.length > 0) {
         setLoading2(true)
-        const server_response = await ajaxStudent.searchStudent(query, user.school);
+        const server_response = await ajaxStudent.searchStudent(query, user.school_id);
         setLoading2(false)
         if(server_response.status==="OK"){
             //store results

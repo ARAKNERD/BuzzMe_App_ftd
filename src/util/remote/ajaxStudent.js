@@ -140,13 +140,6 @@ export default {
     let response = await apiCall("link/students/list", data);
     return response;
   },
-  async fetchSchoolStudents(school) {
-    let data = {
-      school_id: school,
-    };
-    let response = await apiCall("student/search", data);
-    return response;
-  },
   async countStudentContacts(student) {
     let data = {
       student_id: student,

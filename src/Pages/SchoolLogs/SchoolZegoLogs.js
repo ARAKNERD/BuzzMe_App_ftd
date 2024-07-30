@@ -23,7 +23,7 @@ function SchoolZegoLogs() {
 
     const getZegoLogsList = async () => {
       setLoading(true);
-      const server_response = await ajaxCallStation.listSchoolTypeCallLogs(user.school, page, "ZEGO");
+      const server_response = await ajaxCallStation.listSchoolTypeCallLogs(user.school_id, page, "ZEGO");
       setLoading(false);
       if (server_response.status === "OK") {
           setMeta(server_response.details.meta.list_of_pages);
@@ -41,7 +41,7 @@ function SchoolZegoLogs() {
             e.preventDefault();
         }
         var data = {
-            school_id: user.school,
+            school_id: user.school_id,
             call_type: "ZEGO",
             page: page,
             search_student: searchStudent,
@@ -130,7 +130,7 @@ function SchoolZegoLogs() {
   }, []);
   useEffect(() => {
     getZegoLogsList();
-  }, [user.school, page,"ZEGO"]);
+  }, [user.school_id, page,"ZEGO"]);
 
   return (
       <>

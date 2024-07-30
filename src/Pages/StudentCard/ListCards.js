@@ -110,13 +110,13 @@ function ListCards() {
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} isOpen={true}/>))
+    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
   }
   const cardOn=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} h={searchCard} isOpen={true}/>))
+    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
   }
   const cardOff=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} h={searchCard} isOpen={true}/>))
+    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
   }
 
   const refreshData = () =>{

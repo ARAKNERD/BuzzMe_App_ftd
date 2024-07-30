@@ -22,7 +22,7 @@ const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
     const [studentTransfers, setStudentTransfers] = useState(false);
     const [modal, setModal] = useStateCallback(false);
-    const {id} = useParams();
+    const {id, account_id} = useParams();
     const [studentLogs, setStudentLogs] = useState(false);
     const [studentContacts, setStudentContacts] = useState(false);
     const [contactCount, setContactCount] = useState(false);
@@ -74,16 +74,15 @@ const StudentProfile = props => {
     useEffect(()=>{
          getStudentContacts()
         getStudentProfile();
-        getStudentLogs();
       
     }, [])
     useEffect(()=>{
        getStudentLogs();
      
-   }, [page, id])
+   }, [page, account_id])
 
     const getGroups = async () => {
-        const server_response = await ajaxStudentGroup.fetchGroupList(user.school);
+        const server_response = await ajaxStudentGroup.fetchGroupList(user.school_id);
         if (server_response.status === "OK") {
           setGroupList(server_response.details);
         }
@@ -141,7 +140,8 @@ const StudentProfile = props => {
 
     const getStudentLogs =async()=>{
         setLoading2(true)
-        const server_response = await ajaxCallStation.listStudentCallLogs(page, id);
+       
+        const server_response = await ajaxCallStation.listStudentCallLogs(page, account_id);
         setLoading2(false)
         if(server_response.status==="OK"){
             setMeta(server_response.details.meta.list_of_pages);
@@ -187,7 +187,7 @@ const StudentProfile = props => {
         }
     }
     const countLogs =async()=>{
-        const server_response = await ajaxCallStation.countStudentLogs(id);
+        const server_response = await ajaxCallStation.countStudentLogs(account_id);
         if(server_response.status==="OK"){
             setLogsCount(server_response.details);
         }else{
@@ -197,7 +197,7 @@ const StudentProfile = props => {
     }
     const getWalletTransactions =async()=>{
         setLoading4(true)
-        const server_response = await ajaxBank.fetchStudentWalletTransactions(id,page);
+        const server_response = await ajaxBank.fetchStudentWalletTransactions(account_id,page);
         setLoading4(false)
         if(server_response.status==="OK"){
             setMeta(server_response.details.meta.list_of_pages);
@@ -237,7 +237,7 @@ const StudentProfile = props => {
 
       useEffect(() => {
         getGroups();
-    }, [user.school]);
+    }, [user.school_id]);
 
     useEffect(() => {
         countContacts();
@@ -246,7 +246,7 @@ const StudentProfile = props => {
     }, [id]);
     useEffect(() => {
         getWalletTransactions();
-    }, [id,page]);
+    }, [account_id,page]);
  
     return (
         <AppContainer title={"Student Profile"} >

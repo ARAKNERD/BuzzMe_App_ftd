@@ -222,7 +222,7 @@ const setCall = (e) => {
     ) : callTransactions === "404" ? (
         <tr>
             <td colSpan="5" style={{ textAlign: "center" }}>
-                No buzztime load transactions made yet.
+                No calls made yet.
             </td>
         </tr>
     ) : (

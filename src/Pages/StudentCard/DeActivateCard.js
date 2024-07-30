@@ -21,6 +21,8 @@ const DeActivateCard=(props)=>{
             toast.success(server_response.message);
             props.g()
             props.h()
+            props.i()
+            props.j()
         }
         else{
             toast.error(server_response.message); 

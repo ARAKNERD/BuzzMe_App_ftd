@@ -91,21 +91,21 @@ const AttachParent=(props)=>{
                     {active1 && <button 
                         type="button" 
                         className={`btn-fill-md text-light bg-dodger-blue`} 
-                        onClick={handleAdd}>Attach Parent<i class="fas fa-check mg-l-15"></i></button>}
+                        onClick={handleAdd}>Attach Contact<i class="fas fa-check mg-l-15"></i></button>}
                     </>
         }
     }
 
     return(
         <SystemModal
-            title="Attach Parent / Guardian"
+            title="Attach Parent / Contact"
             id="model-attach-guardian"
             size="lg"
             footer={RenderFooter}
         >
 
 {active1?<><div className="box-header  border-0 pd-0">
-                <div className="box-title fs-20 font-w600">Parent / Guardian Information</div>
+                <div className="box-title fs-20 font-w600">Contact Information</div>
               </div>
               <div className="box-body pt-20 user-profile">
                 <div className="table">
@@ -154,7 +154,7 @@ const AttachParent=(props)=>{
                       type="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Enter phone number of parent / guardian..."
+                      placeholder="Enter phone number of parent / contact person..."
                       className="form-control"
                     />
                   </div>

@@ -42,8 +42,8 @@ function ZegoLogs() {
         var data = {
             call_type: "ZEGO",
             page: page,
-            search_student: searchStudent,
-            search_contact: searchContact,
+            search_caller: searchStudent,
+            search_receiver: searchContact,
             from: startDate,
             to: endDate,
     

@@ -17,7 +17,7 @@ function AddStudentSchoolGroup(props) {
       setLoading(true)
       const server_response = await ajaxStudentGroup.createGroup(
         groupName,
-        user.school
+        user.school_id
       );
       setLoading(false)
       if (server_response.status === "OK") {

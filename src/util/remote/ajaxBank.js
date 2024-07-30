@@ -37,7 +37,7 @@ export default {
   },
   async fetchStudentWalletTransactions(student,page) {
     let data = {
-      student_id: student,
+      user_id: student,
       page: page
     };
     let response = await apiCall("bank/list", data);
