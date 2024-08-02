@@ -18,6 +18,8 @@ import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
+import TurnOnCallRestrictions from './TurnOnCallRestrictions';
+import TurnOffCallRestrictions from './TurnOffCallRestrictions';
 
 const SchoolProfile = props => {
     const [schoolProfile, setSchoolProfile] = useState(false);
@@ -295,6 +297,13 @@ const SchoolProfile = props => {
   const handleModal3=()=>{
     setModal(false, ()=>setModal(<AddGroup schoolID={id} g={getGroups} isOpen={true}/>))
 }
+
+const restrictionsOn=()=>{
+  setModal(false, ()=>setModal(<TurnOnCallRestrictions schoolID={id} g={getSchoolProfile} isOpen={true}/>))
+}
+const restrictionsOff=()=>{
+  setModal(false, ()=>setModal(<TurnOffCallRestrictions schoolID={id} g={getSchoolProfile} isOpen={true}/>))
+}
     return (
         <AppContainer title={"School Profile"} >
             <Toaster
@@ -314,9 +323,14 @@ const SchoolProfile = props => {
               <h5 style={{color:"white"}}>{schoolProfile.district?schoolProfile.district:"..."}</h5>
               <div class="social-links mt-2 align-items-center ">
               {active?
-                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
+                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-3"><i className="fe fe-x"></i>Back</a>
                             :
-                                <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
+                                <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-3"><i className="far fa-edit mr-1"></i>Update Details</a>
+                            }
+              {schoolProfile.is_restricted === "0"?
+                                <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
+                            :
+                                <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
                             }
               </div>
               
@@ -432,6 +446,11 @@ const SchoolProfile = props => {
                                             <td className="py-2 px-0"> <span className="w-50">Longitude Co-ordinates</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{schoolProfile.lng?schoolProfile.lng:"Not yet updated"}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Call Security</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{schoolProfile.is_restricted ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
                                         </tr>
                                        
                                     </tbody>}

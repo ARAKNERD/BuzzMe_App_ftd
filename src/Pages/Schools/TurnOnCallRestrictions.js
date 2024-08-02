@@ -2,25 +2,21 @@ import { useState } from "react"
 import { toast } from 'react-hot-toast';
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
-import ajaxStation from "../../util/remote/ajaxStation";
+import ajaxSchool from "../../util/remote/ajaxSchool";
 ;
 
-const TurnOffStation=(props)=>{
+const TurnOnCallRestrictions=(props)=>{
 
     const [loading, setLoading] = useState(false)
-    const data = {
-        station_id: props.stationID,
-      };
 
     const handleUpdate = async(e) =>{
         e.preventDefault()
         setLoading(true)
-        const server_response = await ajaxStation.turnOffStation(data);
+        const server_response = await ajaxSchool.turnOnRestrictions(props.schoolID);
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);
             props.g()
-            props.h()
         }
         else{
             toast.error(server_response.message); 
@@ -46,8 +42,8 @@ const TurnOffStation=(props)=>{
 
     return(
         <SystemModal
-            title="Turn Off Station"
-            id="model-off"
+            title="Turn On Call Restrictions"
+            id="model-on-restrictions"
             size="md"
             footer={RenderFooter}
         >
@@ -56,8 +52,8 @@ const TurnOffStation=(props)=>{
         <div className="bg-white">
 			    <div className="alert text-center">
 				    <i className="fe fe-alert-circle fs-50 text-warning"></i>
-			        <h3 className="mt-2 mb-1">Are you sure you want to turn off this calling station?</h3>
-				    <p className="mb-3 mb-3 tx-inverse">This station will not be able to make calls.</p>
+			        <h3 className="mt-2 mb-1">Are you sure you want to turn on call restrictions?</h3>
+				    <p className="mb-3 mb-3 tx-inverse">Students will now be able to make calls to only their contacts.</p>
 				</div>
 			</div>
         </div>
@@ -66,4 +62,4 @@ const TurnOffStation=(props)=>{
     )
 }
 
-export default TurnOffStation
+export default TurnOnCallRestrictions

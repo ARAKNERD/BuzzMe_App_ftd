@@ -7,7 +7,6 @@ import {Toaster, toast} from "react-hot-toast";
 import Loader from "../Components/Common/Loader";
 import {Link} from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
-import ajaxStation from "../util/remote/ajaxStation";
 
 function SchoolDashboard() {
   
@@ -17,17 +16,17 @@ function SchoolDashboard() {
   const [studentsToday, setStudentsToday] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [stationList, setStationList] = useState(false);
+  const [logsList, setLogsList] = useState(false);
   const [limit, setLimit] = useState(5);
 
-  const getStations = async () => {
+  const getRecentLogs = async () => {
     setLoading2(true);
-    const server_response = await ajaxStation.fetchFewStations(user.school_id,limit);
+    const server_response = await ajaxCallStation.listRecentCallLogs(user.school_id);
     setLoading2(false);
     if (server_response.status === "OK") {
-      setStationList(server_response.details);
+      setLogsList(server_response.details);
     }else {
-      setStationList("404");
+      setLogsList("404");
     }
   };
 
@@ -61,13 +60,13 @@ function SchoolDashboard() {
   };
 
   useEffect(() => {
-    getStudentsToday();
     getStudentsNumber();
     getSchoolLogsNumber();
+    getRecentLogs()
   }, [user.school_id]);
 
   useEffect(() => {
-    getStations();
+    getStudentsToday();
   }, [user.school_id, limit]);
 
   return (
@@ -101,11 +100,7 @@ function SchoolDashboard() {
                         <td style={{color:"white"}}>:</td>
                         <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_name}</b></span> </td>
                       </tr>
-                      <tr>
-                        <td className="py-2 px-0" style={{color:"white"}}> <span className="w-50">School E-mail</span> </td>
-                        <td style={{color:"white"}}>:</td>
-                        {/* <td className="py-2 px-0" style={{color:"white"}}> <span className=""><b>{user.school_user?.school?.email}</b></span> </td> */}
-                      </tr>
+                     
                     </tbody>
                   </table>
                 </div>
@@ -194,8 +189,8 @@ function SchoolDashboard() {
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                  title="Status of Calling Stations"
-                  subtitle="List of calling stations and their current status"
+                  title="Recent Call Logs"
+                  subtitle="List of the recent call logs"
                   
                 />
                 <div class="dropdown">
@@ -209,7 +204,7 @@ function SchoolDashboard() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                    <Link class="dropdown-item" to={'/stations'}>
+                    <Link class="dropdown-item" to={'/call-logs'}>
                       <i class="fa-solid fa-eye text-orange-peel"></i>
                       View All
                     </Link>
@@ -221,24 +216,25 @@ function SchoolDashboard() {
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
-                      <th>No.</th>
-                      <th>Station Name</th>
-                      <th>Status</th>
+                    <th>Date & Time</th>
+                    <th>Student</th>
+                  <th>Contact</th>
+                  <th>Duration</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(stationList) && stationList.map((item, key) => (
+                    {Array.isArray(logsList) && logsList.map((item, key) => (
                       <tr key={key}>
-                        <td>{key + 1}</td>
-                        <td>{item.station_name}</td>
-                        <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
-                        item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                        <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.created_at.short_date}<br /><small style={{marginLeft:"30px"}}>{item.created_at.time}</small></td>
+                <td className="text-dark">{item.student}</td>
+                <td className="text-dark">{item.contact_name}<br /><small>{item.contact}</small></td>
+                <td>{item.duration_format}</td>
                       </tr>
                     
                     ))}
-                    {stationList === "404" && (<tr>
+                    {logsList === "404" && (<tr>
                       <td colSpan="4" style={{textAlign: "center"}}>
-                        No calling stations registered yet.
+                        No recent call logs.
                       </td>
                     </tr>)}
                   </tbody>

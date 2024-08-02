@@ -17,6 +17,8 @@ import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
 import ajaxCallStation from '../../util/remote/ajaxCallStation';
 import ajaxBank from '../../util/remote/ajaxBank';
+import TurnOnStudentRestrictions from './TurnOnStudentRestrictions';
+import TurnOffStudentRestrictions from './TurnOffStudentRestrictions';
 
 const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
@@ -212,6 +214,13 @@ const StudentProfile = props => {
         setModal(false, ()=>setModal(<AttachParent studentID={id} h={getStudentContacts} j={countContacts} isOpen={true}/>))
     }
 
+    const restrictionsOn=()=>{
+        setModal(false, ()=>setModal(<TurnOnStudentRestrictions studentID={id} g={getStudentProfile} isOpen={true}/>))
+      }
+      const restrictionsOff=()=>{
+        setModal(false, ()=>setModal(<TurnOffStudentRestrictions studentID={id} g={getStudentProfile} isOpen={true}/>))
+      }
+
     const setNextPageNumber = () =>{
         if(meta.length===page){
           
@@ -268,13 +277,19 @@ const StudentProfile = props => {
                     }/></div>
               <h3 style={{color:"white"}}>{studentProfile.full_name}</h3>
               <h5 style={{color:"white"}}>{studentProfile.group}</h5>
-              <RenderSecure code="SCHOOL-USER-VIEW"> <div class="social-links mt-2 align-items-center ">
-              {active?
+              <div class="social-links mt-2 align-items-center ">
+              <RenderSecure code="SCHOOL-USER-VIEW"> {active?
                                 <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
                             :
                                 <a href="#" onClick={setUserUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
+                            }</RenderSecure>
+
+{studentProfile.student_restrictions === "0"?
+                                <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
+                            :
+                                <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
                             }
-              </div></RenderSecure>
+              </div>
               
             </div>
             
@@ -486,6 +501,21 @@ const StudentProfile = props => {
                                             <td className="py-2 px-0"> <span className="w-50">Registration No.</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{studentProfile.reg_no?studentProfile.reg_no:"Not recorded"}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - School</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.school_restrictions ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - Student</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.student_restrictions ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - Overall</span> </td>
+                                            <td>:</td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.is_restricted ==="Restricted"?<span class="badge badge-danger">{studentProfile.is_restricted}</span>:<span class="badge badge-success">{studentProfile.is_restricted}</span>}</span> </td>
                                         </tr>
                                        
                                     </tbody>}

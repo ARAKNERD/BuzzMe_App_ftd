@@ -23,6 +23,16 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
+  async searchAllTransactions(page, from, to, search) {
+    let data = {
+      page: page,
+      from: from,
+      to: to,
+      search: search
+    };
+    let response = await apiCall("bank/list", data);
+    return response;
+  },
   async fetchRecentTransactions(data) {
     let response = await apiCall("bank/recent", data);
     return response;

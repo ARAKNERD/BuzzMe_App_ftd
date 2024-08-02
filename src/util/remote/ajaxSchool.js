@@ -160,4 +160,18 @@ export default {
 
     return response;
   },
+  async turnOnRestrictions(school_id) {
+    let data = {
+      "school_id": school_id
+    };
+    let response = await apiCall("school/restrictions/on", data);
+    return response;
+  },
+  async turnOffRestrictions(school_id) {
+    let data = {
+      "school_id": school_id
+    };
+    let response = await apiCall("school/restrictions/off", data);
+    return response;
+  },
 };
