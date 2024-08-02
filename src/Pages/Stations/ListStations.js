@@ -82,16 +82,16 @@ function ListStations() {
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} school={item.school.school_name} g={getStations} isOpen={true}/>))
+    setModal(false, ()=>setModal(<UpdateStation stationID={item.station_id} stationName={item.station_name} school={item.school.school_name} g={getStations} h={searchStations} isOpen={true}/>))
   }
   const updateHours=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
+    setModal(false, ()=>setModal(<UpdateHours stationID={item.station_id} g={getStations} h={searchStations} startTime={item.start_time} endTime={item.end_time} isOpen={true}/>))
   }
   const stationOn=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOnStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+    setModal(false, ()=>setModal(<TurnOnStation stationID={item.station_id} g={getStations} h={searchStations} isOpen={true}/>))
   }
   const stationOff=(e,item)=>{
-    setModal(false, ()=>setModal(<TurnOffStation stationID={item.station_id} g={getStations} isOpen={true}/>))
+    setModal(false, ()=>setModal(<TurnOffStation stationID={item.station_id} g={getStations} h={searchStations} isOpen={true}/>))
   }
 
   const refreshData = () =>{

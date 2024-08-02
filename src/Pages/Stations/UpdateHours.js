@@ -25,6 +25,7 @@ const UpdateHours=(props)=>{
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 props.g()
+                props.h()
             }
             else{
                 toast.error(server_response.message); 

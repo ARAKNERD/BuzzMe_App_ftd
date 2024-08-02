@@ -85,4 +85,11 @@ export default {
     let response = await apiCall("call_log/list", data);
     return response;
   },
+  async listRecentCallLogs(school_id) {
+    let data = {
+      school_id: school_id
+    };
+    let response = await apiCall("call_log/recent", data);
+    return response;
+  },
 };

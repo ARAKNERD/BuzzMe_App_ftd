@@ -101,7 +101,7 @@ const Sidebar = (props) => {
                 </ul>
               </li>
             
-              <li
+              {/* <li
                 className="nav-item sidebar-nav-item"
                 onClick={(e) => toggleDropdown(e)}>
                 <Link to="#" className="nav-link">
@@ -126,8 +126,12 @@ const Sidebar = (props) => {
                   </li>
                   
                 </ul>
+              </li> */}
+             <li className="nav-item">
+                <Link to="/contacts" className="nav-link">
+                  <span><b>Contacts</b></span>
+                </Link>
               </li>
-             
             <RenderSecure code="SCHOOL-USER-VIEW">
               <li className="nav-item">
                 <Link to="/class-groups" className="nav-link">

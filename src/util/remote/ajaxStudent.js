@@ -170,5 +170,19 @@ export default {
     let response = await apiCall("student/list/transfers", data);
     return response;
   },
+  async turnOnRestrictions(student_id) {
+    let data = {
+      "student_id": student_id
+    };
+    let response = await apiCall("student/restrictions/on", data);
+    return response;
+  },
+  async turnOffRestrictions(student_id) {
+    let data = {
+      "student_id": student_id
+    };
+    let response = await apiCall("student/restrictions/off", data);
+    return response;
+  },
   
 };

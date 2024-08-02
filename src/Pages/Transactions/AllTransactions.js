@@ -39,14 +39,8 @@ function AllTransactions() {
     if (e) {
         e.preventDefault();
     }
-      var data = {
-        search: searchTerm,
-        from: startDate,
-        to: endDate,
-        page: page,
-      };
         setLoading2(true);
-        const server_response = await ajaxBank.searchBankTransactions(data);
+        const server_response = await ajaxBank.searchAllTransactions(page, startDate, endDate, searchTerm);
         setLoading2(false);
         if (server_response.status === "OK") {
             if (server_response.details.length === 0) {
@@ -60,6 +54,7 @@ function AllTransactions() {
         }
     
 };
+
 
   const setTransactions = (e) => {
     e.preventDefault();
@@ -97,32 +92,26 @@ function AllTransactions() {
     pdf.save("airtime_data.pdf");
   };
 
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
-      
+  const setNextPageNumber = () => {
+    if (meta.length === page) {
+    } else {
+      setPage(page + 1);
     }
-    else{
-      setPage(page+1)
-    }
-    
-  }
+  };
 
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
+  const setPreviousPageNumber = () => {
+    if (page === 1) {
+    } else {
+      setPage(page - 1);
     }
-    else{
-      setPage(page-1)
-    }
-    
-  }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
-  }
+  };
+  const setPageNumber = (e, item) => {
+    setPage(item);
+  };
 
   useEffect(() => {
     searchTransactions();
-  }, []);
+  }, [page]);
   useEffect(() => {
     getTransactions();
   }, [page]);
@@ -238,20 +227,40 @@ function AllTransactions() {
     )}
    
     </tbody>
-    <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+    <div
+                    className="align-items-center justify-content-center pos-absolute"
+                    style={{left: "50%"}}>
+                    <button
+                      className="btn btn-dark"
+                      style={{borderRight: "1px solid yellow"}}
+                      onClick={setPreviousPageNumber}>
+                      <i className="fa fa-angle-left mr-2"></i> Prev
+                    </button>
+                    {Array.isArray(meta) &&
+                      meta.map((item) =>
+                        page === item ? (
+                          <button
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-primary">
+                            {item}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => setPageNumber(e, item)}
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-dark">
+                            {item}
+                          </button>
+                        )
+                      )}
 
-
-<button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-    {Array.isArray(meta) && meta.map((item)=>
-    page===item?
-    <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-    :
-    <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-    )}
-
-
-    <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
-          </div>
+                    <button
+                      style={{borderRight: "1px solid yellow"}}
+                      className="btn btn-dark"
+                      onClick={setNextPageNumber}>
+                      Next<i className="fa fa-angle-right ml-2"></i>
+                    </button>
+                  </div>
   </table>
   {loading && <Loader/>}
   {loading2 && <Loader/>}
