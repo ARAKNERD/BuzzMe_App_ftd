@@ -147,7 +147,7 @@ function ListCards() {
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <RegisterCard g={getCards} />
+          <RegisterCard g={getCards} h={getAllCards} i={getInactiveCards}/>
         </div>
         
 

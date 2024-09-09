@@ -246,7 +246,7 @@ function ViewStudents() {
                             </Link>
                           </td>
                           <td className="text-dark">{item.gender}</td>
-                          <td className="text-dark">{item.student_code}</td>
+                          <td className="text-dark">{item.username}</td>
                           <td className="text-dark">{item.group}</td>
                           <td>
                             {item.is_secure === "1" ? (

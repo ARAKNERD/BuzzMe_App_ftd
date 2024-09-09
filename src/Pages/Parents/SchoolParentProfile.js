@@ -160,7 +160,7 @@ const SchoolParentProfile = (props) => {
               </div>
             )}
 
-            <div
+            {/* <div
               className="box-footer pt-41"
               style={{ paddingTop: "41px !important" }}
             >
@@ -183,7 +183,7 @@ const SchoolParentProfile = (props) => {
                   </a>
                 )}
               </div>
-            </div>
+            </div> */}
           </div>
 
           {active ? (
@@ -309,24 +309,7 @@ const SchoolParentProfile = (props) => {
                           <td className="py-2 px-0">
                             {" "}
                             <span className="">
-                              {parentProfile.main_contact}
-                            </span>{" "}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="w-50">
-                              Alternative Contact
-                            </span>{" "}
-                          </td>
-                          <td>:</td>
-                          <td className="py-2 px-0">
-                            {" "}
-                            <span className="">
-                              {parentProfile.alternative_contact
-                                ? parentProfile.alternative_contact
-                                : "Not registered"}
+                              {parentProfile.username}
                             </span>{" "}
                           </td>
                         </tr>

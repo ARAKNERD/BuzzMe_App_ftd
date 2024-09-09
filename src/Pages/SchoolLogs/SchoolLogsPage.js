@@ -25,12 +25,12 @@ function SchoolLogsPage() {
                                         <Nav variant="pills" className="flex-row mb-1">
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="first">
-                                            Zego Calls{" "}
+                                            Buzz to Buzz Calls{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="second">
-                                            Twilio Calls{" "}
+                                            Buzz to Other Networks{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                   

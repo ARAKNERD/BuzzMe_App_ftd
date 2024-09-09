@@ -26,19 +26,19 @@ export default {
     let response = await apiCall("account/update", data);
     return response;
   },
-  async listTypeCallLogs(page, type) {
+  async listTypeCallLogs(page, provider) {
     let data = {
       page: page,
-      provider: type
+      provider: provider
     };
     let response = await apiCall("call_log/list", data);
     return response;
   },
-  async listSchoolTypeCallLogs(school, page, type) {
+  async listSchoolTypeCallLogs(school, page, provider) {
     let data = {
       school_id: school,
       page: page,
-      provider: type
+      provider: provider
     };
     let response = await apiCall("call_log/list", data);
     return response;

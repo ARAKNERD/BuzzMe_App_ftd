@@ -119,7 +119,7 @@ const StudentProfile = (props) => {
   const getStudentProfile = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentData(student_id);
-    console.log(server_response);
+  
     setLoading(false);
     if (server_response.status === "OK") {
       //store results
@@ -298,8 +298,8 @@ const StudentProfile = (props) => {
                     </h3>
                     <h5 style={{ color: "white" }}>{studentProfile.group}</h5>
                     <div class="social-links mt-2 align-items-center ">
-                      <RenderSecure code="SCHOOL-USER-VIEW">
-                        {" "}
+                      {/* <RenderSecure code="SCHOOL-USER-VIEW">
+                       
                         {active ? (
                           <a
                             href="#"
@@ -317,7 +317,7 @@ const StudentProfile = (props) => {
                             <i className="far fa-edit mr-1"></i>Update Details
                           </a>
                         )}
-                      </RenderSecure>
+                      </RenderSecure> */}
 
                       {/* {studentProfile.student_restrictions === "0"?
                                 <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
@@ -886,13 +886,13 @@ const StudentProfile = (props) => {
                                                 }}
                                               ></i>
                                             )}{" "}
-                                            {item.created_at.long_date}
+                                            {item.call_time}
                                           </td>
 
                                           <td className="text-dark">
-                                            {item.contact_name}
+                                            {item.callee_name}
                                             <br />
-                                            <small>{item.contact}</small>
+                                            <small>{item.callee_number}</small>
                                           </td>
                                           <td>{item.duration_format}</td>
                                           <td>

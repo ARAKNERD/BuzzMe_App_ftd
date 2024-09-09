@@ -30,7 +30,7 @@ export const AuthProvider = (props) => {
 
   const getUserInfo = async () => {
     const server_response = await ajaxUser.fetchUserProfile(userId);
-    console.log(server_response);
+    // console.log(server_response);
     if (server_response.status === "OK") {
       setUser(server_response.details);
     } else {

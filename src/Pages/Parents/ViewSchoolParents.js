@@ -30,6 +30,7 @@ function ViewSchoolParents() {
       page
     );
     setLoading(false);
+
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setParentList(server_response.details.list);

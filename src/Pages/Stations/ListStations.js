@@ -37,6 +37,8 @@ function ListStations() {
       page
     );
     setLoading(false);
+    console.log(server_response)
+    console.log(schoolDetails)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setStationList(server_response.details.list);
@@ -139,6 +141,17 @@ function ListStations() {
       )
     );
   };
+  const stationAdd = (e, item) => {
+    setModal(false, () =>
+      setModal(
+        <AddStation
+          g={getStations}
+          h={searchStations}
+          isOpen={true}
+        />
+      )
+    );
+  };
 
   const refreshData = () => {
     getStations();
@@ -166,13 +179,8 @@ function ListStations() {
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
-        <RenderSecure code="ADMIN-VIEW">
-          <div className="col-lg-4">
-            <AddStation g={getStations} />
-          </div>
-        </RenderSecure>
 
-        <div className={user.role_id === "3" ? "col-lg-12" : "col-lg-8"}>
+      <div className="col-lg-12">
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
@@ -192,6 +200,9 @@ function ListStations() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
+                  <RenderSecure code="ADMIN-VIEW"><Link class="dropdown-item" onClick={stationAdd}>
+                      <i class="fas fa-plus" style={{color:"green"}}></i>Add Station
+                    </Link></RenderSecure>
                     <Link class="dropdown-item" onClick={refreshData}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
