@@ -16,8 +16,6 @@ const ParentProfile = props => {
     const [children, setChildren] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
-    const [mainContact,setMainContact] =useState("")
-    const [alternativeContact,setAlternativeContact] =useState("")
     const [address,setAddress] =useState("")
     const [NIN,setNIN] =useState("")
     const [parentID,setParentID] = useState("")
@@ -123,17 +121,7 @@ const ParentProfile = props => {
                         </div>
                     </div>}
 
-                    <div className="box-footer pt-41" style={{paddingTop: "41px !important"}}>
-                        <div className="btn-list text-center">
-                            {active?
-                                <a href="#" onClick={handleInActive} className="btn btn-danger mr-2"><i className="fe fe-x"></i>Back</a>
-                            :
-                                <a href="#" onClick={setParentUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
-                            }
-                            
-                            
-                        </div>
-                    </div>
+                    
                 </div>
 
                 {active?
@@ -194,18 +182,10 @@ const ParentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Main Contact</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{parentProfile.main_contact}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{parentProfile.username}</span> </td>
                                         </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Alternative Contact</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{parentProfile.alternative_contact?parentProfile.alternative_contact:"Not registered"}</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Buzz Number</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{parentProfile.buzz_number}</span> </td>
-                                        </tr>
+                                       
+                                       
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Address</span> </td>
                                             <td>:</td>
@@ -256,10 +236,10 @@ const ParentProfile = props => {
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.full_name}</td>
-                                                <td>{item.school}</td>
-                                                <td>{item.student_code}</td>
-                                                <td>{item.group}</td>
+                                                <td>{item.student.full_name}</td>
+                                                <td>{item.student?.school}</td>
+                                                <td>{item.student?.username}</td>
+                                                <td>{item.student?.group}</td>
                                             </tr>
                                         ))}
                                         {children === "404" && (<tr>

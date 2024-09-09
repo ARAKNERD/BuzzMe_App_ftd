@@ -32,12 +32,8 @@ export default {
     let response = await apiCall("permission/list/role", data);
     return response;
   },
-  async fetchUserProfile(id) {
-    let data = {
-      id: id,
-    };
-    let response = await apiCall("user/profile", data);
-
+  async fetchUserProfile(data) {
+    let response = await apiCall("mobile/webapp/user_info", data);
     return response;
   },
   async fetchSmallRoleList(data) {

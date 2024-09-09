@@ -20,11 +20,8 @@ import AddChargeType from "./AddChargeType";
 function ChargeRates() {
   const {rateList, getRateList} = useContext(RateContext);
   const {getTypeList} = useContext(RateContext);
-
   const [schoolRates, setSchoolRates] = useState(false);
-
   const [loading, setLoading] = useState(false);
-
 
   const refreshData = () =>{
     getRateList();
@@ -69,16 +66,14 @@ function ChargeRates() {
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
-      <div className="col-lg-12 col-md-12">
+        <div className="col-lg-12 col-md-12">
           <div className="pl-20" style={{float: "right"}}>
-          
-              <button
-                type="button"
-                onClick={handleAdd}
-                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
-                <i className="fa-solid fa-plus" /> Add Charge Type
-              </button>
-            
+            <button
+              type="button"
+              onClick={handleAdd}
+              className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
+              <i className="fa-solid fa-plus" /> Add Charge Type
+            </button>  
           </div>
         </div>
         <div className="col-lg-4">
@@ -86,20 +81,20 @@ function ChargeRates() {
         </div>
         <div className="col-lg-8">
           <div className="card custom-card" style={{borderRadius: "10px"}}>
-                        <div className="card-body map-card">
-                        <div class="heading-layout1 mg-b-25">
+            <div className="card-body map-card">
+              <div class="heading-layout1 mg-b-25">
                 <TableHeader
                   title="Charge Rates"
                   subtitle="List of all the charge rates"
                 />
                 <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
+                  <a class="dropdown-toggle" href="#" role="button" 
+                  data-toggle="dropdown" aria-expanded="false">...</a>
                 
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        </div>
-                                    </div>
+                  <div class="dropdown-menu dropdown-menu-right">
+                      <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                  </div>
+                </div>
               </div>
                               
                             <Tab.Container id="left-tabs-example" defaultActiveKey="first">

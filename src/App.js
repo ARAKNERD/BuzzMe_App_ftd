@@ -22,7 +22,6 @@ import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import ListAccount from "./Pages/Accounts/ListAccount";
 import AddAccount from "./Pages/Accounts/AddAccount";
-import ListBankTransactions from "./Pages/Bank/ListBankTransactions";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
 import ViewSchool from "./Pages/Schools/ViewSchool";
@@ -166,9 +165,6 @@ function App(props) {
               {/* MM Payments routes */}
               <Route path="/payments/mm/view" element={<ListMMPayments />} />
               {/* End MM Payments routes */}
-              {/* Bank routes */}
-              <Route path="/bank/view" element={<ListBankTransactions />} />
-              {/* End Bank routes */}
               {/* Account routes */}
               <Route path="/accounts/view" element={<ListAccount />} />
               <Route path="/accounts/add" element={<AddAccount />} />
@@ -193,11 +189,11 @@ function App(props) {
               <Route path="/students/import" element={<ImportStudents />} />
               <Route path="/students/upload" element={<AdminImportStudents />} />
               <Route
-                path="/students/profile/:id/:account_id"
+                path="/students/profile/:student_id/:user_id"
                 element={<StudentProfile />}
               />
               <Route
-                path="/school-students/profile/:id/:account_id"
+                path="/school-students/profile/:student_id/:user_id"
                 element={<StudentProfile />}
               />
               {/* End student */}

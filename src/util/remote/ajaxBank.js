@@ -53,7 +53,26 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
-
+  async fetchBuzzTimeTotal(data) {
+    let response = await apiCall("buzz_time/total", data);
+    return response;
+  },
+  async fetchAccountActivationsTotal(data) {
+    let response = await apiCall("account_activation/total", data);
+    return response;
+  },
+  async fetchTotalCallCharges(data) {
+    let response = await apiCall("call_charges/total", data);
+    return response;
+  },
+  async fetchTotalMessageCharges(data) {
+    let response = await apiCall("message_charges/total", data);
+    return response;
+  },
+  async generateMessageReport(data) {
+    let response = await apiCall("message/report", data);
+    return response;
+  },
 
 
 }

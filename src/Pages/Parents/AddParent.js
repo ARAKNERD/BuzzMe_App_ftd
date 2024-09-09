@@ -14,7 +14,6 @@ function AddParent() {
   const [ninSearch, setNinSearch] = useState(null);
   const [address, setAddress] = useState("");
   const [gender, setGender] = useState("");
-  const [alternativeContact, setAlternativeContact] = useState("");
   const [mainContact, setMainContact] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -35,7 +34,6 @@ function AddParent() {
         main_contact: mainContact,
         first_name: firstName,
         last_name: lastName,
-        alternative_contact: alternativeContact,
         address: address,
         gender: gender
       };
@@ -97,7 +95,6 @@ useEffect(()=>{
   const resetForm = () => {
     setFirstName("");
     setLastName("");
-    setAlternativeContact("");
     setMainContact("");
     setNin("");
     setAddress("");
@@ -199,17 +196,7 @@ useEffect(()=>{
                       className="form-control"
                     />
                   </div>
-                  <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
-                    <label>Alternative Phone Number </label>
-                    <input
-                      type="text"
-                      value={alternativeContact}
-                      style={{border: "1px solid grey"}}
-                      placeholder="Enter alternative number of contact.."
-                      onChange={(e) => setAlternativeContact(e.target.value)}
-                      className="form-control"
-                    />
-                  </div>
+                 
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
                     <label>Gender <span style={{color:"red"}}>*</span></label>
 

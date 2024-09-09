@@ -10,6 +10,7 @@ const AddAdmin=(props)=>{
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [username, setUsername] = useState("")
+    const [gender, setGender] = useState("")
 
     const handleAdd = async (e) => {
       e.preventDefault();
@@ -18,7 +19,8 @@ const AddAdmin=(props)=>{
         const data = {
           first_name: firstName,
           last_name: lastName,
-          username: username
+          username: username,
+          gender: gender
         };
         setLoading(true)
         const server_response = await ajaxAdmin.createAdmin(data);
@@ -96,6 +98,19 @@ const AddAdmin=(props)=>{
                       className=" colo-12 form-control"
                     />
             </div>
+            <div className="mb-4 col-12 form-group">
+                    <label>Gender <span style={{color:"red"}}>*</span></label>
+
+                    <select
+                      className="col-12 form-control"
+                      value={gender}
+                      style={{border: "1px solid grey"}}
+                      onChange={(e) => setGender(e.target.value)}>
+                      <option value={true}>Select..</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
        
         </SystemModal>
     )

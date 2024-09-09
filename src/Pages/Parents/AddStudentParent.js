@@ -35,9 +35,9 @@ const AddStudentParent=(props)=>{
     const setDetails = (e,item) =>{
         e.preventDefault()
         handleActive1()
-        setStudent(item.id)
+        setStudent(item.student_id)
         setFullName(item.full_name)
-        setStudentCode(item.student_code)
+        setStudentCode(item.username)
     }
 
     const setStudents = (e) => {
@@ -209,7 +209,7 @@ const AddStudentParent=(props)=>{
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
                                                 <td>{item.full_name}</td>
-                                                <td>{item.student_code}</td>
+                                                <td>{item.username}</td>
                                                 <td>{item.school}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 
                                                 ><i class="fas fa-check"></i></button></td>

@@ -81,7 +81,10 @@ export default {
     let response = await apiCall("student/count", data);
     return response;
   },
-  async fetchStudentData(data) {
+  async fetchStudentData(student_id) {
+    let data = {
+      student_id: student_id
+    };
     let response = await apiCall("student/studentInfo", data);
 
     return response;

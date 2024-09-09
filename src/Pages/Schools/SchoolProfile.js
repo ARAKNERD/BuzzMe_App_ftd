@@ -562,7 +562,7 @@ const restrictionsOff=()=>{
           <tr key={key}>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
-                          <td>{item.student_code}</td>
+                          <td>{item.username}</td>
                           <td>{item.reg_no?item.reg_no:"Not registered"}</td>
                         </tr>
         ))
