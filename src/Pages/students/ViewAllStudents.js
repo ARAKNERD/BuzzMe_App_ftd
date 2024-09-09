@@ -203,13 +203,13 @@ function ViewAllStudents() {
           <tr key={key}>
           <td style={{width:"5px"}}>{key + first + 1}</td>
           <td>
-            <Link to={`/students/profile/${item.id}/${item.account_id}`}>
-              {item.first_name} {item.last_name}
+            <Link to={`/students/profile/${item.student_id}/${item.user_id}`}>
+              {item.full_name}
             </Link>
           </td>
           <td className="text-dark">{item.gender}</td>
           <td className="text-dark">{item.school}</td>
-          <td className="text-dark">{item.student_code}</td>
+          <td className="text-dark">{item.username}</td>
           <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
           <OverlayTrigger
           placement="top"

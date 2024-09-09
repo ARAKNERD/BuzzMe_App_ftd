@@ -22,7 +22,8 @@ function ZegoLogs() {
 
     const getZegoLogsList = async () => {
       setLoading(true);
-      const server_response = await ajaxCallStation.listTypeCallLogs(page, "ZEGO");
+      const server_response = await ajaxCallStation.listTypeCallLogs(page, "BUZZ");
+      console.log(server_response)
       setLoading(false);
       if (server_response.status === "OK") {
           setMeta(server_response.details.meta.list_of_pages);
@@ -40,10 +41,10 @@ function ZegoLogs() {
             e.preventDefault();
         }
         var data = {
-            call_type: "ZEGO",
+            provider: "ZEGO",
             page: page,
             search_caller: searchStudent,
-            search_receiver: searchContact,
+            search_callee: searchContact,
             from: startDate,
             to: endDate,
     
@@ -128,13 +129,13 @@ function ZegoLogs() {
   }, []);
   useEffect(() => {
     getZegoLogsList();
-  }, [page,"ZEGO"]);
+  }, [page,"BUZZ"]);
 
   return (
       <>
       <div class="heading-layout1 mg-b-5">
         <TableHeader
-            subtitle="List of all the zego calls sorted by the most recent"    
+            subtitle="List of all the buzz to buzz calls sorted by the most recent"    
               />
               <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -213,18 +214,20 @@ function ZegoLogs() {
                 <th>Student</th>
                 <th>Contact</th>
                 <th>Duration</th>
-                <th>Station</th>
+                {/* <th>Station</th> */}
+                {/* <th>Call Cost</th> */}
               </tr>
             </thead>
             <tbody>
             {zegoSearch.length > 0 ? (
         zegoSearch.map((item, key) => (
             <tr key={key}>
-                <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.created_at.long_date}</td>
-                <td className="text-dark">{item.student}<br /><small>{item.student_info?.student_code}</small></td>
-                <td className="text-dark">{item.contact_name}<br /><small>{item.contact}</small></td>
+                <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.call_time}</td>
+                <td className="text-dark">{item.caller_name}<br /><small>{item.caller_number}</small></td>
+                <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
                 <td>{item.duration_format}</td>
-                <td>{item.station_name}<br /><small>{item.school}</small></td>
+                {/* <td>{item.station_name}<br /><small>{item.school}</small></td> */}
+                {/* <td>UGX. 600</td> */}
             </tr>
         ))
     ) : zegoLogsList === "404" ? (

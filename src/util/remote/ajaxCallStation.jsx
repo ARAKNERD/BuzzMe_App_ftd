@@ -29,7 +29,7 @@ export default {
   async listTypeCallLogs(page, type) {
     let data = {
       page: page,
-      call_type: type
+      provider: type
     };
     let response = await apiCall("call_log/list", data);
     return response;
@@ -38,7 +38,7 @@ export default {
     let data = {
       school_id: school,
       page: page,
-      call_type: type
+      provider: type
     };
     let response = await apiCall("call_log/list", data);
     return response;

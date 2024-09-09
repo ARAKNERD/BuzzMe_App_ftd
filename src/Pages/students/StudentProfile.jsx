@@ -24,7 +24,7 @@ const StudentProfile = props => {
     const [studentProfile, setStudentProfile] = useState(false);
     const [studentTransfers, setStudentTransfers] = useState(false);
     const [modal, setModal] = useStateCallback(false);
-    const {id, account_id} = useParams();
+    const {student_id, user_id} = useParams();
     const [studentLogs, setStudentLogs] = useState(false);
     const [studentContacts, setStudentContacts] = useState(false);
     const [contactCount, setContactCount] = useState(false);
@@ -56,20 +56,14 @@ const StudentProfile = props => {
     const [loading5,setLoading5] = useState(false)
     const [loading6,setLoading6] = useState(false)
 
-
-    const data = {
-        student_id: id,
-
-    };
-
     const data4 = {
-        student_id: id,
+        student_id: student_id,
         page: "1"
 
     };
 
     const data2 = {
-        student_id: id,
+        student_id: student_id,
         search: ""
     };
 
@@ -81,7 +75,7 @@ const StudentProfile = props => {
     useEffect(()=>{
        getStudentLogs();
      
-   }, [page, account_id])
+   }, [page, user_id])
 
     const getGroups = async () => {
         const server_response = await ajaxStudentGroup.fetchGroupList(user.school_id);
@@ -99,14 +93,14 @@ const StudentProfile = props => {
         setGroup(studentProfile.group_id)
         setGender(studentProfile.gender)
         setRegNo(studentProfile.reg_no)
-        setStudentID(studentProfile.id)
+        setStudentID(studentProfile.student_id)
     }
 
     const handleUpdate = async(event) => {
 
         event.preventDefault()
         var data = {
-            student_id: id,
+            student_id: student_id,
             first_name: firstName,
             last_name: lastName,
             reg_no: regNo,
@@ -118,7 +112,7 @@ const StudentProfile = props => {
         setLoading5(false)
         if(server_response.status === "OK"){
             toast.success(server_response.message)
-            getStudentProfile(id)
+            getStudentProfile(student_id)
             handleInActive()
         }else{
             //communicate error
@@ -129,7 +123,8 @@ const StudentProfile = props => {
     const getStudentProfile =async()=>{
         
         setLoading(true)
-        const server_response = await ajaxStudent.fetchStudentData(data);
+        const server_response = await ajaxStudent.fetchStudentData(student_id);
+        console.log(server_response)
         setLoading(false)
         if(server_response.status==="OK"){
             //store results
@@ -143,7 +138,7 @@ const StudentProfile = props => {
     const getStudentLogs =async()=>{
         setLoading2(true)
        
-        const server_response = await ajaxCallStation.listStudentCallLogs(page, account_id);
+        const server_response = await ajaxCallStation.listStudentCallLogs(page, user_id);
         setLoading2(false)
         if(server_response.status==="OK"){
             setMeta(server_response.details.meta.list_of_pages);
@@ -169,7 +164,7 @@ const StudentProfile = props => {
 
     const getStudentTransfers =async()=>{
         setLoading6(true)
-        const server_response = await ajaxStudent.listStudentTransfers(id);
+        const server_response = await ajaxStudent.listStudentTransfers(student_id);
         setLoading6(false)
         if(server_response.status==="OK"){
             setStudentTransfers(server_response.details);
@@ -180,7 +175,7 @@ const StudentProfile = props => {
     }
 
     const countContacts =async()=>{
-        const server_response = await ajaxStudent.countStudentContacts(id);
+        const server_response = await ajaxStudent.countStudentContacts(student_id);
         if(server_response.status==="OK"){
             setContactCount(server_response.details);
         }else{
@@ -189,7 +184,7 @@ const StudentProfile = props => {
         }
     }
     const countLogs =async()=>{
-        const server_response = await ajaxCallStation.countStudentLogs(account_id);
+        const server_response = await ajaxCallStation.countStudentLogs(user_id);
         if(server_response.status==="OK"){
             setLogsCount(server_response.details);
         }else{
@@ -199,7 +194,7 @@ const StudentProfile = props => {
     }
     const getWalletTransactions =async()=>{
         setLoading4(true)
-        const server_response = await ajaxBank.fetchStudentWalletTransactions(account_id,page);
+        const server_response = await ajaxBank.fetchStudentWalletTransactions(user_id,page);
         setLoading4(false)
         if(server_response.status==="OK"){
             setMeta(server_response.details.meta.list_of_pages);
@@ -211,14 +206,14 @@ const StudentProfile = props => {
     }
 
     const handleModal3=()=>{
-        setModal(false, ()=>setModal(<AttachParent studentID={id} h={getStudentContacts} j={countContacts} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AttachParent studentID={student_id} h={getStudentContacts} j={countContacts} isOpen={true}/>))
     }
 
     const restrictionsOn=()=>{
-        setModal(false, ()=>setModal(<TurnOnStudentRestrictions studentID={id} g={getStudentProfile} isOpen={true}/>))
+        setModal(false, ()=>setModal(<TurnOnStudentRestrictions studentID={student_id} g={getStudentProfile} isOpen={true}/>))
       }
       const restrictionsOff=()=>{
-        setModal(false, ()=>setModal(<TurnOffStudentRestrictions studentID={id} g={getStudentProfile} isOpen={true}/>))
+        setModal(false, ()=>setModal(<TurnOffStudentRestrictions studentID={student_id} g={getStudentProfile} isOpen={true}/>))
       }
 
     const setNextPageNumber = () =>{
@@ -252,10 +247,10 @@ const StudentProfile = props => {
         countContacts();
         countLogs();
         getStudentTransfers();
-    }, [id]);
+    }, [student_id]);
     useEffect(() => {
         getWalletTransactions();
-    }, [account_id,page]);
+    }, [user_id,page]);
  
     return (
         <AppContainer title={"Student Profile"} >
@@ -284,11 +279,11 @@ const StudentProfile = props => {
                                 <a href="#" onClick={setUserUpdate} className="btn btn-warning mr-2"><i className="far fa-edit mr-1"></i>Update Details</a>
                             }</RenderSecure>
 
-{studentProfile.student_restrictions === "0"?
+{/* {studentProfile.student_restrictions === "0"?
                                 <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
                             :
                                 <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
-                            }
+                            } */}
               </div>
               
             </div>
@@ -480,7 +475,7 @@ const StudentProfile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Student Code</span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.student_code}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{studentProfile.username}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Group Name</span> </td>
@@ -502,21 +497,7 @@ const StudentProfile = props => {
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{studentProfile.reg_no?studentProfile.reg_no:"Not recorded"}</span> </td>
                                         </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - School</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.school_restrictions ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - Student</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.student_restrictions ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Call Restrictions - Overall</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{studentProfile.is_restricted ==="Restricted"?<span class="badge badge-danger">{studentProfile.is_restricted}</span>:<span class="badge badge-success">{studentProfile.is_restricted}</span>}</span> </td>
-                                        </tr>
+                                       
                                        
                                     </tbody>}
                                 </table>{loading && <Loader/>}</>}

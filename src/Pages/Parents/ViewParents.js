@@ -163,9 +163,9 @@ function ViewParents() {
                       <th scope="col" className="wd-10p">No.</th>
                       <th scope="col">Names</th>
                       <th scope="col">Contact</th>
-                      <th scope="col">Buzz Number</th>
-
+                      <th scope="col">Gender</th>
                       <th scope="col">Address</th>
+                      
                     
                     </tr>
                   </thead>
@@ -179,9 +179,8 @@ function ViewParents() {
                         to={`/parents/profile/${item.parent_id}`}>
                         {item.full_name}
                       </Link></td>
-                        <td>{item.main_contact}</td>
-                        <td>{item.buzz_number}</td>
-
+                        <td>{item.username}</td>
+                        <td>{item.gender}</td>
                         <td>{item.address}</td>
                       </tr>
                       ))
@@ -190,13 +189,11 @@ function ViewParents() {
                     <tr key={key}>
                         <th scope='row' style={{width:"5px"}}>{key + first + 1}</th>
                         <td><Link
-                        to={`/parents/profile/${item.parent_id}`}>
+                        to={`/parents/profile/${item.user_id}`}>
                         {item.full_name}
                       </Link></td>
                         <td>{item.main_contact}</td>
                         <td>{item.buzz_number}</td>
-
-                        <td>{item.address}</td>
                       </tr>
                       ))}
                       {parentList === "404" && (<tr>

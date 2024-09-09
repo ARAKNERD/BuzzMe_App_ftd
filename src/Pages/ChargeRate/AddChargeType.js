@@ -4,15 +4,12 @@ import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
 
-
-const AddChargeType=(props)=>
-{
+const AddChargeType=(props)=>{
 
   const [loading, setLoading] = useState(false)
   const [type, setType] = useState("")
 
-  const data = 
-  {
+  const data = {
     type: type
   };
 
@@ -55,15 +52,15 @@ const AddChargeType=(props)=>
       footer={RenderFooter}
     >
 
-    <div className="row">
-            <div className="col-xl-12 col-lg-12 col-12 form-group">
-               <label htmlFor="">Type <span style={{color:"red"}}>*</span></label>
-               <input type="text" value={type} style={{border: "1px solid grey"}} placeholder="Enter name of charge type.." onChange={(e)=>setType(e.target.value)} className="form-control"/>
-            </div>
+      <div className="row">
+        <div className="col-xl-12 col-lg-12 col-12 form-group">
+          <label htmlFor="">Type <span style={{color:"red"}}>*</span></label>
+          <input type="text" value={type} style={{border: "1px solid grey"}} placeholder="Enter name of charge type.." onChange={(e)=>setType(e.target.value)} className="form-control"/>
         </div>
+      </div>
        
-        </SystemModal>
-    )
+    </SystemModal>
+  )
 }
 
 export default AddChargeType

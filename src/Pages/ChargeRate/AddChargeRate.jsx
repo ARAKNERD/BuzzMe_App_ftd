@@ -5,7 +5,6 @@ import {toast} from "react-hot-toast";
 import SchoolContext from "../../Context/SchoolContext";
 import Select from "react-select";
 
-
 function AddChargeRate(props) {
   const [rate, setRate] = useState("");
   const [type, setType] = useState("");
@@ -13,10 +12,8 @@ function AddChargeRate(props) {
   const [category, setCategory] = useState("");
   const {getRateList, typeList} = useContext(RateContext);
   const {schoolList} = useContext(SchoolContext);
-
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-
 
   const data = {
     rate: rate,
@@ -83,44 +80,39 @@ function AddChargeRate(props) {
           method="post"
           class="new-added-form">
           <div className="row">
-          <div className="col-lg-12 col-12 form-group">
+            <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Rate Category <span style={{color:"red"}}>*</span> </label>
-              <select
-                      className="col-12 form-control"
-                      value={category}
-                      style={{border: "1px solid grey"}}
-                      onChange={(e) => setCategory(e.target.value)}>
-                      <option value={true}>Select...</option>
-                      <option value="Default">Default Rate</option>
-                      <option value="School">School Rate</option>
-                    </select>
+              <select className="col-12 form-control" value={category} style={{border: "1px solid grey"}} onChange={(e) => setCategory(e.target.value)}>
+                <option value={true}>Select...</option>
+                <option value="Default">Default Rate</option>
+                <option value="School">School Rate</option>
+              </select>
             </div>
             <div className="col-lg-12 col-12 form-group">
               <label htmlFor="">Communication / Charge Type <span style={{color:"red"}}>*</span> </label>
               <Select
-                      onChange={(e) => setType(e.type)}
-                      getOptionLabel={(option) => option.type}
-                      getOptionValue={(option) => option.type}
-                      isSearchable
-                      options={Array.isArray(typeList) ? typeList : []}
-                      value={
-                        Array.isArray(typeList) &&
-                        typeList.find((value) => value.type === type)
-                      }
-                    />
+                onChange={(e) => setType(e.type)}
+                getOptionLabel={(option) => option.type}
+                getOptionValue={(option) => option.type}
+                isSearchable
+                options={Array.isArray(typeList) ? typeList : []}
+                value={
+                  Array.isArray(typeList) &&
+                  typeList.find((value) => value.type === type)}
+              />
             </div>
             {category === "Default"? "" :<div className="col-lg-12 col-12 form-group">
                 <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
                 <Select
-                    onChange={(e) => setSchool(e.school_id)}
-                    getOptionLabel={(option) => option.school_name}
-                    getOptionValue={(option) => option.school_id}
-                    isSearchable
-                    options={Array.isArray(schoolList) ? schoolList : []}
-                    value={
-                        Array.isArray(schoolList) &&
-                        schoolList.find((value) => value.school_id === school)
-                    }
+                  onChange={(e) => setSchool(e.school_id)}
+                  getOptionLabel={(option) => option.school_name}
+                  getOptionValue={(option) => option.school_id}
+                  isSearchable
+                  options={Array.isArray(schoolList) ? schoolList : []}
+                  value={
+                      Array.isArray(schoolList) &&
+                      schoolList.find((value) => value.school_id === school)
+                  }
                 />
             </div>}
             <div className="col-lg-12 col-12 form-group">
