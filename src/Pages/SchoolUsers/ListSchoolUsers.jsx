@@ -65,6 +65,7 @@ function ListSchoolUsers(props) {
               <tr>
                 <th>ID</th>
                 <th>Names</th>
+                <th>Username</th>
                 <th>School Name</th>
                 <th>Actions</th>
                  
@@ -75,6 +76,7 @@ function ListSchoolUsers(props) {
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
+                          <td>{item.username}</td>
                           <td>{item.school_name}</td>
                           <td>
                             <div className="dropdown">

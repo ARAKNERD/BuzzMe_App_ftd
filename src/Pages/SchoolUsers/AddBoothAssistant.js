@@ -11,6 +11,8 @@ const AddBoothAssistant=(props)=>{
     const [loading, setLoading] = useState(false)
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
+    const [gender, setGender] = useState("")
+
     const [contact, setContact] = useState("")
     const {schoolList} = useContext(SchoolContext);
     const [school, setSchool] = useState("")
@@ -24,6 +26,7 @@ const AddBoothAssistant=(props)=>{
           first_name: firstName,
           last_name: lastName,
           contact: contact,
+          gender:gender,
           school: school
         };
         setLoading(true)
@@ -102,6 +105,19 @@ const AddBoothAssistant=(props)=>{
                       className=" colo-12 form-control"
                     />
             </div>
+            <div className="mb-4 col-12 form-group">
+                    <label>Gender <span style={{color:"red"}}>*</span></label>
+
+                    <select
+                      className="col-12 form-control"
+                      value={gender}
+                      style={{border: "1px solid grey"}}
+                      onChange={(e) => setGender(e.target.value)}>
+                      <option value={true}>Select..</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                    </select>
+                  </div>
             <div className="mb-4 col-12 form-group">
             <label htmlFor="">School <span style={{color:"red"}}>*</span></label>
                     <Select

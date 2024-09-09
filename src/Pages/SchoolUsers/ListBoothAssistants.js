@@ -20,10 +20,11 @@ function ListBoothAssistants() {
     const getBoothAssistants = async () => {
         try {
           const data = {
-            school: ""
+            school_id: ""
           };
           setLoading(true)
           const serverResponse = await ajaxSchool.fetchBoothAssistants(data);
+
           setLoading(false)
           if (serverResponse.status === "OK") {
             setBoothAssistants(serverResponse.details);

@@ -39,7 +39,7 @@ function TwilioLogs() {
       e.preventDefault();
     }
     var data = {
-      call_type: "GSM",
+      provider: "GSM",
       page: page,
       search_caller: searchStudent,
       search_callee: searchContact,
@@ -121,9 +121,18 @@ function TwilioLogs() {
   useEffect(() => {
     searchTwilioLogs();
   }, []);
+  // useEffect(() => {
+  //   getTwilioLogsList();
+  // }, [page,"GSM"]);
+
   useEffect(() => {
     getTwilioLogsList();
-  }, [page,"GSM"]);
+    const interval = setInterval(() => {
+      getTwilioLogsList();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [page, "GSM"]);
 
   return (
     <>
@@ -145,7 +154,7 @@ function TwilioLogs() {
           <div className="col-10-xxxl col-xl-6 col-lg-6 col-6 form-group">
             <div className="row">
               <div className="col-lg-3">
-                <input type="text" placeholder="Enter student name..." className="form-control" style={{border: "1px solid grey"}} value={searchStudent} 
+                <input type="text" placeholder="Enter callee name..." className="form-control" style={{border: "1px solid grey"}} value={searchStudent} 
                   onChange={(e) => {
                     setSearchStudent(e.target.value);
                     if (e.target.value === '') {
@@ -155,15 +164,19 @@ function TwilioLogs() {
                 />
               </div>
               <div className="col-lg-3">
-                <input type="text" placeholder="Enter contact name /number..." style={{border: "1px solid grey"}} value={searchContact} 
-                  onChange={(e) => {
-                    setSearchContact(e.target.value);
-                    if (e.target.value === '') {
-                      resetSearch(e);
-                    }
-                  }}
-                />
-              </div>
+            <input
+              type="text"
+              placeholder="Enter callee name..."
+              style={{border: "1px solid grey"}}
+              value={searchContact} onChange={(e) => {
+                setSearchContact(e.target.value);
+                if (e.target.value === '') {
+                  resetSearch(e);
+                }
+              }}
+              className="form-control"
+            />
+           </div>
               <div className="col-lg-6">
                 <div class="flex-fill position-relative">
                   <div class="input-group input-daterange" id="datepicker">
@@ -209,14 +222,14 @@ function TwilioLogs() {
             ))) : twilioLogsList === "404" ? (
               <tr>
                 <td colSpan="5" style={{ textAlign: "center" }}>
-                  No twilio call logs found.
+                  No buzz to other network logs found.
                 </td>
               </tr>
             ) : (
        
               (searchStudent || searchContact || startDate || endDate) && (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: "center" }}>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
                     No search result(s) found.
                   </td>
                 </tr>

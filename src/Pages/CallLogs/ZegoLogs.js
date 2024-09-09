@@ -23,7 +23,7 @@ function ZegoLogs() {
     const getZegoLogsList = async () => {
       setLoading(true);
       const server_response = await ajaxCallStation.listTypeCallLogs(page, "BUZZ");
-      console.log(server_response)
+  
       setLoading(false);
       if (server_response.status === "OK") {
           setMeta(server_response.details.meta.list_of_pages);
@@ -41,7 +41,7 @@ function ZegoLogs() {
             e.preventDefault();
         }
         var data = {
-            provider: "ZEGO",
+            provider: "BUZZ",
             page: page,
             search_caller: searchStudent,
             search_callee: searchContact,
@@ -127,9 +127,18 @@ function ZegoLogs() {
   useEffect(() => {
     searchZegoLogs();
   }, []);
+  // useEffect(() => {
+  //   getZegoLogsList();
+  // }, [page,"BUZZ"]);
+
   useEffect(() => {
     getZegoLogsList();
-  }, [page,"BUZZ"]);
+    const interval = setInterval(() => {
+      getZegoLogsList();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [page, "BUZZ"]);
 
   return (
       <>
@@ -152,7 +161,7 @@ function ZegoLogs() {
           <div className="col-lg-3">
             <input
               type="text"
-              placeholder="Enter student name..."
+              placeholder="Enter caller name..."
               style={{border: "1px solid grey"}}
               value={searchStudent} onChange={(e) => {
                 setSearchStudent(e.target.value);
@@ -166,7 +175,7 @@ function ZegoLogs() {
            <div className="col-lg-3">
             <input
               type="text"
-              placeholder="Enter contact name /number..."
+              placeholder="Enter callee name..."
               style={{border: "1px solid grey"}}
               value={searchContact} onChange={(e) => {
                 setSearchContact(e.target.value);

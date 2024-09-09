@@ -28,7 +28,7 @@ function SchoolZegoLogs() {
     const server_response = await ajaxCallStation.listSchoolTypeCallLogs(
       schoolDetails,
       page,
-      "ZEGO"
+      "BUZZ"
     );
     setLoading(false);
     if (server_response.status === "OK") {
@@ -48,7 +48,7 @@ function SchoolZegoLogs() {
     }
     var data = {
       school_id: schoolDetails,
-      call_type: "ZEGO",
+      provider: "BUZZ",
       page: page,
       search_student: searchStudent,
       search_contact: searchContact,
@@ -127,14 +127,22 @@ function SchoolZegoLogs() {
   useEffect(() => {
     searchZegoLogs();
   }, []);
+  // useEffect(() => {
+  //   getZegoLogsList();
+  // }, [schoolDetails, page, "ZEGO"]);
   useEffect(() => {
     getZegoLogsList();
-  }, [schoolDetails, page, "ZEGO"]);
+    const interval = setInterval(() => {
+      getZegoLogsList();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [page, "BUZZ"]);
 
   return (
     <>
       <div class="heading-layout1 mg-b-5">
-        <TableHeader subtitle="List of all the zego calls sorted by the most recent" />
+        <TableHeader subtitle="List of all the buzz to buzz calls sorted by the most recent" />
         <div class="dropdown">
           <a
             class="dropdown-toggle"
@@ -251,42 +259,18 @@ function SchoolZegoLogs() {
             {zegoSearch.length > 0 ? (
               zegoSearch.map((item, key) => (
                 <tr key={key}>
-                  <td>
-                    {item.duration_format === "00:00" ? (
-                      <i
-                        className="fe fe-phone-missed"
-                        style={{ color: "red", paddingRight: "10px" }}
-                      ></i>
-                    ) : (
-                      <i
-                        className="fe fe-phone-incoming"
-                        style={{ color: "green", paddingRight: "10px" }}
-                      ></i>
-                    )}{" "}
-                    {item.created_at.long_date}
-                  </td>
-                  <td className="text-dark">
-                    {item.student}
-                    <br />
-                    <small>{item.student_info?.student_code}</small>
-                  </td>
-                  <td className="text-dark">
-                    {item.contact_name}
-                    <br />
-                    <small>{item.contact}</small>
-                  </td>
-                  <td>{item.duration_format}</td>
-                  <td>
-                    {item.station_name}
-                    <br />
-                    <small>{item.school}</small>
-                  </td>
+                  <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.call_time}</td>
+                <td className="text-dark">{item.caller_name}<br /><small>{item.caller_number}</small></td>
+                <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
+                <td>{item.duration_format}</td>
+                {/* <td>{item.station_name}<br /><small>{item.school}</small></td> */}
+                {/* <td>UGX. 600</td> */}
                 </tr>
               ))
             ) : zegoLogsList === "404" ? (
               <tr>
                 <td colSpan="5" style={{ textAlign: "center" }}>
-                  No zego call logs found.
+                  No buzz to buzz call logs found.
                 </td>
               </tr>
             ) : (

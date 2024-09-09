@@ -33,7 +33,7 @@ const Profile = props => {
                                     </div>
 						        </div>
                                 <div className="pro-user mt-3" style={{marginTop: "1rem !important"}}>
-                                    <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{user.first_name}</h5>
+                                    <h5 className="pro-user-username text-dark mb-2 fs-15 mt-42 color-span" style={{lineHeight: "1.5"}}>{user.full_name}</h5>
                                     <h6 className="pro-user-desc text-muted fs-14">{user.role_name}</h6>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@ const Profile = props => {
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Names </span> </td>
                                             <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{user.first_name}</span> </td>
+                                            <td className="py-2 px-0"> <span className="">{user.full_name}</span> </td>
                                         </tr>
                                         <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Role Name</span> </td>

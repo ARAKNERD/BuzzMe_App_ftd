@@ -60,7 +60,7 @@ export const SchoolProvider = (props) => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
       schoolDetails
     );
-    console.log(server_response);
+    // console.log(server_response);
     if (server_response.status === "OK") {
       setSchoolGroups(server_response.details);
     } else {
@@ -83,7 +83,7 @@ export const SchoolProvider = (props) => {
 
   const getUserSchool = async () => {
     const server_response = await ajaxSchool.fetchUserSchool(user.user_id);
-    console.log("first", server_response);
+    
     if (server_response.status === "OK") {
       setSchoolDetails(server_response.details);
     }

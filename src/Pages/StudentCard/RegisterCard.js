@@ -21,6 +21,9 @@ function RegisterCard(props) {
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         props.g()
+        props.h()
+        props.i()
+
         resetForm();
       } else {
         toast.error(server_response.message);

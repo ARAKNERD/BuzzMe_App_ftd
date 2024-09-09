@@ -93,7 +93,7 @@ export default function Header(props) {
                 data-toggle="dropdown"
                 aria-expanded="false">
                 <div className="admin-title">
-                  <h5 className="item-title">{user.first_name}</h5>
+                  <h5 className="item-title">{user.full_name}</h5>
                   <span>{user.role_name}</span>
                 </div>
                 <div className="admin-img">
@@ -108,7 +108,7 @@ export default function Header(props) {
               </a>
               <div className="dropdown-menu dropdown-menu-right">
                 <div className="item-header">
-                  <h6 className="item-title">{user.first_name}</h6>
+                  <h6 className="item-title">{user.full_name}</h6>
                 </div>
                 <div className="item-content">
                   <ul className="settings-list">
