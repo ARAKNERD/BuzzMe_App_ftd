@@ -7,6 +7,16 @@ export default {
     return response;
   },
 
+  // FETCH USER SCHOOL
+
+  async fetchUserSchool(account_id) {
+    let data = {
+      account_id: account_id,
+    };
+    let response = await apiCall("user/get_school", data);
+    return response;
+  },
+
   async createSchool(data) {
     let response = await apiCall("school/add", data);
     return response;
@@ -34,20 +44,18 @@ export default {
 
   async fetchSchools(page) {
     let data = {
-      "page": page
+      page: page,
     };
     let response = await apiCall("school/page", data);
     return response;
   },
 
-  async turnOnStaffLogin(data) 
-  {
+  async turnOnStaffLogin(data) {
     let response = await apiCall("school/staff/on", data);
     return response;
   },
 
-  async turnOffStaffLogin(data) 
-  {
+  async turnOffStaffLogin(data) {
     let response = await apiCall("school/staff/off", data);
     return response;
   },
@@ -162,14 +170,14 @@ export default {
   },
   async turnOnRestrictions(school_id) {
     let data = {
-      "school_id": school_id
+      school_id: school_id,
     };
     let response = await apiCall("school/restrictions/on", data);
     return response;
   },
   async turnOffRestrictions(school_id) {
     let data = {
-      "school_id": school_id
+      school_id: school_id,
     };
     let response = await apiCall("school/restrictions/off", data);
     return response;

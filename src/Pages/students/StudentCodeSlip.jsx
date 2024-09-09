@@ -1,13 +1,16 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SystemModal from "../../Components/Common/SystemModal";
 import AuthContext from "../../Context/AuthContext";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ajaxStudent from "../../util/remote/ajaxStudent";
+import SchoolContext from "../../Context/SchoolContext";
 
 function StudentCodeSlip(props) {
-  const {user} = useContext(AuthContext);
-  const {student_id, group_id} = useParams();
-  var school = user.role_id==="3" ? user.school_id : "";
+  const { user } = useContext(AuthContext);
+  const { schoolDetails } = useContext(SchoolContext);
+
+  const { student_id, group_id } = useParams();
+  var school = user.role_id === "3" ? schoolDetails : "";
 
   useEffect(() => {
     getStudentList();
@@ -49,7 +52,8 @@ function StudentCodeSlip(props) {
         <button
           className="btn ripple btn-dark"
           type="button"
-          onClick={controls.close}>
+          onClick={controls.close}
+        >
           Close
         </button>
         <button className="btn ripple btn-dark" type="button" onClick={Print}>
@@ -64,19 +68,21 @@ function StudentCodeSlip(props) {
         title="Image_review"
         id="model-update-cross"
         size="lg "
-        footer={RenderFooter}>
+        footer={RenderFooter}
+      >
         {/* <Toaster /> */}
         <div className="" id="printablediv">
           <div className="mb-4">
             <div className="col-lg-12 col-md-12">
               <div className="" id="printablediv">
-                <div style={{textAlign: "center", marginTop: "50px"}}>
+                <div style={{ textAlign: "center", marginTop: "50px" }}>
                   <div
                     style={{
                       display: "flex",
                       flexWrap: "wrap",
                       justifyContent: "center",
-                    }}>
+                    }}
+                  >
                     {Array.isArray(studentsData) &&
                       studentsData.map((student, index) => (
                         <div
@@ -87,7 +93,8 @@ function StudentCodeSlip(props) {
                             padding: "10px",
                             width: "400px",
                             pageBreakInside: "avoid", // Prevent breaking across pages
-                          }}>
+                          }}
+                        >
                           <img
                             src={
                               process.env.PUBLIC_URL + "/assets/img/logo.png"
@@ -120,7 +127,8 @@ function StudentCodeSlip(props) {
                           style={{
                             justifyContent: "center",
                             alignContent: "center",
-                          }}>
+                          }}
+                        >
                           <hr
                             style={{
                               width: "100%",

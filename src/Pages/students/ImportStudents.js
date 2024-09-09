@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import { useContext } from "react";
 import AuthContext from "../../Context/AuthContext";
@@ -10,11 +10,10 @@ import Loader from "../../Components/Common/Loader";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
-
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import SchoolContext from "../../Context/SchoolContext";
 
 const ImportStudents = () => {
   const [excelData, setExcelData] = useState([]);
@@ -23,18 +22,20 @@ const ImportStudents = () => {
   const [saved, setSaved] = useState(false);
   const [groupList, setGroupList] = useState(false);
   const [group, setGroup] = useState("");
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const { schoolDetails } = useContext(SchoolContext);
+
   const navigation = useNavigate();
 
   const AddGroupOption = {
-    group_id: 'add_new',
-    group_name: '- - - Register New Student Group - - -',
+    group_id: "add_new",
+    group_name: "- - - Register New Student Group - - -",
   };
 
   const schoolData = {
-    school_id: user.school_id,
+    school_id: schoolDetails,
     excel_data: excelData,
-    group: group
+    group: group,
   };
 
   const onDrop = (acceptedFiles) => {
@@ -99,7 +100,7 @@ const ImportStudents = () => {
 
   const getGroups = async () => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
-      user.school_id
+      schoolDetails
     );
 
     if (server_response.status === "OK") {
@@ -109,126 +110,146 @@ const ImportStudents = () => {
 
   useEffect(() => {
     getGroups();
-  }, [user.school_id]);
+  }, [schoolDetails]);
 
   return (
     <AppContainer title="Import Students">
-    <div className="col-12 col-xl-12">
-      <Toaster position="top-center" reverseOrder={false} />
-      <div
-        className="box user-pro-list overflow-hidden mb-30"
-        style={{
-          marginBottom: "30px",
-          backgroundColor: "white",
-          padding: "25px",
-          boxShadow: "10px",
-          borderRadius: "10px",
-        }}
-      >
-        <div {...getRootProps()} style={dropzoneStyles}>
-          <input {...getInputProps()} />
-          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 4 </b>columns in this order; First Name, Last Name, Registration Number and Gender. </p>
-          <p>Drag & drop an Excel file here, or click to select one</p>
-         
+      <div className="col-12 col-xl-12">
+        <Toaster position="top-center" reverseOrder={false} />
+        <div
+          className="box user-pro-list overflow-hidden mb-30"
+          style={{
+            marginBottom: "30px",
+            backgroundColor: "white",
+            padding: "25px",
+            boxShadow: "10px",
+            borderRadius: "10px",
+          }}
+        >
+          <div {...getRootProps()} style={dropzoneStyles}>
+            <input {...getInputProps()} />
+            <p>
+              Note: To import an Excel file successfully, it should contain
+              students of the same group with only<b> 4 </b>columns in this
+              order; First Name, Last Name, Registration Number and Gender.{" "}
+            </p>
+            <p>Drag & drop an Excel file here, or click to select one</p>
+          </div>
+          {loading && <Loader />}
+          {excelData.length > 0 && (
+            <div>
+              <h3
+                style={{ marginTop: 20, marginBottom: 20, textAlign: "center" }}
+              >
+                Excel Data To Be Imported:
+              </h3>
 
-        </div>
-        {loading && <Loader />}
-        {excelData.length > 0 && (
-          <div>
-            <h3
-              style={{ marginTop: 20, marginBottom: 20, textAlign: "center" }}
-            >
-              Excel Data To Be Imported:
-            </h3>
-
-            <div className="table-responsive">
-              <table className="table table-bordered">
-                <tbody>
-                  {excelData.map((r, i) => (
-                    <tr key={i}>
-                      <td>{i === 0 ? "#NO" : i}</td>
-                      {excelCols.map((c) => (
-                        <td key={c.key}>{r[c.key]}</td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              {excelData[0].some((header) => !header) && (
-                <div className="empty-header-row">
-                  <table className="table">
-                    <thead>
-                      <tr>
-                        {excelData[0].map((header, index) => (
-                          <th key={index}>&nbsp;</th>
+              <div className="table-responsive">
+                <table className="table table-bordered">
+                  <tbody>
+                    {excelData.map((r, i) => (
+                      <tr key={i}>
+                        <td>{i === 0 ? "#NO" : i}</td>
+                        {excelCols.map((c) => (
+                          <td key={c.key}>{r[c.key]}</td>
                         ))}
                       </tr>
-                    </thead>
-                  </table>
-                </div>
-              )}
-            </div>
-            {!loading && !saved && (
-                <><div className="col-lg-6 col-md-6">
-                <label htmlFor="">Student Group 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id="refresh-tooltip">Refresh Student Groups</Tooltip>}>
-                     <FontAwesomeIcon icon={faRefresh} onClick={getGroups} style={{marginLeft:"4px"}} /></OverlayTrigger></label>
-                <Select
-                  onChange={(selectedOption) => {
-                    if (selectedOption.group_id === 'add_new') {
-                      window.open('/class-groups', '_blank');
-                    } else {
-                      setGroup(selectedOption.group_id);
-                    }
-                  }}
-                  getOptionLabel={(option) => option.group_name}
-                  getOptionValue={(option) => option.group_id}
-                  isSearchable
-                  options={Array.isArray(groupList) ? [...groupList, AddGroupOption] : []}
-                  value={
-                    Array.isArray(groupList) &&
-                    groupList.find((value) => value.group_id === group)
-                  }
-                />
+                    ))}
+                  </tbody>
+                </table>
+                {excelData[0].some((header) => !header) && (
+                  <div className="empty-header-row">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          {excelData[0].map((header, index) => (
+                            <th key={index}>&nbsp;</th>
+                          ))}
+                        </tr>
+                      </thead>
+                    </table>
+                  </div>
+                )}
               </div>
-              <button
-                style={{ width: "100%" }}
-                onClick={() => saveData()}
-                className="btn btn-primary"
-              >
-                Save Student List
-              </button></>
-            )}
+              {!loading && !saved && (
+                <>
+                  <div className="col-lg-6 col-md-6">
+                    <label htmlFor="">
+                      Student Group
+                      <OverlayTrigger
+                        placement="top"
+                        overlay={
+                          <Tooltip id="refresh-tooltip">
+                            Refresh Student Groups
+                          </Tooltip>
+                        }
+                      >
+                        <FontAwesomeIcon
+                          icon={faRefresh}
+                          onClick={getGroups}
+                          style={{ marginLeft: "4px" }}
+                        />
+                      </OverlayTrigger>
+                    </label>
+                    <Select
+                      onChange={(selectedOption) => {
+                        if (selectedOption.group_id === "add_new") {
+                          window.open("/class-groups", "_blank");
+                        } else {
+                          setGroup(selectedOption.group_id);
+                        }
+                      }}
+                      getOptionLabel={(option) => option.group_name}
+                      getOptionValue={(option) => option.group_id}
+                      isSearchable
+                      options={
+                        Array.isArray(groupList)
+                          ? [...groupList, AddGroupOption]
+                          : []
+                      }
+                      value={
+                        Array.isArray(groupList) &&
+                        groupList.find((value) => value.group_id === group)
+                      }
+                    />
+                  </div>
+                  <button
+                    style={{ width: "100%" }}
+                    onClick={() => saveData()}
+                    className="btn btn-primary"
+                  >
+                    Save Student List
+                  </button>
+                </>
+              )}
 
-            {!loading && saved && (
-              <button
-                style={{ width: "100%" }}
-                // onClick={() => saveData()}
-                className="btn btn-primary"
-              >
-                List Already Saved
-              </button>
-            )}
+              {!loading && saved && (
+                <button
+                  style={{ width: "100%" }}
+                  // onClick={() => saveData()}
+                  className="btn btn-primary"
+                >
+                  List Already Saved
+                </button>
+              )}
 
-            {loading && (
-              <button
-                style={{ width: "100%" }}
-                // onClick={() => saveData()}
-                className="btn btn-primary"
-              >
-                Loading .......
-              </button>
-            )}
+              {loading && (
+                <button
+                  style={{ width: "100%" }}
+                  // onClick={() => saveData()}
+                  className="btn btn-primary"
+                >
+                  Loading .......
+                </button>
+              )}
 
-            {/* <pre>{JSON.stringify(excelCols, null, 2)}</pre>
+              {/* <pre>{JSON.stringify(excelCols, null, 2)}</pre>
             <pre>{JSON.stringify(excelData, null, 2)}</pre> */}
-            {/* You can now send 'excelData' to your PHP backend via an API. */}
-          </div>
-        )}
+              {/* You can now send 'excelData' to your PHP backend via an API. */}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
     </AppContainer>
   );
 };

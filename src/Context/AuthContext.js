@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import functions from "../util/functions";
 import ajaxUser from "../util/remote/ajaxUser";
 
@@ -19,9 +19,7 @@ export const AuthProvider = (props) => {
   }, [user.role_id]);
 
   const getUserAccess = async () => {
-    const server_response = await ajaxUser.getRolePermissionCodes(
-      user.role_id
-    );
+    const server_response = await ajaxUser.getRolePermissionCodes(user.role_id);
 
     if (server_response.status === "OK") {
       setPermissionList(server_response.details);
@@ -32,7 +30,7 @@ export const AuthProvider = (props) => {
 
   const getUserInfo = async () => {
     const server_response = await ajaxUser.fetchUserProfile(userId);
-
+    console.log(server_response);
     if (server_response.status === "OK") {
       setUser(server_response.details);
     } else {
@@ -48,7 +46,8 @@ export const AuthProvider = (props) => {
         permissionLists,
         getUserInfo,
         getUserAccess,
-      }}>
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );
