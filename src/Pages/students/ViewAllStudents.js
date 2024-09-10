@@ -39,7 +39,8 @@ function ViewAllStudents() {
 
   const getDefaultPin = async (e,item) => {
     e.preventDefault()
-    const server_response = await ajaxStudent.setDefaultPin(item.account_id);
+    const server_response = await ajaxStudent.setDefaultPin(item.user_id);
+    console.log(server_response)
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
       getStudentList();

@@ -31,6 +31,8 @@ const StudentProfile = (props) => {
   const [contactCount, setContactCount] = useState(false);
   const [logsCount, setLogsCount] = useState(false);
   const [walletTransactions, setWalletTransactions] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(false);
+
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState("");
 
@@ -70,6 +72,9 @@ const StudentProfile = (props) => {
     getStudentContacts();
     getStudentProfile();
   }, []);
+  useEffect(() => {
+    getStudentBalance();
+  }, [user_id]);
   useEffect(() => {
     getStudentLogs();
   }, [page, user_id]);
@@ -127,6 +132,19 @@ const StudentProfile = (props) => {
     } else {
       //communicate error
       setStudentProfile("404");
+    }
+  };
+  const getStudentBalance = async () => {
+    setLoading(true);
+    const server_response = await ajaxBank.fetchStudentWalletBalance(user_id);
+  
+    setLoading(false);
+    if (server_response.status === "OK") {
+      //store results
+      setWalletBalance(server_response.details);
+    } else {
+      //communicate error
+      setWalletBalance("404");
     }
   };
 
@@ -495,7 +513,7 @@ const StudentProfile = (props) => {
                           >
                             <span class="counter">
                               <small>UGX. </small>
-                              {studentProfile.wallet_balance}
+                              {walletBalance? walletBalance:"..."}
                             </span>
                           </h2>
                           <p class="mb-0 text-light"> Wallet Balance</p>

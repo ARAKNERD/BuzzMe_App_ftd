@@ -73,6 +73,13 @@ export default {
     let response = await apiCall("message/report", data);
     return response;
   },
+  async fetchStudentWalletBalance(student) {
+    let data = {
+      user_id: student
+    };
+    let response = await apiCall("wallet/balance", data);
+    return response;
+  },
 
 
 }
