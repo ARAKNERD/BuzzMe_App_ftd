@@ -24,7 +24,7 @@ function SchoolDashboard() {
   const getRecentLogs = async () => {
     setLoading2(true);
     const server_response = await ajaxCallStation.listRecentCallLogs(
-      schoolDetails
+      schoolDetails.school_id
     );
     setLoading2(false);
     if (server_response.status === "OK") {
@@ -37,7 +37,7 @@ function SchoolDashboard() {
   const getStudentsToday = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentsTodayLimit(
-      schoolDetails,
+      schoolDetails.school_id,
       limit
     );
     setLoading(false);
@@ -49,7 +49,7 @@ function SchoolDashboard() {
   };
 
   const getStudentsNumber = async () => {
-    const server_response = await ajaxStudent.fetchStudentNumber(schoolDetails);
+    const server_response = await ajaxStudent.fetchStudentNumber(schoolDetails.school_id);
 
     if (server_response.status === "OK") {
       setStudentsNumber(server_response.details);
@@ -60,7 +60,7 @@ function SchoolDashboard() {
 
   const getSchoolLogsNumber = async () => {
     const server_response = await ajaxCallStation.countSchoolLogsToday(
-      schoolDetails
+      schoolDetails.school_id
     );
     if (server_response.status === "OK") {
       setSchoolLogsNumber(server_response.details);
@@ -73,11 +73,11 @@ function SchoolDashboard() {
     getStudentsNumber();
     getSchoolLogsNumber();
     getRecentLogs();
-  }, [schoolDetails]);
+  }, [schoolDetails.school_id]);
 
   useEffect(() => {
     getStudentsToday();
-  }, [schoolDetails, limit]);
+  }, [schoolDetails.school_id, limit]);
 
   return (
     <AppContainer title={"Dashboard"}>
@@ -105,7 +105,7 @@ function SchoolDashboard() {
                   </div>
                   <div class="media-body">
                     <h3 class="item-title" style={{ color: "white" }}>
-                      {user.first_name} {user.last_name}
+                      {user.full_name}
                     </h3>
                     <p style={{ color: "white" }}> School Administrator</p>
                   </div>
@@ -122,7 +122,7 @@ function SchoolDashboard() {
                         <td className="py-2 px-0" style={{ color: "white" }}>
                           {" "}
                           <span className="">
-                            <b>{user.school_name}</b>
+                            <b>{schoolDetails.school_name}</b>
                           </span>{" "}
                         </td>
                       </tr>

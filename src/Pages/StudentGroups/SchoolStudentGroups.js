@@ -33,7 +33,7 @@ function SchoolStudentGroups() {
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <AddStudentSchoolGroup g={getGroups} />
+          <AddStudentSchoolGroup g={getGroups} schoolID={schoolDetails.school_id} />
         </div>
         <div className="col-lg-8">
           <div
@@ -96,7 +96,7 @@ function SchoolStudentGroups() {
                           <td>
                             <Link
                               className="btn btn-info"
-                              to={`/students/student_card/null/${item.group_id}/${schoolDetails}`}
+                              to={`/students/student_card/null/${item.group_id}/${schoolDetails.school_id}`}
                             >
                               View Cards
                             </Link>

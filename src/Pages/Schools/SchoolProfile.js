@@ -49,8 +49,6 @@ const SchoolProfile = props => {
     const [contact,setContact] = useState("")
     const [email,setEmail] = useState("")
     const [district,setDistrict] = useState("")
-    const [lat,setLat] = useState("")
-    const [longitude,setLongitude] = useState("")
     const [address,setAddress] = useState("")
 
     const [first, setFirst] = useState("");
@@ -93,9 +91,7 @@ const SchoolProfile = props => {
       setContact(schoolProfile.contact)
       setEmail(schoolProfile.email)
       setDistrict(schoolProfile.district_id)
-      setLat(schoolProfile.lat)
       setAddress(schoolProfile.address)
-      setLongitude(schoolProfile.lng)
       setSchoolID(schoolProfile.school_id)
     }
 
@@ -107,8 +103,6 @@ const SchoolProfile = props => {
           contact: contact,
           email: email,
           district: district,
-          lat: lat,
-          lng: longitude,
           address: address,
           school_id: id
         };
@@ -213,18 +207,18 @@ const SchoolProfile = props => {
       }
   };
 
-    const getLocation = () => {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            setLat(position.coords.latitude);
-            setLongitude(position.coords.longitude);
-        });
-    }
+    // const getLocation = () => {
+    //     navigator.geolocation.getCurrentPosition(function (position) {
+    //         setLat(position.coords.latitude);
+    //         setLongitude(position.coords.longitude);
+    //     });
+    // }
 
-    useEffect(() => {
-        if(!lat || !longitude){
-        getLocation();
-        }
-    }, [lat,longitude]);
+    // useEffect(() => {
+    //     if(!lat || !longitude){
+    //     getLocation();
+    //     }
+    // }, [lat,longitude]);
   
 
   const setStudents = (e) => {
@@ -386,19 +380,7 @@ const restrictionsOff=()=>{
 							            </div>   
                                     </div>
                                 </div>
-                                <div className="form-group">
-						            <div className="row row-sm">
-								        <div className="col-sm-6">
-                                            <label htmlFor="">Latitude Co-ordinates:</label>
-                                            <input type="text" defaultValue={lat} style={{border: "1px solid grey"}} onChange={(e)=>setLat(e.target.value)} readOnly className="form-control"/>
-							            </div>
-                                        <div className="col-sm-6">
-                                            <label htmlFor="">Longitude Co-ordinates:</label>
-                                            <input type="text" defaultValue={longitude} style={{border: "1px solid grey"}} onChange={(e)=>setLongitude(e.target.value)} readOnly className="form-control"/>
-							            </div>
-                                       
-                                    </div>
-                                </div>
+                               
                                 
 						        {loading5 && (<button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue" disabled><i class="fa fa-spinner fa-spin mr-2"></i>Updating...</button>)}
                                 {!loading5 && <button style={{ width: "100%" }} className="btn-fill-md text-light bg-dodger-blue">Update School Details</button>}
@@ -437,21 +419,12 @@ const restrictionsOff=()=>{
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{schoolProfile.district}</span> </td>
                                         </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Latitude Co-ordinates</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{schoolProfile.lat?schoolProfile.lat:"Not yet updated"}</span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="py-2 px-0"> <span className="w-50">Longitude Co-ordinates</span> </td>
-                                            <td>:</td>
-                                            <td className="py-2 px-0"> <span className="">{schoolProfile.lng?schoolProfile.lng:"Not yet updated"}</span> </td>
-                                        </tr>
-                                        <tr>
+                                       
+                                        {/* <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Call Security</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{schoolProfile.is_restricted ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
-                                        </tr>
+                                        </tr> */}
                                        
                                     </tbody>}
                                 </table>{loading2 && <Loader/>

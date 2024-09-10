@@ -86,7 +86,7 @@ const SchoolParentProfile = (props) => {
     setLoading2(true);
     const server_response = await ajaxStudent.getSchoolStudents(
       parent,
-      schoolDetails
+      schoolDetails.school_id
     );
     setLoading2(false);
     if (server_response.status === "OK") {
@@ -102,7 +102,7 @@ const SchoolParentProfile = (props) => {
       setModal(
         <SchoolAddStudentParent
           parentID={parent}
-          schoolID={schoolDetails}
+          schoolID={schoolDetails.school_id}
           g={getChildren}
           isOpen={true}
         />
@@ -112,7 +112,7 @@ const SchoolParentProfile = (props) => {
 
   useEffect(() => {
     getChildren();
-  }, [parent, schoolDetails]);
+  }, [parent, schoolDetails.school_id]);
 
   return (
     <AppContainer title={"Contact Profile"}>

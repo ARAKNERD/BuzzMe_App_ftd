@@ -31,7 +31,7 @@ function ViewStudents() {
   const getStudentList = async () => {
     setLoading2(true);
     const server_response = await ajaxStudent.fetchStudentList(
-      schoolDetails,
+      schoolDetails.school_id,
       page
     );
     setLoading2(false);
@@ -58,7 +58,7 @@ function ViewStudents() {
 
   useEffect(() => {
     getStudentList();
-  }, [schoolDetails, page]);
+  }, [schoolDetails.school_id, page]);
 
   const searchStudents = async (e) => {
     if (e) {
@@ -67,7 +67,7 @@ function ViewStudents() {
     setLoading(true);
     const server_response = await ajaxStudent.searchSchoolStudents(
       query,
-      schoolDetails,
+      schoolDetails.school_id,
       page
     );
     setLoading(false);
@@ -125,7 +125,7 @@ function ViewStudents() {
 
   useEffect(() => {
     searchStudents();
-  }, [schoolDetails, page]);
+  }, [schoolDetails.school_id, page]);
 
   // ----------------------handles the view -----students printable codeslip -modal
   // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
@@ -295,7 +295,7 @@ function ViewStudents() {
                                 <Link
                                   className="dropdown-item"
                                   target="_blank "
-                                  to={`/students/student_card/${item.id}/null/${schoolDetails}`}
+                                  to={`/students/student_card/${item.id}/null/${schoolDetails.school_id}`}
                                 >
                                   <FontAwesomeIcon
                                     icon={faAddressCard}

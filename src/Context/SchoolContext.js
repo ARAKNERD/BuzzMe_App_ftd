@@ -31,7 +31,7 @@ export const SchoolProvider = (props) => {
 
   useEffect(() => {
     getGroups();
-  }, [schoolDetails]);
+  }, [schoolDetails.school_id]);
 
   const getSchoolList = async () => {
     const server_response = await ajaxSchool.fetchSchoolList(data);
@@ -58,9 +58,9 @@ export const SchoolProvider = (props) => {
   const getGroups = async () => {
     setSchoolGroups(false);
     const server_response = await ajaxStudentGroup.fetchGroupList(
-      schoolDetails
+      schoolDetails.school_id
     );
-    // console.log(server_response);
+    console.log(server_response);
     if (server_response.status === "OK") {
       setSchoolGroups(server_response.details);
     } else {

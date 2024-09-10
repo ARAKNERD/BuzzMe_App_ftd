@@ -6,7 +6,6 @@ import SchoolContext from "../../Context/SchoolContext";
 
 function AddStudentSchoolGroup(props) {
   const { user } = useContext(AuthContext);
-  const { schoolDetails } = useContext(SchoolContext);
 
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
@@ -18,7 +17,7 @@ function AddStudentSchoolGroup(props) {
       setLoading(true);
       const server_response = await ajaxStudentGroup.createGroup(
         groupName,
-        schoolDetails
+        props.schoolID
       );
       setLoading(false);
       if (server_response.status === "OK") {

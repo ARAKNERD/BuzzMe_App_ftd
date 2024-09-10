@@ -25,7 +25,7 @@ function SchoolTwilioLogs() {
   const getTwilioLogsList = async () => {
     setLoading(true);
     const server_response = await ajaxCallStation.listSchoolTypeCallLogs(
-      schoolDetails,
+      schoolDetails.school_id,
       page,
       "GSM"
     );
@@ -46,7 +46,7 @@ function SchoolTwilioLogs() {
       e.preventDefault();
     }
     var data = {
-      school_id: schoolDetails,
+      school_id: schoolDetails.school_id,
       provider: "GSM",
       page: page,
       search_student: searchStudent,

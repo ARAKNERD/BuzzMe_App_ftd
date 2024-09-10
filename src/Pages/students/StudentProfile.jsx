@@ -76,7 +76,7 @@ const StudentProfile = (props) => {
 
   const getGroups = async () => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
-      schoolDetails
+      schoolDetails.school_id
     );
     if (server_response.status === "OK") {
       setGroupList(server_response.details);
@@ -261,7 +261,7 @@ const StudentProfile = (props) => {
 
   useEffect(() => {
     getGroups();
-  }, [schoolDetails]);
+  }, [schoolDetails.school_id]);
 
   useEffect(() => {
     countContacts();
