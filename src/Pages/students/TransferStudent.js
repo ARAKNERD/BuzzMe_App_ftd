@@ -46,8 +46,8 @@ function TransferStudent() {
         <CreateTransfer
           studentID={numberSearch.id}
           roleID={user.role_id}
-          schoolName={user.school_name}
-          schoolID={schoolDetails}
+          schoolName={schoolDetails.school_name}
+          schoolID={schoolDetails.school_id}
           g={searchNumber}
           isOpen={true}
         />

@@ -26,7 +26,7 @@ function SchoolZegoLogs() {
   const getZegoLogsList = async () => {
     setLoading(true);
     const server_response = await ajaxCallStation.listSchoolTypeCallLogs(
-      schoolDetails,
+      schoolDetails.school_id,
       page,
       "BUZZ"
     );
@@ -47,7 +47,7 @@ function SchoolZegoLogs() {
       e.preventDefault();
     }
     var data = {
-      school_id: schoolDetails,
+      school_id: schoolDetails.school_id,
       provider: "BUZZ",
       page: page,
       search_student: searchStudent,

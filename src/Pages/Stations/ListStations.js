@@ -30,15 +30,12 @@ function ListStations() {
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState("");
 
+  const schoolID = user.role_id === "3" ? schoolDetails.school_id: "";
+
   const getStations = async () => {
     setLoading(true);
-    const server_response = await ajaxStation.fetchStationList(
-      user.role_id === "3" ? schoolDetails : "",
-      page
-    );
+    const server_response = await ajaxStation.fetchStationList(schoolID,page);
     setLoading(false);
-    console.log(server_response)
-    console.log(schoolDetails)
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setStationList(server_response.details.list);
@@ -56,7 +53,7 @@ function ListStations() {
     }
     setLoading2(true);
     const server_response = await ajaxStation.searchStation(
-      user.role_id === "3" ? schoolDetails : "",
+      schoolID,
       query,
       page
     );
@@ -83,11 +80,11 @@ function ListStations() {
 
   useEffect(() => {
     getStations();
-  }, [user.role_id === "3" ? schoolDetails : "", page]);
+  }, [schoolID, page]);
 
   useEffect(() => {
     searchStations();
-  }, [user.role_id === "3" ? schoolDetails : "", page]);
+  }, [schoolID, page]);
 
   const updateStation = (e, item) => {
     setModal(false, () =>

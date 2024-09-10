@@ -10,7 +10,7 @@ function StudentCodeSlip(props) {
   const { schoolDetails } = useContext(SchoolContext);
 
   const { student_id, group_id } = useParams();
-  var school = user.role_id === "3" ? schoolDetails : "";
+  var school = user.role_id === "3" ? schoolDetails.school_id : "";
 
   useEffect(() => {
     getStudentList();

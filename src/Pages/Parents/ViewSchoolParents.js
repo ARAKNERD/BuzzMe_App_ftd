@@ -26,11 +26,10 @@ function ViewSchoolParents() {
   const getParentList = async () => {
     setLoading(true);
     const server_response = await ajaxParent.listSchoolParents(
-      schoolDetails,
+      schoolDetails.school_id,
       page
     );
     setLoading(false);
-
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
       setParentList(server_response.details.list);
@@ -91,7 +90,7 @@ function ViewSchoolParents() {
     setLoading2(true);
     const server_response = await ajaxParent.searchSchoolParents(
       query,
-      schoolDetails,
+      schoolDetails.school_id,
       page
     );
     setLoading2(false);
@@ -116,11 +115,11 @@ function ViewSchoolParents() {
 
   useEffect(() => {
     searchParents();
-  }, [schoolDetails, page]);
+  }, [schoolDetails.school_id, page]);
 
   useEffect(() => {
     getParentList();
-  }, [schoolDetails, page]);
+  }, [schoolDetails.school_id, page]);
 
   return (
     <AppContainer title="Contacts">
