@@ -245,17 +245,25 @@ function SchoolTwilioLogs() {
           <thead>
             <tr>
               <th>Date & Time</th>
+              <th>Call Status</th>
               <th>Student</th>
               <th>Contact</th>
               <th>Duration</th>
               <th>Station</th>
+              <th>Call Cost</th>
             </tr>
           </thead>
           <tbody>
             {twilioSearch.length > 0 ? (
               twilioSearch.map((item, key) => (
                 <tr key={key}>
-                  <td>{item.duration_format === "00:00" ? <i className="fe fe-phone-missed" style={{ color: "red", paddingRight: "10px" }}></i> : <i className="fe fe-phone-incoming" style={{ color: "green", paddingRight: "10px" }}></i>} {item.call_time}</td>
+                  <td> {item.call_time}</td>
+                  <td>
+                  {item.status==="started"?<span class="badge badge-info">STARTED</span>:
+                  item.status==="accepted"?<span class="badge badge-warning">ACCEPTED</span>:
+                  item.status==="completed"?<span class="badge badge-success">COMPLETED</span>:
+                  item.status==="missed"?<span class="badge badge-pink">MISSED</span>:
+                  <span class="badge badge-danger">CANCELED</span>}</td>
                 <td className="text-dark">{item.caller_name}<br /><small>{item.caller_number}</small></td>
                 <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
                 <td>{item.duration_format}</td>
