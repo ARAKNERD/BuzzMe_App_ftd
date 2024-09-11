@@ -5,20 +5,22 @@ import { Toaster } from "react-hot-toast";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import ajaxStation from "../../util/remote/ajaxStation";
-import AddStation from "./AddStation";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import { RenderSecure } from "../../util/script/RenderSecure";
+import AuthContext from "../../Context/AuthContext";
 import UpdateStation from "./UpdateStation";
 import UpdateHours from "./UpdateHours";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import TurnOnStation from "./TurnOnStation";
 import TurnOffStation from "./TurnOffStation";
+import SchoolContext from "../../Context/SchoolContext";
 
-function ListStations() {
+function ListSchoolStations() {
   const [stationList, setStationList] = useState(false);
   const [stationSearch, setStationSearch] = useState(false);
   const [modal, setModal] = useStateCallback(false);
+  const { schoolDetails } = useContext(SchoolContext);
 
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -26,9 +28,11 @@ function ListStations() {
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState("");
 
+  const schoolID = schoolDetails.school_id;
+
   const getStations = async () => {
     setLoading(true);
-    const server_response = await ajaxStation.listAllStations(page);
+    const server_response = await ajaxStation.fetchStationList(schoolID,page);
     setLoading(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
@@ -46,7 +50,8 @@ function ListStations() {
       e.preventDefault();
     }
     setLoading2(true);
-    const server_response = await ajaxStation.searchAllStations(
+    const server_response = await ajaxStation.searchStation(
+      schoolID,
       query,
       page
     );
@@ -73,11 +78,11 @@ function ListStations() {
 
   useEffect(() => {
     getStations();
-  }, [page]);
+  }, [schoolID, page]);
 
   useEffect(() => {
     searchStations();
-  }, [page]);
+  }, [schoolID, page]);
 
   const updateStation = (e, item) => {
     setModal(false, () =>
@@ -124,17 +129,6 @@ function ListStations() {
       setModal(
         <TurnOffStation
           stationID={item.station_id}
-          g={getStations}
-          h={searchStations}
-          isOpen={true}
-        />
-      )
-    );
-  };
-  const stationAdd = (e, item) => {
-    setModal(false, () =>
-      setModal(
-        <AddStation
           g={getStations}
           h={searchStations}
           isOpen={true}
@@ -190,9 +184,6 @@ function ListStations() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                  <RenderSecure code="ADMIN-VIEW"><Link class="dropdown-item" onClick={stationAdd}>
-                      <i class="fas fa-plus" style={{color:"green"}}></i>Add Station
-                    </Link></RenderSecure>
                     <Link class="dropdown-item" onClick={refreshData}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
@@ -234,7 +225,6 @@ function ListStations() {
                       <th>No.</th>
                       <th>Station Name</th>
                       <th>Station Code</th>
-                      <th>School</th>
                       <th>Active Hours</th>
                       <th>Status</th>
                       <th>Actions</th>
@@ -247,11 +237,6 @@ function ListStations() {
                           <td>{key + 1}</td>
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
-                          <td>
-                              {item.school
-                                ? item.school.school_name
-                                : "Not installed"}
-                            </td>
                           <td>
                             {item.start_time
                               ? `${item.start_time} - ${item.end_time}`
@@ -402,4 +387,4 @@ function ListStations() {
   );
 }
 
-export default ListStations;
+export default ListSchoolStations;

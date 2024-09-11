@@ -31,9 +31,12 @@ function ViewSchoolParents() {
     );
     setLoading(false);
     if (server_response.status === "OK") {
+      setFirst(server_response.details.meta.offset_count);
       setMeta(server_response.details.meta.list_of_pages);
       setParentList(server_response.details.list);
-      setFirst(server_response.details.meta.offset_count);
+      if (query) {
+        setParentSearch(server_response.details.list); 
+      }
     } else {
       setParentList("404");
     }
@@ -98,19 +101,24 @@ function ViewSchoolParents() {
       if (server_response.details.length === 0) {
         setParentSearch([]);
       } else {
+        setFirst(server_response.details.meta.offset_count);
         setMeta(server_response.details.meta.list_of_pages);
         setParentSearch(server_response.details.list);
-        setFirst(server_response.details.meta.offset_count);
       }
     } else {
-      setParentSearch("404");
+      setParentSearch([]);
     }
   };
 
+
   const setParents = (e) => {
     e.preventDefault();
-    setParentSearch(false);
     setQuery("");
+    setParentSearch([]);
+    setPage(1);
+    getParentList();
+
+    
   };
 
   useEffect(() => {
@@ -200,9 +208,9 @@ function ViewSchoolParents() {
                     </tr>
                   </thead>
                   <tbody>
-                    {parentSearch && Array.isArray(parentSearch)
-                      ? parentSearch.map((item, key) => (
-                          <tr key={key}>
+                  {parentSearch.length > 0 ? (
+        parentSearch.map((item, key) => (
+          <tr key={key}>
                             <th scope="row" style={{ width: "5px" }}>
                               {key + 1}
                             </th>
@@ -216,38 +224,24 @@ function ViewSchoolParents() {
                             <td>{item.main_contact}</td>
                             <td>{item.address}</td>
                           </tr>
-                        ))
-                      : Array.isArray(parentList) &&
-                        parentList.map((item, key) => (
-                          <tr key={key}>
-                            <th scope="row" style={{ width: "5px" }}>
-                              {key + first + 1}
-                            </th>
-                            <td>
-                              <Link
-                                to={`/school-parents/profile/${item.parent_id}`}
-                              >
-                                {item.full_name}
-                              </Link>
-                            </td>
-                            <td>{item.main_contact}</td>
-                            <td>{item.address}</td>
-                          </tr>
-                        ))}
-                    {parentList === "404" && (
-                      <tr>
-                        <td colSpan="4" style={{ textAlign: "center" }}>
-                          No parents or guardians registered yet.
-                        </td>
-                      </tr>
-                    )}
-                    {parentSearch.length === 0 && (
-                      <tr>
-                        <td colSpan="4" style={{ textAlign: "center" }}>
-                          No search result(s) found.
-                        </td>
-                      </tr>
-                    )}
+        ))
+    ) : parentList === "404" ? (
+        <tr>
+            <td colSpan="4" style={{ textAlign: "center" }}>
+                No parents registered yet.
+            </td>
+        </tr>
+    ) : (
+       
+        (query) && (
+            <tr>
+                <td colSpan="4" style={{ textAlign: "center" }}>
+                    No search result(s) found.
+                </td>
+            </tr>
+        )
+    )}
+                  
                   </tbody>
                   <div
                     className="align-items-center justify-content-center pos-absolute"

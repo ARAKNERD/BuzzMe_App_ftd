@@ -74,7 +74,7 @@ function SchoolStudentGroups() {
                       </th>
                       <th scope="col">Names</th>
                       <th scope="col">Students List</th>
-                      <th scope="col">BuzzTime Cards</th>
+                      {/* <th scope="col">BuzzTime Cards</th> */}
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -93,14 +93,14 @@ function SchoolStudentGroups() {
                             </Link>
                           </td>
 
-                          <td>
+                          {/* <td>
                             <Link
                               className="btn btn-info"
                               to={`/students/student_card/null/${item.group_id}/${schoolDetails.school_id}`}
                             >
                               View Cards
                             </Link>
-                          </td>
+                          </td> */}
                           <td>
                             <div className="dropdown">
                               <Link

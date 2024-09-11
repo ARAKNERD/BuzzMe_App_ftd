@@ -73,7 +73,15 @@ export default {
     let response = await apiCall("call_log/count", data);
     return response;
   },
-  async searchTypeLogs(data) {
+  async searchTypeLogs(provider,page,searchStudent,searchContact,startDate,endDate) {
+    let data = {
+      provider: provider,
+      page: page,
+      search_caller: searchStudent,
+      search_callee: searchContact,
+      from: startDate,
+      to: endDate,
+    };
     let response = await apiCall("call_log/list", data);
     return response;
   },
@@ -90,6 +98,19 @@ export default {
       school_id: school_id
     };
     let response = await apiCall("call_log/recent", data);
+    return response;
+  },
+  async searchSchoolTypeLogs(school_id,provider,page,searchStudent,searchContact,startDate,endDate) {
+    let data = {
+      school_id:school_id,
+      provider: provider,
+      page: page,
+      search_caller: searchStudent,
+      search_callee: searchContact,
+      from: startDate,
+      to: endDate,
+    };
+    let response = await apiCall("call_log/list", data);
     return response;
   },
 };

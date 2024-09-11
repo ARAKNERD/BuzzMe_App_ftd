@@ -44,7 +44,7 @@ function TransferStudent() {
     setModal(false, () =>
       setModal(
         <CreateTransfer
-          studentID={numberSearch.id}
+          studentID={numberSearch.student_id}
           roleID={user.role_id}
           schoolName={schoolDetails.school_name}
           schoolID={schoolDetails.school_id}
