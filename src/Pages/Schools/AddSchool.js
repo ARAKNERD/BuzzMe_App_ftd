@@ -19,7 +19,7 @@ function AddSchool() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   
-  // console.log(dateRegistered);
+  
   const handleAdd = async (e) => {
     e.preventDefault();
 

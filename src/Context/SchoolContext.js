@@ -60,7 +60,6 @@ export const SchoolProvider = (props) => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
       schoolDetails.school_id
     );
-    console.log(server_response);
     if (server_response.status === "OK") {
       setSchoolGroups(server_response.details);
     } else {

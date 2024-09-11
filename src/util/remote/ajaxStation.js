@@ -59,5 +59,22 @@ export default {
     let response = await apiCall("station/list", data);
     return response;
   },
+  async searchAllStations(search, page) 
+  {
+    let data = {
+      search: search,
+      page: page
+    };
+    let response = await apiCall("station/list", data);
+    return response;
+  },
+  async listAllStations(page) 
+  {
+    let data = {
+      page: page
+    };
+    let response = await apiCall("station/list", data);
+    return response;
+  },
   
 };

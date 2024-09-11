@@ -321,11 +321,11 @@ const restrictionsOff=()=>{
                             :
                                 <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-3"><i className="far fa-edit mr-1"></i>Update Details</a>
                             }
-              {schoolProfile.is_restricted === "0"?
+              {/* {schoolProfile.is_restricted === "0"?
                                 <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
                             :
                                 <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
-                            }
+                            } */}
               </div>
               
             </div>

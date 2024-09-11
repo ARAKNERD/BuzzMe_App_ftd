@@ -40,17 +40,17 @@ function ZegoLogs() {
         if (e) {
             e.preventDefault();
         }
-        var data = {
-            provider: "BUZZ",
-            page: page,
-            search_caller: searchStudent,
-            search_callee: searchContact,
-            from: startDate,
-            to: endDate,
+        // var data = {
+        //     provider: "BUZZ",
+        //     page: page,
+        //     search_caller: searchStudent,
+        //     search_callee: searchContact,
+        //     from: startDate,
+        //     to: endDate,
     
-        };
+        // };
         setLoading2(true);
-        const server_response = await ajaxCallStation.searchTypeLogs(data);
+        const server_response = await ajaxCallStation.searchTypeLogs("BUZZ", page, searchStudent, searchContact, startDate, endDate);
         setLoading2(false);
         if (server_response.status === "OK") {
             if (server_response.details.length === 0) {
@@ -126,7 +126,7 @@ function ZegoLogs() {
 
   useEffect(() => {
     searchZegoLogs();
-  }, []);
+  }, ["BUZZ", page]);
   // useEffect(() => {
   //   getZegoLogsList();
   // }, [page,"BUZZ"]);
@@ -135,7 +135,7 @@ function ZegoLogs() {
     getZegoLogsList();
     const interval = setInterval(() => {
       getZegoLogsList();
-    }, 5000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [page, "BUZZ"]);
@@ -225,7 +225,7 @@ function ZegoLogs() {
               <th>Contact</th>
               <th>Duration</th>
               <th>Station</th>
-              <th>Call Cost</th>
+              {/* <th>Call Cost</th> */}
               </tr>
             </thead>
             <tbody>
@@ -243,6 +243,7 @@ function ZegoLogs() {
                 <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
                 <td>{item.duration_format}</td>
                 {/* <td>{item.station_name}<br /><small>{item.school}</small></td> */}
+                <td>N/A</td>
                 {/* <td>UGX. 600</td> */}
             </tr>
         ))

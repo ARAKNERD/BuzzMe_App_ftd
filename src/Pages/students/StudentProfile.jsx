@@ -137,14 +137,13 @@ const StudentProfile = (props) => {
   const getStudentBalance = async () => {
     setLoading(true);
     const server_response = await ajaxBank.fetchStudentWalletBalance(user_id);
-  
     setLoading(false);
     if (server_response.status === "OK") {
       //store results
       setWalletBalance(server_response.details);
     } else {
       //communicate error
-      setWalletBalance("404");
+      setWalletBalance(false);
     }
   };
 
