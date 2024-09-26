@@ -237,11 +237,11 @@ function SchoolTwilioLogs() {
             <tr>
               <th>Date & Time</th>
               <th>Call Status</th>
-              <th>Student</th>
-              <th>Contact</th>
+              <th>Caller Details</th>
+              <th>Callee Details</th>
               <th>Duration</th>
               <th>Station</th>
-              {/* <th>Call Cost</th> */}
+              <th>Call Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -258,9 +258,8 @@ function SchoolTwilioLogs() {
                 <td className="text-dark">{item.caller_name}<br /><small>{item.caller_number}</small></td>
                 <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
                 <td>{item.duration_format}</td>
-                {/* <td>{item.station_name}<br /><small>{item.school}</small></td> */}
-                <td>N/A</td>
-                {/* <td>UGX. 600</td> */}
+                <td>{item.station_name}<br /><small>{item.school_name}</small></td>
+                <td>UGX. {item.call_cost?.total_c}</td>
                 </tr>
               ))
             ) : twilioLogsList === "404" ? (

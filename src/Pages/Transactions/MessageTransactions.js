@@ -20,23 +20,23 @@ function MessageTransactions() {
 
   const getSmsTransactions = async () => {
     setLoading3(true);
-      const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
-      setLoading3(false);
-      if (server_response.status === "OK") {
-          setMeta1(server_response.details.meta.list_of_pages);
-          setSmsTransactions(server_response.details.list); 
-          if (searchTerm1 || startDate1 || endDate1) {
-              setSmsSearch(server_response.details.list); 
-          }
-      } else {
-          setSmsTransactions("404");
+    const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
+    setLoading3(false);
+    if (server_response.status === "OK") {
+      setMeta1(server_response.details.meta.list_of_pages);
+      setSmsTransactions(server_response.details.list); 
+      if (searchTerm1 || startDate1 || endDate1) {
+        setSmsSearch(server_response.details.list); 
       }
+    } else {
+      setSmsTransactions("404");
+    }
   };
 
-const searchSmsTransactions = async (e) => {
-  if (e) {
+  const searchSmsTransactions = async (e) => {
+    if (e) {
       e.preventDefault();
-  }
+    }
     var data = {
       search: searchTerm1,
       from: startDate1,
@@ -44,21 +44,21 @@ const searchSmsTransactions = async (e) => {
       page: page1,
       account_id: account
     };
-      setLoading4(true);
-      const server_response = await ajaxBank.searchBankTransactions(data);
-      setLoading4(false);
-      if (server_response.status === "OK") {
-          if (server_response.details.length === 0) {
-              setSmsSearch([]);
-          } else {
-            setMeta1(server_response.details.meta.list_of_pages);
-            setSmsSearch(server_response.details.list);
-          }
+    setLoading4(true);
+    const server_response = await ajaxBank.searchBankTransactions(data);
+    setLoading4(false);
+    if (server_response.status === "OK") {
+      if (server_response.details.length === 0) {
+        setSmsSearch([]);
       } else {
-          setSmsSearch([]);
+        setMeta1(server_response.details.meta.list_of_pages);
+        setSmsSearch(server_response.details.list);
       }
+    } else {
+      setSmsSearch([]);
+    }
   
-};
+  };
 
   const setSms = (e) => {
     e.preventDefault();
