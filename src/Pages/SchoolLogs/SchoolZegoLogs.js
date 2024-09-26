@@ -245,7 +245,7 @@ function SchoolZegoLogs() {
               <th>Callee Details</th>
               <th>Duration</th>
               <th>Station</th>
-              <th>Call Cost</th>
+              {/* <th>Call Cost</th> */}
             </tr>
           </thead>
           <tbody>
