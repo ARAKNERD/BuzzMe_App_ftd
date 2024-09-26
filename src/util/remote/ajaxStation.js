@@ -76,5 +76,13 @@ export default {
     let response = await apiCall("station/list", data);
     return response;
   },
+  async completeCallByAdmin(call_id) 
+  {
+    let data = {
+      call_id: call_id
+    };
+    let response = await apiCall("call_log/admin/complete", data);
+    return response;
+  },
   
 };
