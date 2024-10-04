@@ -176,7 +176,7 @@ function App(props) {
              
               
               <Route path="/parents/add" element={<AddParent />} />
-              <Route path="/parents/profile/:id" element={<ParentProfile />} />
+              <Route path="/parents/profile/:id/:user_id" element={<ParentProfile />} />
               <Route path="/school-parents/profile/:parent/" element={<SchoolParentProfile />} />
               {/* End parent */}
               {/* Students */}

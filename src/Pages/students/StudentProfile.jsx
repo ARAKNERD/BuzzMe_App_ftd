@@ -135,9 +135,7 @@ const StudentProfile = (props) => {
     }
   };
   const getStudentBalance = async () => {
-    setLoading(true);
     const server_response = await ajaxBank.fetchStudentWalletBalance(user_id);
-    setLoading(false);
     if (server_response.status === "OK") {
       //store results
       setWalletBalance(server_response.details);
@@ -314,34 +312,7 @@ const StudentProfile = (props) => {
                       {studentProfile.full_name}
                     </h3>
                     <h5 style={{ color: "white" }}>{studentProfile.group}</h5>
-                    <div class="social-links mt-2 align-items-center ">
-                      {/* <RenderSecure code="SCHOOL-USER-VIEW">
-                       
-                        {active ? (
-                          <a
-                            href="#"
-                            onClick={handleInActive}
-                            className="btn btn-danger mr-2"
-                          >
-                            <i className="fe fe-x"></i>Back
-                          </a>
-                        ) : (
-                          <a
-                            href="#"
-                            onClick={setUserUpdate}
-                            className="btn btn-warning mr-2"
-                          >
-                            <i className="far fa-edit mr-1"></i>Update Details
-                          </a>
-                        )}
-                      </RenderSecure> */}
-
-                      {/* {studentProfile.student_restrictions === "0"?
-                                <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
-                            :
-                                <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
-                            } */}
-                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -896,7 +867,7 @@ const StudentProfile = (props) => {
                                               ></i>
                                             ) : (
                                               <i
-                                                className="fe fe-phone-incoming"
+                                                className="fe fe-phone-outgoing"
                                                 style={{
                                                   color: "green",
                                                   paddingRight: "10px",

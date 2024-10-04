@@ -6,13 +6,14 @@ import Tab from "react-bootstrap/Tab";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ZegoLogs from "./ZegoLogs";
 import TwilioLogs from "./TwilioLogs";
+import { Toaster, toast } from "react-hot-toast";
 
 
 function CallLogsPage() {
 
   return (
     <AppContainer title="Call Logs">
-
+    <Toaster position="top-center" reverseOrder={false} />
       <div className="row">
         <div className="col-lg-12 col-md-12 mt-3">
           <div className="card height-auto">

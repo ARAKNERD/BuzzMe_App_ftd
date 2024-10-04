@@ -127,6 +127,20 @@ export default {
     let response = await apiCall("relationship/list", data);
     return response;
   },
+  async countUserContacts(account_id) {
+    let data = {
+      "account_id":account_id
+    };
+    let response = await apiCall("contact/user/count", data);
+    return response;
+  },
+  async listParentContacts(user_id) {
+    let data = {
+      "user_id":user_id
+    };
+    let response = await apiCall("contact/parent/list", data);
+    return response;
+  },
 
   
   

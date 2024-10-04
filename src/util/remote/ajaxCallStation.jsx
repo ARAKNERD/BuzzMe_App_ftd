@@ -113,4 +113,11 @@ export default {
     let response = await apiCall("call_log/list", data);
     return response;
   },
+  async listUserCallLogs(user_id) {
+    let data = {
+      user_id: user_id
+    };
+    let response = await apiCall("call_log/list/user", data);
+    return response;
+  },
 };

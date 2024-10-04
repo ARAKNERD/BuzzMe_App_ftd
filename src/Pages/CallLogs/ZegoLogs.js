@@ -145,8 +145,10 @@ function ZegoLogs() {
   }, [page, "BUZZ"]);
 
   return (
-<>
-{modal}
+    <>
+      {modal}
+     
+
       <div class="heading-layout1 mg-b-5">
         <TableHeader
           subtitle="List of all the buzz to buzz calls sorted by the most recent"    
