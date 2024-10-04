@@ -196,7 +196,7 @@ const setCall = (e) => {
       <tr>
         
         <th style={{width:"10px"}}>Transaction Date</th>
-        <th>Student Details</th>
+        <th>User Details</th>
         <th>Phone Number</th>
         <th>Amount</th>
         <th>Internal Reference</th>
@@ -208,7 +208,7 @@ const setCall = (e) => {
         callSearch.map((item, key) => (
           <tr key={key}>
           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                  <td>{item.student}<br/><small>{item.school}</small></td>
+                  <td>{item.student}<br/><small>{item.school?item.school:"Parent"}</small></td>
                   <td>{item.phone_number?item.phone_number:"N/A"}</td>
                   <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
                   {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
