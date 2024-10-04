@@ -189,7 +189,6 @@ function AllTransactions() {
         <th>Amount</th>
        
         <th>Transaction Type</th>
-        <th>Internal Reference</th>
         
       </tr>
     </thead>
@@ -205,7 +204,7 @@ function AllTransactions() {
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
                   
                   <td><span class="badge badge-info">{item.account}</span></td>
-                  <td>{item.internal_ref}</td>   
+                   
         
         </tr>
         ))
