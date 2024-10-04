@@ -197,7 +197,6 @@ function MessageTransactions() {
         <th>User Details</th>
         <th>Phone Number</th>
         <th>Amount</th>
-        <th>Internal Reference</th>
         
       </tr>
     </thead>
@@ -213,7 +212,7 @@ function MessageTransactions() {
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
                   
                   
-                  <td>{item.internal_ref}</td> 
+               
         
         </tr>
         ))

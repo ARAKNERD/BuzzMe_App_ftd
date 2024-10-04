@@ -199,7 +199,6 @@ const setCall = (e) => {
         <th>User Details</th>
         <th>Phone Number</th>
         <th>Amount</th>
-        <th>Internal Reference</th>
         
       </tr>
     </thead>
@@ -214,8 +213,7 @@ const setCall = (e) => {
                   {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
                   
-                  
-                  <td>{item.internal_ref}</td>  
+            
         
         </tr>
         ))

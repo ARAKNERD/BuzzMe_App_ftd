@@ -191,7 +191,6 @@ function AccountActivations() {
               <th>Student Details</th>
               <th>Phone Number</th>
               <th>Amount</th>
-              <th>Internal Reference</th>
             </tr>
           </thead>
           <tbody>
@@ -204,7 +203,7 @@ function AccountActivations() {
                   <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_in}</span><br/>
                   {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                  <td>{item.internal_ref}</td>    
+                
                 </tr>
               ))
             ) : accountActivations === "404" ? (
