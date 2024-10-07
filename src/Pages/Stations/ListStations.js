@@ -169,6 +169,18 @@ function ListStations() {
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
+      <div className="col-lg-12 col-md-12">
+          <div className="pl-20" style={{ float: "right" }}>
+            <Link onClick={stationAdd}>
+              <button
+                type="button"
+                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue"
+              >
+                <i className="fa-solid fa-plus" /> Add New Station
+              </button>
+            </Link>
+          </div>
+        </div>
 
       <div className="col-lg-12">
           <div className="card custom-card">
@@ -190,9 +202,6 @@ function ListStations() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                  <RenderSecure code="ADMIN-VIEW"><Link class="dropdown-item" onClick={stationAdd}>
-                      <i class="fas fa-plus" style={{color:"green"}}></i>Add Station
-                    </Link></RenderSecure>
                     <Link class="dropdown-item" onClick={refreshData}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>

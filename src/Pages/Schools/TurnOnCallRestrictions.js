@@ -53,7 +53,7 @@ const TurnOnCallRestrictions=(props)=>{
 			    <div className="alert text-center">
 				    <i className="fe fe-alert-circle fs-50 text-warning"></i>
 			        <h3 className="mt-2 mb-1">Are you sure you want to turn on call restrictions?</h3>
-				    <p className="mb-3 mb-3 tx-inverse">Students will now be able to make calls to only their contacts.</p>
+				    <p className="mb-3 mb-3 tx-inverse">Students will now be able to make calls to only their approved contacts.</p>
 				</div>
 			</div>
         </div>
