@@ -216,7 +216,7 @@ function ViewSchoolParents() {
                             </th>
                             <td>
                               <Link
-                                to={`/school-parents/profile/${item.parent_id}`}
+                                to={`/school-parents/profile/${item.parent_id}/${item.user_id}`}
                               >
                                 {item.full_name}
                               </Link>

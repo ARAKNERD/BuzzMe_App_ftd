@@ -513,16 +513,16 @@ const StudentProfile = (props) => {
                                 Student Contacts{" "}
                               </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            <RenderSecure code="ADMIN-VIEW"> <Nav.Item>
                               <Nav.Link size="sm" eventKey="third">
                                 Call Logs{" "}
                               </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
+                            </Nav.Item></RenderSecure>
+                            <RenderSecure code="ADMIN-VIEW"><Nav.Item>
                               <Nav.Link size="sm" eventKey="fourth">
                                 Student Transactions{" "}
                               </Nav.Link>
-                            </Nav.Item>
+                            </Nav.Item> </RenderSecure>
                           </Nav>
                         </Col>
 
@@ -920,7 +920,7 @@ const StudentProfile = (props) => {
                                       <th>Phone Number</th>
                                       <th>Amount</th>
                                       <th>Transaction Type</th>
-                                      <th>internal Ref</th>
+                                      <th>Internal Ref</th>
                                     </tr>
                                   </thead>
                                   <tbody>

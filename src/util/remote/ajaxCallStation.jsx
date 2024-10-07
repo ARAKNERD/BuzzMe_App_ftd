@@ -62,7 +62,21 @@ export default {
     let response = await apiCall("call_log/count/this_week", data);
     return response;
   },
+  async countSchoolLogsThisWeek(school) {
+    let data = {
+      school_id: school
+    };
+    let response = await apiCall("call_log/count/this_week", data);
+    return response;
+  },
   async countLogsThisMonth(data) {
+    let response = await apiCall("call_log/count/this_month", data);
+    return response;
+  },
+  async countSchoolLogsThisMonth(school) {
+    let data = {
+      school_id: school
+    };
     let response = await apiCall("call_log/count/this_month", data);
     return response;
   },
