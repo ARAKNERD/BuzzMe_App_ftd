@@ -8,6 +8,7 @@ import Loader from "../Components/Common/Loader";
 import { Link } from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import SchoolContext from "../Context/SchoolContext";
+import ajaxStation from "../util/remote/ajaxStation";
 
 function SchoolDashboard() {
   const [studentsNumber, setStudentsNumber] = useState(false);
@@ -16,21 +17,22 @@ function SchoolDashboard() {
   const { schoolDetails } = useContext(SchoolContext);
 
   const [studentsToday, setStudentsToday] = useState(false);
+  const [logsThisWeek, setLogsThisWeek] = useState(false);
+  const [logsThisMonth, setLogsThisMonth] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
-  const [logsList, setLogsList] = useState(false);
+  const [stationList, setStationList] = useState(false);
+
   const [limit, setLimit] = useState(5);
 
-  const getRecentLogs = async () => {
-    setLoading2(true);
-    const server_response = await ajaxCallStation.listRecentCallLogs(
-      schoolDetails.school_id
-    );
-    setLoading2(false);
+  const getStations = async () => {
+    setLoading(true);
+    const server_response = await ajaxStation.fetchFewStations(schoolDetails.school_id);
+    setLoading(false);
     if (server_response.status === "OK") {
-      setLogsList(server_response.details);
+      setStationList(server_response.details);
     } else {
-      setLogsList("404");
+      setStationList("404");
     }
   };
 
@@ -69,14 +71,35 @@ function SchoolDashboard() {
     }
   };
 
+  const getLogsThisMonth = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsThisMonth(schoolDetails.school_id);
+    if (server_response.status === "OK") {
+      setLogsThisMonth(server_response.details);
+    } else {
+      setLogsThisMonth("404");
+    }
+  };
+
+  const getLogsThisWeek = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsThisWeek(schoolDetails.school_id);
+    if (server_response.status === "OK") {
+      setLogsThisWeek(server_response.details);
+    } else {
+      setLogsThisWeek("404");
+    }
+  };
+
   useEffect(() => {
     getStudentsNumber();
     getSchoolLogsNumber();
-    getRecentLogs();
+    getLogsThisWeek();
+    getLogsThisMonth();
+    getStations();
   }, [schoolDetails.school_id]);
 
   useEffect(() => {
     getStudentsToday();
+   
   }, [schoolDetails.school_id, limit]);
 
   return (
@@ -86,7 +109,7 @@ function SchoolDashboard() {
       <div className="row">
         <div class="col-4-xxxl col-12">
           <div class="card dashboard-card-ten">
-            <div class="card-body gradient-orange-peel">
+            <div class="card-body gradient-my-blue">
               <div class="heading-layout1">
                 <div class="item-title">
                   <h3 style={{ color: "white" }}>Welcome!</h3>
@@ -136,6 +159,33 @@ function SchoolDashboard() {
 
         <div class="col-8-xxxl col-12">
           <div class="row">
+          <div class="col-lg-12">
+							  <div class="card custom-card" style={{paddingBottom:"10px"}}>
+                  <div className="card-body map-card gradient-my-blue">
+                    <div class="item-title mb-2" style={{color:"white"}}><b>BUZZ CALLS</b></div>
+								    <div class="row" >
+									    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+										    <div class="text-center" >
+											    <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{schoolLogsNumber ? schoolLogsNumber.total_p : "..."}</span></h2>
+											    <p class="mb-0 text-light"> Today</p>
+										    </div>
+									    </div>
+									    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right">
+										    <div class="text-center">
+											    <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{logsThisWeek ? logsThisWeek.total_p : "..."}</span></h2>
+											    <p class="mb-0 text-light"> This Week</p>
+										    </div>
+									    </div>
+									    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0">
+										    <div class="text-center">
+											    <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{logsThisMonth ? logsThisMonth.total_p : "..."}</span></h2>
+											    <p class="mb-0 text-light">This Month</p>
+										    </div>
+									    </div>
+								    </div>
+                  </div>
+							  </div>
+              </div>
             <div class="col-lg-6">
               <div class="dashboard-summery-one mg-b-20 gradient-my-blue">
                 <div class="row align-items-center">
@@ -182,7 +232,7 @@ function SchoolDashboard() {
                   <div class="col-6">
                     <div class="item-content">
                       <div class="item-title" style={{ color: "white" }}>
-                        Calls Today
+                        Buzztime Loaded Today
                       </div>
                       <div class="item-number" style={{ color: "white" }}>
                         <span class="counter">
@@ -194,60 +244,7 @@ function SchoolDashboard() {
                 </div>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="dashboard-summery-one mg-b-20 gradient-my-blue">
-                <div class="row align-items-center">
-                  <div class="col-6">
-                    <div class="item-icon bg-light">
-                      <img
-                        alt="avatar"
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/img/figure/payment-method.png"
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="item-content">
-                      <div class="item-title" style={{ color: "white" }}>
-                        Airtime Loaded Today
-                      </div>
-                      <div class="item-number" style={{ color: "white" }}>
-                        <span class="counter">00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div class="dashboard-summery-one mg-b-20 gradient-my-blue">
-                <div class="row align-items-center">
-                  <div class="col-6">
-                    <div class="item-icon bg-light">
-                      <img
-                        alt="avatar"
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/img/figure/commission.png"
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div class="col-6">
-                    <div class="item-content">
-                      <div class="item-title" style={{ color: "white" }}>
-                        Airtime Commission
-                      </div>
-                      <div class="item-number" style={{ color: "white" }}>
-                        <span class="counter">00</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -258,8 +255,8 @@ function SchoolDashboard() {
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                  title="Recent Call Logs"
-                  subtitle="List of the recent call logs"
+                  title="Calling Stations"
+                  subtitle="List of the calling stations at the school with their current status"
                 />
                 <div class="dropdown">
                   <a
@@ -273,7 +270,7 @@ function SchoolDashboard() {
                   </a>
 
                   <div class="dropdown-menu dropdown-menu-right">
-                    <Link class="dropdown-item" to={"/call-logs"}>
+                    <Link class="dropdown-item" to={"/stations"}>
                       <i class="fa-solid fa-eye text-orange-peel"></i>
                       View All
                     </Link>
@@ -285,47 +282,40 @@ function SchoolDashboard() {
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
-                      <th>Date & Time</th>
-                      <th>Student</th>
-                      <th>Contact</th>
-                      <th>Duration</th>
+                    <th>No.</th>
+                      <th>Station Name</th>
+                      <th>Active Hours</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Array.isArray(logsList) &&
-                      logsList.map((item, key) => (
+                    {Array.isArray(stationList) &&
+                      stationList.map((item, key) => (
                         <tr key={key}>
+                          <td>{key + 1}</td>
+                          <td>{item.station_name}</td>
                           <td>
-                            {item.duration_format === "00:00" ? (
-                              <i
-                                className="fe fe-phone-missed"
-                                style={{ color: "red", paddingRight: "10px" }}
-                              ></i>
+                            {item.start_time
+                              ? `${item.start_time} - ${item.end_time}`
+                              : "Not installed"}
+                          </td>
+                          <td>
+                            {item.status === "300" ? (
+                              <span class="badge badge-success">Active</span>
+                            ) : item.status === "200" ? (
+                              <span class="badge badge-warning">Inactive</span>
                             ) : (
-                              <i
-                                className="fe fe-phone-incoming"
-                                style={{ color: "green", paddingRight: "10px" }}
-                              ></i>
-                            )}{" "}
-                            {item.created_at.short_date}
-                            <br />
-                            <small style={{ marginLeft: "30px" }}>
-                              {item.created_at.time}
-                            </small>
+                              <span class="badge badge-danger">Off</span>
+                            )}
                           </td>
-                          <td className="text-dark">{item.student}</td>
-                          <td className="text-dark">
-                            {item.contact_name}
-                            <br />
-                            <small>{item.contact}</small>
-                          </td>
-                          <td>{item.duration_format}</td>
+
+                          
                         </tr>
                       ))}
-                    {logsList === "404" && (
+                    {stationList === "404" && (
                       <tr>
                         <td colSpan="4" style={{ textAlign: "center" }}>
-                          No recent call logs.
+                          No stations installed at this school.
                         </td>
                       </tr>
                     )}
@@ -370,7 +360,6 @@ function SchoolDashboard() {
                       <th>ID</th>
                       <th>Name</th>
                       <th>Student Code</th>
-                      <th>Registration Number</th>
                       <th>Student Group</th>
                     </tr>
                   </thead>
@@ -383,9 +372,6 @@ function SchoolDashboard() {
                             {student.full_name}
                           </td>
                           <td>{student.username}</td>
-                          <td>
-                            {student.reg_no ? student.reg_no : "Not recorded"}
-                          </td>
                           <td>{student.group}</td>
                         </tr>
                       ))}

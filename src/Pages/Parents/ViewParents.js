@@ -169,7 +169,7 @@ function ViewParents() {
                   <tr>
                       <th scope="col" className="wd-10p">No.</th>
                       <th scope="col">Names</th>
-                      <th scope="col">Contact</th>
+                      <th scope="col">Contact Number</th>
                       <th scope="col">Gender</th>
                       <th scope="col">Address</th>
                       

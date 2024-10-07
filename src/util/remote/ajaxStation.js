@@ -12,13 +12,12 @@ export default {
     return response;
   },
 
-  async fetchFewStations(school,limit) 
+  async fetchFewStations(school) 
   {
     let data = {
-      school_id: school,
-      limit: limit
+      school_id: school
     };
-    let response = await apiCall("station/list", data);
+    let response = await apiCall("station/few", data);
     return response;
   },
 

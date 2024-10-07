@@ -20,6 +20,7 @@ const SchoolAddStudentParent = (props) => {
   const [query, setQuery] = useState("");
   const [querySearch, setQuerySearch] = useState(null);
   const { relationList } = useContext(RelationshipContext);
+  const [page, setPage] = useState(1);
 
   const [active1, setActive1] = useState(false);
   const handleActive1 = () => setActive1(true);
@@ -34,23 +35,23 @@ const SchoolAddStudentParent = (props) => {
   const setDetails = (e, item) => {
     e.preventDefault();
     handleActive1();
-    setStudent(item.id);
+    setStudent(item.student_id);
     setFullName(item.full_name);
-    setStudentCode(item.student_code);
+    setStudentCode(item.username);
   };
 
   const searchStudent = async (e) => {
     e.preventDefault();
     if (query.length > 0) {
       setLoading2(true);
-      const server_response = await ajaxStudent.searchStudent(
+      const server_response = await ajaxStudent.searchSchoolStudents(
         query,
-        user.school_id
+        user.school_id, page
       );
       setLoading2(false);
       if (server_response.status === "OK") {
         //store results
-        setQuerySearch(server_response.details);
+          setQuerySearch(server_response.details.list);
       } else {
         setQuerySearch("404");
       }
@@ -183,7 +184,7 @@ const SchoolAddStudentParent = (props) => {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Enter student name or student number..."
+                placeholder="Enter first name or surname of student..."
                 className="form-control"
               />
             </div>
@@ -218,7 +219,7 @@ const SchoolAddStudentParent = (props) => {
                       <tr key={key}>
                         <th scope="row">{key + 1}</th>
                         <td>{item.full_name}</td>
-                        <td>{item.student_code}</td>
+                        <td>{item.username}</td>
                         <td>{item.group}</td>
 
                         <td>

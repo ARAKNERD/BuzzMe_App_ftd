@@ -138,13 +138,14 @@ const Sidebar = (props) => {
                   <span><b>Student Groups</b></span>
                 </Link>
               </li>
-            </RenderSecure>
+            </RenderSecure >
+            <RenderSecure code="ADMIN-VIEW">
             <li className="nav-item">
                 <Link to="/call-logs" className="nav-link">
                   <span><b>Call Logs</b></span>
                 </Link>
               </li>
-            
+              </RenderSecure>
               <li className="nav-item">
                 <Link to="/stations" className="nav-link">
                   <span><b>Calling Stations</b></span>

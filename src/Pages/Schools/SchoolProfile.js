@@ -35,7 +35,6 @@ const SchoolProfile = props => {
   const [meta,setMeta] = useState("")
   const [page1,setPage1] = useState(1)
   const [meta1,setMeta1] = useState("")
-  const {user} = useContext(AuthContext);
 
     const {districtList} = useContext(DistrictContext);
   const [query, setQuery] = useState("");
@@ -321,11 +320,11 @@ const restrictionsOff=()=>{
                             :
                                 <a href="#" onClick={setSchoolUpdate} className="btn btn-warning mr-3"><i className="far fa-edit mr-1"></i>Update Details</a>
                             }
-              {/* {schoolProfile.is_restricted === "0"?
+              {schoolProfile.is_restricted === "0"?
                                 <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
                             :
                                 <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
-                            } */}
+                            }
               </div>
               
             </div>
@@ -420,11 +419,11 @@ const restrictionsOff=()=>{
                                             <td className="py-2 px-0"> <span className="">{schoolProfile.district}</span> </td>
                                         </tr>
                                        
-                                        {/* <tr>
+                                        <tr>
                                             <td className="py-2 px-0"> <span className="w-50">Call Security</span> </td>
                                             <td>:</td>
                                             <td className="py-2 px-0"> <span className="">{schoolProfile.is_restricted ==="0"?<span class="badge badge-success">Unrestricted</span>:<span class="badge badge-danger">Restricted</span>}</span> </td>
-                                        </tr> */}
+                                        </tr>
                                        
                                     </tbody>}
                                 </table>{loading2 && <Loader/>
@@ -533,7 +532,7 @@ const restrictionsOff=()=>{
                                 {studentSearch.length > 0 ? (
         studentSearch.map((item, key) => (
           <tr key={key}>
-                          <td>{key + 1}</td>
+                          <td>{key + first + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
                           <td>{item.username}</td>
                           <td>{item.reg_no?item.reg_no:"Not registered"}</td>
