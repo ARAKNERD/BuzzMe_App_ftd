@@ -29,7 +29,7 @@ const AttachCard=(props)=>{
     const setDetails = (e,item) =>{
         e.preventDefault()
         handleActive1()
-        setStudent(item.id)
+        setStudent(item.student_id)
         setFullName(item.full_name)
     }
 
