@@ -5,6 +5,8 @@ import "jspdf-autotable";
 import TableHeader from "../../Components/Common/TableHeader";
 import ajaxCallStation from "../../util/remote/ajaxCallStation";
 import Loader from "../../Components/Common/Loader";
+import useStateCallback from "../../util/customHooks/useStateCallback";
+import CompleteCall from "./CompleteCall";
 
 function TwilioLogs() {
 
@@ -18,6 +20,7 @@ function TwilioLogs() {
   const [meta,setMeta] = useState("")
   const [searchStudent, setSearchStudent] = useState("");
   const [searchContact, setSearchContact] = useState("");
+  const [modal, setModal] = useStateCallback(false);
 
   const getTwilioLogsList = async () => {
     setLoading(true);
@@ -110,6 +113,19 @@ function TwilioLogs() {
     setPage(item)
   }
 
+  const completeCall = (e, item) => {
+    setModal(false, () =>
+      setModal(
+        <CompleteCall
+          callID={item.id}
+          g={getTwilioLogsList}
+          h={searchTwilioLogs}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
   useEffect(() => {
     searchTwilioLogs();
   }, ["GSM", page]);
@@ -128,6 +144,7 @@ function TwilioLogs() {
 
   return (
     <>
+     {modal}
       <div class="heading-layout1 mg-b-5">
         <TableHeader
           subtitle="List of all the buzz to other network calls sorted by the most recent"    
@@ -199,7 +216,9 @@ function TwilioLogs() {
               <th>Callee Details</th>
               <th>Duration</th>
               <th>Station</th>
-              {/* <th>Call Cost</th> */}
+              <th>Call Cost</th>
+              <th>Actions</th>
+
             </tr>
           </thead>
           <tbody>
@@ -217,6 +236,48 @@ function TwilioLogs() {
                 <td>{item.duration_format}</td>
                 <td>{item.station_name}<br /><small>{item.school_name}</small></td>
                 <td>UGX. {item.call_cost?.total_c}</td>
+                <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                               
+                              
+                                {item.status === "started" || item.status==="accepted"? (
+                                  <Link
+                                    className="dropdown-item"
+                                    to="#"
+                                    onClick={(e) => completeCall(e, item)}
+                                  >
+                                    <i
+                                      className="fa fa-power-off mr-1"
+                                      style={{ color: "red" }}
+                                    ></i>
+                                    Complete Call
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    className="dropdown-item"
+                                    to="#"
+                                    
+                                  >
+                                   
+                                    <i
+                                      className="fa fa-power-off mr-1"
+                                      style={{ color: "red" }}
+                                    ></i>
+                                    Complete Call
+                                  </Link>
+                                )}
+                              </div>
+                            </div>
+                          </td>
               </tr>
             ))) : twilioLogsList === "404" ? (
               <tr>
