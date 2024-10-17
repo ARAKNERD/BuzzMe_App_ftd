@@ -20,6 +20,9 @@ import ajaxBank from "../../util/remote/ajaxBank";
 import TurnOnStudentRestrictions from "./TurnOnStudentRestrictions";
 import TurnOffStudentRestrictions from "./TurnOffStudentRestrictions";
 import SchoolContext from "../../Context/SchoolContext";
+import RemoteLogOut from "../RemoteLogOut";
+import ActivateAccount from "./ActivateAccount";
+import AssignCard from "./AssignCard";
 
 const StudentProfile = (props) => {
   const [studentProfile, setStudentProfile] = useState(false);
@@ -124,7 +127,7 @@ const StudentProfile = (props) => {
   const getStudentProfile = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentData(student_id);
-  
+    console.log(server_response)
     setLoading(false);
     if (server_response.status === "OK") {
       //store results
@@ -234,6 +237,17 @@ const StudentProfile = (props) => {
     );
   };
 
+  const remoteLogout = (e, item) => {
+    setModal(false, () =>
+      setModal(
+        <RemoteLogOut
+          userID={user_id}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
   const restrictionsOn = () => {
     setModal(false, () =>
       setModal(
@@ -250,6 +264,31 @@ const StudentProfile = (props) => {
       setModal(
         <TurnOffStudentRestrictions
           studentID={student_id}
+          g={getStudentProfile}
+          isOpen={true}
+        />
+      )
+    );
+  };
+  const payActivationFee = () => {
+    setModal(false, () =>
+      setModal(
+        <ActivateAccount
+          userID={user_id}
+          schoolID={studentProfile.school_id}
+          g={getStudentProfile}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
+  const assignCard = () => {
+    setModal(false, () =>
+      setModal(
+        <AssignCard
+          studentID={student_id}
+          fullName={studentProfile.full_name}
           g={getStudentProfile}
           isOpen={true}
         />
@@ -313,12 +352,10 @@ const StudentProfile = (props) => {
                     </h3>
                     <h5 style={{ color: "white" }}>{studentProfile.group}</h5>
                     <div class="social-links mt-2 align-items-center ">
-              
-              {/* {studentProfile.student_restrictions === "0"?
-                                <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
-                            :
-                                <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
-                            } */}
+                    <a href="#" onClick={payActivationFee} className="btn btn-success mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Activate Account</a>
+                    <a href="#" onClick={assignCard} className="btn btn-info mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Assign Card</a>
+                        <a href="#" onClick={remoteLogout} className="btn btn-danger mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Log Out User</a>
+                            
               </div>
                   </div>
                 </div>
@@ -785,6 +822,40 @@ const StudentProfile = (props) => {
                                           <td className="py-2 px-0">
                                             {" "}
                                             <span className="w-50">
+                                              Account Status
+                                            </span>{" "}
+                                          </td>
+                                          <td>:</td>
+                                          <td className="py-2 px-0">
+                                            {" "}
+                                            <span className="">
+                                            {studentProfile.is_activated ==="0"
+                                                ? <span class="badge badge-danger">INACTIVE</span>
+                                                : <span class="badge badge-success">ACTIVE</span>}
+                                            </span>{" "}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td className="py-2 px-0">
+                                            {" "}
+                                            <span className="w-50">
+                                              Card Status
+                                            </span>{" "}
+                                          </td>
+                                          <td>:</td>
+                                          <td className="py-2 px-0">
+                                            {" "}
+                                            <span className="">
+                                            {studentProfile.card_status ==="2"? <span class="badge badge-danger">DEACTIVATED</span>
+                                                :studentProfile.card_status ==="1"? <span class="badge badge-success">ACTIVATED</span>
+                                                : <span class="badge badge-warning">UNASSIGNED</span>}
+                                            </span>{" "}
+                                          </td>
+                                        </tr>
+                                        <tr>
+                                          <td className="py-2 px-0">
+                                            {" "}
+                                            <span className="w-50">
                                               Restricted By Parent
                                             </span>{" "}
                                           </td>
@@ -819,7 +890,7 @@ const StudentProfile = (props) => {
                                           <td className="py-2 px-0">
                                             {" "}
                                             <span className="w-50">
-                                              Restricted Value
+                                              Call Restrictions
                                             </span>{" "}
                                           </td>
                                           <td>:</td>

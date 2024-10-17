@@ -57,5 +57,10 @@ export default {
     let response = await apiCall("card/count/inactive", data);
     return response;
   },
+  async countUnassignedCards(data) 
+  {
+    let response = await apiCall("card/count/unassigned", data);
+    return response;
+  },
   
 };

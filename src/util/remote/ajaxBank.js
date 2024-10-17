@@ -80,6 +80,13 @@ export default {
     let response = await apiCall("wallet/balance", data);
     return response;
   },
+  async fetchActivationFee(school) {
+    let data = {
+      school: school
+    };
+    let response = await apiCall("school_rate/activation/get", data);
+    return response;
+  },
 
 
 }

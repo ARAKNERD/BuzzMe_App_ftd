@@ -9,10 +9,9 @@ import toast, {Toaster} from "react-hot-toast";
 import RemoteLogOut from "../RemoteLogOut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faTrash } from "@fortawesome/free-solid-svg-icons";
-import DeleteAccount from "../DeleteAccount";
 
 
-function ViewParents() {
+function ViewDeletedUsers() {
 
   const [parentList, setParentList] = useState(false);
   const [parentSearch, setParentSearch] = useState(false);
@@ -22,7 +21,6 @@ function ViewParents() {
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
-  const [modal, setModal] = useStateCallback(false);
 
 
 
@@ -33,8 +31,7 @@ function ViewParents() {
 
   const getParentList = async () => {
     setLoading(true)
-    const server_response = await ajaxParent.listParents(page);
-    console.log(server_response)
+    const server_response = await ajaxParent.listDeletedParents(page);
     setLoading(false)
     if (server_response.status === "OK") {
       setFirst(server_response.details.meta.offset_count);
@@ -85,7 +82,7 @@ function ViewParents() {
       e.preventDefault();
     }
       setLoading2(true);
-      const server_response = await ajaxParent.searchAllParents(query, page);
+      const server_response = await ajaxParent.searchAllDeletedParents(query, page);
       setLoading2(false);
       if (server_response.status === "OK") {
         if (server_response.details.length === 0) {
@@ -110,45 +107,23 @@ function ViewParents() {
 
     
   };
-  const remoteLogout = (e, item) => {
-    setModal(false, () =>
-      setModal(
-        <RemoteLogOut
-          userID={item.user_id}
-          isOpen={true}
-        />
-      )
-    );
-  };
-
-  const handleDelete = (e, item) => {
-    setModal(false, () =>
-      setModal(
-        <DeleteAccount
-          userID={item.user_id}
-          g={getParentList}
-          h={searchParents}
-          isOpen={true}
-        />
-      )
-    );
-  };
+ 
   useEffect(() => {
       searchParents();
   }, [page]);
 
   return(
-  <AppContainer title="Contacts">
+  <AppContainer title="Deleted Contacts">
     <Toaster position="top-center" reverseOrder={false} />
-    {modal}
+   
     <div className="row"> 
     <div className="col-lg-12">
           <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
-                   title="Contacts List"
-                  subtitle="List of all the contacts sorted in ascending order"
+                   title="Deleted Contacts List"
+                  subtitle="List of all the deleted contacts sorted in ascending order"
                 />
                 <div class="dropdown">
                                         <a class="dropdown-toggle" href="#" role="button" 
@@ -156,7 +131,7 @@ function ViewParents() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                            <Link class="dropdown-item" to={'/deleted-users'} ><i class="fa-solid fa-eye text-orange-peel"></i>View Deleted Accounts</Link>
+                                           
                                         </div>
                                     </div>
               </div>
@@ -201,7 +176,7 @@ function ViewParents() {
                       <th scope="col">Contact Number</th>
                       <th scope="col">Gender</th>
                       <th scope="col">Address</th>
-                      <th>Actions</th>
+                    
                     
                     </tr>
                   </thead>
@@ -218,41 +193,13 @@ function ViewParents() {
                         <td>{item.username}</td>
                         <td>{item.gender}</td>
                         <td>{item.address}</td>
-                        <td>
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                <span className="flaticon-more-button-of-three-dots"></span>
-              </Link>
-              <div className="dropdown-menu dropdown-menu-right">
-                
-               
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => remoteLogout(e,item)}>
-                <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "red", marginRight: "3px" }} />
-                Remote Log-Out
-              </Link>
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => handleDelete(e,item)}>
-                <FontAwesomeIcon icon={faTrash} style={{ color: "red", marginRight: "3px" }} />
-                Delete Account
-              </Link>
-</div>
-            </div>
-          </td>
+                        
                       </tr>
         ))
     ) : parentList === "404" ? (
         <tr>
             <td colSpan="5" style={{ textAlign: "center" }}>
-                No parents registered yet.
+                No deleted accounts yet.
             </td>
         </tr>
     ) : (
@@ -294,4 +241,4 @@ function ViewParents() {
   )
 }
 
-export default ViewParents;
+export default ViewDeletedUsers;

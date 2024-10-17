@@ -15,6 +15,7 @@ import Tab from "react-bootstrap/Tab";
 import ajaxCallStation from '../../util/remote/ajaxCallStation';
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ajaxBank from '../../util/remote/ajaxBank';
+import DeleteAccount from '../DeleteAccount';
 
 const ParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
@@ -156,6 +157,7 @@ const ParentProfile = props => {
     const handleModal2=()=>{
         setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} isOpen={true}/>))
     }
+  
  
     return (
         <AppContainer title={"Contact Profile"} >

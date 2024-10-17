@@ -6,10 +6,12 @@ import toast, {Toaster} from "react-hot-toast";
 import {Link} from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserLock } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRightFromBracket, faUserLock } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import RemoteLogOut from "../RemoteLogOut";
+import useStateCallback from "../../util/customHooks/useStateCallback";
 
 function ViewAllStudents() {
   const [studentList, setStudentList] = useState(false);
@@ -20,6 +22,7 @@ function ViewAllStudents() {
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
+  const [modal, setModal] = useStateCallback(false);
 
   const getStudentList = async () => {
     setLoading2(true);
@@ -107,6 +110,17 @@ function ViewAllStudents() {
     
   };
 
+  const remoteLogout = (e, item) => {
+    setModal(false, () =>
+      setModal(
+        <RemoteLogOut
+          userID={item.user_id}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
   useEffect(() => {
       searchStudents();
   }, [page]);
@@ -131,7 +145,7 @@ function ViewAllStudents() {
   return (
     <AppContainer title="Students">
       <Toaster position="top-center" reverseOrder={false} />
-
+      {modal}
       <div className="row">
       <div className="col-lg-12">
           <div className="card custom-card">
@@ -232,6 +246,13 @@ function ViewAllStudents() {
                 onClick={(e) => getDefaultPin(e,item)}>
                 <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
                 Set Default Pin
+              </Link>
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => remoteLogout(e,item)}>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "red", marginRight: "3px" }} />
+                Remote Log-Out
               </Link>
 </div>
             </div>
