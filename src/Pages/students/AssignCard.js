@@ -8,29 +8,30 @@ import ajaxCard from "../../util/remote/ajaxCard";
 import {Link} from "react-router-dom";
 
 
-const AttachCard=(props)=>{
+const AssignCard=(props)=>{
     const [loading, setLoading] = useState(false)
     const [loading2, setLoading2] = useState(false)
-    const [student,setStudent] =useState("")
-    const [fullName,setFullName] =useState("")
+    const [card,setCard] =useState("")
+    const [cardNumber,setCardNumber] =useState("")
     const [page, setPage] = useState(1);
     const [query, setQuery] = useState("");
-    const [querySearch, setQuerySearch] = useState(null);
+    const [cardSearch, setCardSearch] = useState(null);
 
     const [active1,setActive1] = useState(false)
     const handleActive1 = ()=> setActive1(true)
     const handleInActive1 = ()=> setActive1(false)
 
     const data={
-        student_id: student,
-        card_id: props.cardID,
+        student_id: props.studentID,
+        card_id: card,
     }
 
     const setDetails = (e,item) =>{
         e.preventDefault()
         handleActive1()
-        setStudent(item.student_id)
-        setFullName(item.full_name)
+        setCard(item.card_id)
+        setCardNumber(item.card_number)
+        
     }
 
     const backPage = (e) =>{
@@ -38,42 +39,39 @@ const AttachCard=(props)=>{
         handleInActive1()
     }
 
-    const setStudents = (e) => {
+    const setCards = (e) => {
         e.preventDefault();
-        setQuerySearch(false);
+        setCardSearch(false);
         setQuery("");
       };
 
-    const searchStudent =async(e)=>{
-        e.preventDefault();  
-        if (query.length > 0) {
-        setLoading2(true)
-        const server_response = await ajaxStudent.searchAllStudents(query,page);
-        setLoading2(false)
-        if(server_response.status==="OK"){
-            //store results
-            setQuerySearch(server_response.details.list);
-        }else{
-            setQuerySearch("404");
+    const searchCard = async (e) => {
+        if (e) {
+          e.preventDefault();
         }
-    } else {
-        toast.error("Please enter student name!");
-      }
-    }
+          setLoading2(true);
+          const server_response = await ajaxCard.searchCard(query,page);
+          setLoading2(false);
+          if (server_response.status === "OK") {
+            if (server_response.details.length === 0) {
+              setCardSearch([]);
+            } else {
+              setCardSearch(server_response.details.list);
+            }
+          } else {
+            setCardSearch("404");
+          }
+    };
 
     const handleAdd = async(e) =>{
         e.preventDefault()
-        if (student.length > 0) {
+        if (card.length > 0) {
             setLoading(true)
             const server_response = await ajaxCard.attachCard(data);
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 props.g();
-                props.h();
-                props.i();
-                props.j();
-                props.k();
             }
             else{
                 toast.error(server_response.message); 
@@ -103,13 +101,13 @@ const AttachCard=(props)=>{
     return(
         <SystemModal
             title="Assign Card"
-            id="model-assign-card"
+            id="model-assign-card-to-student"
             size="lg"
             footer={RenderFooter}
         >
 
 {active1?<><div className="pl-20">
-    <a href="#" onClick={backPage}  className="btn btn-info mr-2"><i className="far fa-circle-left mr-1"></i>Student Search</a>
+    <a href="#" onClick={backPage}  className="btn btn-info mr-2"><i className="far fa-circle-left mr-1"></i>Card Search</a>
           </div>
               <div className="rfid_card_body">
               
@@ -117,9 +115,9 @@ const AttachCard=(props)=>{
 	                <div class="rfid_card__info">
 		                <div class="rfid_card__logo">Buzz Time Card</div>
 		                    <div class="rfid_card__number">
-			                    <span class="rfid_card__digit-group">{props.cardNumber}</span>
+			                    <span class="rfid_card__digit-group">{cardNumber}</span>
 		                    </div>
-		                    <div class="rfid_card__name">{fullName}</div>
+		                    <div class="rfid_card__name">{props.fullName}</div>
 		                    {/* <div class="rfid_card__vendor" role="img" aria-labelledby="card-vendor">
 			                    <span id="card-vendor" class="card__vendor-sr">Mastercard</span>
 		                    </div> */}
@@ -135,17 +133,17 @@ const AttachCard=(props)=>{
                       onChange={(e) => {
                         setQuery(e.target.value);
                         if (e.target.value === '') {
-                          setStudents(e);
+                          setCards(e);
                         }
                       }}
-                      placeholder="Search for name of student..."
+                      placeholder="Search for card number..."
                       className="form-control"
                     />
                   </div>
                   <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <button
                       type="submit"
-                      onClick={(e) => searchStudent(e)}
+                      onClick={(e) => searchCard(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                       SEARCH
                     </button>
@@ -163,24 +161,22 @@ const AttachCard=(props)=>{
                                 <thead>
                                     <tr>
                                         <th scope="col">No.</th>
-                                        <th scope="col"> Names</th>
-                                        <th scope="col"> School</th>
+                                        <th scope="col"> Card Number</th>
                                         <th scope="col"> Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(querySearch) && querySearch.map((item, key) => (
+                                    {Array.isArray(cardSearch) && cardSearch.map((item, key) => (
                                             
                                              <tr key={key} >
                                                 <th scope="row">{key+1}</th>
-                                                <td>{item.full_name}</td>
-                                                <td>{item.school}</td>
+                                                <td>{item.card_number}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 
                                                 ><i class="fas fa-check"></i></button></td>
                                             </tr>
                                         ))}
-                                        {querySearch === "404" && (<tr>
-                          <td colSpan="5" style={{textAlign: "center"}}>
+                                        {cardSearch === "404" && (<tr>
+                          <td colSpan="3" style={{textAlign: "center"}}>
                             No search result(s) found.
                           </td>
                         </tr>)}
@@ -195,4 +191,4 @@ const AttachCard=(props)=>{
     )
 }
 
-export default AttachCard
+export default AssignCard

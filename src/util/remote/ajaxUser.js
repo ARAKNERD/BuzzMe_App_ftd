@@ -40,4 +40,20 @@ export default {
     let response = await apiCall("user/roles/two", data);
     return response;
   },
+  async remoteLogout(user_id) {
+    let data = {
+      user_id: user_id,
+    };
+
+    let response = await apiCall("user/remote/logout", data);
+    return response;
+  },
+  async deleteUserAccount(account_id) {
+    let data = {
+      account_id: account_id,
+    };
+
+    let response = await apiCall("user/delete", data);
+    return response;
+  },
 };

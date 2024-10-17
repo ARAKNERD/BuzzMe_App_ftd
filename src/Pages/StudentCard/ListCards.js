@@ -17,6 +17,7 @@ function ListCards() {
     const [allCards, setAllCards] = useState(false);
     const [activeCards, setActiveCards] = useState(false);
     const [inactiveCards, setInactiveCards] = useState(false);
+    const [unassignedCards, setUnassignedCards] = useState(false);
 
     const [cardSearch, setCardSearch] = useState(false);
     const [modal, setModal] = useStateCallback(false);
@@ -87,6 +88,16 @@ function ListCards() {
         setInactiveCards("404");
       }
     };
+    const getUnassignedCards = async () => {
+      const server_response = await ajaxCard.countUnassignedCards();
+      if (server_response.status === "OK") {
+        //store results
+        setUnassignedCards(server_response.details);
+      } else {
+        //communicate error
+        setUnassignedCards("404");
+      }
+    };
 
     const setCards = (e) => {
       e.preventDefault();
@@ -106,11 +117,12 @@ function ListCards() {
       getAllCards();
       getActiveCards();
       getInactiveCards();
+      getUnassignedCards();
     }, []);
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
+    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards} isOpen={true}/>))
   }
   const cardOn=(e,item)=>{
     setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
@@ -147,7 +159,7 @@ function ListCards() {
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <RegisterCard g={getCards} h={getAllCards} i={getInactiveCards}/>
+          <RegisterCard g={getCards} h={getAllCards} i={getUnassignedCards}/>
         </div>
         
 
@@ -158,25 +170,30 @@ function ListCards() {
               <div className="card-body map-card gradient-my-blue">
               <div class="item-title mb-2" style={{color:"white"}}><b>SUMMARY</b></div>
 								<div class="row" >
-									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+									<div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
 										<div class="text-center" >
 											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{allCards ? allCards.total_p : "..."}</span></h2>
 											<p class="mb-0 text-light"> Total Cards</p>
 										</div>
 									</div>
-                                    <div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+                                    <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
 										<div class="text-center" >
 											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{activeCards ? activeCards.total_p : "..."}</span></h2>
 											<p class="mb-0 text-light"> Active Cards</p>
 										</div>
 									</div>
-									<div class="col-xl-4 col-lg-12 col-sm-6 pr-0 pl-0">
+									<div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right">
 										<div class="text-center">
 											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{inactiveCards ? inactiveCards.total_p : "..."}</span></h2>
 											<p class="mb-0 text-light"> Inactive Cards</p>
 										</div>
 									</div>
-								
+                  <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0">
+										<div class="text-center">
+											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter">{unassignedCards ? unassignedCards.total_p : "..."}</span></h2>
+											<p class="mb-0 text-light"> Unassigned Cards</p>
+										</div>
+									</div>
 								</div></div>
 							</div></div>
               <div class="col-lg-12">
@@ -243,6 +260,7 @@ function ListCards() {
                           <td>{item.card_number}</td>
                           <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
                           <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+                          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
                           :<span class="badge badge-danger">De-activated</span>}</td>
 
                           <td>

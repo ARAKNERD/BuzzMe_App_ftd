@@ -52,6 +52,7 @@ import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
 import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
 import StatisticsPage from "./Pages/Statistics/StatisticsPage";
 import ListSchoolStations from "./Pages/Stations/ListSchoolStations";
+import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -224,6 +225,8 @@ function App(props) {
               <Route path="/buzz-cards" element={<ListCards />} />
               <Route path="/students/transfer" element={<TransferStudent />} />
               <Route path="/statistics" element={<StatisticsPage />} />
+              <Route path="/deleted-users" element={<ViewDeletedUsers />} />
+
 
 
 

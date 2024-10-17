@@ -77,6 +77,13 @@ export default {
     let response = await apiCall("guardian/list", data);
     return response;
   },
+  async listDeletedParents(page) {
+    let data = {
+      "page": page,
+    };
+    let response = await apiCall("guardian/list/delete", data);
+    return response;
+  },
   async listRelatives(page) {
     let data = {
       "page": page,
@@ -96,6 +103,14 @@ export default {
       "page": page,
     };
     let response = await apiCall("guardian/list", data);
+    return response;
+  },
+  async searchAllDeletedParents(search, page) {
+    let data = {
+      "search":search,
+      "page": page,
+    };
+    let response = await apiCall("guardian/list/delete", data);
     return response;
   },
   async searchAllRelatives(data) {

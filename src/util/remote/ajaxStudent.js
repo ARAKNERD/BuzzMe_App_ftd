@@ -187,5 +187,13 @@ export default {
     let response = await apiCall("student/restrictions/off", data);
     return response;
   },
+  async payActivationFee(user_id, phone_number) {
+    let data = {
+      "user_id": user_id,
+      "phone_number": phone_number
+    };
+    let response = await apiCall("bank/activate/account", data);
+    return response;
+  },
   
 };
