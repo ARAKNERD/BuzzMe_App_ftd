@@ -110,7 +110,7 @@ const ParentProfile = props => {
 
     const getWalletTransactions = async () => {
       setLoading3(true);
-      const server_response = await ajaxBank.fetchStudentWalletTransactions(
+      const server_response = await ajaxBank.fetchUserWalletTransactions(
         user_id,
         page
       );
@@ -534,13 +534,10 @@ const ParentProfile = props => {
                                   id="seventh"
                                 >
                                   <thead>
-                                    <tr>
-                                      <th style={{ width: "10px" }}>
-                                        Transaction Date
-                                      </th>
-                                      <th>Phone Number</th>
+                                  <tr>
+                                      <th>Transaction Date</th>
                                       <th>Amount</th>
-                                      <th>Transaction Type</th>
+                                      <th>Cost Details</th>
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -554,51 +551,33 @@ const ParentProfile = props => {
                                               {item.created_at?.time}
                                             </small>
                                           </td>
-                                          <td>
-                                            {item.phone_number
-                                              ? item.phone_number
-                                              : "N/A"}
-                                          </td>
+                                         
                                           <td>
                                             <span class="badge bg-teal">
-                                              <i
-                                                class="fa fa-circle text-teal fs-9px fa-fw me-5px"
-                                                style={{ color: "#042954" }}
-                                              ></i>
+                                            {item.account === "BUZZTIME LOAD"?<i
+                                                class="fa fa-circle-arrow-up text-teal fs-9px fa-fw me-5px"
+                                                style={{ color: "#28a745" }}
+                                              ></i>:<i
+                                              class="fa fa-circle-arrow-down text-teal fs-9px fa-fw me-5px"
+                                              style={{ color: "#dc3545" }}
+                                            ></i>}</span>
                                               UGX.{" "}
-                                              {item.account ===
-                                                "ACCOUNT ACTIVATION" ||
-                                              item.account === "BUZZTIME LOAD"
+                                              {item.account === "BUZZTIME LOAD"
                                                 ? item.cash_in
                                                 : item.cash_out}
-                                            </span>
-                                            <br />
-                                            {item.status === "3" ? (
-                                              <span class="badge badge-success">
-                                                SUCCESSFUL
-                                              </span>
-                                            ) : item.status === "1" ? (
-                                              <span class="badge badge-warning">
-                                                PENDING
-                                              </span>
-                                            ) : (
-                                              <span class="badge badge-danger">
-                                                FAILED
-                                              </span>
-                                            )}
+                                            
                                           </td>
                                           <td>
-                                            <span class="badge badge-info">
+                                            <span class="badge badge-primary">
                                               {item.account}
                                             </span>
                                           </td>
-                                          <td>{item.internal_ref}</td>
                                         </tr>
                                       ))}
                                     {walletTransactions === "404" && (
                                       <tr>
                                         <td
-                                          colSpan="4"
+                                          colSpan="3"
                                           style={{ textAlign: "center" }}
                                         >
                                           No transactions involving this contact

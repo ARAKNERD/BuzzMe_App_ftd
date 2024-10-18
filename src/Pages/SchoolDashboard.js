@@ -9,12 +9,16 @@ import { Link } from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import SchoolContext from "../Context/SchoolContext";
 import ajaxStation from "../util/remote/ajaxStation";
+import TurnOnCallRestrictions from "./Schools/TurnOnCallRestrictions";
+import TurnOffCallRestrictions from "./Schools/TurnOffCallRestrictions";
+import useStateCallback from "../util/customHooks/useStateCallback";
 
 function SchoolDashboard() {
   const [studentsNumber, setStudentsNumber] = useState(false);
   const [schoolLogsNumber, setSchoolLogsNumber] = useState(false);
   const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
+  const [modal, setModal] = useStateCallback(false);
 
   const [studentsToday, setStudentsToday] = useState(false);
   const [logsThisWeek, setLogsThisWeek] = useState(false);
@@ -89,6 +93,13 @@ function SchoolDashboard() {
     }
   };
 
+  const restrictionsOn=()=>{
+    setModal(false, ()=>setModal(<TurnOnCallRestrictions schoolID={schoolDetails.school_id} isOpen={true}/>))
+  }
+  const restrictionsOff=()=>{
+    setModal(false, ()=>setModal(<TurnOffCallRestrictions schoolID={schoolDetails.school_id} isOpen={true}/>))
+  }
+
   useEffect(() => {
     getStudentsNumber();
     getSchoolLogsNumber();
@@ -105,7 +116,7 @@ function SchoolDashboard() {
   return (
     <AppContainer title={"Dashboard"}>
       <Toaster position="top-center" reverseOrder={false} />
-
+    {modal}
       <div className="row">
         <div class="col-4-xxxl col-12">
           <div class="card dashboard-card-ten">
@@ -152,6 +163,14 @@ function SchoolDashboard() {
                     </tbody>
                   </table>
                 </div>
+                <div class="social-links mt-2 align-items-center ">
+              
+              {schoolDetails.school_restrictions === "0"?
+                                <a href="#" onClick={restrictionsOn} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"green"}}></i>Turn On Call Restrictions</a>
+                            :
+                                <a href="#" onClick={restrictionsOff} className="btn btn-warning mr-2"><i className="fa fa-power-off mr-1" style={{color:"red"}}></i>Turn Off Call Restrictions</a>
+                            }
+              </div>
               </div>
             </div>
           </div>

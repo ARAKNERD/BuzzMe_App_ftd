@@ -45,12 +45,12 @@ export default {
     let response = await apiCall("buzz_time/loaded", data);
     return response;
   },
-  async fetchStudentWalletTransactions(student,page) {
+  async fetchUserWalletTransactions(user,page) {
     let data = {
-      user_id: student,
+      user_id: user,
       page: page
     };
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("wallet/list", data);
     return response;
   },
   async fetchBuzzTimeTotal(data) {

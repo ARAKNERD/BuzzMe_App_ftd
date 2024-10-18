@@ -6,6 +6,9 @@ import ResetPassword from "./ResetPassword";
 import TableHeader from "../../Components/Common/TableHeader";
 import AddSchoolAdmin from "./AddSchoolAdmin";
 import Loader from "../../Components/Common/Loader";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import RemoteLogOut from "../RemoteLogOut";
 
 function ListSchoolUsers(props) {
   const [schoolUsers, setSchoolUsers] = useState(false);
@@ -30,6 +33,17 @@ function ListSchoolUsers(props) {
       // Handle network or other errors
       console.error("Error:", error);
     }
+  };
+
+  const remoteLogout = (e, item) => {
+    setModal(false, () =>
+      setModal(
+        <RemoteLogOut
+          userID={item.user_id}
+          isOpen={true}
+        />
+      )
+    );
   };
 
   useEffect(() => {
@@ -95,6 +109,13 @@ function ListSchoolUsers(props) {
                                   <i className="fas fa-cogs text-dark-pastel-green"></i>
                                   Reset Password
                                 </Link>
+                                <Link
+                                  className="dropdown-item"
+                                  to="#"
+                                  onClick={(e) => remoteLogout(e,item)}>
+                                  <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "red", marginRight: "3px" }} />
+                                      Remote Log-Out
+                                  </Link>
                               </div>
                             </div>
                           </td>
