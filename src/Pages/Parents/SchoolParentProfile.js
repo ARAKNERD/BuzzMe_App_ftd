@@ -9,8 +9,6 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import SchoolAddStudentParent from "./SchoolAddStudentParent";
 import SchoolContext from "../../Context/SchoolContext";
-import ajaxCallStation from "../../util/remote/ajaxCallStation";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
