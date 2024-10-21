@@ -20,7 +20,7 @@ function AccountActivations() {
 
   const getAccountActivations = async () => {
     setLoading3(true);
-    const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
+    const server_response = await ajaxBank.fetchAccountInvoices(page1, account);
     setLoading3(false);
     if (server_response.status === "OK") {
       setMeta1(server_response.details.meta.list_of_pages);
@@ -45,7 +45,7 @@ function AccountActivations() {
       account_id: account
     };
     setLoading4(true);
-    const server_response = await ajaxBank.searchBankTransactions(data);
+    const server_response = await ajaxBank.searchAccountInvoices(data);
     setLoading4(false);
     if (server_response.status === "OK") {
       if (server_response.details.length === 0) {
@@ -130,7 +130,7 @@ function AccountActivations() {
     <>
       <div class="heading-layout1 mg-b-5">
         <TableHeader
-            subtitle="List of all the account activation transactions made sorted by the most recent"   
+            subtitle="List of all the account activation invoices sorted by the most recent"   
         />
         <div class="dropdown">
           <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
@@ -144,7 +144,7 @@ function AccountActivations() {
           <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
             <div className="row">
               <div className="col-lg-4">
-                <input type="text" placeholder="Enter student name..." style={{border: "1px solid grey"}} value={searchTerm1} 
+                <input type="text" placeholder="Enter student first ot last name..." style={{border: "1px solid grey"}} value={searchTerm1} 
                   onChange={(e) => {
                     setSearchTerm1(e.target.value);
                     if (e.target.value === '') {
@@ -187,9 +187,8 @@ function AccountActivations() {
         <table className="table display data-table text-nowrap">
           <thead>
             <tr>
-              <th style={{width:"10px"}}>Transaction Date</th>
+              <th>Transaction Date</th>
               <th>Student Details</th>
-              <th>Phone Number</th>
               <th>Amount</th>
             </tr>
           </thead>
@@ -199,16 +198,13 @@ function AccountActivations() {
                 <tr key={key}>
                   <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
                   <td>{item.student}<br/><small>{item.school}</small></td>
-                  <td>{item.phone_number?item.phone_number:"N/A"}</td>
-                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_in}</span><br/>
-                  {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
-                  item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                
+                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
+                  <span class="badge badge-success">SUCCESSFUL</span></td>
                 </tr>
               ))
             ) : accountActivations === "404" ? (
               <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
+                <td colSpan="3" style={{ textAlign: "center" }}>
                   No account activations made yet.
                 </td>
               </tr>
@@ -216,7 +212,7 @@ function AccountActivations() {
             
               (searchTerm1 || startDate1 || endDate1) && (
                   <tr>
-                      <td colSpan="5" style={{ textAlign: "center" }}>
+                      <td colSpan="3" style={{ textAlign: "center" }}>
                           No search result(s) found.
                       </td>
                   </tr>

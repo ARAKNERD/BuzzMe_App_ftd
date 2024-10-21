@@ -70,7 +70,6 @@ const SchoolParentProfile = (props) => {
       schoolDetails.school_id
     );
     setLoading2(false);
-    console.log(server_response)
     if (server_response.status === "OK") {
       setChildren(server_response.details);
     } else {
