@@ -35,7 +35,6 @@ const ActivateAccount=(props)=>{
 
     const getActivationFee = async () => {
         const server_response = await ajaxBank.fetchActivationFee(props.schoolID);
-        console.log(server_response)
         if (server_response.status === "OK") {
             
             setActivationFee(server_response.details);

@@ -11,19 +11,30 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
+  async fetchMMTransactions(page) {
+    let data = {
+      page: page
+    };
+    let response = await apiCall("mm/list", data);
+    return response;
+  },
+  async searchMMTransactions(data) {
+    let response = await apiCall("mm/list", data);
+    return response;
+  },
   async fetchAccountTransactions(page,account) {
     let data = {
       page: page,
       account_id: account
     };
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("wallet/list", data);
     return response;
   },
   async searchBankTransactions(data) {
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("wallet/list", data);
     return response;
   },
-  async searchAllTransactions(page, from, to, search) {
+  async searchAllInvoices(page, from, to, search) {
     let data = {
       page: page,
       from: from,
@@ -85,6 +96,18 @@ export default {
       school: school
     };
     let response = await apiCall("school_rate/activation/get", data);
+    return response;
+  },
+  async fetchAccountInvoices(page,account) {
+    let data = {
+      page: page,
+      account_id: account
+    };
+    let response = await apiCall("bank/list", data);
+    return response;
+  },
+  async searchAccountInvoices(data) {
+    let response = await apiCall("bank/list", data);
     return response;
   },
 

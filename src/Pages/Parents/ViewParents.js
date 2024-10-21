@@ -34,7 +34,6 @@ function ViewParents() {
   const getParentList = async () => {
     setLoading(true)
     const server_response = await ajaxParent.listParents(page);
-    console.log(server_response)
     setLoading(false)
     if (server_response.status === "OK") {
       setFirst(server_response.details.meta.offset_count);

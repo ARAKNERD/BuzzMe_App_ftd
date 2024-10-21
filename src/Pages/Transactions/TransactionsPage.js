@@ -9,6 +9,7 @@ import AccountActivations from "./AccountActivations";
 import BuzztimeLoadTransactions from "./BuzztimeLoadTransactions";
 import CallTransactions from "./CallTransactions";
 import MessageTransactions from "./MessageTransactions";
+import MMTransactions from "./MMTransactions";
 
 function TransactionsPage() {
  
@@ -25,26 +26,31 @@ function TransactionsPage() {
                                     <Nav variant="pills" className="flex-row mb-1">
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="first">
-                                            All Transactions{" "}
+                                            All Invoices{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="second">
-                                            Account Activation{" "}
+                                            Mobile Money Transactions{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="third">
-                                            Buzz Time Load{" "}
+                                            Account Activations{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="fourth">
-                                            Phone Charges{" "}
+                                            Buzz Time Load{" "}
                                             </Nav.Link>
                                         </Nav.Item>
                                         <Nav.Item>
                                             <Nav.Link size="sm" eventKey="fifth">
+                                            Phone Charges{" "}
+                                            </Nav.Link>
+                                        </Nav.Item>
+                                        <Nav.Item>
+                                            <Nav.Link size="sm" eventKey="sixth">
                                             Message Charges{" "}
                                             </Nav.Link>
                                         </Nav.Item>
@@ -56,20 +62,22 @@ function TransactionsPage() {
                                         <Tab.Pane eventKey="first">
                                             <AllTransactions/>
                                         </Tab.Pane>
-
                                         <Tab.Pane eventKey="second">
+                                            <MMTransactions/> 
+                                        </Tab.Pane>
+                                        <Tab.Pane eventKey="third">
                                             <AccountActivations/> 
                                         </Tab.Pane>
 
-                                        <Tab.Pane eventKey="third">
+                                        <Tab.Pane eventKey="fourth">
                                             <BuzztimeLoadTransactions/> 
                                         </Tab.Pane>
 
-                                        <Tab.Pane eventKey="fourth">
+                                        <Tab.Pane eventKey="fifth">
                                             <CallTransactions/> 
                                         </Tab.Pane>
 
-                                        <Tab.Pane eventKey="fifth">
+                                        <Tab.Pane eventKey="sixth">
                                             <MessageTransactions/> 
                                         </Tab.Pane>
                                     </Tab.Content>

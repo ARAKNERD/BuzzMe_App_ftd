@@ -127,7 +127,6 @@ const StudentProfile = (props) => {
   const getStudentProfile = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentData(student_id);
-    console.log(server_response)
     setLoading(false);
     if (server_response.status === "OK") {
       //store results

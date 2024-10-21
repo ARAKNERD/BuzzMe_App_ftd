@@ -147,7 +147,7 @@ function MessageTransactions() {
           <div className="col-lg-4">
             <input
               type="text"
-              placeholder="Enter student name..."
+              placeholder="Enter first or last name of user..."
               style={{border: "1px solid grey"}}
               value={searchTerm1} onChange={(e) => {
                 setSearchTerm1(e.target.value);
@@ -193,9 +193,8 @@ function MessageTransactions() {
     <thead>
       <tr>
         
-        <th style={{width:"10px"}}>Transaction Date</th>
+        <th>Transaction Date</th>
         <th>User Details</th>
-        <th>Phone Number</th>
         <th>Amount</th>
         
       </tr>
@@ -205,20 +204,15 @@ function MessageTransactions() {
         smsSearch.map((item, key) => (
           <tr key={key}>
           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                  <td>{item.student}<br/><small>{item.school?item.school:"Parent"}</small></td>
-                  <td>{item.phone_number?item.phone_number:"N/A"}</td>
+                  <td>{item.user}<br/><small>{item.username}</small></td>
                   <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
-                  {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
-                  item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
-                  
-                  
-               
-        
+                  <span class="badge badge-success">SUCCESSFUL</span></td>
+     
         </tr>
         ))
     ) : smsTransactions === "404" ? (
         <tr>
-            <td colSpan="5" style={{ textAlign: "center" }}>
+            <td colSpan="3" style={{ textAlign: "center" }}>
                 No messages sent yet.
             </td>
         </tr>
@@ -226,7 +220,7 @@ function MessageTransactions() {
        
         (searchTerm1 || startDate1 || endDate1) && (
             <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
+                <td colSpan="3" style={{ textAlign: "center" }}>
                     No search result(s) found.
                 </td>
             </tr>
