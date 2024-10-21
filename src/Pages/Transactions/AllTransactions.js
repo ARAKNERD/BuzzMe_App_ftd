@@ -40,7 +40,7 @@ function AllTransactions() {
         e.preventDefault();
     }
         setLoading2(true);
-        const server_response = await ajaxBank.searchAllTransactions(page, startDate, endDate, searchTerm);
+        const server_response = await ajaxBank.searchAllInvoices(page, startDate, endDate, searchTerm);
         setLoading2(false);
         if (server_response.status === "OK") {
             if (server_response.details.length === 0) {
