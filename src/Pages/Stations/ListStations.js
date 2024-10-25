@@ -85,7 +85,7 @@ function ListStations() {
         <UpdateStation
           stationID={item.station_id}
           stationName={item.station_name}
-          school={item.school.school_name}
+          schoolName={item.school.school_id}
           g={getStations}
           h={searchStations}
           isOpen={true}

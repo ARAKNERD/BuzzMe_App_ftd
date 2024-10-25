@@ -232,7 +232,7 @@ function Dashboard() {
             <div className="card custom-card" style={{borderRadius: "10px"}}>
               <div className="card-body map-card">
                 <div class="heading-layout1 mg-b-25">
-                  <TableHeader title="Recent Transactions" subtitle="List of recent transactions"/>
+                  <TableHeader title="Recent Invoices" subtitle="List of recent invoices"/>
                   <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -258,9 +258,9 @@ function Dashboard() {
                         <tr key={key}>
                           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
                           <td>{item.student}<br/><small>{item.school}</small></td>
-                          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account==="ACCOUNT ACTIVATION"||item.account==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
-                          {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
-                          item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td> 
+                          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
+                          <span class="badge badge-success">SUCCESSFUL</span>
+                         </td> 
                         </tr>
                       ))}
                       {transactionList === "404" && (<tr>

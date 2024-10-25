@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
-import ajaxStation from "../../util/remote/ajaxStation";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 import ajaxStudent from "../../util/remote/ajaxStudent";
@@ -34,7 +33,7 @@ const ActivateAccount=(props)=>{
     }
 
     const getActivationFee = async () => {
-        const server_response = await ajaxBank.fetchActivationFee(props.schoolID);
+        const server_response = await ajaxBank.fetchActivationFee();
         if (server_response.status === "OK") {
             
             setActivationFee(server_response.details);
