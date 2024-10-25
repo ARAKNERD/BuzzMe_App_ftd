@@ -23,6 +23,7 @@ import SchoolContext from "../../Context/SchoolContext";
 import RemoteLogOut from "../RemoteLogOut";
 import ActivateAccount from "./ActivateAccount";
 import AssignCard from "./AssignCard";
+import AdminRefund from "../Transactions/AdminRefund";
 
 const StudentProfile = (props) => {
   const [studentProfile, setStudentProfile] = useState(false);
@@ -295,6 +296,20 @@ const StudentProfile = (props) => {
     );
   };
 
+  const adminRefund = () => {
+    setModal(false, () =>
+      setModal(
+        <AdminRefund
+          userID={user_id}
+          fullName={studentProfile.full_name}
+          g={getStudentBalance}
+          h={getWalletTransactions}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
   const setNextPageNumber = () => {
     if (meta.length === page) {
     } else {
@@ -354,7 +369,7 @@ const StudentProfile = (props) => {
                     <a href="#" onClick={payActivationFee} className="btn btn-success mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Activate Account</a>
                     <a href="#" onClick={assignCard} className="btn btn-info mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Assign Card</a>
                         <a href="#" onClick={remoteLogout} className="btn btn-danger mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Log Out User</a>
-                            
+                        <a href="#" onClick={adminRefund} className="btn btn-warning mr-2 mt-3"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Admin Refund</a>
               </div>
                   </div>
                 </div>
@@ -390,8 +405,8 @@ const StudentProfile = (props) => {
                             style={{
                               top: 0,
                               left: 0,
-                              width: "12px",
-                              height: "12px",
+                              width: "13px",
+                              height: "13px",
                               position: "absolute",
                               borderRadius: "50%",
                               padding: "2px",
@@ -409,7 +424,7 @@ const StudentProfile = (props) => {
                             className="text-muted tx-12"
                             style={{ fontSize: "12px" }}
                           >
-                            {studentProfile.school_district}
+                            School
                           </span>
 
                           <div
@@ -1063,7 +1078,7 @@ const StudentProfile = (props) => {
                                          
                                           <td>
                                             <span class="badge bg-teal">
-                                            {item.account === "BUZZTIME LOAD"?<i
+                                            {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"?<i
                                                 class="fa fa-circle-arrow-up text-teal fs-9px fa-fw me-5px"
                                                 style={{ color: "#28a745" }}
                                               ></i>:<i
@@ -1071,7 +1086,7 @@ const StudentProfile = (props) => {
                                               style={{ color: "#dc3545" }}
                                             ></i>}</span>
                                               UGX.{" "}
-                                              {item.account === "BUZZTIME LOAD"
+                                              {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"
                                                 ? item.cash_in
                                                 : item.cash_out}
                                             
