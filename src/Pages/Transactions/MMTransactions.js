@@ -131,10 +131,10 @@ function MMTransactions() {
         <div className="row gutters-8">
           <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
           <div className="row">
-          <div className="col-lg-4">
+          <div className="col-lg-5">
             <input
               type="text"
-              placeholder="Enter first or last name of user..."
+              placeholder="Enter name of user or transaction number..."
               style={{border: "1px solid grey"}}
               value={searchTerm} onChange={(e) => {
                 setSearchTerm(e.target.value);
@@ -144,7 +144,7 @@ function MMTransactions() {
               }}
               className="form-control"
             /></div>
-            <div className="col-lg-8">
+            <div className="col-lg-7">
               <div class="flex-fill position-relative">
                 <div class="input-group input-daterange" id="datepicker">
                   <input type="date" style={{border: "1px solid grey"}} class="form-control" value={startDate}

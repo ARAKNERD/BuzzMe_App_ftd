@@ -10,6 +10,7 @@ import ActivateCard from "./ActivateCard";
 import DeActivateCard from "./DeActivateCard";
 import RegisterCard from "./RegisterCard";
 import AttachCard from "./AttachCard";
+import UpdateCardNumber from "./UpdateCardNumber";
 
 
 function ListCards() {
@@ -129,6 +130,9 @@ function ListCards() {
   }
   const cardOff=(e,item)=>{
     setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
+  }
+  const updateCard=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} isOpen={true}/>))
   }
 
   const refreshData = () =>{
@@ -274,7 +278,13 @@ function ListCards() {
                               </Link>
                               <div className="dropdown-menu dropdown-menu-right">
                                
-                              
+                              <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateCard(e,item)}>
+                                <i className="fa fa-edit mr-1"></i>
+                                 Change Card Number
+                              </Link>
                                 <Link
                                 className="dropdown-item"
                                 to="#"

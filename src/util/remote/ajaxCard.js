@@ -62,5 +62,10 @@ export default {
     let response = await apiCall("card/count/unassigned", data);
     return response;
   },
+  async updateCard(data) 
+  {
+    let response = await apiCall("card/update", data);
+    return response;
+  },
   
 };
