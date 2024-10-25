@@ -15,11 +15,17 @@ export default {
     let data = {
       page: page
     };
-    let response = await apiCall("mm/list", data);
+    let response = await apiCall("mm/report", data);
     return response;
   },
-  async searchMMTransactions(data) {
-    let response = await apiCall("mm/list", data);
+  async searchMMTransactions(page, from, to, search) {
+    let data = {
+      page: page,
+      from: from,
+      to: to,
+      search: search
+    };
+    let response = await apiCall("mm/report", data);
     return response;
   },
   async fetchAccountTransactions(page,account) {
@@ -30,7 +36,14 @@ export default {
     let response = await apiCall("wallet/list", data);
     return response;
   },
-  async searchBankTransactions(data) {
+  async searchBankTransactions(search, from, to, page, account) {
+    let data = {
+      search: search,
+      from: from,
+      to: to,
+      page: page,
+      account_id: account
+    };
     let response = await apiCall("wallet/list", data);
     return response;
   },
@@ -91,10 +104,7 @@ export default {
     let response = await apiCall("wallet/balance", data);
     return response;
   },
-  async fetchActivationFee(school) {
-    let data = {
-      school: school
-    };
+  async fetchActivationFee(data) {
     let response = await apiCall("school_rate/activation/get", data);
     return response;
   },

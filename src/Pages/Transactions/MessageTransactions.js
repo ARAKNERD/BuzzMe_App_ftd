@@ -45,7 +45,7 @@ function MessageTransactions() {
       account_id: account
     };
     setLoading4(true);
-    const server_response = await ajaxBank.searchBankTransactions(data);
+    const server_response = await ajaxBank.searchBankTransactions(searchTerm1, startDate1, endDate1, page1, account);
     setLoading4(false);
     if (server_response.status === "OK") {
       if (server_response.details.length === 0) {
@@ -121,7 +121,7 @@ function MessageTransactions() {
 
   useEffect(() => {
     searchSmsTransactions();
-  }, []);
+  }, [page1]);
   useEffect(() => {
     getSmsTransactions();
   }, [page1,account]);
@@ -193,7 +193,7 @@ function MessageTransactions() {
     <thead>
       <tr>
         
-        <th>Transaction Date</th>
+        <th style={{width:"20px"}}>Transaction Date</th>
         <th>User Details</th>
         <th>Amount</th>
         

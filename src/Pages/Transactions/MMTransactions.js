@@ -20,6 +20,7 @@ function MMTransactions() {
   const getTransactions = async () => {
     setLoading(true);
     const server_response = await ajaxBank.fetchMMTransactions(page);
+    console.log(server_response)
       setLoading(false);
       if (server_response.status === "OK") {
           setMeta(server_response.details.meta.list_of_pages);
@@ -197,7 +198,7 @@ function MMTransactions() {
           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
                   <td>{item.user}<br/><small>{item.username}</small></td>
                   <td>{item.phone_number}</td>
-                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.account==="ACCOUNT ACTIVATION"||item.account==="BUZZTIME LOAD"?item.cash_in:item.cash_out}</span><br/>
+                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
                   {item.status==="3"?<span class="badge badge-success">SUCCESSFUL</span>:
                   item.status==="1"?<span class="badge badge-warning">PENDING</span>:<span class="badge badge-danger">FAILED</span>}</td>
                   

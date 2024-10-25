@@ -198,7 +198,7 @@ function AccountActivations() {
                 <tr key={key}>
                   <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
                   <td>{item.student}<br/><small>{item.school}</small></td>
-                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
+                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
                   <span class="badge badge-success">SUCCESSFUL</span></td>
                 </tr>
               ))

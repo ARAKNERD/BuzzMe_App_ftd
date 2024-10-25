@@ -9,16 +9,6 @@ function StatisticsPage() {
   const [accountActivationTotal, setAccountActivationTotal] = useState(false);
   const [callChargesTotal, setCallChargesTotal] = useState(false);
   const [messageChargesTotal, setMessageChargesTotal] = useState(false);
-  const [messageReport, setMessageReport] = useState(false);
-
-  const getMessagesReport = async () => {
-    const server_response = await ajaxBank.generateMessageReport();
-    if (server_response.status === "OK") {
-      setMessageReport(server_response.details);
-    } else {
-      setMessageReport("404");
-    }
-  };
 
 
   const getBuzzTimeTotal = async () => {
@@ -62,13 +52,12 @@ function StatisticsPage() {
     getAccountActivationsTotal();
     getCallChargesTotal();
     getMessageChargesTotal();
-    getMessagesReport()
   }, []);
  
   return (
     <AppContainer title="Statistics">
 
-<div className="row">
+      <div className="row">
         
 
         <div className="col-lg-12">
@@ -110,54 +99,6 @@ function StatisticsPage() {
         </div>
       </div>
       <div className="row">
-      <div class="col-lg-12">
-          <div className="card custom-card">
-            <div className="card-body map-card">
-              <div class="heading-layout1 mg-b-25">
-                <TableHeader
-                  title="Messages Profit Statement"
-                  subtitle="List of the schools with the different message statistics"
-                />
-              
-              </div>
-             
-              <div className="border-top mt-3"></div>
-              <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>School</th>
-                      <th>Messages Sent</th>
-                      <th>Amount at Buying Price</th>
-                      <th>Amount at Selling Price</th>
-                      <th>Profit</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {Array.isArray(messageReport) && messageReport.map((item, key) => (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.school}</td>
-                          <td>{item.messages_count}</td>
-                          <td>UGX. {item.buy_amount}</td>
-                          <td>UGX. {item.total_message_charges}</td>
-                          <td>UGX. {item.profit.total_c}</td>
-                        </tr>
-                      ))}
-                      {messageReport === "404" && (<tr>
-                        <td colSpan="4" style={{textAlign: "center"}}>
-                          No statement to display yet.
-                        </td>
-                      </tr>)} 
-                       
-                    
-                  </tbody>
-                  
-                </table>
-              </div>
-            </div>
-          </div></div>
          
       </div>
      

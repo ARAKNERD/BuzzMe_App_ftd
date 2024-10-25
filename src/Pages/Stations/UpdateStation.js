@@ -11,7 +11,7 @@ const UpdateStation=(props)=>{
 
     const [loading, setLoading] = useState(false)
     const [stationName, setStationName] = useState(props.stationName);
-    const [school, setSchool] = useState(props.school);
+    const [school, setSchool] = useState(props.schoolName);
     const {schoolList} = useContext(SchoolContext);
 
     const data={
@@ -29,6 +29,7 @@ const UpdateStation=(props)=>{
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 props.g()
+                props.h()
             }
             else{
                 toast.error(server_response.message); 

@@ -37,15 +37,8 @@ function BuzztimeLoadTransactions() {
     if (e) {
         e.preventDefault();
     }
-    var data = {
-      search: searchTerm1,
-      from: startDate1,
-      to: endDate1,
-      page: page1,
-      account_id: account
-    };
     setLoading4(true);
-    const server_response = await ajaxBank.searchBankTransactions(data);
+    const server_response = await ajaxBank.searchBankTransactions(searchTerm1, startDate1, endDate1, page1, account);
     setLoading4(false);
     if (server_response.status === "OK") {
       if (server_response.details.length === 0) {
@@ -121,7 +114,7 @@ function BuzztimeLoadTransactions() {
 
   useEffect(() => {
     searchBuzztimeLoadTransactions();
-  }, []);
+  }, [page1]);
   useEffect(() => {
     getBuzztimeTransactions();
   }, [page1,account]);
@@ -205,7 +198,7 @@ function BuzztimeLoadTransactions() {
           <tr key={key}>
           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
           <td>{item.user}<br/><small>{item.username}</small></td>
-          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_out}</span><br/>
+          <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.cash_in}</span><br/>
           <span class="badge badge-success">SUCCESSFUL</span></td>
         
         </tr>

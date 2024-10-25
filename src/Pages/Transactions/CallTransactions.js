@@ -17,15 +17,15 @@ function CallTransactions() {
   const [loading3, setLoading3] = useState(false);
   const [loading4, setLoading4] = useState(false);
   const [account,setAccount] = useState(3)
-  const [page1,setPage1] = useState(1)
-  const [meta1,setMeta1] = useState("")
+  const [page,setPage] = useState(1)
+  const [meta,setMeta] = useState("")
 
   const getCallTransactions = async () => {
     setLoading3(true);
-      const server_response = await ajaxBank.fetchAccountTransactions(page1, account);
+      const server_response = await ajaxBank.fetchAccountTransactions(page, account);
       setLoading3(false);
       if (server_response.status === "OK") {
-          setMeta1(server_response.details.meta.list_of_pages);
+          setMeta(server_response.details.meta.list_of_pages);
           setCallTransactions(server_response.details.list); 
           if (searchTerm1 || startDate1 || endDate1) {
               setCallSearch(server_response.details.list); 
@@ -39,21 +39,14 @@ const searchCallTransactions = async (e) => {
   if (e) {
       e.preventDefault();
   }
-    var data = {
-      search: searchTerm1,
-      from: startDate1,
-      to: endDate1,
-      page: page1,
-      account_id: account
-    };
       setLoading4(true);
-      const server_response = await ajaxBank.searchBankTransactions(data);
+      const server_response = await ajaxBank.searchBankTransactions(searchTerm1, startDate1, endDate1, page, account);
       setLoading4(false);
       if (server_response.status === "OK") {
           if (server_response.details.length === 0) {
               setCallSearch([]);
           } else {
-            setMeta1(server_response.details.meta.list_of_pages);
+            setMeta(server_response.details.meta.list_of_pages);
             setCallSearch(server_response.details.list);
           }
       } else {
@@ -68,7 +61,7 @@ const setCall = (e) => {
   setStartDate1("");
   setEndDate1("");
   setCallSearch([]);
-  setPage1(1);
+  setPage(1);
   getCallTransactions();
   
 };
@@ -98,35 +91,29 @@ const setCall = (e) => {
     pdf.save("airtime_data.pdf");
   };
 
-  const setNextPageNumber1 = () =>{
-    if(meta1.length===page1){
-      
+  const setNextPageNumber = () => {
+    if (meta.length === page) {
+    } else {
+      setPage(page + 1);
     }
-    else{
-      setPage1(page1+1)
-    }
-    
-  }
+  };
 
-  const setPreviousPageNumber1 = () =>{
-    if(page1===1){
-      
+  const setPreviousPageNumber = () => {
+    if (page === 1) {
+    } else {
+      setPage(page - 1);
     }
-    else{
-      setPage1(page1-1)
-    }
-    
-  }
-  const setPageNumber1 = (e,item) =>{
-    setPage1(item)
-  }
+  };
+  const setPageNumber = (e, item) => {
+    setPage(item);
+  };
 
   useEffect(() => {
     searchCallTransactions();
-  }, []);
+  }, [page]);
   useEffect(() => {
     getCallTransactions();
-  }, [page1,account]);
+  }, [page,account]);
 
   return (
       <>
@@ -195,7 +182,7 @@ const setCall = (e) => {
     <thead>
       <tr>
         
-        <th>Transaction Date</th>
+        <th style={{width:"20px"}}>Transaction Date</th>
         <th>User Details</th>
         <th>Amount</th>
         
@@ -231,20 +218,40 @@ const setCall = (e) => {
         )
     )}
     </tbody>
-    <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
+    <div
+                    className="align-items-center justify-content-center pos-absolute"
+                    style={{left: "50%"}}>
+                    <button
+                      className="btn btn-dark"
+                      style={{borderRight: "1px solid yellow"}}
+                      onClick={setPreviousPageNumber}>
+                      <i className="fa fa-angle-left mr-2"></i> Prev
+                    </button>
+                    {Array.isArray(meta) &&
+                      meta.map((item) =>
+                        page === item ? (
+                          <button
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-primary">
+                            {item}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => setPageNumber(e, item)}
+                            style={{borderRight: "1px solid yellow"}}
+                            className="btn btn-dark">
+                            {item}
+                          </button>
+                        )
+                      )}
 
-
-<button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber1}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-    {Array.isArray(meta1) && meta1.map((item)=>
-    page1===item?
-    <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-    :
-    <button onClick={(e)=>setPageNumber1(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-    )}
-
-
-    <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber1}>Next<i className='fa fa-angle-right ml-2'></i></button>
-          </div>
+                    <button
+                      style={{borderRight: "1px solid yellow"}}
+                      className="btn btn-dark"
+                      onClick={setNextPageNumber}>
+                      Next<i className="fa fa-angle-right ml-2"></i>
+                    </button>
+                  </div>
   </table>
   {loading4 && <Loader/>}
   {loading3 && <Loader/>}

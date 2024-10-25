@@ -42,7 +42,7 @@ function AddStudent(props) {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (firstName.length > 0 && gender.length > 0) {
+    if (firstName.length > 0 && lastName.length > 0) {
       var data = {
         group: group,
         school: schoolDetails.school_id,
@@ -54,6 +54,7 @@ function AddStudent(props) {
       setLoading(true);
       const server_response = await ajaxStudent.createStudent(data);
       setLoading(false);
+      console.log(server_response)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
         getStudentsToday();

@@ -37,7 +37,7 @@ function AdminRegisterStudent(props) {
   const handleAdd = async (e) => {
     e.preventDefault();
 
-    if (firstName.length > 0 && gender.length > 0) {
+    if (firstName.length > 0 && lastName.length > 0) {
       var data = {
         group: group,
         school: school,
