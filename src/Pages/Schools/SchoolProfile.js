@@ -11,7 +11,6 @@ import DistrictContext from '../../Context/DistrictContext';
 import ajaxSchool from '../../util/remote/ajaxSchool';
 import ajaxStation from '../../util/remote/ajaxStation';
 import ajaxStudentGroup from '../../util/remote/ajaxStudentGroup';
-import AuthContext from '../../Context/AuthContext';
 import AddGroup from '../StudentGroups/AddGroup';
 import ajaxCallStation from '../../util/remote/ajaxCallStation';
 import Col from "react-bootstrap/Col";
@@ -25,17 +24,15 @@ const SchoolProfile = props => {
     const [schoolProfile, setSchoolProfile] = useState(false);
     const [modal, setModal] = useStateCallback(false);
     const {id} = useParams();
-    const [schoolStudents, setSchoolStudents] = useState(false);
-    const [schoolStations, setSchoolStations] = useState(false);
-  const [studentSearch, setStudentSearch] = useState(false);
+    const [schoolStudents, setSchoolStudents] = useState([]);
+    const [schoolStations, setSchoolStations] = useState([]);
   const [studentCount, setStudentCount] = useState(false);
   const [stationCount, setStationCount] = useState(false);
 
   const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
+  const [meta,setMeta] = useState([])
   const [page1,setPage1] = useState(1)
-  const [meta1,setMeta1] = useState("")
-
+  const [meta1,setMeta1] = useState([])
     const {districtList} = useContext(DistrictContext);
   const [query, setQuery] = useState("");
   const [groupList, setGroupList] = useState(false);
@@ -51,6 +48,7 @@ const SchoolProfile = props => {
     const [address,setAddress] = useState("")
 
     const [first, setFirst] = useState("");
+    const [first1, setFirst1] = useState("");
 
     const [active,setActive] = useState(false)
     const handleActive = ()=> setActive(true)
@@ -65,24 +63,9 @@ const SchoolProfile = props => {
 
     const data = {
         school_id: id
-      };
+    };
 
-      const data2 = {
-        search: query,
-        school_id: id,
-      };
-
-      const data3 = {
-        school_id: id,
-        page: page
-      };
-
-    useEffect(()=>{
-      getSchoolStudents()
-      getSchoolStations();
-      getSchoolProfile();
-      
-    }, [])
+    
 
     const setSchoolUpdate = () =>{
       handleActive()
@@ -128,20 +111,17 @@ const SchoolProfile = props => {
         }
     }
 
-    const getSchoolStudents = async () => {
+    const getSchoolStudents = async (currentPage) => {
       setLoading3(true);
-      const server_response = await ajaxStudent.fetchStudentList(id, page);
-        setLoading3(false);
-        if (server_response.status === "OK") {
-            setFirst(server_response.details.meta.offset_count);
-            setMeta(server_response.details.meta.list_of_pages);
-            setSchoolStudents(server_response.details.list); 
-            if (query) {
-                setStudentSearch(server_response.details.list); 
-            }
-        } else {
-            setSchoolStudents("404");
-        }
+      const server_response = await ajaxStudent.fetchStudentList(id, currentPage);
+      setLoading3(false);
+      if (server_response.status === "OK") {
+        setFirst(server_response.details.meta.offset_count);
+        setMeta(server_response.details.meta.list_of_pages);
+        setSchoolStudents(server_response.details.list || []);
+      } else {
+        setSchoolStudents([]);
+      }
     };
 
     const countSchoolStudents = async () => {
@@ -173,17 +153,17 @@ const SchoolProfile = props => {
         }
       };
 
-    const getSchoolStations =async()=>{
-        setLoading4(false)
-        const server_response = await ajaxStation.fetchStationList(id,page1);
-        setLoading4(false)
-        if(server_response.status==="OK"){
-          setMeta1(server_response.details.meta.list_of_pages)
-          setSchoolStations(server_response.details.list);
-        }else{
-            //communicate error
-            setSchoolStations("404");
-        }
+    const getSchoolStations =async(currentPage)=>{
+      setLoading4(false)
+      const server_response = await ajaxStation.fetchStationList(id,currentPage);
+      setLoading4(false)
+      if(server_response.status==="OK"){
+        setFirst1(server_response.details.meta.offset_count);
+        setMeta1(server_response.details.meta.list_of_pages);
+        setSchoolStations(server_response.details.list || []);
+      } else {
+        setSchoolStations([]);
+      }
     }
 
   const searchStudents = async (e) => {
@@ -194,15 +174,11 @@ const SchoolProfile = props => {
       const server_response = await ajaxStudent.searchSchoolStudents(query, id, page);
       setLoading(false);
       if (server_response.status === "OK") {
-        if (server_response.details.length === 0) {
-          setStudentSearch([]);
-        } else {
-          setFirst(server_response.details.meta.offset_count);
-          setMeta(server_response.details.meta.list_of_pages);
-          setStudentSearch(server_response.details.list);
-        }
+        setFirst(server_response.details.meta.offset_count);
+        setMeta(server_response.details.meta.list_of_pages);
+        setSchoolStudents(server_response.details.list || []);
       } else {
-        setStudentSearch([]);
+        setSchoolStudents([]);
       }
   };
 
@@ -223,69 +199,43 @@ const SchoolProfile = props => {
   const setStudents = (e) => {
     e.preventDefault();
     setQuery("");
-    setStudentSearch([]);
     setPage(1);
-    getSchoolStudents();
+    getSchoolStudents(1);
     
   };
-
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
-      
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
     }
-    else{
-      setPage(page+1)
+  };
+  const handlePagination1 = (newPage) => {
+    if (newPage > 0 && newPage <= meta1.length) {
+      setPage1(newPage);
     }
-    
-  }
-
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
-    }
-    else{
-      setPage(page-1)
-    }
-    
-  }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
-  }
-  const setNextPageNumber1 = () =>{
-    if(meta1.length===page1){
-      
-    }
-    else{
-      setPage1(page1+1)
-    }
-    
-  }
-
-  const setPreviousPageNumber1 = () =>{
-    if(page1===1){
-      
-    }
-    else{
-      setPage1(page1-1)
-    }
-    
-  }
-  const setPageNumber1 = (e,item) =>{
-    setPage1(item)
-  }
-  useEffect(()=>{
-    getSchoolStudents()
-  }, [id, page])
+  };
   useEffect(()=>{
     getGroups()
     countSchoolStudents()
     countSchoolStations()
   }, [id])
 
+  useEffect(() => {
+    if (query) {
+      searchStudents();
+    } else {
+      getSchoolStudents(id, page);
+    }
+  }, [id, page]);
+
   useEffect(()=>{
-    searchStudents()
+    getSchoolProfile();
     
-  }, [id, page])
+  }, [])
+
+  useEffect(()=>{
+    getSchoolStations(id, page1);
+    
+  }, [id, page1])
 
   const handleModal3=()=>{
     setModal(false, ()=>setModal(<AddGroup schoolID={id} g={getGroups} isOpen={true}/>))
@@ -517,66 +467,59 @@ const restrictionsOff=()=>{
               </div>
             </div>
           </form>
-                 
-                    <div className="table-responsive">
-                    <table className="table table-hover text-nowrap mg-b-0">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" >No.</th>
-                                        <th>Names</th>
-                                        <th>Student Code</th>
-                                        <th>Registration Number</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {studentSearch.length > 0 ? (
-        studentSearch.map((item, key) => (
-          <tr key={key}>
-                          <td>{key + first + 1}</td>
-                          <td>{item.first_name} {item.last_name}</td>
-                          <td>{item.username}</td>
-                          <td>{item.reg_no?item.reg_no:"Not registered"}</td>
-                        </tr>
-        ))
-    ) : schoolStudents === "404" ? (
-        <tr>
-            <td colSpan="4" style={{ textAlign: "center" }}>
-                No students registered in this school yet.
-            </td>
-        </tr>
-    ) : (
-       
-        (query) && (
-            <tr>
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                    No search result(s) found.
-                </td>
-            </tr>
-        )
-    )}
+          <div className="table-responsive">
+        {loading || loading3 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th scope="col" >No.</th>
+              <th>Names</th>
+              <th>Student Code</th>
+              <th>Registration Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schoolStudents.length > 0 ? (
+                schoolStudents.map((item, index) => (
+                  <tr key={index}>
+                     <td>{index + first + 1}</td>
+                    <td>{item.first_name} {item.last_name}</td>
+                    <td>{item.username}</td>
+                    <td>{item.reg_no?item.reg_no:"Not registered"}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No students registered in this school yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-
-                                
-                                </tbody>
-                                <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
-      
-      
-    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-          {Array.isArray(meta) && meta.map((item)=>
-          page===item?
-          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-          :
-          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-          )}
-
-
-					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
-                </div>
-                            </table>
-                            {loading3 && <Loader/>}
-                            {loading && <Loader/>}
-
-                            </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
                   </Tab.Pane>
 
                   <Tab.Pane eventKey="second">
@@ -619,50 +562,59 @@ const restrictionsOff=()=>{
                   <Tab.Pane eventKey="third">
                  
                   <div className="border-top mt-1"></div>
-                   <div className="table-responsive">
-                   <table className="table table-hover text-nowrap mg-b-0">
-                                <thead>
-                                    <tr>
-                                    <th>No.</th>
-                      <th>Station Name</th>
-                      <th>Station Code</th>
-                      <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {Array.isArray(schoolStations) && schoolStations.map((item, key) => (
-                                            
-                                             <tr key={key} >
-                                                <td>{key + 1}</td>
-                          <td>{item.station_name}</td>
-                          <td>{item.station_code}</td>
-                          <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
-                          item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
-                                            </tr>
-                                        ))}
-                                        {schoolStations === "404" && (<tr>
-                          <td colSpan="4" style={{textAlign: "center"}}>
-                            No calling stations installed within the school yet.
-                          </td>
-                        </tr>)}
-                                </tbody>
-                                <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
-      
-      
-    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber1}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-          {Array.isArray(meta1) && meta1.map((item)=>
-          page===item?
-          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-          :
-          <button onClick={(e)=>setPageNumber1(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-          )}
-
-
-					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber1}>Next<i className='fa fa-angle-right ml-2'></i></button>
-                </div>
-                            </table>
-                            {loading4 && <Loader/>}
-                            </div>
+                  <div className="table-responsive">
+        {loading4 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>No.</th>
+              <th>Station Name</th>
+              <th>Station Code</th>
+              <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schoolStations.length > 0 ? (
+                schoolStations.map((item, index) => (
+                  <tr key={index}>
+                     <td>{index + first1 + 1}</td>
+                      <td>{item.station_name}</td>
+                      <td>{item.station_code}</td>
+                      <td>{item.status==="300"?<span class="badge badge-success">Active</span>:
+                      item.status==="200"?<span class="badge badge-warning">Inactive</span>:<span class="badge badge-danger">Off</span>}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No stations attached to this school yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination1(page1 - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta1) && meta1.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page1 === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination1(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination1(page1 + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
 
                    
                    

@@ -9,51 +9,42 @@ import LanguageContext from "../../Context/LanguageContext";
 import dictionary from "../../util/dictionary";
 
 function AllTransactions() {
-  const [transactionList, setTransactionList] = useState(false);
-  const [transactionSearch, setTransactionSearch] = useState(false);
+  const [transactionList, setTransactionList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading2, setLoading2] = useState(false);
   const [loading, setLoading] = useState(false);
   const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
+  const [meta,setMeta] = useState([])
   const {translate} = useContext(LanguageContext);
 
-  const getTransactions = async () => {
+  const getTransactions = async (currentPage) => {
     setLoading(true);
-    const server_response = await ajaxBank.fetchBankTransactions(page);
-      setLoading(false);
-      if (server_response.status === "OK") {
-          setMeta(server_response.details.meta.list_of_pages);
-          setTransactionList(server_response.details.list); 
-          if (searchTerm || startDate || endDate) {
-              setTransactionSearch(server_response.details.list); 
-          }
-      } else {
-          setTransactionList("404");
-      }
+    const server_response = await ajaxBank.fetchBankTransactions(currentPage);
+    setLoading(false);
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setTransactionList(server_response.details.list || []);
+    } else {
+      setTransactionList([]);
+    }
   };
 
   const searchTransactions = async (e) => {
     if (e) {
-        e.preventDefault();
+      e.preventDefault();
     }
-        setLoading2(true);
-        const server_response = await ajaxBank.searchAllInvoices(page, startDate, endDate, searchTerm);
-        setLoading2(false);
-        if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setTransactionSearch([]);
-            } else {
-              setMeta(server_response.details.meta.list_of_pages);
-              setTransactionSearch(server_response.details.list);
-            }
-        } else {
-            setTransactionSearch([]);
-        }
-    
-};
+    setLoading2(true);
+    const server_response = await ajaxBank.searchAllInvoices(page, startDate, endDate, searchTerm);
+    setLoading2(false);
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setTransactionList(server_response.details.list || []);
+    } else {
+      setTransactionList([]);
+    } 
+  };
 
 
   const setTransactions = (e) => {
@@ -61,59 +52,37 @@ function AllTransactions() {
     setSearchTerm("");
     setStartDate("");
     setEndDate("");
-    setTransactionSearch([]);
     setPage(1);
-    getTransactions();
+    getTransactions(1);
     
   };
 
   const exportToPDF = () => {
-    const table = document.querySelector(".table"); // Select the table element
     const pdf = new jsPDF("p", "pt", "a4");
-  
-    // Define columns for the table (add more if needed)
-    const columns = ["Date & Time", "Student", "Contact", "Amount"];
-  
-    // Extract data from the table and format it as an array of arrays
-    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
-    });
-  
-    // Remove the header row
-    data.shift();
-  
-    // Create the PDF document and add the table
-    pdf.autoTable({
-      head: [columns],
-      body: data,
-    });
-  
-    // Save the PDF
-    pdf.save("airtime_data.pdf");
+    const columns = ["Date & Time", "User", "Amount", "Transaction Type"];
+    const data = transactionList.map(item => [
+      `${item.created_at?.short_date} ${item.created_at?.time}`,
+      `${item.student} (${item.school?item.school:"Parent"})`,
+      `UGX. ${item.amount}`,
+      item.phone_number,
+    ]);
+
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("invoices_data.pdf");
   };
 
-  const setNextPageNumber = () => {
-    if (meta.length === page) {
-    } else {
-      setPage(page + 1);
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
     }
   };
 
-  const setPreviousPageNumber = () => {
-    if (page === 1) {
+  useEffect(() => {
+    if (searchTerm || startDate || endDate) {
+      searchTransactions();
     } else {
-      setPage(page - 1);
+      getTransactions(page);
     }
-  };
-  const setPageNumber = (e, item) => {
-    setPage(item);
-  };
-
-  useEffect(() => {
-    searchTransactions();
-  }, [page]);
-  useEffect(() => {
-    getTransactions();
   }, [page]);
 
   return (
@@ -179,88 +148,62 @@ function AllTransactions() {
       </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
-  <table className="table display data-table text-nowrap">
-    <thead>
-      <tr>
-        
-        <th style={{width:"10px"}}>Transaction Date</th>
-        <th>User Details</th>
-        <th>Amount</th>
-       
-        <th>Transaction Type</th>
-        
-      </tr>
-    </thead>
-    <tbody>
-    {transactionSearch.length > 0 ? (
-        transactionSearch.map((item, key) => (
-          <tr key={key}>
-          <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                  <td>{item.student}<br/><small>{item.school?item.school:"Parent"}</small></td>
-                  <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
-                  <span class="badge badge-success">SUCCESSFUL</span></td>
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+                <th style={{width:"10px"}}>Transaction Date</th>
+                <th>User Details</th>
+                <th>Amount</th>
+                <th>Transaction Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {transactionList.length > 0 ? (
+                transactionList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
+                    <td>{item.student}<br/><small>{item.school?item.school:"Parent"}</small></td>
+                    <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
+                    <span class="badge badge-success">SUCCESSFUL</span></td>
                   
-                  <td><span class="badge badge-info">{item.account}</span></td>
-                   
-        
-        </tr>
-        ))
-    ) : transactionList === "404" ? (
-        <tr>
-            <td colSpan="4" style={{ textAlign: "center" }}>
-                No transactions made yet.
-            </td>
-        </tr>
-    ) : (
-       
-        (searchTerm || startDate || endDate) && (
-            <tr>
-                <td colSpan="4" style={{ textAlign: "center" }}>
-                    No search result(s) found.
-                </td>
-            </tr>
-        )
-    )}
-   
-    </tbody>
-    <div
-                    className="align-items-center justify-content-center pos-absolute"
-                    style={{left: "50%"}}>
-                    <button
-                      className="btn btn-dark"
-                      style={{borderRight: "1px solid yellow"}}
-                      onClick={setPreviousPageNumber}>
-                      <i className="fa fa-angle-left mr-2"></i> Prev
-                    </button>
-                    {Array.isArray(meta) &&
-                      meta.map((item) =>
-                        page === item ? (
-                          <button
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-primary">
-                            {item}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => setPageNumber(e, item)}
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-dark">
-                            {item}
-                          </button>
-                        )
-                      )}
+                    <td><span class="badge badge-info">{item.account}</span></td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No invoices yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-                    <button
-                      style={{borderRight: "1px solid yellow"}}
-                      className="btn btn-dark"
-                      onClick={setNextPageNumber}>
-                      Next<i className="fa fa-angle-right ml-2"></i>
-                    </button>
-                  </div>
-  </table>
-  {loading && <Loader/>}
-  {loading2 && <Loader/>}
-</div></>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+          
+</>
      
   
   );

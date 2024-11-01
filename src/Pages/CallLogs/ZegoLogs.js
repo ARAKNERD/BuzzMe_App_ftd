@@ -10,52 +10,55 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 
 function ZegoLogs() {
 
-    const [zegoLogsList, setZegoLogsList] = useState(false);
-    const [zegoSearch, setZegoSearch] = useState(false);
+    const [zegoLogsList, setZegoLogsList] = useState([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [modal, setModal] = useStateCallback(false);
-
+    const [isSearching, setIsSearching] = useState(false);
     const [page,setPage] = useState(1)
-    const [meta,setMeta] = useState("")
+    const [meta,setMeta] = useState([])
     const [searchStudent, setSearchStudent] = useState("");
     const [searchContact, setSearchContact] = useState("");
 
-    const getZegoLogsList = async () => {
+    const getZegoLogsList = async (currentPage) => {
       setLoading(true);
-      const server_response = await ajaxCallStation.listTypeCallLogs(page, "BUZZ");
-  
+      const server_response = await ajaxCallStation.listTypeCallLogs(currentPage, "BUZZ");
       setLoading(false);
       if (server_response.status === "OK") {
-          setMeta(server_response.details.meta.list_of_pages);
-          setZegoLogsList(server_response.details.list); 
-          if (searchStudent || searchContact || startDate || endDate) {
-              setZegoSearch(server_response.details.list); 
-          }
+        setMeta(server_response.details.meta.list_of_pages);
+        setZegoLogsList(server_response.details.list || []);
       } else {
-          setZegoLogsList("404");
+        setZegoLogsList([]);
       }
     };
+
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        if (!isSearching) {
+          getZegoLogsList(page);
+        }
+      }, 10000);
+  
+      return () => clearInterval(intervalId);
+    }, [page, isSearching]);
     
     const searchZegoLogs = async (e) => {
         if (e) {
             e.preventDefault();
         }
         setLoading2(true);
+        setIsSearching(true);
+
         const server_response = await ajaxCallStation.searchTypeLogs("BUZZ", page, searchStudent, searchContact, startDate, endDate);
         setLoading2(false);
         if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setZegoSearch([]);
-            } else {
-                setMeta(server_response.details.meta.list_of_pages);
-                setZegoSearch(server_response.details.list);
-            }
-        } else {
-            setZegoSearch([]);
-        }
+          setMeta(server_response.details.meta.list_of_pages);
+          setZegoLogsList(server_response.details.list || []);
+      } else {
+        setZegoLogsList([]);
+      }
         
     };
 
@@ -65,7 +68,6 @@ function ZegoLogs() {
           <CompleteCall
             callID={item.id}
             g={getZegoLogsList}
-            h={searchZegoLogs}
             isOpen={true}
           />
         )
@@ -77,71 +79,41 @@ function ZegoLogs() {
       setSearchContact("");
       setStartDate("");
       setEndDate("");
-      setZegoSearch([]);
       setPage(1);
-      getZegoLogsList(); 
+      setIsSearching(false);
+      getZegoLogsList(1); 
   };
-  
 
-    const exportToPDF = () => {
-        const table = document.querySelector(".table"); // Select the table element
-        const pdf = new jsPDF("p", "pt", "a4");
-    
-        // Define columns for the table (add more if needed)
-        const columns = ["Date & Time", "Student", "Contact", "Amount"];
-    
-        // Extract data from the table and format it as an array of arrays
-        const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-        return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
-        });
-    
-        // Remove the header row
-        data.shift();
-    
-        // Create the PDF document and add the table
-        pdf.autoTable({
-        head: [columns],
-        body: data,
-        });
-    
-        // Save the PDF
-        pdf.save("airtime_data.pdf");
-    };
+const exportToPDF = () => {
+    const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["Date & Time", "Call Status", "Caller Details", "Callee Details", "Duration", "Station", "Call Cost"];
+    const data = zegoLogsList.map(item => [
+      item.call_time,
+      item.status,
+      `${item.caller_name} (${item.caller_number})`,
+      `${item.callee_name} (${item.callee_number})`,
+      item.duration_format,
+      `${item.station_name} (${item.school_name})`,
+      `UGX. ${item.call_cost?.total_c}`,
 
-    const setNextPageNumber = () =>{
-        if(meta.length===page){
-      
-        }
-        else{
-        setPage(page+1)
-        }
-    
-    }
+    ]);
 
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("twilio_call_logs.pdf");
+  };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
     }
-    else{
-      setPage(page-1)
-    }
-    
-  }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
-  }
+  };
 
   useEffect(() => {
-    searchZegoLogs();
-  }, ["BUZZ", page]);
-
-  useEffect(() => {
-    getZegoLogsList();
-    const interval = setInterval(() => {
-      getZegoLogsList();
-    }, 10000);
-
-    return () => clearInterval(interval);
+    if (searchStudent || searchContact || startDate || endDate) {
+      searchZegoLogs();
+    } else {
+      getZegoLogsList(page, "BUZZ");
+    }
   }, [page, "BUZZ"]);
 
   return (
@@ -211,6 +183,113 @@ function ZegoLogs() {
 
       <div className="border-top mt-3"></div>
       <div className="table-responsive">
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>Date & Time</th>
+              <th>Call Status</th>
+              <th>Caller Details</th>
+              <th>Callee Details</th>
+              <th>Duration</th>
+              <th>Station</th>
+              <th>Call Cost</th>
+              <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {zegoLogsList.length > 0 ? (
+                zegoLogsList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.call_time}</td>
+                <td>
+                  {item.status==="started"?<span class="badge badge-info">STARTED</span>:
+                  item.status==="accepted"?<span class="badge badge-warning">ACCEPTED</span>:
+                  item.status==="completed"?<span class="badge badge-success">COMPLETED</span>:
+                  item.status==="missed"?<span class="badge badge-pink">MISSED</span>:
+                  <span class="badge badge-danger">CANCELED</span>}</td>
+                <td className="text-dark">{item.caller_name}<br /><small>{item.caller_number}</small></td>
+                <td className="text-dark">{item.callee_name}<br /><small>{item.callee_number}</small></td>
+                <td>{item.duration_format}</td>
+                <td>{item.station_name}<br /><small>{item.school_name}</small></td>
+                <td>UGX. {item.call_cost?.total_c}</td>
+                <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                               
+                              
+                                {item.status === "started" || item.status==="accepted"? (
+                                  <Link
+                                    className="dropdown-item"
+                                    to="#"
+                                    onClick={(e) => completeCall(e, item)}
+                                  >
+                                    <i
+                                      className="fa fa-power-off mr-1"
+                                      style={{ color: "red" }}
+                                    ></i>
+                                    Complete Call
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    className="dropdown-item"
+                                    to="#"
+                                    
+                                  >
+                                   
+                                    <i
+                                      className="fa fa-power-off mr-1"
+                                      style={{ color: "red" }}
+                                    ></i>
+                                    Complete Call
+                                  </Link>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="8" style={{ textAlign: "center" }}>
+                    No buzz to buzz call logs.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+      {/* <div className="table-responsive">
         <table className="table display data-table text-nowrap">
           <thead>
             <tr>
@@ -312,7 +391,7 @@ function ZegoLogs() {
         {loading2 && <Loader/>}
         {loading && <Loader/>}
 
-      </div>
+      </div> */}
     </>
      
   

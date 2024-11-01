@@ -5,10 +5,10 @@ import AuthContext from "../../Context/AuthContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import TableHeader from "../../Components/Common/TableHeader";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Loader from "../../Components/Common/Loader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAddressCard, faUserLock } from "@fortawesome/free-solid-svg-icons";
+import { faUserLock } from "@fortawesome/free-solid-svg-icons";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -18,33 +18,29 @@ function ViewStudents() {
   const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
-  const [studentList, setStudentList] = useState(false);
+  const [studentList, setStudentList] = useState([]);
   const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState("");
-  const [group, setGroup] = useState("");
-  const [studentSearch, setStudentSearch] = useState(false);
+  const [meta, setMeta] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
 
-  const getStudentList = async () => {
+  const getStudentList = async (currentPage) => {
     setLoading2(true);
     const server_response = await ajaxStudent.fetchStudentList(
       schoolDetails.school_id,
-      page
+      currentPage
     );
     setLoading2(false);
     if (server_response.status === "OK") {
       setFirst(server_response.details.meta.offset_count);
       setMeta(server_response.details.meta.list_of_pages);
-      setStudentList(server_response.details.list);
-      if (query) {
-        setStudentSearch(server_response.details.list);
-      }
+      setStudentList(server_response.details.list || []);
     } else {
-      setStudentList("404");
+      setStudentList([]);
     }
+    
   };
 
   const getDefaultPin = async (e, item) => {
@@ -52,13 +48,9 @@ function ViewStudents() {
     const server_response = await ajaxStudent.setDefaultPin(item.user_id);
     if (server_response.status === "OK") {
       toast.success(server_response.message, { duration: 10000 });
-      getStudentList();
+      getStudentList(schoolDetails.school_id, page);
     }
   };
-
-  useEffect(() => {
-    getStudentList();
-  }, [schoolDetails.school_id, page]);
 
   const searchStudents = async (e) => {
     if (e) {
@@ -72,84 +64,50 @@ function ViewStudents() {
     );
     setLoading(false);
     if (server_response.status === "OK") {
-      if (server_response.details.length === 0) {
-        setStudentSearch([]);
-      } else {
         setFirst(server_response.details.meta.offset_count);
         setMeta(server_response.details.meta.list_of_pages);
-        setStudentSearch(server_response.details.list);
-      }
+        setStudentList(server_response.details.list || []);
     } else {
-      setStudentSearch([]);
+        setStudentList([]);
     }
+    
   };
 
   const exportToPDF = () => {
-    const table = document.querySelector(".table"); // Select the table element
     const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["Student Name", "Gender", "Student Code", "Student Group"];
+    const data = studentList.map(item => [
+      item.full_name,
+      item.gender,
+      item.username,
+      item.group
+    ]);
 
-    // Define columns for the table (add more if needed)
-    const columns = [
-      "No.",
-      "Student Name",
-      "Student Code",
-      "Registration Number",
-    ];
-
-    // Extract data from the table and format it as an array of arrays
-    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-      return Array.from(row.querySelectorAll("td")).map(
-        (cell) => cell.textContent
-      );
-    });
-
-    // Remove the header row
-    data.shift();
-
-    // Create the PDF document and add the table
-    pdf.autoTable({
-      head: [columns],
-      body: data,
-    });
-    // Save the PDF
-    pdf.save("students_data.pdf");
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("student_list.pdf");
   };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
+    }
+  };
+
+  useEffect(() => {
+    if (query) {
+      searchStudents();
+    } else {
+      getStudentList(schoolDetails.school_id, page);
+    }
+  }, [schoolDetails.school_id, page]);
+
+  
 
   const setStudents = (e) => {
     e.preventDefault();
     setQuery("");
-    setStudentSearch([]);
     setPage(1);
-    getStudentList();
-  };
-
-  useEffect(() => {
-    searchStudents();
-  }, [schoolDetails.school_id, page]);
-
-  // ----------------------handles the view -----students printable codeslip -modal
-  // const [ViewStudentSlip, setViewStudentSlip] = useStateCallback(false);
-  // const handle_view_slip = (id) => {
-  //   setViewStudentSlip(false, () =>
-  //     setViewStudentSlip(<StudentCodeSlip isOpen={true} id={id} />)
-  //   );
-  // };
-
-  const setNextPageNumber = () => {
-    if (meta.length === page) {
-    } else {
-      setPage(page + 1);
-    }
-  };
-
-  const setPreviousPageNumber = () => {
-    if (page === 1) {
-    } else {
-      setPage(page - 1);
-    }
-  };
-  const setPageNumber = (e, item) => {
-    setPage(item);
+    getStudentList(1);
   };
 
   return (
@@ -180,6 +138,7 @@ function ViewStudents() {
                     <Link class="dropdown-item" onClick={getStudentList}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
+                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
                   </div>
                 </div>
               </div>
@@ -220,156 +179,95 @@ function ViewStudents() {
               </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Names</th>
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>No.</th>
+                      <th>Name</th>
                       <th>Gender</th>
                       <th>Student Code</th>
                       <th>Student Group</th>
                       <th>Default Pin</th>
                       <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {studentSearch.length > 0 ? (
-                      studentSearch.map((item, key) => (
-                        <tr key={key}>
-                          <td style={{ width: "5px" }}>{key + first + 1}</td>
-
-                          <td>
-                            <Link
+              </tr>
+            </thead>
+            <tbody>
+              {studentList.length > 0 ? (
+                studentList.map((item, index) => (
+                  <tr key={index}>
+                    <td style={{width:"5px"}}>{index + first + 1}</td>
+          <td>
+          <Link
                               to={`/school-students/profile/${item.student_id}/${item.user_id}`}
                             >
                               {item.first_name} {item.last_name}
                             </Link>
-                          </td>
-                          <td className="text-dark">{item.gender}</td>
-                          <td className="text-dark">{item.username}</td>
-                          <td className="text-dark">{item.group}</td>
-                          <td>
-                            {item.is_secure === "1" ? (
-                              <span class="badge badge-success">SECURED</span>
-                            ) : (
-                              <OverlayTrigger
-                                placement="top"
-                                overlay={
-                                  <Tooltip id="refresh-tooltip">
-                                    Account is not secure!
-                                  </Tooltip>
-                                }
-                              >
-                                <span class="badge badge-danger">
-                                  {item.default_pin}
-                                </span>
-                              </OverlayTrigger>
-                            )}
-                          </td>
+          </td>
+          <td className="text-dark">{item.gender}</td>
+          <td className="text-dark">{item.username}</td>
 
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <Link
-                                  className="dropdown-item"
-                                  to="#"
-                                  onClick={(e) => getDefaultPin(e, item)}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faUserLock}
-                                    style={{
-                                      color: "teal",
-                                      marginRight: "3px",
-                                    }}
-                                  />
-                                  Set Default Pin
-                                </Link>
-                                <Link
-                                  className="dropdown-item"
-                                  target="_blank "
-                                  to={`/students/student_card/${item.id}/null/${schoolDetails.school_id}`}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faAddressCard}
-                                    style={{
-                                      color: "orange",
-                                      marginRight: "3px",
-                                    }}
-                                  />
-                                  Get BuzzTime Card
-                                </Link>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : studentList === "404" ? (
-                      <tr>
-                        <td colSpan="7" style={{ textAlign: "center" }}>
-                          No students registered yet.
-                        </td>
-                      </tr>
-                    ) : (
-                      query && (
-                        <tr>
-                          <td colSpan="7" style={{ textAlign: "center" }}>
-                            No search result(s) found.
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                  <div
-                    className="align-items-center justify-content-center pos-absolute"
-                    style={{ left: "50%" }}
-                  >
-                    <button
-                      className="btn btn-dark"
-                      style={{ borderRight: "1px solid yellow" }}
-                      onClick={setPreviousPageNumber}
-                    >
-                      <i className="fa fa-angle-left mr-2"></i> Prev
-                    </button>
-                    {Array.isArray(meta) &&
-                      meta.map((item) =>
-                        page === item ? (
-                          <button
-                            style={{ borderRight: "1px solid yellow" }}
-                            className="btn btn-primary"
-                          >
-                            {item}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => setPageNumber(e, item)}
-                            style={{ borderRight: "1px solid yellow" }}
-                            className="btn btn-dark"
-                          >
-                            {item}
-                          </button>
-                        )
-                      )}
+          <td className="text-dark">{item.group}</td>
+          <td>{item.is_secure==="1"?<span class="badge badge-success">SECURED</span>:
+          <OverlayTrigger
+          placement="top"
+          overlay={<Tooltip id="refresh-tooltip">Account is not secure!</Tooltip>}>
+             <span class="badge badge-danger">{item.default_pin}</span></OverlayTrigger>}</td>
+          <td>
+            <div className="dropdown">
+              <Link
+                to="#"
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false">
+                <span className="flaticon-more-button-of-three-dots"></span>
+              </Link>
+              <div className="dropdown-menu dropdown-menu-right">
+                
+                <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => getDefaultPin(e,item)}>
+                <FontAwesomeIcon icon={faUserLock} style={{ color: "teal", marginRight: "3px" }} />
+                Set Default Pin
+              </Link>
+</div>
+            </div>
+          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
+                    No students registered in this school yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-                    <button
-                      style={{ borderRight: "1px solid yellow" }}
-                      className="btn btn-dark"
-                      onClick={setNextPageNumber}
-                    >
-                      Next<i className="fa fa-angle-right ml-2"></i>
-                    </button>
-                  </div>
-                </table>
-                {loading && <Loader />}
-                {loading2 && <Loader />}
-              </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
             </div>
           </div>
         </div>

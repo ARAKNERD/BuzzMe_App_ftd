@@ -12,9 +12,12 @@ import ajaxStation from "../util/remote/ajaxStation";
 import TurnOnCallRestrictions from "./Schools/TurnOnCallRestrictions";
 import TurnOffCallRestrictions from "./Schools/TurnOffCallRestrictions";
 import useStateCallback from "../util/customHooks/useStateCallback";
+import ajaxSchool from "../util/remote/ajaxSchool";
 
 function SchoolDashboard() {
   const [studentsNumber, setStudentsNumber] = useState(false);
+  const [schoolContacts, setSchoolContacts] = useState(false);
+
   const [schoolLogsNumber, setSchoolLogsNumber] = useState(false);
   const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
@@ -100,12 +103,25 @@ function SchoolDashboard() {
     setModal(false, ()=>setModal(<TurnOffCallRestrictions schoolID={schoolDetails.school_id} isOpen={true}/>))
   }
 
+  const countSchoolContacts = async () => {
+    const server_response = await ajaxSchool.countSchoolContacts(schoolDetails.school_id);
+    if (server_response.status === "OK") {
+      setSchoolContacts(server_response.details);
+    } else {
+      setSchoolContacts("404");
+    }
+  };
+
+  
+
+
   useEffect(() => {
     getStudentsNumber();
     getSchoolLogsNumber();
     getLogsThisWeek();
     getLogsThisMonth();
     getStations();
+    countSchoolContacts();
   }, [schoolDetails.school_id]);
 
   useEffect(() => {
@@ -239,23 +255,18 @@ function SchoolDashboard() {
                 <div class="row align-items-center">
                   <div class="col-6">
                     <div class="item-icon bg-light">
-                      <img
-                        alt="avatar"
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/img/figure/customer-support.png"
-                        }
-                      />
+                    <img alt="avatar" style={{height:"60px"}} src={process.env.PUBLIC_URL + "/assets/img/figure/phone-call.png"}/>
+
                     </div>
                   </div>
                   <div class="col-6">
                     <div class="item-content">
                       <div class="item-title" style={{ color: "white" }}>
-                        Buzztime Loaded Today
+                        Contacts
                       </div>
                       <div class="item-number" style={{ color: "white" }}>
                         <span class="counter">
-                          {schoolLogsNumber ? schoolLogsNumber.total_p : "..."}
+                          {schoolContacts ? schoolContacts.total_c: "..."}
                         </span>
                       </div>
                     </div>

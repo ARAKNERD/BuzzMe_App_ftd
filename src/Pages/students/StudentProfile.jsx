@@ -30,16 +30,17 @@ const StudentProfile = (props) => {
   const [studentTransfers, setStudentTransfers] = useState(false);
   const [modal, setModal] = useStateCallback(false);
   const { student_id, user_id } = useParams();
-  const [studentLogs, setStudentLogs] = useState(false);
+  const [studentLogs, setStudentLogs] = useState([]);
   const [studentContacts, setStudentContacts] = useState(false);
   const [contactCount, setContactCount] = useState(false);
   const [logsCount, setLogsCount] = useState(false);
-  const [walletTransactions, setWalletTransactions] = useState(false);
+  const [walletTransactions, setWalletTransactions] = useState([]);
   const [walletBalance, setWalletBalance] = useState(false);
 
   const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState("");
-
+  const [meta, setMeta] = useState([]);
+  const [page1, setPage1] = useState(1);
+  const [meta1, setMeta1] = useState([]);
   const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
@@ -62,11 +63,6 @@ const StudentProfile = (props) => {
   const [loading5, setLoading5] = useState(false);
   const [loading6, setLoading6] = useState(false);
 
-  const data4 = {
-    student_id: student_id,
-    page: "1",
-  };
-
   const data2 = {
     student_id: student_id,
     search: "",
@@ -79,9 +75,6 @@ const StudentProfile = (props) => {
   useEffect(() => {
     getStudentBalance();
   }, [user_id]);
-  useEffect(() => {
-    getStudentLogs();
-  }, [page, user_id]);
 
   const getGroups = async () => {
     const server_response = await ajaxStudentGroup.fetchGroupList(
@@ -148,22 +141,36 @@ const StudentProfile = (props) => {
     }
   };
 
-  const getStudentLogs = async () => {
+  const getStudentLogs = async (currentPage) => {
     setLoading2(true);
 
     const server_response = await ajaxCallStation.listStudentCallLogs(
-      page,
+      currentPage,
       user_id
     );
     setLoading2(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
-      setStudentLogs(server_response.details.list);
+      setStudentLogs(server_response.details.list|| []);
     } else {
       //communicate error
-      setStudentLogs("404");
+      setStudentLogs([]);
     }
   };
+  const getWalletTransactions = async (currentPage) => {
+    setLoading4(true);
+    const server_response = await ajaxBank.fetchUserWalletTransactions(currentPage, user_id);
+    setLoading4(false);
+    console.log(server_response)
+    if (server_response.status === "OK") {
+      setMeta1(server_response.details.meta.list_of_pages);
+      setWalletTransactions(server_response.details.list);
+    } else {
+      //communicate error
+      setWalletTransactions([]);
+    }
+  };
+ 
 
   const getStudentContacts = async () => {
     setLoading3(true);
@@ -208,21 +215,7 @@ const StudentProfile = (props) => {
       setLogsCount("404");
     }
   };
-  const getWalletTransactions = async () => {
-    setLoading4(true);
-    const server_response = await ajaxBank.fetchUserWalletTransactions(
-      user_id,
-      page
-    );
-    setLoading4(false);
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages);
-      setWalletTransactions(server_response.details.list);
-    } else {
-      //communicate error
-      setWalletTransactions("404");
-    }
-  };
+
 
   const handleModal3 = () => {
     setModal(false, () =>
@@ -310,22 +303,18 @@ const StudentProfile = (props) => {
     );
   };
 
-  const setNextPageNumber = () => {
-    if (meta.length === page) {
-    } else {
-      setPage(page + 1);
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
     }
   };
 
-  const setPreviousPageNumber = () => {
-    if (page === 1) {
-    } else {
-      setPage(page - 1);
+  const handlePagination1 = (newPage) => {
+    if (newPage > 0 && newPage <= meta1.length) {
+      setPage1(newPage);
     }
   };
-  const setPageNumber = (e, item) => {
-    setPage(item);
-  };
+  
 
   useEffect(() => {
     getGroups();
@@ -336,10 +325,13 @@ const StudentProfile = (props) => {
     countLogs();
     getStudentTransfers();
   }, [student_id]);
-  useEffect(() => {
-    getWalletTransactions();
-  }, [user_id, page]);
 
+  useEffect(() => {
+    getStudentLogs(page, user_id);
+  }, [page, user_id]);
+  useEffect(() => {
+    getWalletTransactions(page1, user_id);
+  }, [page1, user_id]);
   return (
     <AppContainer title={"Student Profile"}>
       <Toaster position="top-center" reverseOrder={false} />
@@ -366,10 +358,10 @@ const StudentProfile = (props) => {
                     </h3>
                     <h5 style={{ color: "white" }}>{studentProfile.group}</h5>
                     <div class="social-links mt-2 align-items-center ">
-                    <a href="#" onClick={payActivationFee} className="btn btn-success mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Activate Account</a>
-                    <a href="#" onClick={assignCard} className="btn btn-info mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Assign Card</a>
+                    <a href="#" onClick={payActivationFee} className="btn btn-success mr-2"><i className="fa fa-toggle-on mr-1"></i>Activate Account</a>
+                    <a href="#" onClick={assignCard} className="btn btn-info mr-2"><i className="fa fa-id-badge mr-1"></i>Assign Card</a>
                         <a href="#" onClick={remoteLogout} className="btn btn-danger mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Log Out User</a>
-                        <a href="#" onClick={adminRefund} className="btn btn-warning mr-2 mt-3"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Admin Refund</a>
+                        <RenderSecure code="ADMIN-VIEW"><a href="#" onClick={adminRefund} className="btn btn-warning mr-2 mt-3"><i className="fa fa-rotate-right mr-1"></i>Admin Refund</a> </RenderSecure>
               </div>
                   </div>
                 </div>
@@ -982,23 +974,23 @@ const StudentProfile = (props) => {
                             <Tab.Pane eventKey="third">
                               <div className="border-top mt-1"></div>
                               <div className="table-responsive">
-                                <table
-                                  className="table table-hover text-nowrap mg-b-0"
-                                  id="seventh"
-                                >
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">Date</th>
-                                      <th scope="col">Contact</th>
-                                      <th scope="col"> Duration</th>
-                                      <th scope="col"> Calling Station</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {Array.isArray(studentLogs) &&
-                                      studentLogs.map((item, key) => (
-                                        <tr key={key}>
-                                          <td>
+        {loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Contact</th>
+              <th scope="col"> Duration</th>
+              <th scope="col"> Calling Station</th>
+              </tr>
+            </thead>
+            <tbody>
+              {studentLogs.length > 0 ? (
+                studentLogs.map((item, index) => (
+                  <tr key={index}>
+                    <td>
                                             {item.duration_format ===
                                             "00:00" ? (
                                               <i
@@ -1031,26 +1023,121 @@ const StudentProfile = (props) => {
                                             <br />
                                             <small>{item.school}</small>
                                           </td>
-                                        </tr>
-                                      ))}
-                                    {studentLogs === "404" && (
-                                      <tr>
-                                        <td
-                                          colSpan="4"
-                                          style={{ textAlign: "center" }}
-                                        >
-                                          No call logs for this student yet.
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </tbody>
-                                </table>
-                                {loading2 && <Loader />}
-                              </div>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    No student call logs yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page+ 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+                              
                             </Tab.Pane>
+
+
                             <Tab.Pane eventKey="fourth">
                               <div className="border-top mt-1"></div>
                               <div className="table-responsive">
+        {loading4 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>
+              Transaction Date
+            </th>
+            <th>Amount</th>
+            <th>Cost Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {walletTransactions.length > 0 ? (
+                walletTransactions.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                                            {item.created_at?.short_date}
+                                            <br />
+                                            <small>
+                                              {item.created_at?.time}
+                                            </small>
+                                          </td>
+                                         
+                                          <td>
+                                            <span class="badge bg-teal">
+                                            {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"?<i
+                                                class="fa fa-circle-arrow-up text-teal fs-9px fa-fw me-5px"
+                                                style={{ color: "#28a745" }}
+                                              ></i>:<i
+                                              class="fa fa-circle-arrow-down text-teal fs-9px fa-fw me-5px"
+                                              style={{ color: "#dc3545" }}
+                                            ></i>}</span>
+                                              UGX.{" "}
+                                              {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"
+                                                ? item.cash_in
+                                                : item.cash_out}
+                                            
+                                          </td>
+                                          <td>
+                                            <span class="badge badge-primary">
+                                              {item.account}
+                                            </span>
+                                          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" style={{ textAlign: "center" }}>
+                    No student transactions yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination1(page1 - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta1) && meta1.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page1 === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination1(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination1(page1 + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+                              {/* <div className="table-responsive">
                                 <table
                                   className="table table-hover text-nowrap mg-b-0"
                                   id="seventh"
@@ -1163,7 +1250,7 @@ const StudentProfile = (props) => {
                                   </div>
                                 </table>
                                 {loading4 && <Loader />}
-                              </div>
+                              </div> */}
                             </Tab.Pane>
                           </Tab.Content>
                         </Col>
