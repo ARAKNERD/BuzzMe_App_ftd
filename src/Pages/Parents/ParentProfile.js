@@ -31,11 +31,11 @@ const ParentProfile = props => {
     const [loading4,setLoading4] = useState(false)
     const [loading5,setLoading5] = useState(false)
     const [walletBalance, setWalletBalance] = useState(false);
-    const [walletTransactions, setWalletTransactions] = useState(false);
+    const [walletTransactions, setWalletTransactions] = useState([]);
 
     const [logsList, setLogsList] = useState(false);
     const [page, setPage] = useState(1);
-    const [meta, setMeta] = useState("");
+    const [meta, setMeta] = useState([]);
 
     const getParentProfile =async()=>{
         
@@ -108,37 +108,18 @@ const ParentProfile = props => {
       }
     };
 
-    const getWalletTransactions = async () => {
+    const getWalletTransactions = async (currentPage) => {
       setLoading3(true);
-      const server_response = await ajaxBank.fetchUserWalletTransactions(
-        user_id,
-        page
+      const server_response = await ajaxBank.fetchUserWalletTransactions(currentPage, user_id
       );
       setLoading3(false);
       if (server_response.status === "OK") {
         setMeta(server_response.details.meta.list_of_pages);
-        setWalletTransactions(server_response.details.list);
+        setWalletTransactions(server_response.details.list || []);
       } else {
         //communicate error
-        setWalletTransactions("404");
+        setWalletTransactions([]);
       }
-    };
-
-    const setNextPageNumber = () => {
-      if (meta.length === page) {
-      } else {
-        setPage(page + 1);
-      }
-    };
-  
-    const setPreviousPageNumber = () => {
-      if (page === 1) {
-      } else {
-        setPage(page - 1);
-      }
-    };
-    const setPageNumber = (e, item) => {
-      setPage(item);
     };
     useEffect(()=>{
         getChildren();
@@ -146,8 +127,8 @@ const ParentProfile = props => {
       
     }, [id])
     useEffect(() => {
-      getWalletTransactions();
-    }, [user_id, page]);
+      getWalletTransactions(page, user_id);
+    }, [page, user_id]);
     useEffect(() => {
         countUserContacts();
         getParentContacts();
@@ -157,6 +138,12 @@ const ParentProfile = props => {
     const handleModal2=()=>{
         setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} isOpen={true}/>))
     }
+
+    const handlePagination = (newPage) => {
+      if (newPage > 0 && newPage <= meta.length) {
+        setPage(newPage);
+      }
+    };
   
  
     return (
@@ -529,6 +516,83 @@ const ParentProfile = props => {
                             <Tab.Pane eventKey="fourth">
                               <div className="border-top mt-1"></div>
                               <div className="table-responsive">
+        {loading3 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>
+              Transaction Date
+            </th>
+            <th>Amount</th>
+            <th>Cost Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {walletTransactions.length > 0 ? (
+                walletTransactions.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                                            {item.created_at?.short_date}
+                                            <br />
+                                            <small>
+                                              {item.created_at?.time}
+                                            </small>
+                                          </td>
+                                         
+                                          <td>
+                                            <span class="badge bg-teal">
+                                            {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"?<i
+                                                class="fa fa-circle-arrow-up text-teal fs-9px fa-fw me-5px"
+                                                style={{ color: "#28a745" }}
+                                              ></i>:<i
+                                              class="fa fa-circle-arrow-down text-teal fs-9px fa-fw me-5px"
+                                              style={{ color: "#dc3545" }}
+                                            ></i>}</span>
+                                              UGX.{" "}
+                                              {item.account === "BUZZTIME LOAD" || item.account === "ADMIN REFUND" || item.account === "ACTIVATION BUZZ TIME"
+                                                ? item.cash_in
+                                                : item.cash_out}
+                                            
+                                          </td>
+                                          <td>
+                                            <span class="badge badge-primary">
+                                              {item.account}
+                                            </span>
+                                          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" style={{ textAlign: "center" }}>
+                    No user transactions yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+                              {/* <div className="table-responsive">
                                 <table
                                   className="table table-hover text-nowrap mg-b-0"
                                   id="seventh"
@@ -639,7 +703,7 @@ const ParentProfile = props => {
                                   </div>
                                 </table>
                                 {loading3 && <Loader />}
-                              </div>
+                              </div> */}
                             </Tab.Pane>
                           </Tab.Content>
                         </Col>

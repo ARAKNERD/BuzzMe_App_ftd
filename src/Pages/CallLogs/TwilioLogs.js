@@ -10,49 +10,53 @@ import CompleteCall from "./CompleteCall";
 
 function TwilioLogs() {
 
-  const [twilioLogsList, setTwilioLogsList] = useState(false);
-  const [twilioSearch, setTwilioSearch] = useState(false);
+  const [twilioLogsList, setTwilioLogsList] = useState([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
+  const [meta,setMeta] = useState([])
   const [searchStudent, setSearchStudent] = useState("");
   const [searchContact, setSearchContact] = useState("");
   const [modal, setModal] = useStateCallback(false);
+  const [isSearching, setIsSearching] = useState(false);
 
-  const getTwilioLogsList = async () => {
+  const getTwilioLogsList = async (currentPage) => {
     setLoading(true);
-    const server_response = await ajaxCallStation.listTypeCallLogs(page, "GSM");
+    const server_response = await ajaxCallStation.listTypeCallLogs(currentPage, "GSM");
     setLoading(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
-      setTwilioLogsList(server_response.details.list); 
-      if (searchStudent || searchContact || startDate || endDate) {
-        setTwilioSearch(server_response.details.list); 
-      }
+      setTwilioLogsList(server_response.details.list || []);
     } else {
-      setTwilioLogsList("404");
+      setTwilioLogsList([]);
     }
   };
     
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (!isSearching) {
+        getTwilioLogsList(page);
+      }
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [page, isSearching]);
+
   const searchTwilioLogs = async (e) => {
     if (e) {
       e.preventDefault();
     }
     setLoading2(true);
+    setIsSearching(true);
     const server_response = await ajaxCallStation.searchTypeLogs("GSM", page, searchStudent, searchContact, startDate, endDate);
     setLoading2(false);
     if (server_response.status === "OK") {
-      if (server_response.details.length === 0) {
-        setTwilioSearch([]);
-      } else {
-        setMeta(server_response.details.meta.list_of_pages);
-        setTwilioSearch(server_response.details.list);
-      }
+      setMeta(server_response.details.meta.list_of_pages);
+      setTwilioLogsList(server_response.details.list || []);
     } else {
-        setTwilioSearch([]);
+      setTwilioLogsList([]);
     }     
   };
 
@@ -61,57 +65,10 @@ function TwilioLogs() {
     setSearchContact("");
     setStartDate("");
     setEndDate("");
-    setTwilioSearch([]);
     setPage(1);
-    getTwilioLogsList(); 
+    setIsSearching(false);
+    getTwilioLogsList(1); 
   };
-
-  const exportToPDF = () => {
-    const table = document.querySelector(".table"); // Select the table element
-    const pdf = new jsPDF("p", "pt", "a4");
-
-    // Define columns for the table (add more if needed)
-    const columns = ["Date & Time", "Student", "Contact", "Amount"];
-
-    // Extract data from the table and format it as an array of arrays
-    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-    return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
-    });
-
-    // Remove the header row
-    data.shift();
-
-    // Create the PDF document and add the table
-    pdf.autoTable({
-    head: [columns],
-    body: data,
-    });
-
-    // Save the PDF
-    pdf.save("airtime_data.pdf");
-  };
-
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
-      
-    }
-    else{
-      setPage(page+1)
-    } 
-  }
-
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
-    }
-    else{
-      setPage(page-1)
-    } 
-  }
-
-  const setPageNumber = (e,item) =>{
-    setPage(item)
-  }
 
   const completeCall = (e, item) => {
     setModal(false, () =>
@@ -119,27 +76,42 @@ function TwilioLogs() {
         <CompleteCall
           callID={item.id}
           g={getTwilioLogsList}
-          h={searchTwilioLogs}
           isOpen={true}
         />
       )
     );
   };
 
-  useEffect(() => {
-    searchTwilioLogs();
-  }, ["GSM", page]);
-  // useEffect(() => {
-  //   getTwilioLogsList();
-  // }, [page,"GSM"]);
+  const exportToPDF = () => {
+    const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["Date & Time", "Call Status", "Caller Details", "Callee Details", "Duration", "Station", "Call Cost"];
+    const data = twilioLogsList.map(item => [
+      item.call_time,
+      item.status,
+      `${item.caller_name} (${item.caller_number})`,
+      `${item.callee_name} (${item.callee_number})`,
+      item.duration_format,
+      `${item.station_name} (${item.school_name})`,
+      `UGX. ${item.call_cost?.total_c}`,
+
+    ]);
+
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("twilio_call_logs.pdf");
+  };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
+    }
+  };
 
   useEffect(() => {
-    getTwilioLogsList();
-    const interval = setInterval(() => {
-      getTwilioLogsList();
-    }, 10000);
-
-    return () => clearInterval(interval);
+    if (searchStudent || searchContact || startDate || endDate) {
+      searchTwilioLogs();
+    } else {
+      getTwilioLogsList(page, "GSM");
+    }
   }, [page, "GSM"]);
 
   return (
@@ -207,9 +179,12 @@ function TwilioLogs() {
 
       <div className="border-top mt-3"></div>
       <div className="table-responsive">
-        <table className="table display data-table text-nowrap">
-          <thead>
-            <tr>
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
               <th>Date & Time</th>
               <th>Call Status</th>
               <th>Caller Details</th>
@@ -218,13 +193,13 @@ function TwilioLogs() {
               <th>Station</th>
               <th>Call Cost</th>
               <th>Actions</th>
-
-            </tr>
-          </thead>
-          <tbody>
-            {twilioSearch.length > 0 ? ( twilioSearch.map((item, key) => (
-              <tr key={key}>
-                <td>{item.call_time}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {twilioLogsList.length > 0 ? (
+                twilioLogsList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.call_time}</td>
                 <td>
                   {item.status==="started"?<span class="badge badge-info">STARTED</span>:
                   item.status==="accepted"?<span class="badge badge-warning">ACCEPTED</span>:
@@ -278,37 +253,37 @@ function TwilioLogs() {
                               </div>
                             </div>
                           </td>
-              </tr>
-            ))) : twilioLogsList === "404" ? (
-              <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                  No buzz to other network logs found.
-                </td>
-              </tr>
-            ) : (
-       
-              (searchStudent || searchContact || startDate || endDate) && (
+                  </tr>
+                ))
+              ) : (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: "center" }}>
-                    No search result(s) found.
+                  <td colSpan="8" style={{ textAlign: "center" }}>
+                    No buzz to other network logs.
                   </td>
                 </tr>
-              )
-            )}         
-          </tbody>
-          <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
-            <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-            {Array.isArray(meta) && meta.map((item)=>page===item?
-              <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-              :
-              <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-            )}
-            <button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
-          </div>
-        </table>
-        {loading2 && <Loader/>}
-        {loading && <Loader/>}
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
       </div>
     </>
   );

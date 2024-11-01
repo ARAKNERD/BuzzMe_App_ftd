@@ -10,73 +10,35 @@ import RemoteLogOut from "../RemoteLogOut";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket, faTrash } from "@fortawesome/free-solid-svg-icons";
 import DeleteAccount from "../DeleteAccount";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function ViewParents() {
 
-  const [parentList, setParentList] = useState(false);
-  const [parentSearch, setParentSearch] = useState(false);
+  const [parentList, setParentList] = useState([]);
   const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
+  const [meta,setMeta] = useState([])
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
   const [modal, setModal] = useStateCallback(false);
 
-
-
-  const data2 = {
-    search: query,
-    page: page
-  };
-
-  const getParentList = async () => {
+  const getParentList = async (currentPage) => {
     setLoading(true)
-    const server_response = await ajaxParent.listParents(page);
+    const server_response = await ajaxParent.listParents(currentPage);
     setLoading(false)
     if (server_response.status === "OK") {
       setFirst(server_response.details.meta.offset_count);
       setMeta(server_response.details.meta.list_of_pages);
-      setParentList(server_response.details.list);
-      if (query) {
-        setParentSearch(server_response.details.list); 
-      }
+      setParentList(server_response.details.list || []);
     } else {
-      setParentList("404");
+      setParentList([]);
     }
   };
 
   const refreshData = () =>{
-    getParentList()
-  }
-
-
-  useEffect(() => {
-    getParentList();
-  }, [page]);
-
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
-      
-    }
-    else{
-      setPage(page+1)
-    }
-    
-  }
-
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
-    }
-    else{
-      setPage(page-1)
-    }
-    
-  }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
+    getParentList(1)
   }
 
   const searchParents = async (e) => {
@@ -87,25 +49,19 @@ function ViewParents() {
       const server_response = await ajaxParent.searchAllParents(query, page);
       setLoading2(false);
       if (server_response.status === "OK") {
-        if (server_response.details.length === 0) {
-          setParentSearch([]);
-        } else {
-          setFirst(server_response.details.meta.offset_count);
-          setMeta(server_response.details.meta.list_of_pages);
-          setParentSearch(server_response.details.list);
-          
-        }
-      } else {
-        setParentSearch([]);
+        setFirst(server_response.details.meta.offset_count);
+      setMeta(server_response.details.meta.list_of_pages);
+      setParentList(server_response.details.list || []);
+    } else {
+      setParentList([]);
       }
   };
 
   const setParents = (e) => {
     e.preventDefault();
     setQuery("");
-    setParentSearch([]);
     setPage(1);
-    getParentList();
+    getParentList(1);
 
     
   };
@@ -126,14 +82,36 @@ function ViewParents() {
         <DeleteAccount
           userID={item.user_id}
           g={getParentList}
-          h={searchParents}
           isOpen={true}
         />
       )
     );
   };
+
+  const exportToPDF = () => {
+    const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["Names", "Contact Number"];
+    const data = parentList.map(item => [
+      item.full_name,
+      item.username
+    ]);
+
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("parent_list.pdf");
+  };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
+    }
+  };
+
   useEffect(() => {
+    if (query) {
       searchParents();
+    } else {
+      getParentList(page);
+    }
   }, [page]);
 
   return(
@@ -155,6 +133,8 @@ function ViewParents() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+
                                             <Link class="dropdown-item" to={'/deleted-users'} ><i class="fa-solid fa-eye text-orange-peel"></i>View Deleted Accounts</Link>
                                         </div>
                                     </div>
@@ -192,6 +172,94 @@ function ViewParents() {
               </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th scope="col" className="wd-10p">No.</th>
+                      <th scope="col">Names</th>
+                      <th scope="col">Contact Number</th>
+                      <th scope="col">Gender</th>
+                      <th scope="col">Address</th>
+                      <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {parentList.length > 0 ? (
+                parentList.map((item, index) => (
+                  <tr key={index}>
+                    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
+                        <td><Link
+                        to={`/parents/profile/${item.parent_id}/${item.user_id}`}>
+                        {item.full_name}
+                      </Link></td>
+                        <td>{item.username}</td>
+                        <td>{item.gender}</td>
+                        <td>{item.address}</td>
+                        <td>
+            <div className="dropdown">
+              <Link
+                to="#"
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false">
+                <span className="flaticon-more-button-of-three-dots"></span>
+              </Link>
+              <div className="dropdown-menu dropdown-menu-right">
+                
+               
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => remoteLogout(e,item)}>
+                <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "red", marginRight: "3px" }} />
+                Remote Log-Out
+              </Link>
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => handleDelete(e,item)}>
+                <FontAwesomeIcon icon={faTrash} style={{ color: "red", marginRight: "3px" }} />
+                Delete Account
+              </Link>
+</div>
+            </div>
+          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
+                    No parents registered yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+              {/* <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                   <tr>
@@ -283,7 +351,7 @@ function ViewParents() {
                 </table>
                 {loading && <Loader />}
                 {loading2 && <Loader />}
-              </div>
+              </div> */}
             </div>
           </div>
       </div>

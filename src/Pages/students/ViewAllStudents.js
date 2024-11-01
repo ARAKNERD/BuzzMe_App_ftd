@@ -14,30 +14,26 @@ import RemoteLogOut from "../RemoteLogOut";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 
 function ViewAllStudents() {
-  const [studentList, setStudentList] = useState(false);
+  const [studentList, setStudentList] = useState([]);
   const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState("");
-  const [studentSearch, setStudentSearch] = useState(false);
+  const [meta, setMeta] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
   const [first, setFirst] = useState("");
   const [modal, setModal] = useStateCallback(false);
 
-  const getStudentList = async () => {
+  const getStudentList = async (currentPage) => {
     setLoading2(true);
-    const server_response = await ajaxStudent.fetchAllStudents(page);
-      setLoading2(false);
-      if (server_response.status === "OK") {
-          setFirst(server_response.details.meta.offset_count);
-          setMeta(server_response.details.meta.list_of_pages);
-          setStudentList(server_response.details.list); 
-          if (query) {
-              setStudentSearch(server_response.details.list); 
-          }
-      } else {
-          setStudentList("404");
-      }
+    const server_response = await ajaxStudent.fetchAllStudents(currentPage);
+    setLoading2(false);
+    if (server_response.status === "OK") {
+      setFirst(server_response.details.meta.offset_count);
+      setMeta(server_response.details.meta.list_of_pages);
+      setStudentList(server_response.details.list || []);
+    } else {
+      setStudentList([]);
+    }
   };
 
   const getDefaultPin = async (e,item) => {
@@ -45,69 +41,37 @@ function ViewAllStudents() {
     const server_response = await ajaxStudent.setDefaultPin(item.user_id);
     if (server_response.status === "OK") {
       toast.success(server_response.message, {duration: 10000});
-      getStudentList();
-      searchStudents();
+      getStudentList(page);
     }
   };
-
-  const exportToPDF = () => {
-    const table = document.querySelector(".table"); // Select the table element
-    const pdf = new jsPDF("p", "pt", "a4");
-  
-    // Define columns for the table (add more if needed)
-    const columns = ["No.", "Student Name", "School", "Student Code"];
-  
-    // Extract data from the table and format it as an array of arrays
-    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
-    });
-  
-    // Remove the header row
-    data.shift();
-  
-    // Create the PDF document and add the table
-    pdf.autoTable({
-      head: [columns],
-      body: data,
-    });
-  
-    // Save the PDF
-    pdf.save("students_data.pdf");
-  };
-
-  useEffect(() => {
-    getStudentList();
-  }, [page]);
 
 
   const searchStudents = async (e) => {
     if (e) {
         e.preventDefault();
     }
-        setLoading(true);
-        const server_response = await ajaxStudent.searchAllStudents(query, page);
-        setLoading(false);
-        if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setStudentSearch([]);
-            } else {
-              setFirst(server_response.details.meta.offset_count);
-              setMeta(server_response.details.meta.list_of_pages);
-              setStudentSearch(server_response.details.list);
-            }
-        } else {
-            setStudentSearch([]);
-        }
+    setLoading(true);
+    const server_response = await ajaxStudent.searchAllStudents(query, page);
+    setLoading(false);
+    if (server_response.status === "OK") {
+      setFirst(server_response.details.meta.offset_count);
+      setMeta(server_response.details.meta.list_of_pages);
+      setStudentList(server_response.details.list || []);
+    } else {
+      setStudentList([]);
+    }
     
-};
+  };
 
   const setStudents = (e) => {
     e.preventDefault();
     setQuery("");
-    setStudentSearch([]);
     setPage(1);
-    getStudentList();
-    
+    getStudentList(1);
+  };
+
+  const refreshData = () => {
+    getStudentList(1);
   };
 
   const remoteLogout = (e, item) => {
@@ -121,26 +85,33 @@ function ViewAllStudents() {
     );
   };
 
+  const exportToPDF = () => {
+    const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["Student Name", "Gender", "Student Code", "School Name"];
+    const data = studentList.map(item => [
+      item.full_name,
+      item.gender,
+      item.username,
+      item.school
+    ]);
+
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("student_list.pdf");
+  };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
+    }
+  };
+
   useEffect(() => {
+    if (query) {
       searchStudents();
+    } else {
+      getStudentList(page);
+    }
   }, [page]);
-
-  const setNextPageNumber = () => {
-    if (meta.length === page) {
-    } else {
-      setPage(page + 1);
-    }
-  };
-
-  const setPreviousPageNumber = () => {
-    if (page === 1) {
-    } else {
-      setPage(page - 1);
-    }
-  };
-  const setPageNumber = (e, item) => {
-    setPage(item);
-  };
 
   return (
     <AppContainer title="Students">
@@ -156,13 +127,13 @@ function ViewAllStudents() {
                   subtitle="List of all the students sorted in ascending order"
                 />
                 <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-                
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={getStudentList} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        
-                                        </div>
+                <a class="dropdown-toggle" href="#" role="button" 
+                data-toggle="dropdown" aria-expanded="false">...</a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+                </div>
                                     </div>
               </div>
               <form className="mg-b-20">
@@ -199,23 +170,26 @@ function ViewAllStudents() {
               </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
-                  <thead>
-                  <tr>
-                      <th>No.</th>
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>No.</th>
                       <th>Name</th>
                       <th>Gender</th>
                       <th>School</th>
                       <th>Student Code</th>
                       <th>Default Pin</th>
                       <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {studentSearch.length > 0 ? (
-        studentSearch.map((item, key) => (
-          <tr key={key}>
-          <td style={{width:"5px"}}>{key + first + 1}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {studentList.length > 0 ? (
+                studentList.map((item, index) => (
+                  <tr key={index}>
+                    <td style={{width:"5px"}}>{index + first + 1}</td>
           <td>
             <Link to={`/students/profile/${item.student_id}/${item.user_id}`}>
               {item.full_name}
@@ -257,64 +231,39 @@ function ViewAllStudents() {
 </div>
             </div>
           </td>
-        </tr>
-        ))
-    ) : studentList === "404" ? (
-        <tr>
-            <td colSpan="7" style={{ textAlign: "center" }}>
-                No students registered yet.
-            </td>
-        </tr>
-    ) : (
-       
-        (query) && (
-            <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>
-                    No search result(s) found.
-                </td>
-            </tr>
-        )
-    )}
-                  
-                  </tbody>
-                  <div
-                    className="align-items-center justify-content-center pos-absolute"
-                    style={{left: "50%"}}>
-                    <button
-                      className="btn btn-dark"
-                      style={{borderRight: "1px solid yellow"}}
-                      onClick={setPreviousPageNumber}>
-                      <i className="fa fa-angle-left mr-2"></i> Prev
-                    </button>
-                    {Array.isArray(meta) &&
-                      meta.map((item) =>
-                        page === item ? (
-                          <button
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-primary">
-                            {item}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => setPageNumber(e, item)}
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-dark">
-                            {item}
-                          </button>
-                        )
-                      )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
+                    No students registered yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-                    <button
-                      style={{borderRight: "1px solid yellow"}}
-                      className="btn btn-dark"
-                      onClick={setNextPageNumber}>
-                      Next<i className="fa fa-angle-right ml-2"></i>
-                    </button>
-                  </div>
-                </table>
-                {loading && <Loader />}
-                {loading2 && <Loader />}
-              </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+              
             </div>
           </div>
         </div>

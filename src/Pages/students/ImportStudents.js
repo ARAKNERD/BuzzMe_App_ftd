@@ -55,14 +55,15 @@ const ImportStudents = () => {
       const worksheet = workbook.Sheets[sheetName];
       //   console.log(rABS, workbook);
       const data = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-      setExcelData(data);
+      const filteredData = data.filter(row => row.some(cell => cell !== undefined && cell !== null && cell !== ""));
+      setExcelData(filteredData);
       setExcelCols(make_cols(worksheet["!ref"]));
+      setLoading(false);
     };
 
     if (rABS) reader.readAsBinaryString(file);
     else reader.readAsArrayBuffer(file);
-    setLoading(false);
+    
   };
 
   const make_cols = (refstr) => {

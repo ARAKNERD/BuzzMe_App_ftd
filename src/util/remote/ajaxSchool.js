@@ -182,4 +182,11 @@ export default {
     let response = await apiCall("school/restrictions/off", data);
     return response;
   },
+  async countSchoolContacts(school) {
+    let data = {
+      school_id: school
+    };
+    let response = await apiCall("contact/school/count", data);
+    return response;
+  },
 };

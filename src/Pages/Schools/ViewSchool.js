@@ -10,31 +10,23 @@ import "jspdf-autotable";
 
 
 function ViewSchool() {
-  const [schoolList, setSchoolList] = useState(false);
-  const [schoolSearch, setSchoolSearch] = useState(false);
+  const [schoolList, setSchoolList] = useState([]);
   const [query, setQuery] = useState("");
   const [loading,setLoading] = useState(false)
   const [loading2,setLoading2] = useState(false)
   const [page,setPage] = useState(1)
-  const [meta,setMeta] = useState("")
+  const [meta,setMeta] = useState([])
 
-  const refreshData = () =>{
-    getSchoolList()
-  }
-
-  const getSchoolList = async () => {
-    setLoading2(true);
-    const server_response = await ajaxSchool.fetchSchools(page);
-      setLoading2(false);
-      if (server_response.status === "OK") {
-          setMeta(server_response.details.meta.list_of_pages);
-          setSchoolList(server_response.details.list); 
-          if (query) {
-              setSchoolSearch(server_response.details.list); 
-          }
-      } else {
-          setSchoolList("404");
-      }
+  const getSchoolList = async (currentPage) => {
+    setLoading(true);
+    const server_response = await ajaxSchool.fetchSchools(currentPage);
+    setLoading(false);
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setSchoolList(server_response.details.list || []);
+    } else {
+      setSchoolList([]);
+    }
   };
 
   const searchSchools = async (e) => {
@@ -45,85 +37,55 @@ function ViewSchool() {
       search: query,
       page: page
     };
-        setLoading(true);
-        const server_response = await ajaxSchool.searchSchoolList(data);
-        setLoading(false);
-        if (server_response.status === "OK") {
-            if (server_response.details.length === 0) {
-                setSchoolSearch([]);
-            } else {
-              setMeta(server_response.details.meta.list_of_pages);
-              setSchoolSearch(server_response.details.list);
-            }
-        } else {
-            setSchoolSearch([]);
-        }
-    
-};
-
-  const exportToPDF = () => {
-    const table = document.querySelector(".table"); // Select the table element
-    const pdf = new jsPDF("p", "pt", "a4");
-  
-    // Define columns for the table (add more if needed)
-    const columns = ["No.", "School Name", "Phone", "E-mail", "District"];
-  
-    // Extract data from the table and format it as an array of arrays
-    const data = Array.from(table.querySelectorAll("tr")).map((row) => {
-      return Array.from(row.querySelectorAll("td")).map((cell) => cell.textContent);
-    });
-  
-    // Remove the header row
-    data.shift();
-  
-    // Create the PDF document and add the table
-    pdf.autoTable({
-      head: [columns],
-      body: data,
-    });
-  
-    // Save the PDF
-    pdf.save("schools_data.pdf");
+    setLoading2(true);
+    const server_response = await ajaxSchool.searchSchoolList(data);
+    setLoading2(false);
+    if (server_response.status === "OK") {
+      setMeta(server_response.details.meta.list_of_pages);
+      setSchoolList(server_response.details.list || []);
+    } else {
+      setSchoolList([]);
+    }    
   };
 
-  const setNextPageNumber = () =>{
-    if(meta.length===page){
-      
-    }
-    else{
-      setPage(page+1)
-    }
-    
+  const refreshData = () =>{
+    getSchoolList(1)
   }
 
-  const setPreviousPageNumber = () =>{
-    if(page===1){
-      
-    }
-    else{
-      setPage(page-1)
-    }
-    
-  }
-  const setPageNumber = (e,item) =>{
-    setPage(item)
-  }
   const setSchools = (e) => {
     e.preventDefault();
     setQuery("");
-    setSchoolSearch([]);
     setPage(1);
-    getSchoolList();
-    
+    getSchoolList(1);
   };
 
-useEffect(() => {
-        searchSchools();
-}, []);
+  const exportToPDF = () => {
+    const pdf = new jsPDF("p", "pt", "a4");
+    const columns = ["School Name", "School Phone", "E-mail", "District"];
+    const data = schoolList.map(item => [
+      item.school_name,
+      item.contact,
+      item.email,
+      item.district
+    ]);
 
-useEffect(() => {
-  getSchoolList();
-}, [page]);
+    pdf.autoTable({ head: [columns], body: data });
+    pdf.save("school_list.pdf");
+  };
+
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= meta.length) {
+      setPage(newPage);
+    }
+  };
+
+  useEffect(() => {
+    if (query) {
+      searchSchools();
+    } else {
+      getSchoolList(page);
+    }
+  }, [page]);
 
   return (
     <AppContainer title={"Schools"}>
@@ -136,14 +98,14 @@ useEffect(() => {
               <h5 style={{marginBottom:0}}>All Schools</h5>
             </div>
             <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-                
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
-                                        </div>
-                                    </div>
+              <a class="dropdown-toggle" href="#" role="button" 
+              data-toggle="dropdown" aria-expanded="false">...</a>
+
+              <div class="dropdown-menu dropdown-menu-right">
+                  <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                  <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+              </div>
+          </div>
           </div>
           <form className="mg-b-20">
             <div className="row gutters-8">
@@ -179,21 +141,24 @@ useEffect(() => {
             </div>
           </form>
           <div className="table-responsive">
-            <table className="table display data-table text-nowrap">
-              <thead>
-                <tr>
-                  <th>No. </th>
-                  <th>School Name</th>
-                  <th>Phone</th>
-                  <th>E-mail</th>
-                  <th>District</th>
-                </tr>
-              </thead>
-              <tbody>
-              {schoolSearch.length > 0 ? (
-        schoolSearch.map((item, key) => (
-          <tr key={key}>
-                          <td>{key + 1}</td>
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th>No. </th>
+              <th>School Name</th>
+              <th>Phone</th>
+              <th>E-mail</th>
+              <th>District</th>
+              </tr>
+            </thead>
+            <tbody>
+              {schoolList.length > 0 ? (
+                schoolList.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
                           <td><Link
                           to={`/schools/view/profile/${item.school_id}`}>
                           {item.school_name}
@@ -201,44 +166,39 @@ useEffect(() => {
                           <td>{item.contact}</td>
                           <td>{item.email}</td>
                           <td>{item.district}</td>
-                        </tr>
-        ))
-    ) : schoolList === "404" ? (
-        <tr>
-            <td colSpan="5" style={{ textAlign: "center" }}>
-                No schools registered yet.
-            </td>
-        </tr>
-    ) : (
-       
-        (query) && (
-            <tr>
-                <td colSpan="5" style={{ textAlign: "center" }}>
-                    No search result(s) found.
-                </td>
-            </tr>
-        )
-    )}
-              
-              </tbody>
-              <div className='align-items-center justify-content-center pos-absolute' style={{left:'50%'}}>
-      
-      
-    <button className='btn btn-dark' style={{borderRight:'1px solid yellow'}} onClick={setPreviousPageNumber}><i className='fa fa-angle-left mr-2'></i> Prev</button>
-          {Array.isArray(meta) && meta.map((item)=>
-          page===item?
-          <button  style={{borderRight:'1px solid yellow'}} className='btn btn-primary'>{item}</button>
-          :
-          <button onClick={(e)=>setPageNumber(e,item)} style={{borderRight:'1px solid yellow'}} className='btn btn-dark'>{item}</button>
-          )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: "center" }}>
+                    No schools registered yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
 
-
-					<button style={{borderRight:'1px solid yellow'}} className='btn btn-dark' onClick={setNextPageNumber}>Next<i className='fa fa-angle-right ml-2'></i></button>
-                </div>
-            </table>
-            {loading && <Loader/>}
-            {loading2 && <Loader/>}
-          </div>
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+         
         </div>
       </div>
     </AppContainer>

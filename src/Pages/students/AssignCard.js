@@ -172,7 +172,7 @@ const AssignCard=(props)=>{
                                                 <th scope="row">{key+1}</th>
                                                 <td>{item.card_number}</td>
                                                 <td><button type="button" onClick={(e)=>setDetails(e,item)} className={`btn-fill-md text-light bg-dodger-blue`} 
-                                                ><i class="fas fa-check"></i></button></td>
+                                                >Select <i class="fas fa-check"></i></button></td>
                                             </tr>
                                         ))}
                                         {cardSearch === "404" && (<tr>
