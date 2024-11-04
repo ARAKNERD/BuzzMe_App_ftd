@@ -83,6 +83,7 @@ function ViewParents() {
           userID={item.user_id}
           g={getParentList}
           isOpen={true}
+          page={page}
         />
       )
     );
