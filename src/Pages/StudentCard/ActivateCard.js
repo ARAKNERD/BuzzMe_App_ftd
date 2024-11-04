@@ -19,8 +19,7 @@ const ActivateCard=(props)=>{
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);
-            props.g()
-            props.h()
+            props.g(props.page)
             props.i()
             props.j()
         }

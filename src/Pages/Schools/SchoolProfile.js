@@ -113,7 +113,7 @@ const SchoolProfile = props => {
 
     const getSchoolStudents = async (currentPage) => {
       setLoading3(true);
-      const server_response = await ajaxStudent.fetchStudentList(id, currentPage);
+      const server_response = await ajaxStudent.fetchStudentList(currentPage, id);
       setLoading3(false);
       if (server_response.status === "OK") {
         setFirst(server_response.details.meta.offset_count);
@@ -223,9 +223,9 @@ const SchoolProfile = props => {
     if (query) {
       searchStudents();
     } else {
-      getSchoolStudents(id, page);
+      getSchoolStudents(page, id);
     }
-  }, [id, page]);
+  }, [page, id]);
 
   useEffect(()=>{
     getSchoolProfile();

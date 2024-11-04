@@ -204,7 +204,7 @@ function AddStudent(props) {
                   </div>
                   <div className="col-xl-6 col-lg-6 col-md-6 form-group border-1">
                     <label>
-                      Gender <span style={{ color: "red" }}>*</span>
+                      Gender
                     </label>
 
                     <select

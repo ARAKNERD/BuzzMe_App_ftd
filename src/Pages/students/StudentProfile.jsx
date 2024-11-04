@@ -132,12 +132,13 @@ const StudentProfile = (props) => {
   };
   const getStudentBalance = async () => {
     const server_response = await ajaxBank.fetchStudentWalletBalance(user_id);
+    console.log(server_response)
     if (server_response.status === "OK") {
       //store results
       setWalletBalance(server_response.details);
     } else {
       //communicate error
-      setWalletBalance(false);
+      setWalletBalance('0');
     }
   };
 
@@ -161,7 +162,7 @@ const StudentProfile = (props) => {
     setLoading4(true);
     const server_response = await ajaxBank.fetchUserWalletTransactions(currentPage, user_id);
     setLoading4(false);
-    console.log(server_response)
+    
     if (server_response.status === "OK") {
       setMeta1(server_response.details.meta.list_of_pages);
       setWalletTransactions(server_response.details.list);

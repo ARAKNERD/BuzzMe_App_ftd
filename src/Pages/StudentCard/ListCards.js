@@ -11,32 +11,33 @@ import DeActivateCard from "./DeActivateCard";
 import RegisterCard from "./RegisterCard";
 import AttachCard from "./AttachCard";
 import UpdateCardNumber from "./UpdateCardNumber";
-
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 function ListCards() {
-    const [cardList, setCardList] = useState(false);
+    const [cardList, setCardList] = useState([]);
     const [allCards, setAllCards] = useState(false);
     const [activeCards, setActiveCards] = useState(false);
     const [inactiveCards, setInactiveCards] = useState(false);
     const [unassignedCards, setUnassignedCards] = useState(false);
-
-    const [cardSearch, setCardSearch] = useState(false);
     const [modal, setModal] = useStateCallback(false);
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [query, setQuery] = useState("");
     const [page,setPage] = useState(1)
-    const [meta,setMeta] = useState("")
+    const [meta,setMeta] = useState([])
+    const [first, setFirst] = useState("");
 
-    const getCards = async () => {
+    const getCards = async (currentPage) => {
       setLoading(true);
-      const server_response = await ajaxCard.fetchCardList(page);
+      const server_response = await ajaxCard.fetchCardList(currentPage);
       setLoading(false);
       if (server_response.status === "OK") {
+        setFirst(server_response.details.meta.offset_count);
         setMeta(server_response.details.meta.list_of_pages);
-        setCardList(server_response.details.list);
-      }else {
-        setCardList("404");
+        setCardList(server_response.details.list || []);
+      } else {
+        setCardList([]);
       }
     };
 
@@ -48,14 +49,11 @@ function ListCards() {
         const server_response = await ajaxCard.searchCard(query,page);
         setLoading2(false);
         if (server_response.status === "OK") {
-          if (server_response.details.length === 0) {
-            setCardSearch([]);
-          } else {
-            setMeta(server_response.details.meta.list_of_pages);
-            setCardSearch(server_response.details.list);
-          }
+          setFirst(server_response.details.meta.offset_count);
+          setMeta(server_response.details.meta.list_of_pages);
+          setCardList(server_response.details.list || []);
         } else {
-          setCardSearch("404");
+          setCardList([]);
         }
     };
 
@@ -100,18 +98,38 @@ function ListCards() {
       }
     };
 
+    const exportToPDF = () => {
+      const pdf = new jsPDF("p", "pt", "a4");
+      const columns = ["Card Number", "Student Number", "Status"];
+      const data = cardList.map(item => [
+        item.full_name,
+        item.student?.full_name?item.student.full_name:"Not assigned",
+        item.status==="1"?"Activated":item.status==="0"?"Unassigned":"De-activated"
+      ]);
+  
+      pdf.autoTable({ head: [columns], body: data });
+      pdf.save("cards_list.pdf");
+    };
+  
+    const handlePagination = (newPage) => {
+      if (newPage > 0 && newPage <= meta.length) {
+        setPage(newPage);
+      }
+    };
+
     const setCards = (e) => {
       e.preventDefault();
-      setCardSearch(false);
       setQuery("");
+      setPage(1);
+      getCards(1);
     };
   
     useEffect(() => {
-      getCards();
-    }, [page]);
-
-    useEffect(() => {
-      searchCard();
+      if (query) {
+        searchCard();
+      } else {
+        getCards(page);
+      }
     }, [page]);
 
     useEffect(() => {
@@ -123,39 +141,21 @@ function ListCards() {
 
 
   const updateStation=(e,item)=>{
-    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards} isOpen={true}/>))
+    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} g={getCards} page={page} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards} isOpen={true}/>))
   }
   const cardOn=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
+    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={getCards} page={page} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
   }
   const cardOff=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} h={searchCard} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
+    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={getCards} page={page} i={getActiveCards} j={getInactiveCards} isOpen={true}/>))
   }
   const updateCard=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} g={getCards} h={searchCard} isOpen={true}/>))
+    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} g={getCards} page={page} isOpen={true}/>))
   }
 
   const refreshData = () =>{
-    getCards();
-    searchCard();
+    getCards(1);
   }
-
-  const setNextPageNumber = () => {
-    if (meta.length === page) {
-    } else {
-      setPage(page + 1);
-    }
-  };
-
-  const setPreviousPageNumber = () => {
-    if (page === 1) {
-    } else {
-      setPage(page - 1);
-    }
-  };
-  const setPageNumber = (e, item) => {
-    setPage(item);
-  };
 
     return (
     <AppContainer title="Buzz Cards">
@@ -214,7 +214,7 @@ function ListCards() {
                 
                                         <div class="dropdown-menu dropdown-menu-right">
                                             <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                        
+                                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
                                         </div>
                                     </div>
               </div>
@@ -245,6 +245,103 @@ function ListCards() {
               </form>
               <div className="border-top mt-3"></div>
               <div className="table-responsive">
+        {loading || loading2 ? (
+          <Loader /> // Show loader when loading or searching
+        ) : (
+          <table className="table display data-table text-nowrap">
+            <thead>
+              <tr>
+              <th scope="col" className="wd-10p">No.</th>
+              <th>Card Number</th>
+              <th>Student Name</th>
+              <th>Status</th>
+              <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cardList.length > 0 ? (
+                cardList.map((item, index) => (
+                  <tr key={index}>
+                    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
+                    <td>{item.card_number}</td>
+                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+                          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
+                          :<span class="badge badge-danger">De-activated</span>}</td>
+
+                          <td>
+                            <div className="dropdown">
+                              <Link
+                                to="#"
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-expanded="false">
+                                <span className="flaticon-more-button-of-three-dots"></span>
+                              </Link>
+                              <div className="dropdown-menu dropdown-menu-right">
+                               
+                              <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateCard(e,item)}>
+                                <i className="fa fa-edit mr-1"></i>
+                                 Change Card Number
+                              </Link>
+                                <Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => updateStation(e,item)}>
+                                <i className="fa fa-square-plus mr-1"></i>
+                                 Attach Student
+                              </Link>
+                              {item.status==="1"?<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => cardOff(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                                 De-Activate Card
+                              </Link>:<Link
+                                className="dropdown-item"
+                                to="#"
+                                onClick={(e) => cardOn(e,item)}>
+                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                                Activate Card
+                              </Link>}</div>
+                            </div>
+                          </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
+                    No cards registered yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="pagination">
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+          <i className="fa fa-angle-left mr-2"></i> Prev
+        </button>
+        {Array.isArray(meta) && meta.map((item) => (
+          <button
+            key={item}
+            style={{borderRight: "1px solid yellow"}}
+            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            onClick={() => handlePagination(item)}
+          >
+            {item}
+          </button>
+        ))}
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+          Next <i className="fa fa-angle-right ml-2"></i>
+        </button>
+      </div>
+              {/* <div className="table-responsive">
                 <table className="table table-hover text-nowrap mg-b-0">
                   <thead>
                     <tr>
@@ -402,7 +499,7 @@ function ListCards() {
                 </table>
                 {loading && <Loader />}
                 {loading2 && <Loader />}
-              </div>
+              </div> */}
             </div>
           </div></div></div>
         </div>

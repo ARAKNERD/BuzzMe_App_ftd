@@ -2,11 +2,12 @@ import apiCall from "./apiCall";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  async fetchStudentList(school_id, page) 
+  async fetchStudentList(page, school_id) 
   {
     let data = {
+      "page": page,
       "school_id":school_id,
-      "page": page
+      
     };
     let response = await apiCall("student/list", data);
 

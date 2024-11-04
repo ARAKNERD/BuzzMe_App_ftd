@@ -104,7 +104,7 @@ const ParentProfile = props => {
         setWalletBalance(server_response.details);
       } else {
         //communicate error
-        setWalletBalance(false);
+        setWalletBalance('0');
       }
     };
 
