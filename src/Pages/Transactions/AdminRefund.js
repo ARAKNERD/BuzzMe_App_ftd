@@ -21,7 +21,7 @@ const AdminRefund=(props)=>{
                 setPass("")
                 setAmount("")
                 props.g();
-                props.h();
+                props.h(props.page);
             }
             else{
                 toast.error(server_response.message); 

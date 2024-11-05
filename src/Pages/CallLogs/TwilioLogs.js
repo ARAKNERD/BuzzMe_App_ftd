@@ -76,6 +76,7 @@ function TwilioLogs() {
         <CompleteCall
           callID={item.id}
           g={getTwilioLogsList}
+          page={page}
           isOpen={true}
         />
       )

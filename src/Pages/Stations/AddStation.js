@@ -20,9 +20,8 @@ const AddStation=(props)=>{
         setLoading(false)
         if (server_response.status === "OK") {
           toast.success(server_response.message);
-          props.g()
-          props.h()
           resetForm();
+          props.g(props.page)
         } else {
           toast.error(server_response.message);
         }
