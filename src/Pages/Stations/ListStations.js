@@ -72,6 +72,7 @@ function ListStations() {
           stationName={item.station_name}
           schoolName={item.school.school_id}
           g={getStations}
+          page={page}
           isOpen={true}
         />
       )
@@ -83,6 +84,7 @@ function ListStations() {
         <UpdateHours
           stationID={item.station_id}
           g={getStations}
+          page={page}
           startTime={item.start_time}
           endTime={item.end_time}
           isOpen={true}
@@ -96,6 +98,7 @@ function ListStations() {
         <TurnOnStation
           stationID={item.station_id}
           g={getStations}
+          page={page}
           isOpen={true}
         />
       )
@@ -107,6 +110,7 @@ function ListStations() {
         <TurnOffStation
           stationID={item.station_id}
           g={getStations}
+          page={page}
           isOpen={true}
         />
       )
@@ -117,6 +121,7 @@ function ListStations() {
       setModal(
         <AddStation
           g={getStations}
+          page={page}
           isOpen={true}
         />
       )

@@ -298,6 +298,7 @@ const StudentProfile = (props) => {
           fullName={studentProfile.full_name}
           g={getStudentBalance}
           h={getWalletTransactions}
+          page={page}
           isOpen={true}
         />
       )

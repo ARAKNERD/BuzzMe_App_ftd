@@ -68,6 +68,7 @@ function ZegoLogs() {
           <CompleteCall
             callID={item.id}
             g={getZegoLogsList}
+            page={page}
             isOpen={true}
           />
         )

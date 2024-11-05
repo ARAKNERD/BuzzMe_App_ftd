@@ -163,7 +163,7 @@ function ListCards() {
       {modal}
       <div className="row">
         <div className="col-lg-4">
-          <RegisterCard g={getCards} h={getAllCards} i={getUnassignedCards}/>
+          <RegisterCard g={getCards} page={page} h={getAllCards} i={getUnassignedCards}/>
         </div>
         
 
