@@ -9,7 +9,7 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import AuthContext from "../../Context/AuthContext";
 import TableHeader from "../../Components/Common/TableHeader";
-import AttachParent from "../Parents/AttachParent";
+import AttachParent from "./AddStudentContact";
 import { RenderSecure } from "../../util/script/RenderSecure";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
@@ -24,6 +24,7 @@ import RemoteLogOut from "../RemoteLogOut";
 import ActivateAccount from "./ActivateAccount";
 import AssignCard from "./AssignCard";
 import AdminRefund from "../Transactions/AdminRefund";
+import AddStudentContact from "./AddStudentContact";
 
 const StudentProfile = (props) => {
   const [studentProfile, setStudentProfile] = useState(false);
@@ -64,8 +65,7 @@ const StudentProfile = (props) => {
   const [loading6, setLoading6] = useState(false);
 
   const data2 = {
-    student_id: student_id,
-    search: "",
+    student_user_id: user_id
   };
 
   useEffect(() => {
@@ -132,7 +132,6 @@ const StudentProfile = (props) => {
   };
   const getStudentBalance = async () => {
     const server_response = await ajaxBank.fetchStudentWalletBalance(user_id);
-    console.log(server_response)
     if (server_response.status === "OK") {
       //store results
       setWalletBalance(server_response.details);
@@ -199,7 +198,8 @@ const StudentProfile = (props) => {
   };
 
   const countContacts = async () => {
-    const server_response = await ajaxStudent.countStudentContacts(student_id);
+    const server_response = await ajaxStudent.countStudentContacts(user_id);
+    console.log(server_response)
     if (server_response.status === "OK") {
       setContactCount(server_response.details);
     } else {
@@ -221,8 +221,8 @@ const StudentProfile = (props) => {
   const handleModal3 = () => {
     setModal(false, () =>
       setModal(
-        <AttachParent
-          studentID={student_id}
+        <AddStudentContact
+          userID={user_id}
           h={getStudentContacts}
           j={countContacts}
           isOpen={true}
@@ -323,10 +323,14 @@ const StudentProfile = (props) => {
   }, [schoolDetails.school_id]);
 
   useEffect(() => {
-    countContacts();
-    countLogs();
+    
     getStudentTransfers();
   }, [student_id]);
+
+  useEffect(() => {
+    countContacts();
+    countLogs();
+  }, [user_id]);
 
   useEffect(() => {
     getStudentLogs(page, user_id);
@@ -952,8 +956,8 @@ const StudentProfile = (props) => {
                                       studentContacts.map((item, key) => (
                                         <tr key={key}>
                                           <th scope="row">{key + 1}</th>
-                                          <td>{item.full_name}</td>
-                                          <td>{item.main_contact}</td>
+                                          <td>{item.contact_name}</td>
+                                          <td>{item.parent?.username}</td>
                                           <td>{item.relationship}</td>
                                         </tr>
                                       ))}

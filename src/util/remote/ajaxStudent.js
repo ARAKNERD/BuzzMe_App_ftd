@@ -146,7 +146,7 @@ export default {
   },
   async countStudentContacts(student) {
     let data = {
-      student_id: student,
+      student_user_id: student,
     };
     let response = await apiCall("contact/student/count", data);
     return response;

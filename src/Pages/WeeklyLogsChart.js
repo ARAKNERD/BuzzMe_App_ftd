@@ -21,7 +21,7 @@ class WeeklyLogsChart extends Component {
       series:[
         {
           name: 'Total Calls',
-          type: 'line',
+          type: 'bar',
           data: calls
         }]
       
@@ -32,28 +32,67 @@ class WeeklyLogsChart extends Component {
     this.setState({
       options:{
         chart: {
-          height: 350,
           type: 'line',
-          zoom: {
-            enabled: false
-          }
+           stacked: false,
+           toolbar: {
+               show: false
+             }
         },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'smooth'
-        },
-        colors: ['#042954', '#042954'],
-        grid: {
-          row: {
-            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-            opacity: 0.5
-          },
-        },
-        xaxis: {
-          categories: days,
-        },
+  plotOptions: {
+    bar: {
+      columnWidth: '30%',
+      // distributed: true,
+    }
+  },
+       colors: ['#042954', '#042954'],
+ stroke: {
+  width: [0, 2, 4],
+  curve: 'smooth'
+},
+fill: {
+opacity: [0.85, 0.25, 1],
+gradient: {
+inverseColors: false,
+shade: 'light',
+type: "vertical",
+opacityFrom: 0.85,
+opacityTo: 0.55,
+stops: [0, 100, 100, 100]
+}
+},
+labels: days,
+markers: {
+  size: 0
+},
+yaxis: {
+  title: {
+    // text: 'Points',
+    display: false,
+  },
+  min: 0,
+  tickAmount: 7,
+  // max: 200,
+},
+legend: {
+  display: true,
+  position: 'top'
+},
+tooltip: {
+  shared: true,
+  intersect: false,
+  y: {
+    formatter: function (y) {
+      if (typeof y !== "undefined") {
+        return y.toFixed(0) + " Calls";
+      }
+      return y;
+    }
+  }
+},
+
+grid: {
+  borderColor: '#f1f1f1'
+},
       }         
     })
   }

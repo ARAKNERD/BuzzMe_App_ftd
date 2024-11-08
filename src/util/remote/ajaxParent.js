@@ -53,17 +53,17 @@ export default {
     let response = await apiCall("guardian/count", data);
     return response;
   },
-  async fetchChildren(parent_id) 
+  async fetchChildren(parent_user_id) 
   {
     let data = {
-      "parent_id":parent_id
+      "parent_user_id":parent_user_id
     };
-    let response = await apiCall("link/students/all", data);
+    let response = await apiCall("admin/list_parent_students", data);
     return response;
   },
-  async addGuardianStudent(data) 
+  async addStudentContactByAdmin(data) 
   {
-    let response = await apiCall("link/add", data);
+    let response = await apiCall("admin/student_contact/add", data);
     return response;
   },
   async searchGuardian(data) {
@@ -154,6 +154,11 @@ export default {
       "user_id":user_id
     };
     let response = await apiCall("contact/parent/list", data);
+    return response;
+  },
+  async attachParentToStudent(data) 
+  {
+    let response = await apiCall("admin/attach_parent_to_student", data);
     return response;
   },
 

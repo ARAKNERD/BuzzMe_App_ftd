@@ -7,7 +7,7 @@ import Loader from '../../Components/Common/Loader';
 import TableHeader from '../../Components/Common/TableHeader';
 import ajaxParent from '../../util/remote/ajaxParent';
 import useStateCallback from '../../util/customHooks/useStateCallback';
-import AddStudentParent from './AddStudentParent';
+import AddStudentParent from './AttachStudent';
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
@@ -16,6 +16,7 @@ import ajaxCallStation from '../../util/remote/ajaxCallStation';
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import ajaxBank from '../../util/remote/ajaxBank';
 import DeleteAccount from '../DeleteAccount';
+import AttachStudent from './AttachStudent';
 
 const ParentProfile = props => {
     const [parentProfile, setParentProfile] = useState(false);
@@ -53,7 +54,7 @@ const ParentProfile = props => {
 
     const getChildren =async()=>{
         setLoading2(true)
-        const server_response = await ajaxParent.fetchChildren(id);
+        const server_response = await ajaxParent.fetchChildren(user_id);
         setLoading2(false)
         if(server_response.status==="OK"){
             setChildren(server_response.details);
@@ -122,7 +123,6 @@ const ParentProfile = props => {
       }
     };
     useEffect(()=>{
-        getChildren();
         getParentProfile(id);
       
     }, [id])
@@ -130,13 +130,14 @@ const ParentProfile = props => {
       getWalletTransactions(page, user_id);
     }, [page, user_id]);
     useEffect(() => {
+        getChildren();
         countUserContacts();
         getParentContacts();
         getParentLogs();
         getParentBalance();
       }, [user_id]);
     const handleModal2=()=>{
-        setModal(false, ()=>setModal(<AddStudentParent parentID={id} g={getChildren} isOpen={true}/>))
+        setModal(false, ()=>setModal(<AttachStudent contactPhone={parentProfile.username} contactName={parentProfile.full_name} g={getChildren} h={getParentContacts} i={countUserContacts} isOpen={true}/>))
     }
 
     const handlePagination = (newPage) => {
@@ -414,7 +415,7 @@ const ParentProfile = props => {
                                       contactList.map((item, key) => (
                                         <tr key={key}>
                                           <th scope="row">{key + 1}</th>
-                                          <td>{item.contact_name}</td>
+                                          <td>{item.contact?.full_name}</td>
                                           <td>{item.contact?.username}</td>
                                         </tr>
                                       ))}
