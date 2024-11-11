@@ -54,7 +54,7 @@ function Dashboard() {
 
   const getTransactions = async () => {
     setLoading(true);
-    const server_response = await ajaxBank.fetchRecentTransactions();
+    const server_response = await ajaxBank.fetchRecentMMTransactions();
     setLoading(false);
     if (server_response.status === "OK") {
       setTransactionList(server_response.details);
@@ -232,7 +232,7 @@ function Dashboard() {
             <div className="card custom-card" style={{borderRadius: "10px"}}>
               <div className="card-body map-card">
                 <div class="heading-layout1 mg-b-25">
-                  <TableHeader title="Recent Invoices" subtitle="List of recent invoices"/>
+                  <TableHeader title="Recent MM transactions" subtitle="List of recent mobile money transactions"/>
                   <div class="dropdown">
                     <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">...</a>
                     <div class="dropdown-menu dropdown-menu-right">
@@ -249,17 +249,20 @@ function Dashboard() {
                     <thead>
                       <tr>
                         <th style={{width:"10px"}}>Transaction Time</th>
-                        <th>Student Details</th>
+                        <th>User Details</th>
                         <th>Amount</th>
+
                       </tr>
                     </thead>
                     <tbody>
                       {Array.isArray(transactionList) && transactionList.map((item, key) => (
                         <tr key={key}>
                           <td>{item.created_at?.short_date}<br/><small>{item.created_at?.time}</small></td>
-                          <td>{item.student}<br/><small>{item.school?item.school:"Parent"}</small></td>
+                          <td>{item.user}<br/><small>{item.username}</small></td>
                           <td><span  class="badge bg-teal"><i class="fa fa-circle text-teal fs-9px fa-fw me-5px" style={{color:"#042954"}}></i>UGX. {item.amount}</span><br/>
-                          <span class="badge badge-success">SUCCESSFUL</span>
+                          <span className={`badge ${item.status === "3" ? "badge-success" : item.status === "1" ? "badge-warning" : "badge-danger"}`}>
+                        {item.status === "3" ? "SUCCESSFUL" : item.status === "1" ? "PENDING" : "FAILED"}
+                      </span>
                          </td> 
                         </tr>
                       ))}

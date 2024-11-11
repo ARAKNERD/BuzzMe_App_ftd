@@ -53,6 +53,8 @@ import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
 import StatisticsPage from "./Pages/Statistics/StatisticsPage";
 import ListSchoolStations from "./Pages/Stations/ListSchoolStations";
 import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
+import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
+import ImportStudentsandContacts from "./Pages/students/ImportStudentsandContacts";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -108,6 +110,7 @@ function App(props) {
               <Route path="/contacts" element={<ViewParents />} />
               <Route path="/call-logs" element={<CallLogsPage />} />
               <Route path="/stations" element={<ListStations />} />
+              <Route path="/students_contacts/upload" element={<AdminImportStudentsandContacts />} />
 
               <Route
                 path="/"
@@ -131,6 +134,7 @@ function App(props) {
               <Route path="/contacts" element={<ViewSchoolParents />} />
               <Route path="/call-logs" element={<SchoolLogsPage />} />
               <Route path="/stations" element={<ListSchoolStations />} />
+              <Route path="/students_contacts/upload" element={<ImportStudentsandContacts />} />
 
               <Route
                 path="/"
