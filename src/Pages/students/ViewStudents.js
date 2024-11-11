@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import { useContext } from "react";
-import AuthContext from "../../Context/AuthContext";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import TableHeader from "../../Components/Common/TableHeader";
 import toast, { Toaster } from "react-hot-toast";
@@ -15,7 +14,6 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import SchoolContext from "../../Context/SchoolContext";
 
 function ViewStudents() {
-  const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
   const [studentList, setStudentList] = useState([]);
@@ -29,8 +27,8 @@ function ViewStudents() {
   const getStudentList = async (currentPage) => {
     setLoading2(true);
     const server_response = await ajaxStudent.fetchStudentList(
-      schoolDetails.school_id,
-      currentPage
+      currentPage, schoolDetails.school_id,
+      
     );
     setLoading2(false);
     if (server_response.status === "OK") {
@@ -97,9 +95,9 @@ function ViewStudents() {
     if (query) {
       searchStudents();
     } else {
-      getStudentList(schoolDetails.school_id, page);
+      getStudentList(page, schoolDetails.school_id);
     }
-  }, [schoolDetails.school_id, page]);
+  }, [page, schoolDetails.school_id]);
 
   
 

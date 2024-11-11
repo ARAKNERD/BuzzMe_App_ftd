@@ -100,6 +100,14 @@ function AdminRegisterStudent(props) {
                 <i className="fa-solid fa-plus" /> Import Students
               </button>
             </Link>
+            <Link to={`/students_contacts/upload`}>
+              <button
+                type="button"
+                className="btn-fill-lmd radius-30 mb-5 ml-2 text-light shadow-dodger-blue bg-dodger-blue"
+              >
+                <i className="fa-solid fa-plus" /> Import Students and Contacts
+              </button>
+            </Link>
           </div>
         </div>
         <div className="col-lg-12 col-md-12">

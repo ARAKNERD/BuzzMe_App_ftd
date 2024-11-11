@@ -57,8 +57,8 @@ export default {
     let response = await apiCall("bank/list", data);
     return response;
   },
-  async fetchRecentTransactions(data) {
-    let response = await apiCall("bank/recent", data);
+  async fetchRecentMMTransactions(data) {
+    let response = await apiCall("bank/mm/recent", data);
     return response;
   },
   async fetchBuzzTimeUsed(data) {

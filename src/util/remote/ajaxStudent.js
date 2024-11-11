@@ -196,5 +196,9 @@ export default {
     let response = await apiCall("bank/activate/account", data);
     return response;
   },
+  async importStudentsandContacts(data) {
+    let response = await apiCall("admin/import_students_and_contacts", data);
+    return response;
+  },
   
 };
