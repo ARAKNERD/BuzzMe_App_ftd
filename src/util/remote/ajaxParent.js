@@ -158,6 +158,11 @@ export default {
     let response = await apiCall("admin/set_contact_is_admin_value", data);
     return response;
   },
+  async attachParentToStudent(data) 
+  {
+    let response = await apiCall("admin/attach_parent_to_student", data);
+    return response;
+  },
 
   
   
