@@ -4,11 +4,11 @@ import apiCall from "./apiCall";
 export default {
  
 
-  async fetchBankTransactions(page) {
+  async fetchInvoices(page) {
     let data = {
       page: page
     };
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("invoice/list", data);
     return response;
   },
   async fetchMMTransactions(page) {
@@ -54,7 +54,7 @@ export default {
       to: to,
       search: search
     };
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("invoice/list", data);
     return response;
   },
   async fetchRecentMMTransactions(data) {
@@ -62,11 +62,11 @@ export default {
     return response;
   },
   async fetchBuzzTimeUsed(data) {
-    let response = await apiCall("buzz_time/used", data);
+    let response = await apiCall("buzz_time/used/today", data);
     return response;
   },
   async fetchBuzzTimeLoaded(data) {
-    let response = await apiCall("buzz_time/loaded", data);
+    let response = await apiCall("buzz_time/loaded/today", data);
     return response;
   },
   async fetchUserWalletTransactions(page, user) {
@@ -114,11 +114,11 @@ export default {
       page: page,
       account_id: account
     };
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("invoice/list", data);
     return response;
   },
   async searchAccountInvoices(data) {
-    let response = await apiCall("bank/list", data);
+    let response = await apiCall("invoice/list", data);
     return response;
   },
   async initiateAdminRefund(secure_string, student_user_id, amount) {
@@ -128,6 +128,14 @@ export default {
       amount: amount
     };
     let response = await apiCall("mobile/webapp/admin_refund", data);
+    return response;
+  },
+  async fetchBuzzTimeUsedEachMonth(data) {
+    let response = await apiCall("buzztime/each_month/report", data);
+    return response;
+  },
+  async fetchAccountActivationsEachMonth(data) {
+    let response = await apiCall("account_activations/each_month/report", data);
     return response;
   },
 

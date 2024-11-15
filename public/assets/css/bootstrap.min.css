@@ -4525,6 +4525,7 @@ input[type="submit"].btn-block {
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0.25rem;
+  font-size: xx-small;
 }
 .alert-heading {
   color: inherit;

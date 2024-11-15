@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
 import AppContainer from "../../Components/Structure/AppContainer";
 import Loader from '../../Components/Common/Loader';
@@ -63,6 +63,18 @@ const ParentProfile = props => {
             setChildren("404");
         }
     }
+    const updateContactIsAdmin =async(e, item)=>{
+      setLoading2(true)
+      const server_response = await ajaxParent.giveContactIsAdmin(item.link_id);
+      setLoading2(false)
+      if(server_response.status==="OK"){
+        toast.success(server_response.message);
+        getChildren(user_id);
+      }else{
+          //communicate error
+          toast.error(server_response.message); 
+      }
+  }
 
     const getParentContacts =async()=>{
       setLoading4(true)
@@ -207,6 +219,16 @@ const ParentProfile = props => {
 													</td>
 													<td class="bd-t-0">
 														<h6 class="mg-b-0">{item.student.full_name}</h6><small class="tx-11 tx-gray-500">{item.student?.school}</small>
+													</td>
+                          <td class="bd-t-0">
+                          {item.is_guardian === "0"?<div class="dropdown">
+                <a class="dropdown-toggle" href="#" role="button" 
+                data-toggle="dropdown" aria-expanded="false">...</a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <Link class="dropdown-item"  onClick={(e) => updateContactIsAdmin(e, item)}><i class="fas fa-user-check text-orange-peel"></i>Set Admin</Link>
+                </div>
+                                    </div>:""}
 													</td>
 													
 												</tr>

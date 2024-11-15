@@ -21,7 +21,7 @@ function AllTransactions() {
 
   const getTransactions = async (currentPage) => {
     setLoading(true);
-    const server_response = await ajaxBank.fetchBankTransactions(currentPage);
+    const server_response = await ajaxBank.fetchInvoices(currentPage);
     setLoading(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);

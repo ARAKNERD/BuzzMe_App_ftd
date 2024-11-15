@@ -91,7 +91,7 @@ export default {
     return response;
   },
   async fetchStudentContacts(data) {
-    let response = await apiCall("contact/list", data);
+    let response = await apiCall("admin/list_student_contacts", data);
 
     return response;
   },
@@ -136,19 +136,20 @@ export default {
     let response = await apiCall("relative/add", data);
     return response;
   },
-  async getSchoolStudents(parent, school) {
+  async getParentStudentsInSameSchool(school_id, parent_user_id, ) {
     let data = {
-      parent_id: parent,
-      school_id: school,
+      school_id: school_id,
+      parent_user_id: parent_user_id,
+      
     };
-    let response = await apiCall("link/students/list", data);
+    let response = await apiCall("admin/list_parent_students/school", data);
     return response;
   },
   async countStudentContacts(student) {
     let data = {
       student_user_id: student,
     };
-    let response = await apiCall("contact/student/count", data);
+    let response = await apiCall("admin/count_student_contacts", data);
     return response;
   },
   async searchStudentByNumber(number) {

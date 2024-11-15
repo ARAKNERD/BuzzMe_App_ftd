@@ -65,10 +65,7 @@ const SchoolParentProfile = (props) => {
 }
   const getChildren = async () => {
     setLoading2(true);
-    const server_response = await ajaxStudent.getSchoolStudents(
-      parent,
-      schoolDetails.school_id
-    );
+    const server_response = await ajaxStudent.getParentStudentsInSameSchool(schoolDetails.school_id, user_id);
     setLoading2(false);
     if (server_response.status === "OK") {
       setChildren(server_response.details);
@@ -100,24 +97,6 @@ const getParentBalance = async () => {
     setWalletBalance(false);
   }
 };
-
-// const getWalletTransactions = async () => {
-//   setLoading3(true);
-//   const server_response = await ajaxBank.fetchStudentWalletTransactions(
-//     user_id,
-//     page
-//   );
-//   setLoading3(false);
-//   if (server_response.status === "OK") {
-//     setMeta(server_response.details.meta.list_of_pages);
-//     setWalletTransactions(server_response.details.list);
-//   } else {
-//     //communicate error
-//     setWalletTransactions("404");
-//   }
-// };
-
-
     const countUserContacts =async()=>{
         const server_response = await ajaxParent.countUserContacts(user_id);
         if(server_response.status==="OK"){
@@ -128,23 +107,7 @@ const getParentBalance = async () => {
         }
     }
 
-    // const setNextPageNumber = () => {
-    //   if (meta.length === page) {
-    //   } else {
-    //     setPage(page + 1);
-    //   }
-    // };
-  
-    // const setPreviousPageNumber = () => {
-    //   if (page === 1) {
-    //   } else {
-    //     setPage(page - 1);
-    //   }
-    // };
-    // const setPageNumber = (e, item) => {
-    //   setPage(item);
-    // };
-
+    
   const handleModal2 = () => {
     setModal(false, () =>
       setModal(
@@ -160,17 +123,14 @@ const getParentBalance = async () => {
 
   useEffect(() => {
     getChildren();
-  }, [parent, schoolDetails.school_id]);
+  }, [schoolDetails.school_id, user_id]);
 
   useEffect(() => {
     countUserContacts();
     getParentContacts();
-    // getParentLogs();
     getParentBalance();
   }, [user_id]);
-  // useEffect(() => {
-  //   getWalletTransactions();
-  // }, [user_id, page]);
+
   return (
     <AppContainer title={"Contact Profile"}>
       <Toaster position="top-center" reverseOrder={false} />
@@ -227,7 +187,7 @@ const getParentBalance = async () => {
                         }/></div>
 													</td>
 													<td class="bd-t-0">
-														<h6 class="mg-b-0">{item.full_name}</h6><small class="tx-11 tx-gray-500">{item.school_name}</small>
+														<h6 class="mg-b-0">{item.student.full_name}</h6><small class="tx-11 tx-gray-500">{item.student?.school}</small>
 													</td>
 													
 												</tr>
@@ -315,16 +275,6 @@ const getParentBalance = async () => {
                                 Contacts{" "}
                               </Nav.Link>
                             </Nav.Item>
-                            {/* <Nav.Item>
-                              <Nav.Link size="sm" eventKey="third">
-                                Call Logs{" "}
-                              </Nav.Link>
-                            </Nav.Item>
-                            <Nav.Item>
-                              <Nav.Link size="sm" eventKey="fourth">
-                                Transactions{" "}
-                              </Nav.Link>
-                            </Nav.Item> */}
                           </Nav>
                         </Col>
 
@@ -407,16 +357,7 @@ const getParentBalance = async () => {
                             <Tab.Pane eventKey="second">
                               <TableHeader
                                 subtitle="List of all the contacts"
-                                // viewButton={
-                                //   <a
-                                //     href="#"
-                                //     onClick={handleModal3}
-                                //     className="btn btn-info"
-                                //     style={{ float: "right" }}
-                                //   >
-                                //     Add Contact
-                                //   </a>
-                                // }
+                              
                               />
 
                               <div className="table-responsive">
@@ -436,7 +377,7 @@ const getParentBalance = async () => {
                                       contactList.map((item, key) => (
                                         <tr key={key}>
                                           <th scope="row">{key + 1}</th>
-                                          <td>{item.contact_name}</td>
+                                          <td>{item.contact?.full_name}</td>
                                           <td>{item.contact?.username}</td>
                                         </tr>
                                       ))}
@@ -455,222 +396,6 @@ const getParentBalance = async () => {
                                 {loading4 && <Loader />}
                               </div>
                             </Tab.Pane>
-
-                            {/* <Tab.Pane eventKey="third">
-                              <div className="border-top mt-1"></div>
-                              <div className="table-responsive">
-                                <table
-                                  className="table table-hover text-nowrap mg-b-0"
-                                  id="seventh"
-                                >
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">Date & Time</th>
-                                      <th scope="col">Contact</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {Array.isArray(logsList) &&
-                                      logsList.map((item, key) => (
-                                        <tr key={key}>
-                                          
-                                          <td>
-                                          <OverlayTrigger
-                        placement="top"
-                        overlay={
-                          <Tooltip id="refresh-tooltip">
-                            {item.type}
-                          </Tooltip>
-                        }
-                      >{item.type ===
-                                            "missed" ? (
-                                              <i
-                                                className="fe fe-phone-missed"
-                                                style={{
-                                                  color: "red",
-                                                  paddingRight: "10px",
-                                                }}
-                                              ></i>
-                                            ) : item.type ===
-                                            "sent" ? (
-                                              <i
-                                                className="fe fe-phone-outgoing"
-                                                style={{
-                                                  color: "green",
-                                                  paddingRight: "10px",
-                                                }}
-                                              ></i>
-                                            ):(
-                                              <i
-                                                className="fe fe-phone-incoming"
-                                                style={{
-                                                  color: "green",
-                                                  paddingRight: "10px",
-                                                }}
-                                              ></i>
-                                            )}</OverlayTrigger>{" "}
-                                            {item.call_time}
-                                          </td>
-
-                                          <td className="text-dark">
-                                            {item.name}
-                                            <br />
-                                            <small>{item.number}</small>
-                                          </td>
-                                        </tr>
-                                      ))}
-                                    
-                                    {logsList === "404" && (
-                                      <tr>
-                                        <td
-                                          colSpan="4"
-                                          style={{ textAlign: "center" }}
-                                        >
-                                          No call logs for this contact yet.
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </tbody>
-                                </table>
-                                {loading5 && <Loader />}
-                              </div>
-                            </Tab.Pane> */}
-                            {/* <Tab.Pane eventKey="fourth">
-                              <div className="border-top mt-1"></div>
-                              <div className="table-responsive">
-                                <table
-                                  className="table table-hover text-nowrap mg-b-0"
-                                  id="seventh"
-                                >
-                                  <thead>
-                                    <tr>
-                                      <th style={{ width: "10px" }}>
-                                        Transaction Date
-                                      </th>
-                                      <th>Phone Number</th>
-                                      <th>Amount</th>
-                                      <th>Transaction Type</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    {Array.isArray(walletTransactions) &&
-                                      walletTransactions.map((item, key) => (
-                                        <tr key={key}>
-                                          <td>
-                                            {item.created_at?.short_date}
-                                            <br />
-                                            <small>
-                                              {item.created_at?.time}
-                                            </small>
-                                          </td>
-                                          <td>
-                                            {item.phone_number
-                                              ? item.phone_number
-                                              : "N/A"}
-                                          </td>
-                                          <td>
-                                            <span class="badge bg-teal">
-                                              <i
-                                                class="fa fa-circle text-teal fs-9px fa-fw me-5px"
-                                                style={{ color: "#042954" }}
-                                              ></i>
-                                              UGX.{" "}
-                                              {item.account ===
-                                                "ACCOUNT ACTIVATION" ||
-                                              item.account === "BUZZTIME LOAD"
-                                                ? item.cash_in
-                                                : item.cash_out}
-                                            </span>
-                                            <br />
-                                            {item.status === "3" ? (
-                                              <span class="badge badge-success">
-                                                SUCCESSFUL
-                                              </span>
-                                            ) : item.status === "1" ? (
-                                              <span class="badge badge-warning">
-                                                PENDING
-                                              </span>
-                                            ) : (
-                                              <span class="badge badge-danger">
-                                                FAILED
-                                              </span>
-                                            )}
-                                          </td>
-                                          <td>
-                                            <span class="badge badge-info">
-                                              {item.account}
-                                            </span>
-                                          </td>
-                                          <td>{item.internal_ref}</td>
-                                        </tr>
-                                      ))}
-                                    {walletTransactions === "404" && (
-                                      <tr>
-                                        <td
-                                          colSpan="4"
-                                          style={{ textAlign: "center" }}
-                                        >
-                                          No transactions involving this contact
-                                          yet.
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </tbody>
-                                  <div
-                                    className="align-items-center justify-content-center pos-absolute"
-                                    style={{ left: "50%" }}
-                                  >
-                                    <button
-                                      className="btn btn-dark"
-                                      style={{
-                                        borderRight: "1px solid yellow",
-                                      }}
-                                      onClick={setPreviousPageNumber}
-                                    >
-                                      <i className="fa fa-angle-left mr-2"></i>{" "}
-                                      Prev
-                                    </button>
-                                    {Array.isArray(meta) &&
-                                      meta.map((item) =>
-                                        page === item ? (
-                                          <button
-                                            style={{
-                                              borderRight: "1px solid yellow",
-                                            }}
-                                            className="btn btn-primary"
-                                          >
-                                            {item}
-                                          </button>
-                                        ) : (
-                                          <button
-                                            onClick={(e) =>
-                                              setPageNumber(e, item)
-                                            }
-                                            style={{
-                                              borderRight: "1px solid yellow",
-                                            }}
-                                            className="btn btn-dark"
-                                          >
-                                            {item}
-                                          </button>
-                                        )
-                                      )}
-
-                                    <button
-                                      style={{
-                                        borderRight: "1px solid yellow",
-                                      }}
-                                      className="btn btn-dark"
-                                      onClick={setNextPageNumber}
-                                    >
-                                      Next
-                                      <i className="fa fa-angle-right ml-2"></i>
-                                    </button>
-                                  </div>
-                                </table>
-                                {loading3 && <Loader />}
-                              </div>
-                            </Tab.Pane> */}
                           </Tab.Content>
                         </Col>
                       </Row>

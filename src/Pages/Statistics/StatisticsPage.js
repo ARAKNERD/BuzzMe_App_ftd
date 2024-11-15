@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import TableHeader from "../../Components/Common/TableHeader";
 import ajaxBank from "../../util/remote/ajaxBank";
+import AirtimePurchasesChart from "./AirtimePurchasesChart";
+import AccountActivationsChart from "./AccountActivationsChart";
+import CallsCostChart from "./CallsCostChart";
+import ChatCostChart from "./ChatCostChart";
+import CallCategoriesChart from "./CallCategoriesChart";
+import ChatCategoriesChart from "./ChatCategoriesChart";
 
 function StatisticsPage() {
 
@@ -58,48 +63,60 @@ function StatisticsPage() {
     <AppContainer title="Statistics">
 
       <div className="row">
-        
-
         <div className="col-lg-12">
-        <div className="row">
-            <div class="col-lg-12">
-							<div class="card custom-card " style={{paddingBottom:"10px"}}>
-              <div className="card-body map-card gradient-my-blue">
-              <div class="item-title mb-2" style={{color:"white"}}><b>TOTAL </b></div>
-								<div class="row" >
-                <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right">
-										<div class="text-center">
-											<h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeTotal ? buzzTimeTotal.total_buzztime_c : "..."}</span></h2>
-											<p class="mb-0 text-light"> Airtime Purchases</p>
-										</div>
-									</div>
-									<div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
-										<div class="text-center" >
-                                        <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{accountActivationTotal ? accountActivationTotal.total_account_activations_c : "..."}</span></h2>
-                                        <p class="mb-0 text-light"> Account Activations</p>
-										</div>
-									</div>
-                                    <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
-										<div class="text-center" >
-                                        <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{callChargesTotal ? callChargesTotal.total_call_charges_c : "..."}</span></h2>
-                                        <p class="mb-0 text-light"> Call Charges</p>
-										</div>
-									</div>
-									<div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0" >
-										<div class="text-center" >
-                                        <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{messageChargesTotal ? messageChargesTotal.total_message_charges_c : "..."}</span></h2>
-                                        <p class="mb-0 text-light"> Message Charges</p>
-										</div>
-									</div>
-                                  
-								</div></div>
-							</div></div>
-                            
-              </div>
+            <div class="card custom-card " style={{paddingBottom:"10px"}}>
+            <div className="card-body map-card gradient-my-blue">
+            <div class="item-title mb-2" style={{color:"white"}}><b>TOTAL </b></div>
+              <div class="row" >
+              <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right">
+                  <div class="text-center">
+                    <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{buzzTimeTotal ? buzzTimeTotal.total_buzztime_c : "..."}</span></h2>
+                    <p class="mb-0 text-light"> Buzztime Purchases</p>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+                  <div class="text-center" >
+                                      <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{accountActivationTotal ? accountActivationTotal.total_account_activations_c : "..."}</span></h2>
+                                      <p class="mb-0 text-light"> Account Activations</p>
+                  </div>
+                </div>
+                                  <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0 border-right" >
+                  <div class="text-center" >
+                                      <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{callChargesTotal ? callChargesTotal.total_call_charges_c : "..."}</span></h2>
+                                      <p class="mb-0 text-light"> Call Charges</p>
+                  </div>
+                </div>
+                <div class="col-xl-3 col-lg-12 col-sm-6 pr-0 pl-0" >
+                  <div class="text-center" >
+                                      <h2 class="mb-1 number-font" style={{color:"white"}}><span class="counter"><small>UGX. </small>{messageChargesTotal ? messageChargesTotal.total_message_charges_c : "..."}</span></h2>
+                                      <p class="mb-0 text-light"> Message Charges</p>
+                  </div>
+                </div>
+                                
+              </div></div>
+            </div>                  
         </div>
       </div>
       <div className="row">
-         
+        <div className="col-lg-6">
+          <div className="row">
+            <AirtimePurchasesChart/>
+
+            <AccountActivationsChart/>
+
+            <CallsCostChart/>
+
+            <ChatCostChart/>
+          </div>
+        </div>
+
+        <div className="col-lg-6">
+        <div className="row">
+          <CallCategoriesChart/>
+          <ChatCategoriesChart/>
+        </div>
+    
+        </div>
       </div>
      
     </AppContainer>
