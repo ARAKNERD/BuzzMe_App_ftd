@@ -15,16 +15,6 @@ export default {
     let response = await apiCall("guardian/update", data);
     return response;
   },
-  async searchNIN(data) 
-  {
-    let response = await apiCall("guardian/nin", data);
-    return response;
-  },
-  async searchTerms(data) 
-  {
-    let response = await apiCall("guardian/terms", data);
-    return response;
-  },
   async createParent(data) 
   {
     let response = await apiCall("guardian/add", data);
@@ -63,7 +53,7 @@ export default {
   },
   async addStudentContactByAdmin(data) 
   {
-    let response = await apiCall("admin/student_contact/add", data);
+    let response = await apiCall("admin/add_student_contact", data);
     return response;
   },
   async searchGuardian(data) {
@@ -122,7 +112,7 @@ export default {
       "school_id":school_id,
       "page": page,
     };
-    let response = await apiCall("link/parents/school", data);
+    let response = await apiCall("admin/list/school_buzz_contacts", data);
     return response;
   },
   async searchSchoolParents(search, school_id, page) {
@@ -131,7 +121,7 @@ export default {
       "school_id":school_id,
       "page": page,
     };
-    let response = await apiCall("link/parents/school", data);
+    let response = await apiCall("admin/list/school_buzz_contacts", data);
     return response;
   },
   async fetchTodayGuardians(data) {
@@ -146,14 +136,26 @@ export default {
     let data = {
       "account_id":account_id
     };
-    let response = await apiCall("contact/user/count", data);
+    let response = await apiCall("admin/count_user_contacts", data);
     return response;
   },
   async listParentContacts(user_id) {
     let data = {
       "user_id":user_id
     };
-    let response = await apiCall("contact/parent/list", data);
+    let response = await apiCall("admin/list_parent_contacts", data);
+    return response;
+  },
+  async attachParentToStudent(data) 
+  {
+    let response = await apiCall("admin/attach_parent_to_student", data);
+    return response;
+  },
+  async giveContactIsAdmin(link_id) {
+    let data = {
+      "link_id":link_id
+    };
+    let response = await apiCall("admin/set_contact_is_admin_value", data);
     return response;
   },
   async attachParentToStudent(data) 

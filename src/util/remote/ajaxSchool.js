@@ -112,11 +112,6 @@ export default {
 
   // Contacts
 
-  async fetchStudentContactList(data) {
-    let response = await apiCall("contact/list", data);
-    return response;
-  },
-
   async createStudentContact(
     contact_number,
     contact_name,
@@ -186,7 +181,7 @@ export default {
     let data = {
       school_id: school
     };
-    let response = await apiCall("contact/school/count", data);
+    let response = await apiCall("admin/count/school_buzz_contacts", data);
     return response;
   },
 };

@@ -134,4 +134,24 @@ export default {
     let response = await apiCall("call_log/list/user", data);
     return response;
   },
+
+  async callCostEachMonth(data) {
+    let response = await apiCall("call_cost/each_month/report", data);
+    return response;
+  },
+
+  async chatCostEachMonth(data) {
+    let response = await apiCall("chats_cost/each_month/report", data);
+    return response;
+  },
+
+  async callCategoriesCostEachMonth(data) {
+    let response = await apiCall("call_cost/category/each_month/report", data);
+    return response;
+  },
+
+  async chatCategoriesCostEachMonth(data) {
+    let response = await apiCall("chat_categories/each_month/report", data);
+    return response;
+  },
 };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
-import { useNavigate} from "react-router-dom";
 import ajaxStudent from "../../util/remote/ajaxStudent";
 import { useContext } from "react";
 import Loader from "../../Components/Common/Loader";
@@ -10,6 +9,7 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
 import SchoolContext from "../../Context/SchoolContext";
+import Alert from "../../Components/Common/Alert";
 
 
 
@@ -22,8 +22,9 @@ const AdminImportStudentsandContacts = () => {
   const [group, setGroup] = useState("");
   const [school, setSchool] = useState("");
   const {schoolList} = useContext(SchoolContext);
+  const [showButton, setShowButton] = useState(false);
 
-  const navigation = useNavigate();
+  const [info, setInfo] = useState("");
 
   const schoolData = {
     school_id: school,
@@ -84,14 +85,35 @@ const AdminImportStudentsandContacts = () => {
     const server_response = await ajaxStudent.importStudentsandContacts(schoolData);
     setLoading(false);
     if (server_response.status === "OK") {
-      toast.success(server_response.message);
+      
       setSaved(true);
-      setTimeout(() => {
-        navigation(-1);
-      }, 1000);
+      setInfo(<Alert message={server_response.details.message} type="success"/>);
+      server_response.details.results.forEach(result => {
+        setInfo(prevInfo => (
+            <>
+                {prevInfo}
+                <Alert
+                    message={`Excel sheet row ${result.row}: ${result.message}`}
+                    type={result.status === "success" ? "success" : "danger"}
+                />
+            </>
+        ));
+    });
+    setShowButton(true);
     } else {
-      toast.error(server_response.message);
+      setInfo(<Alert message={server_response.message} type="danger"/>);
+      
     }
+  };
+
+  const handleButton = () => {
+    setInfo(false);
+    setSaved(false);
+    setSchool("");
+    setGroup("");
+    setExcelData([]);
+    setShowButton(false);
+    
   };
 
   const getGroups = async () => {
@@ -111,8 +133,19 @@ const AdminImportStudentsandContacts = () => {
   return (
     <AppContainer title="Import Students and Contacts">
       <div className="row">
+      <div className="col-lg-12 col-md-12">
+          <div className="pl-20" style={{float: "right"}}>
+              {showButton?<button
+                type="button"
+                onClick={handleButton}
+                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
+                <i className="fa-solid fa-plus" /> Import New List
+              </button>:""}
+          </div>
+        </div>
     <div className="col-12 col-xl-12">
       <Toaster position="top-center" reverseOrder={false} />
+
       <div
         className="box user-pro-list overflow-hidden mb-30"
         style={{
@@ -132,6 +165,7 @@ const AdminImportStudentsandContacts = () => {
 
         </div>
         {loading && <Loader />}
+        {info}
         {excelData.length > 0 && (
           <div>
             <h3
