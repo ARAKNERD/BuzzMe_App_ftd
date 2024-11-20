@@ -37,6 +37,7 @@ const StudentProfile = (props) => {
   const [logsCount, setLogsCount] = useState(false);
   const [walletTransactions, setWalletTransactions] = useState([]);
   const [walletBalance, setWalletBalance] = useState(false);
+  const [activationLoader, setActivationLoader] = useState(false);
 
   const [page, setPage] = useState(1);
   const [meta, setMeta] = useState([]);
@@ -277,6 +278,20 @@ const StudentProfile = (props) => {
     );
   };
 
+  const freeActivation = async () => {
+    setActivationLoader(true);
+    const server_response = await ajaxStudent.activateUnpaidAccount(user_id);
+    setActivationLoader(false);
+
+    if (server_response.status === "OK") {
+      toast.success(server_response.message);
+      getStudentProfile();
+    } else {
+      //communicate error
+      toast.error(server_response.message);
+    }
+  };
+
   const assignCard = () => {
     setModal(false, () =>
       setModal(
@@ -365,6 +380,7 @@ const StudentProfile = (props) => {
                     <h5 style={{ color: "white" }}>{studentProfile.group}</h5>
                     <div class="social-links mt-2 align-items-center ">
                     <a href="#" onClick={payActivationFee} className="btn btn-success mr-2"><i className="fa fa-toggle-on mr-1"></i>Activate Account</a>
+                    <a href="#" onClick={freeActivation} className="btn btn-success mr-2"><i className="fa fa-toggle-on mr-1"></i>{activationLoader ? "activating ..." : "Activate Without Payment"}</a>
                     <a href="#" onClick={assignCard} className="btn btn-info mr-2"><i className="fa fa-id-badge mr-1"></i>Assign Card</a>
                         <a href="#" onClick={remoteLogout} className="btn btn-danger mr-2"><i className="fa fa-arrow-right-from-bracket mr-1"></i>Log Out User</a>
                         <RenderSecure code="ADMIN-VIEW"><a href="#" onClick={adminRefund} className="btn btn-warning mr-2 mt-3"><i className="fa fa-rotate-right mr-1"></i>Admin Refund</a> </RenderSecure>
