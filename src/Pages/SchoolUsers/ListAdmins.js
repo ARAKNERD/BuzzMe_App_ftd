@@ -7,6 +7,9 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import TableHeader from "../../Components/Common/TableHeader";
 import ResetPassword from "./ResetPassword";
 import toast, {Toaster} from "react-hot-toast";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import RemoteLogOut from "../RemoteLogOut";
 
 function ListAdmins() {
 
@@ -16,6 +19,17 @@ function ListAdmins() {
     const handleAdd=()=>{
         setModal(false, ()=>setModal(<AddAdmin g={getAdminList}  isOpen={true}/>))
     }
+
+    const remoteLogout = (e, item) => {
+      setModal(false, () =>
+        setModal(
+          <RemoteLogOut
+            userID={item.user_id}
+            isOpen={true}
+          />
+        )
+      );
+    };
 
     const handleUpdate=(e,item)=>{
         setModal(false, ()=>setModal(<ResetPassword accountID={item.account_id} isOpen={true}/>))
@@ -71,6 +85,13 @@ function ListAdmins() {
                                   onClick={(e) => handleUpdate(e,item)}>
                                   <i className="fas fa-cogs text-dark-pastel-green"></i>
                                   Reset Password
+                                </Link>
+                                <Link
+                              className="dropdown-item"
+                              to="#"
+                              onClick={(e) => remoteLogout(e,item)}>
+                              <FontAwesomeIcon icon={faArrowRightFromBracket} style={{ color: "red", marginRight: "3px" }} />
+                                Remote Log-Out
                                 </Link>
                               </div>
                             </div>

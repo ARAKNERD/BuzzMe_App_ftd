@@ -23,6 +23,17 @@ function ActivateAccount() {
     setPassView1(!passView1);
   };
 
+  const handleLogout = async () => {
+
+    const server_response = await ajaxUser.logoutUser(user_id);
+    if (server_response.status === "OK") {
+      localStorage.removeItem("buzzMe@user");
+      navigate("/login");
+      window.location.reload();
+    } 
+   
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -36,9 +47,7 @@ function ActivateAccount() {
       if (server_response.status === "OK") {
         setLoading(false);
         toast.success(server_response.message);
-        localStorage.removeItem("buzzMe@user");
-        navigate("/");
-        window.location.reload();
+        handleLogout(user_id)
         
       } else {
         setLoading(false);

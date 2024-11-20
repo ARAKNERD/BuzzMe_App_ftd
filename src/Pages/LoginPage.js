@@ -32,11 +32,8 @@ function Login() {
     if (server_response.status === "OK") {
 
       localStorage.setItem("buzzMe@user", server_response.details);
-      
-
       const access_token = localStorage.getItem('buzzMe@user');
       const decorded_token = functions.parseJwt(access_token);
-      const role = decorded_token['data']['role_id'];
       const secure = decorded_token['data']['secure'];
       if(secure === "0"){
         navigate("/Activate/account");

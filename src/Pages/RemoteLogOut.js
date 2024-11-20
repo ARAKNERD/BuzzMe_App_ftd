@@ -13,6 +13,8 @@ const RemoteLogOut=(props)=>{
         e.preventDefault()
         setLoading(true)
         const server_response = await ajaxUser.remoteLogout(props.userID);
+        console.log(props.userID)
+        console.log(server_response)
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);

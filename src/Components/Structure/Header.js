@@ -2,16 +2,27 @@ import React, {useContext, useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import AuthContext from "../../Context/AuthContext";
 import { RenderSecure } from "../../util/script/RenderSecure";
+import ajaxUser from "../../util/remote/ajaxUser";
+import { toast } from 'react-hot-toast'
 
 export default function Header(props) {
-  const {user} = useContext(AuthContext);
+  const {user, userId} = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const onLogout = () => {
-    localStorage.removeItem("buzzMe@user");
-    navigate("/login");
-    window.location.reload();
+  const handleLogout = async (e) => {
+
+    e.preventDefault();
+    const server_response = await ajaxUser.logoutUser(userId);
+    if (server_response.status === "OK") {
+      localStorage.removeItem("buzzMe@user");
+      navigate("/login");
+      window.location.reload();
+    } 
+    else{
+      toast.error(server_response.message); 
+    }
   };
+  
 
   function addSidebarToggleMobileListener() {
     document
@@ -126,7 +137,7 @@ export default function Header(props) {
                     </li>
 
                     <li>
-                      <Link onClick={onLogout}>
+                      <Link onClick={handleLogout}>
                         <i className="flaticon-turn-off" />
                         Log Out
                       </Link>
