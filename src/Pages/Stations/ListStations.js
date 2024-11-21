@@ -9,18 +9,19 @@ import AddStation from "./AddStation";
 import useStateCallback from "../../util/customHooks/useStateCallback";
 import { RenderSecure } from "../../util/script/RenderSecure";
 import UpdateStation from "./UpdateStation";
-import UpdateHours from "./UpdateHours";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import TurnOnStation from "./TurnOnStation";
 import TurnOffStation from "./TurnOffStation";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import AddWorkingHours from "./AddWorkingHours";
+import UpdateTimeRangeHours from "./UpdateTimeRangeHours";
 
 function ListStations() {
   const [stationList, setStationList] = useState([]);
   const [modal, setModal] = useStateCallback(false);
-
+  const [stationTimeRanges, setStationTimeRanges] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [query, setQuery] = useState("");
@@ -33,9 +34,27 @@ function ListStations() {
     setLoading(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
-      setStationList(server_response.details.list || []);
+      const stations = server_response.details.list || [];
+      setStationList(stations);
+      stations.forEach(station => {
+        getStationTimeRanges(station.station_id); // Fetch time ranges for each station
+      });
     } else {
       setStationList([]);
+    }
+  };
+  const getStationTimeRanges = async (stationId) => {
+    const server_response = await ajaxStation.fetchStationTimeRanges(stationId);
+    if (server_response.status === "OK") {
+      setStationTimeRanges(prevState => ({
+        ...prevState,
+        [stationId]: server_response.details || [],
+      }));
+    } else {
+      setStationTimeRanges(prevState => ({
+        ...prevState,
+        [stationId]: [],
+      }));
     }
   };
 
@@ -78,15 +97,28 @@ function ListStations() {
       )
     );
   };
-  const updateHours = (e, item) => {
+  const addHours = (e, item) => {
     setModal(false, () =>
       setModal(
-        <UpdateHours
+        <AddWorkingHours
           stationID={item.station_id}
           g={getStations}
           page={page}
-          startTime={item.start_time}
-          endTime={item.end_time}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
+  const handleUpdateHours = (e, timeRange) => {
+    setModal(false, () =>
+      setModal(
+        <UpdateTimeRangeHours
+          timeID={timeRange.time_id}
+          g={getStations}
+          page={page}
+          startTime={timeRange.start_time}
+          endTime={timeRange.end_time}
           isOpen={true}
         />
       )
@@ -246,7 +278,7 @@ function ListStations() {
               <th>Station Name</th>
               <th>Station Code</th>
               <th>School</th>
-              <th>Active Hours</th>
+              <th>Working Hours</th>
               <th>Status</th>
               <th>Actions</th>
               </tr>
@@ -263,11 +295,25 @@ function ListStations() {
                                 ? item.school.school_name
                                 : "Not installed"}
                             </td>
-                          <td>
-                            {item.start_time
-                              ? `${item.start_time} - ${item.end_time}`
-                              : "Not set"}
-                          </td>
+                            <td>
+                  {stationTimeRanges[item.station_id] && stationTimeRanges[item.station_id].length > 0 ? (
+                    <ul>
+                      {stationTimeRanges[item.station_id].map((timeRange, idx) => (
+                        <li key={idx}>
+                          {timeRange.start_time} - {timeRange.end_time}
+                          <span 
+                            className="ml-2 text-secondary cursor-pointer"
+                            onClick={(e) => handleUpdateHours(e, timeRange)}
+                          >
+            <i className="fa fa-pencil-alt"></i>
+          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    "No working hours set"
+                  )}
+                </td>
                           <td>
                             {item.status === "300" ? (
                               <span class="badge badge-success">Active</span>
@@ -292,7 +338,7 @@ function ListStations() {
                                 <Link
                                   className="dropdown-item"
                                   to="#"
-                                  onClick={(e) => updateHours(e, item)}
+                                  onClick={(e) => addHours(e, item)}
                                 >
                                   <FontAwesomeIcon
                                     icon={faClock}
@@ -301,7 +347,7 @@ function ListStations() {
                                       marginRight: "3px",
                                     }}
                                   />
-                                  Change Active Hours
+                                  Add Station Hours
                                 </Link>
                                 <RenderSecure code="ADMIN-VIEW">
                                   <Link

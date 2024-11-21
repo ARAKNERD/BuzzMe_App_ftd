@@ -9,12 +9,12 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import { RenderSecure } from "../../util/script/RenderSecure";
 import AuthContext from "../../Context/AuthContext";
 import UpdateStation from "./UpdateStation";
-import UpdateHours from "./UpdateHours";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
 import TurnOnStation from "./TurnOnStation";
 import TurnOffStation from "./TurnOffStation";
 import SchoolContext from "../../Context/SchoolContext";
+import AddWorkingHours from "./AddWorkingHours";
 
 function ListSchoolStations() {
   const [stationList, setStationList] = useState([]);
@@ -81,15 +81,13 @@ function ListSchoolStations() {
       )
     );
   };
-  const updateHours = (e, item) => {
+  const addHours = (e, item) => {
     setModal(false, () =>
       setModal(
-        <UpdateHours
+        <AddWorkingHours
           stationID={item.station_id}
           g={getStations}
           page={page}
-          startTime={item.start_time}
-          endTime={item.end_time}
           isOpen={true}
         />
       )
@@ -249,7 +247,7 @@ function ListSchoolStations() {
                                 <Link
                                   className="dropdown-item"
                                   to="#"
-                                  onClick={(e) => updateHours(e, item)}
+                                  onClick={(e) => addHours(e, item)}
                                 >
                                   <FontAwesomeIcon
                                     icon={faClock}

@@ -83,5 +83,32 @@ export default {
     let response = await apiCall("call_log/admin/complete", data);
     return response;
   },
-  
+  async fetchStationTimeRanges(station_id) 
+  {
+    let data = {
+      station_id: station_id
+    };
+    let response = await apiCall("station/timerange/list", data);
+    return response;
+  },
+  async addStationTimeRange(station_id, start_time, end_time) 
+  {
+    let data = {
+      station_id: station_id,
+      start_time: start_time,
+      end_time:end_time
+    };
+    let response = await apiCall("station/timerange/add", data);
+    return response;
+  },
+  async updateStationTimeRange(time_id, start_time, end_time) 
+  {
+    let data = {
+      time_id: time_id,
+      start_time:start_time,
+      end_time:end_time
+    };
+    let response = await apiCall("station/timerange/update", data);
+    return response;
+  },
 };

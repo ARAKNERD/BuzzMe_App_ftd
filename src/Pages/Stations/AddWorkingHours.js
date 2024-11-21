@@ -4,27 +4,23 @@ import ajaxStation from "../../util/remote/ajaxStation";
 import Loader from "../../Components/Common/Loader";
 import SystemModal from "../../Components/Common/SystemModal";
 
-const UpdateHours=(props)=>{
+const AddWorkingHours=(props)=>{
 
     const [loading, setLoading] = useState(false)
-    const [startTime, setStartTime] = useState(props.startTime);
-    const [endTime, setEndTime] = useState(props.endTime);
+    const [startTime, setStartTime] = useState("");
+    const [endTime, setEndTime] = useState("");
 
-    const data={
-        station_id: props.stationID,
-        start_time: startTime,
-        end_time: endTime
-    }
-
-    const handleUpdate = async(e) =>{
+    const handleAddHours = async(e) =>{
         e.preventDefault()
         if(startTime.length>0 || endTime.length>0){
             setLoading(true)
-            const server_response = await ajaxStation.updateHours(data);
+            const server_response = await ajaxStation.addStationTimeRange(props.stationID, startTime, endTime);
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
-                props.g(props.page)
+                props.g(props.page);
+                setStartTime("");
+                setEndTime("");
             }
             else{
                 toast.error(server_response.message); 
@@ -47,15 +43,15 @@ const UpdateHours=(props)=>{
                     <button 
                         type="button" 
                         className={`btn-fill-md text-light bg-dodger-blue`} 
-                        onClick={handleUpdate}>Save Changes<i class="fas fa-check mg-l-15"></i></button>
+                        onClick={handleAddHours}>Save Hours<i class="fas fa-check mg-l-15"></i></button>
                     </>
         }
     }
 
     return(
         <SystemModal
-            title="Update Station Active Hours"
-            id="model-update-hours"
+            title="Add Station Active Hours"
+            id="model-add-hours"
             size="md"
             footer={RenderFooter}
         >
@@ -73,4 +69,4 @@ const UpdateHours=(props)=>{
     )
 }
 
-export default UpdateHours
+export default AddWorkingHours
