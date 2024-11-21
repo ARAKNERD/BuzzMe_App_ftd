@@ -3,7 +3,7 @@ import { toast } from 'react-hot-toast';
 import ajaxUser from "../util/remote/ajaxUser";
 import Loader from "../Components/Common/Loader";
 import SystemModal from "../Components/Common/SystemModal";
-;
+
 
 const DeleteAccount=(props)=>{
 
