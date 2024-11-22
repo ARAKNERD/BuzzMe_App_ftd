@@ -24,6 +24,16 @@ export default {
     return response;
   },
 
+  async activateUnpaidAccount(user_id) 
+  {
+    let data = {
+      "account_id": user_id
+    };
+    let response = await apiCall("student/activate", data);
+
+    return response;
+  },
+
   async fetchGroupStudents(group_id, page) 
   {
     let data = {
