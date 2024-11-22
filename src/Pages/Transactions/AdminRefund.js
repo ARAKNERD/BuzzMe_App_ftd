@@ -8,18 +8,21 @@ import ajaxBank from "../../util/remote/ajaxBank";
 const AdminRefund=(props)=>{
     const [loading, setLoading] = useState(false)
     const [amount,setAmount] =useState("")
+    const [description,setDescription] =useState("")
+
     const [pass, setPass] = useState("")
 
     const handleRefund = async(e) =>{
         e.preventDefault()
         if (pass.length > 0) {
             setLoading(true)
-            const server_response = await ajaxBank.initiateAdminRefund(pass, props.userID, amount);
+            const server_response = await ajaxBank.initiateAdminRefund(pass, props.userID, amount, description);
             setLoading(false);
             if(server_response.status==="OK"){
                 toast.success(server_response.message);
                 setPass("")
                 setAmount("")
+                setDescription("")
                 props.g();
                 props.h(props.page);
             }
@@ -58,6 +61,10 @@ const AdminRefund=(props)=>{
             <div className="mb-4 form-group border-1">
                 <label htmlFor="">Amount</label>
                 <input onChange={(e)=>setAmount(e.target.value)} style={{border: "1px solid grey"}} placeholder="Enter amount to refund..." value={amount} type="number" className="form-control"/>
+            </div>
+            <div className="mb-4 form-group border-1">
+                <label htmlFor="">Description for Refund</label>
+                <input onChange={(e)=>setDescription(e.target.value)} style={{border: "1px solid grey"}} placeholder="Enter reason for description..." value={description} type="text" className="form-control"/>
             </div>
 
             <div className="mb-4 form-group border-1">

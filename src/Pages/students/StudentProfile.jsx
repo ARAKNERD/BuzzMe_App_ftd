@@ -121,6 +121,7 @@ const StudentProfile = (props) => {
   const getStudentProfile = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentData(student_id);
+    console.log(server_response)
     setLoading(false);
     if (server_response.status === "OK") {
       //store results
@@ -834,17 +835,19 @@ const StudentProfile = (props) => {
                                           <td className="py-2 px-0">
                                             {" "}
                                             <span className="w-50">
-                                              Account Status
-                                            </span>{" "}
+                                              Account Status | Default Pin
+                                            </span>
                                           </td>
                                           <td>:</td>
                                           <td className="py-2 px-0">
                                             {" "}
                                             <span className="">
                                             {studentProfile.is_activated ==="0"
-                                                ? <span class="badge badge-danger">INACTIVE</span>
-                                                : <span class="badge badge-success">ACTIVE</span>}
-                                            </span>{" "}
+                                                ? <span class="badge badge-danger">INACTIVE </span>
+                                                : <span class="badge badge-success">ACTIVE </span>} {" "}
+                                                | {studentProfile.is_secure=== 1? <span class="badge badge-success">SECURED</span>: <span class="badge badge-danger">{studentProfile.default_pin}</span>}
+                                            </span> 
+                                            
                                           </td>
                                         </tr>
                                         <tr>
@@ -859,8 +862,8 @@ const StudentProfile = (props) => {
                                             {" "}
                                             <span className="">
                                             {studentProfile.card_status ==="2"? <span class="badge badge-danger">DEACTIVATED</span>
-                                                :studentProfile.card_status ==="1"? <span class="badge badge-success">ACTIVATED</span>
-                                                : <span class="badge badge-warning">UNASSIGNED</span>}
+                                                :studentProfile.card_status ==="1"? <span class="badge badge-success">ASSIGNED - {studentProfile.card_number}</span>
+                                                : <span class="badge badge-warning">UNASSIGNED</span>}{" "}
                                             </span>{" "}
                                           </td>
                                         </tr>

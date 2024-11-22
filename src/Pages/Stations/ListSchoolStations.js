@@ -15,9 +15,12 @@ import TurnOnStation from "./TurnOnStation";
 import TurnOffStation from "./TurnOffStation";
 import SchoolContext from "../../Context/SchoolContext";
 import AddWorkingHours from "./AddWorkingHours";
+import UpdateTimeRangeHours from "./UpdateTimeRangeHours";
 
 function ListSchoolStations() {
   const [stationList, setStationList] = useState([]);
+  const [stationTimeRanges, setStationTimeRanges] = useState([]);
+
   const [modal, setModal] = useStateCallback(false);
   const { schoolDetails } = useContext(SchoolContext);
 
@@ -35,9 +38,28 @@ function ListSchoolStations() {
     setLoading(false);
     if (server_response.status === "OK") {
       setMeta(server_response.details.meta.list_of_pages);
-      setStationList(server_response.details.list || []);
+      const stations = server_response.details.list || [];
+      setStationList(stations);
+      stations.forEach(station => {
+        getStationTimeRanges(station.station_id); // Fetch time ranges for each station
+      });
     } else {
       setStationList([]);
+    }
+  };
+
+  const getStationTimeRanges = async (stationId) => {
+    const server_response = await ajaxStation.fetchStationTimeRanges(stationId);
+    if (server_response.status === "OK") {
+      setStationTimeRanges(prevState => ({
+        ...prevState,
+        [stationId]: server_response.details || [],
+      }));
+    } else {
+      setStationTimeRanges(prevState => ({
+        ...prevState,
+        [stationId]: [],
+      }));
     }
   };
 
@@ -88,6 +110,21 @@ function ListSchoolStations() {
           stationID={item.station_id}
           g={getStations}
           page={page}
+          isOpen={true}
+        />
+      )
+    );
+  };
+
+  const handleUpdateHours = (e, timeRange) => {
+    setModal(false, () =>
+      setModal(
+        <UpdateTimeRangeHours
+          timeID={timeRange.time_id}
+          g={getStations}
+          page={page}
+          startTime={timeRange.start_time}
+          endTime={timeRange.end_time}
           isOpen={true}
         />
       )
@@ -219,9 +256,23 @@ function ListSchoolStations() {
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
                           <td>
-                            {item.start_time
-                              ? `${item.start_time} - ${item.end_time}`
-                              : "Not set"}
+                          {stationTimeRanges[item.station_id] && stationTimeRanges[item.station_id].length > 0 ? (
+                    <ul>
+                      {stationTimeRanges[item.station_id].map((timeRange, idx) => (
+                        <li key={idx}>
+                          {timeRange.start_time} - {timeRange.end_time}
+                          <span 
+                            className="ml-2 text-secondary cursor-pointer"
+                            onClick={(e) => handleUpdateHours(e, timeRange)}
+                          >
+            <i className="fa fa-pencil-alt"></i>
+          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    "No working hours set"
+                  )}
                           </td>
                           <td>
                             {item.status === "300" ? (
