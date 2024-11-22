@@ -13,6 +13,13 @@ import AttachCard from "./AttachCard";
 import UpdateCardNumber from "./UpdateCardNumber";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import Col from "react-bootstrap/Col";
+import Nav from "react-bootstrap/Nav";
+import Row from "react-bootstrap/Row";
+import Tab from "react-bootstrap/Tab";
+import AssignedCards from "./AssignedCards";
+import UnassignedCards from "./UnassignedCards.js";
+import InactiveCards from "./InactiveCards.js";
 
 function ListCards() {
     const [cardList, setCardList] = useState([]);
@@ -31,6 +38,7 @@ function ListCards() {
     const getCards = async (currentPage) => {
       setLoading(true);
       const server_response = await ajaxCard.fetchCardList(currentPage);
+      console.log(server_response.details.list)
       setLoading(false);
       if (server_response.status === "OK") {
         setFirst(server_response.details.meta.offset_count);
@@ -203,125 +211,142 @@ function ListCards() {
               <div class="col-lg-12">
           <div className="card custom-card">
             <div className="card-body map-card">
-              <div class="heading-layout1 mg-b-25">
-                <TableHeader
-                  title="Buzz Cards"
-                  subtitle="List of all the buzz cards"
-                />
-                <div class="dropdown">
-                                        <a class="dropdown-toggle" href="#" role="button" 
-                                        data-toggle="dropdown" aria-expanded="false">...</a>
-                
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
-                                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
-                                        </div>
-                                    </div>
-              </div>
-              <form className="mg-b-20">
-                <div className="row gutters-8">
-                  <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                    <input
-                      type="text"
-                      value={query} onChange={(e) => {
-                        setQuery(e.target.value);
-                        if (e.target.value === '') {
-                          setCards(e);
-                        }
-                      }}
-                      placeholder="Search for card number..."
-                      className="form-control"
-                    />
-                  </div>
-                  <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                    <button
-                      type="submit"
-                      onClick={(e) => searchCard(e)}
-                      className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                      SEARCH
-                    </button>
-                  </div>
-                </div>
-              </form>
-              <div className="border-top mt-3"></div>
-              <div className="table-responsive">
-        {loading || loading2 ? (
-          <Loader /> // Show loader when loading or searching
-        ) : (
-          <table className="table display data-table text-nowrap">
-            <thead>
-              <tr>
-              <th scope="col" className="wd-10p">No.</th>
-              <th>Card Number</th>
-              <th>Student Name</th>
-              <th>Status</th>
-              <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cardList.length > 0 ? (
-                cardList.map((item, index) => (
-                  <tr key={index}>
-                    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
-                    <td>{item.card_number}</td>
-                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
-                          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
-                          :<span class="badge badge-danger">De-activated</span>}</td>
+            <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+            <Row>
+              <Col sm={12}>
+                <Nav variant="pills" className="flex-row mb-1">
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="first">
+                      All Cards{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="second">
+                      Assigned Cards{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="third">
+                      Unassigned Cards{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link size="sm" eventKey="fourth">
+                      Inactive Cards{" "}
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+              </Col>
 
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                               
-                              <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateCard(e,item)}>
-                                <i className="fa fa-edit mr-1"></i>
-                                 Change Card Number
-                              </Link>
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateStation(e,item)}>
-                                <i className="fa fa-square-plus mr-1"></i>
-                                 Attach Student
-                              </Link>
-                              {item.status==="1"?<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOff(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 De-Activate Card
-                              </Link>:<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOn(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                Activate Card
-                              </Link>}</div>
-                            </div>
-                          </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" style={{ textAlign: "center" }}>
-                    No cards registered yet.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        )}
-      </div>
+              <Col sm={12}>
+                <Tab.Content>
+                  <Tab.Pane eventKey="first">
+                  <form className="mg-t-10">
+            <div className="row gutters-8">
+              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                <input
+                  type="text"
+                  value={query} onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (e.target.value === '') {
+                      setCards(e);
+                    }
+                  }}
+                  placeholder="Search for card name or student name..."
+                  style={{border: "1px solid grey"}}
+
+                  className="form-control"
+                />
+              </div>
+              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
+                <button
+                  type="submit"
+                  onClick={(e) => searchCard(e)}
+                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
+                  SEARCH
+                </button>
+               
+              </div>
+            </div>
+          </form>
+          <div className="table-responsive">
+{loading || loading2 ? (
+<Loader /> // Show loader when loading or searching
+) : (
+<table className="table display data-table text-nowrap">
+<thead>
+<tr>
+<th scope="col" className="wd-10p">No.</th>
+<th>Card Number</th>
+<th>Student Name</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{cardList.length > 0 ? (
+cardList.map((item, index) => (
+  <tr key={index}>
+    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
+    <td>{item.card_number}</td>
+          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
+          :<span class="badge badge-danger">De-activated</span>}</td>
+
+          <td>
+            <div className="dropdown">
+              <Link
+                to="#"
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false">
+                <span className="flaticon-more-button-of-three-dots"></span>
+              </Link>
+              <div className="dropdown-menu dropdown-menu-right">
+               
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => updateCard(e,item)}>
+                <i className="fa fa-edit mr-1"></i>
+                 Change Card Number
+              </Link>
+                <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => updateStation(e,item)}>
+                <i className="fa fa-square-plus mr-1"></i>
+                 Attach Student
+              </Link>
+              {item.status==="1"?<Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => cardOff(e,item)}>
+                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                 De-Activate Card
+              </Link>:<Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => cardOn(e,item)}>
+                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                Activate Card
+              </Link>}</div>
+            </div>
+          </td>
+  </tr>
+))
+) : (
+<tr>
+  <td colSpan="6" style={{ textAlign: "center" }}>
+    No cards registered yet.
+  </td>
+</tr>
+)}
+</tbody>
+</table>
+)}
+</div>
 
       <div className="pagination">
         <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
@@ -341,165 +366,25 @@ function ListCards() {
           Next <i className="fa fa-angle-right ml-2"></i>
         </button>
       </div>
-              {/* <div className="table-responsive">
-                <table className="table table-hover text-nowrap mg-b-0">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th>Card Number</th>
-                      <th>Student Name</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  {cardSearch && Array.isArray(cardSearch) ? (
-                      
-                      cardSearch.map((item, key) => (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.card_number}</td>
-                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
-                          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
-                          :<span class="badge badge-danger">De-activated</span>}</td>
+                  </Tab.Pane>
 
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                               
-                              <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateCard(e,item)}>
-                                <i className="fa fa-edit mr-1"></i>
-                                 Change Card Number
-                              </Link>
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateStation(e,item)}>
-                                <i className="fa fa-square-plus mr-1"></i>
-                                 Attach Student
-                              </Link>
-                              {item.status==="1"?<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOff(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 De-Activate Card
-                              </Link>:<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOn(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                Activate Card
-                              </Link>}</div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                   
-                  ) :Array.isArray(cardList) && cardList.map((item, key) => (
-                        <tr key={key}>
-                          <td>{key + 1}</td>
-                          <td>{item.card_number}</td>
-                          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-                          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
-                          :<span class="badge badge-danger">De-activated</span>}</td>
+                  <Tab.Pane eventKey="second">
+                  <AssignedCards g={getCards} page={page} h={getAllCards} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards}/>
 
-                          <td>
-                            <div className="dropdown">
-                              <Link
-                                to="#"
-                                className="dropdown-toggle"
-                                data-toggle="dropdown"
-                                aria-expanded="false">
-                                <span className="flaticon-more-button-of-three-dots"></span>
-                              </Link>
-                              <div className="dropdown-menu dropdown-menu-right">
-                               
-                              
-                                <Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => updateStation(e,item)}>
-                                <i className="fa fa-square-plus  mr-1"></i>
-                                 Attach Student
-                              </Link>
-                              {item.status==="1"?<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOff(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                                 De-Activate Card
-                              </Link>:<Link
-                                className="dropdown-item"
-                                to="#"
-                                onClick={(e) => cardOn(e,item)}>
-                                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                                Activate Card
-                              </Link>}</div>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                      {cardList === "404" && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No buzz cards registered yet.
-                          </td>
-                        </tr>)}
-                        {cardSearch.length === 0 && (<tr>
-                          <td colSpan="7" style={{textAlign: "center"}}>
-                            No search result(s) found.
-                          </td>
-                        </tr>)}
-                  </tbody>
-                  <div
-                    className="align-items-center justify-content-center pos-absolute"
-                    style={{left: "50%"}}>
-                    <button
-                      className="btn btn-dark"
-                      style={{borderRight: "1px solid yellow"}}
-                      onClick={setPreviousPageNumber}>
-                      <i className="fa fa-angle-left mr-2"></i> Prev
-                    </button>
-                    {Array.isArray(meta) &&
-                      meta.map((item) =>
-                        page === item ? (
-                          <button
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-primary">
-                            {item}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={(e) => setPageNumber(e, item)}
-                            style={{borderRight: "1px solid yellow"}}
-                            className="btn btn-dark">
-                            {item}
-                          </button>
-                        )
-                      )}
-
-                    <button
-                      style={{borderRight: "1px solid yellow"}}
-                      className="btn btn-dark"
-                      onClick={setNextPageNumber}>
-                      Next<i className="fa fa-angle-right ml-2"></i>
-                    </button>
-                  </div>
-                </table>
-                {loading && <Loader />}
-                {loading2 && <Loader />}
-              </div> */}
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="third">
+                  <UnassignedCards g={getCards} page={page} h={getAllCards} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards}/>
+                 
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="fourth">
+                  <InactiveCards g={getCards} page={page} h={getAllCards} i={getActiveCards} j={getInactiveCards} k={getUnassignedCards}/>
+                 
+                  </Tab.Pane>
+                </Tab.Content>
+              </Col>
+            </Row>
+          </Tab.Container> 
+              
             </div>
           </div></div></div>
         </div>
@@ -509,3 +394,117 @@ function ListCards() {
 }
 
 export default ListCards;
+{/* <div class="heading-layout1 mg-b-25">
+<TableHeader
+  title="Buzz Cards"
+  subtitle="List of all the buzz cards"
+/>
+<div class="dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" 
+                        data-toggle="dropdown" aria-expanded="false">...</a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <Link class="dropdown-item" onClick={refreshData} ><i class="fas fa-redo-alt text-orange-peel"></i>Refresh</Link>
+                            <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
+                        </div>
+                    </div>
+</div>
+
+<div className="border-top mt-3"></div>
+<div className="table-responsive">
+{loading || loading2 ? (
+<Loader /> // Show loader when loading or searching
+) : (
+<table className="table display data-table text-nowrap">
+<thead>
+<tr>
+<th scope="col" className="wd-10p">No.</th>
+<th>Card Number</th>
+<th>Student Name</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{cardList.length > 0 ? (
+cardList.map((item, index) => (
+  <tr key={index}>
+    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
+    <td>{item.card_number}</td>
+          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
+          :<span class="badge badge-danger">De-activated</span>}</td>
+
+          <td>
+            <div className="dropdown">
+              <Link
+                to="#"
+                className="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-expanded="false">
+                <span className="flaticon-more-button-of-three-dots"></span>
+              </Link>
+              <div className="dropdown-menu dropdown-menu-right">
+               
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => updateCard(e,item)}>
+                <i className="fa fa-edit mr-1"></i>
+                 Change Card Number
+              </Link>
+                <Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => updateStation(e,item)}>
+                <i className="fa fa-square-plus mr-1"></i>
+                 Attach Student
+              </Link>
+              {item.status==="1"?<Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => cardOff(e,item)}>
+                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                 De-Activate Card
+              </Link>:<Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => cardOn(e,item)}>
+                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                Activate Card
+              </Link>}</div>
+            </div>
+          </td>
+  </tr>
+))
+) : (
+<tr>
+  <td colSpan="6" style={{ textAlign: "center" }}>
+    No cards registered yet.
+  </td>
+</tr>
+)}
+</tbody>
+</table>
+)}
+</div>
+
+<div className="pagination">
+<button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+<i className="fa fa-angle-left mr-2"></i> Prev
+</button>
+{Array.isArray(meta) && meta.map((item) => (
+<button
+key={item}
+style={{borderRight: "1px solid yellow"}}
+className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+onClick={() => handlePagination(item)}
+>
+{item}
+</button>
+))}
+<button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+Next <i className="fa fa-angle-right ml-2"></i>
+</button>
+</div> */}

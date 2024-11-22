@@ -121,11 +121,12 @@ export default {
     let response = await apiCall("invoice/list", data);
     return response;
   },
-  async initiateAdminRefund(secure_string, student_user_id, amount) {
+  async initiateAdminRefund(secure_string, student_user_id, amount, description) {
     let data = {
       secure_string: secure_string,
       student_user_id: student_user_id,
-      amount: amount
+      amount: amount,
+      description: description
     };
     let response = await apiCall("mobile/webapp/admin_refund", data);
     return response;

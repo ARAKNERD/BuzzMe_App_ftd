@@ -10,6 +10,32 @@ export default {
     let response = await apiCall("card/list", data);
     return response;
   },
+  async fetchAssignedCardList(page) 
+  {
+    let data = {
+      page: page,
+      status:"1"
+    };
+    let response = await apiCall("card/list", data);
+    return response;
+  },
+  async fetchInactiveCardList(page) 
+  {
+    let data = {
+      page: page,
+      status:"2"
+    };
+    let response = await apiCall("card/list", data);
+    return response;
+  },
+  async fetchUnassignedCardList(page) 
+  {
+    let data = {
+      page: page,
+    };
+    let response = await apiCall("card/list/unassigned", data);
+    return response;
+  },
 
   async createCard(data) 
   {
@@ -33,6 +59,35 @@ export default {
     let data = {
       search: search,
       page: page
+    };
+    let response = await apiCall("card/list", data);
+    return response;
+  },
+  async searchUnassignedCard(search, page) 
+  {
+    let data = {
+      search: search,
+      page: page
+    };
+    let response = await apiCall("card/list/unassigned", data);
+    return response;
+  },
+  async searchAssignedCard(search, page) 
+  {
+    let data = {
+      search: search,
+      page: page,
+      status:"1"
+    };
+    let response = await apiCall("card/list", data);
+    return response;
+  },
+  async searchInactiveCard(search, page) 
+  {
+    let data = {
+      search: search,
+      page: page,
+      status:"2"
     };
     let response = await apiCall("card/list", data);
     return response;
@@ -65,6 +120,11 @@ export default {
   async updateCard(data) 
   {
     let response = await apiCall("card/update", data);
+    return response;
+  },
+  async detachCard(data) 
+  {
+    let response = await apiCall("card/detach", data);
     return response;
   },
   
