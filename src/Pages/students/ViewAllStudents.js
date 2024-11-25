@@ -70,6 +70,16 @@ function ViewAllStudents() {
     getStudentList(1);
   };
 
+  const handleSearchQueryChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    if (value === '') {
+      setStudents(e);
+    } else {
+      setPage(1); 
+    }
+};
+
   const refreshData = () => {
     getStudentList(1);
   };
@@ -141,12 +151,7 @@ function ViewAllStudents() {
                   <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <input
                       type="text"
-                      value={query} onChange={(e) => {
-                        setQuery(e.target.value);
-                        if (e.target.value === '') {
-                          setStudents(e);
-                        }
-                      }}
+                      value={query} onChange={handleSearchQueryChange}
                       style={{border: "1px solid grey"}}
                       placeholder="Search for student name..."
                       className="form-control"
@@ -246,7 +251,7 @@ function ViewAllStudents() {
       </div>
 
       <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === 1} onClick={() => handlePagination(page - 1)}>
           <i className="fa fa-angle-left mr-2"></i> Prev
         </button>
         {Array.isArray(meta) && meta.map((item) => (
@@ -255,11 +260,12 @@ function ViewAllStudents() {
             style={{borderRight: "1px solid yellow"}}
             className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
             onClick={() => handlePagination(item)}
+            
           >
             {item}
           </button>
         ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === meta.length} onClick={() => handlePagination(page + 1)}>
           Next <i className="fa fa-angle-right ml-2"></i>
         </button>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Chart from "react-apexcharts";
-import Loader from '../../Components/Common/Loader';
+import Loader from '../Common/Loader';
 import ajaxCallStation from '../../util/remote/ajaxCallStation';
 
 class ChatCostChart extends Component {

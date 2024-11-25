@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Chart from "react-apexcharts";
 import ajaxCallStation from '../../util/remote/ajaxCallStation';
-import Loader from '../../Components/Common/Loader';
+import Loader from '../Common/Loader';
 
 class CallCategoriesChart extends Component {
 

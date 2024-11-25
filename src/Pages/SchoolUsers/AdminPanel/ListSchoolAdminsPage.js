@@ -1,39 +1,20 @@
 import React, {useEffect, useState} from "react";
-import ajaxSchool from "../../util/remote/ajaxSchool";
-import { Link } from "react-router-dom";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import ResetPassword from "./ResetPassword";
-import TableHeader from "../../Components/Common/TableHeader";
-import AddSchoolAdmin from "./AddSchoolAdmin";
-import Loader from "../../Components/Common/Loader";
+import {Link} from "react-router-dom";
+import AppContainer from "../../../Components/Structure/AppContainer";
+import { Toaster } from "react-hot-toast";
+import ResetPassword from "../ResetPassword";
+import AddSchoolAdmin from "../../../Components/SystemUsers/AddSchoolAdmin";
+import RemoteLogOut from "../../RemoteLogOut";
+import { useContext } from "react";
+import AdminContext from "../../../Context/AdminContext";
+import useStateCallback from "../../../util/customHooks/useStateCallback";
+import TableHeader from "../../../Components/Common/TableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import RemoteLogOut from "../RemoteLogOut";
 
-function ListSchoolUsers(props) {
-  const [schoolUsers, setSchoolUsers] = useState(false);
-  const [loading, setLoading] = useState(false);
+function ListSchoolAdminsPage() {
+  const {schoolAdminList, getSchoolAdminList} = useContext(AdminContext);
   const [modal, setModal] = useStateCallback(false);
-
-  const getSchoolUsers = async () => {
-    try {
-      const data = {
-        school_id: props.school,
-      };
-      setLoading(true)
-      const serverResponse = await ajaxSchool.fetchSchoolUserList(data);
-      setLoading(false)
-      if (serverResponse.status === "OK") {
-        setSchoolUsers(serverResponse.details);
-      } else {
-        // Handle error condition
-        setSchoolUsers("404");
-      }
-    } catch (error) {
-      // Handle network or other errors
-      console.error("Error:", error);
-    }
-  };
 
   const remoteLogout = (e, item) => {
     setModal(false, () =>
@@ -47,7 +28,7 @@ function ListSchoolUsers(props) {
   };
 
   useEffect(() => {
-    getSchoolUsers();
+    getSchoolAdminList();
   }, []);
 
   const handleUpdate=(e,item)=>{
@@ -55,12 +36,17 @@ function ListSchoolUsers(props) {
   }
 
   const handleAdd=()=>{
-    setModal(false, ()=>setModal(<AddSchoolAdmin g={getSchoolUsers}  isOpen={true}/>))
+    setModal(false, ()=>setModal(<AddSchoolAdmin g={getSchoolAdminList}  isOpen={true}/>))
 }
-  
-
   return (
-    <div className="card height-auto">
+    <AppContainer title="School Administrators">
+       <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
+      <div className="row">
+        <div className="col-lg-12 col-md-12 mt-3">
+        <div className="card height-auto">
       {modal}
       <div className="card-body">
         <TableHeader
@@ -86,7 +72,7 @@ function ListSchoolUsers(props) {
               </tr>
             </thead>
             <tbody>
-            {Array.isArray(schoolUsers) && schoolUsers.map((item, key) => (
+            {Array.isArray(schoolAdminList) && schoolAdminList.map((item, key) => (
                         <tr>
                           <td>{key + 1}</td>
                           <td>{item.first_name} {item.last_name}</td>
@@ -121,18 +107,20 @@ function ListSchoolUsers(props) {
                           </td>
                         </tr>
                       ))}
-                      {schoolUsers === "404" && (<tr>
+                      {schoolAdminList === "404" && (<tr>
                           <td colSpan="5" style={{textAlign: "center"}}>
                             No school administrators registered yet.
                           </td>
                         </tr>)}
             </tbody>
           </table>
-          {loading && <Loader/>}
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </AppContainer>
   );
 }
 
-export default ListSchoolUsers;
+export default ListSchoolAdminsPage;

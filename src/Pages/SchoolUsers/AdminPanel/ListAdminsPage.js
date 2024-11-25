@@ -1,17 +1,17 @@
 import React, {useContext} from "react";
 import {Link} from "react-router-dom";
-import AppContainer from "../../Components/Structure/AppContainer";
-import AddAdmin from "./AddAdmin";
-import AdminContext from "../../Context/AdminContext";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import TableHeader from "../../Components/Common/TableHeader";
-import ResetPassword from "./ResetPassword";
+import AppContainer from "../../../Components/Structure/AppContainer";
+import AdminContext from "../../../Context/AdminContext";
+import useStateCallback from "../../../util/customHooks/useStateCallback";
+import TableHeader from "../../../Components/Common/TableHeader";
+import ResetPassword from "../ResetPassword";
 import toast, {Toaster} from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import RemoteLogOut from "../RemoteLogOut";
+import RemoteLogOut from "../../RemoteLogOut";
+import AddAdmin from "../../../Components/SystemUsers/AddAdmin";
 
-function ListAdmins() {
+function ListAdminsPage() {
 
     const {adminList, getAdminList} = useContext(AdminContext);
     const [modal, setModal] = useStateCallback(false);
@@ -114,4 +114,4 @@ function ListAdmins() {
   );
 }
 
-export default ListAdmins;
+export default ListAdminsPage;

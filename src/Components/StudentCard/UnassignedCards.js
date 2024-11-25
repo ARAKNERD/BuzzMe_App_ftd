@@ -1,89 +1,54 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import {Link} from "react-router-dom";
-import Loader from "../../Components/Common/Loader";
+import Loader from "../Common/Loader";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import ajaxCard from "../../util/remote/ajaxCard";
 import ActivateCard from "./ActivateCard";
 import DeActivateCard from "./DeActivateCard";
+import AttachCard from "./AttachCard";
 import UpdateCardNumber from "./UpdateCardNumber";
-import DetachCard from "./DetachCard";
+import CardContext from "../../Context/CardContext";
 
-function AssignedCards(props) {
-    const [cardList, setCardList] = useState([]);
-    const [modal, setModal] = useStateCallback(false);
-    const [loading, setLoading] = useState(false);
-    const [loading2, setLoading2] = useState(false);
-    const [query, setQuery] = useState("");
-    const [page,setPage] = useState(1)
-    const [meta,setMeta] = useState([])
-    const [first, setFirst] = useState("");
+function UnassignedCards(props) {
+  const [modal, setModal] = useStateCallback(false);
+  const {getCards, getAssignedCards, getInactiveCards, page, assignedPage, unassignedPage, inactivePage, unassignedMeta, setUnassignedPage, unassignedFirst, unassignedQuery, setUnassignedQuery,
+     loading, loading2, unassignedCardList, getUnassignedCards, searchUnassignedCard, countAssignedCards, countUnassignedCards, countInactiveCards} = useContext(CardContext);
 
-    const getCards = async (currentPage) => {
-      setLoading(true);
-      const server_response = await ajaxCard.fetchAssignedCardList(currentPage);
-      setLoading(false);
-      if (server_response.status === "OK") {
-        setFirst(server_response.details.meta.offset_count);
-        setMeta(server_response.details.meta.list_of_pages);
-        setCardList(server_response.details.list || []);
-      } else {
-        setCardList([]);
-      }
-    };
-
-    const searchCard = async (e) => {
-      if (e) {
-        e.preventDefault();
-      }
-        setLoading2(true);
-        const server_response = await ajaxCard.searchAssignedCard(query,page);
-        setLoading2(false);
-        if (server_response.status === "OK") {
-          setFirst(server_response.details.meta.offset_count);
-          setMeta(server_response.details.meta.list_of_pages);
-          setCardList(server_response.details.list || []);
-        } else {
-          setCardList([]);
-        }
-    };
-  
-    const handlePagination = (newPage) => {
-      if (newPage > 0 && newPage <= meta.length) {
-        setPage(newPage);
-      }
-    };
+  const handlePagination = (newPage) => {
+    if (newPage > 0 && newPage <= unassignedMeta.length) {
+      setUnassignedPage(newPage);
+    }
+  };
 
     const setCards = (e) => {
       e.preventDefault();
-      setQuery("");
-      setPage(1);
-      getCards(1);
+      setUnassignedQuery("");
+      setUnassignedPage(1);
+      getUnassignedCards(1);
     };
   
     useEffect(() => {
-      if (query) {
-        searchCard();
+      if (unassignedQuery) {
+        searchUnassignedCard();
       } else {
-        getCards(page);
+        getUnassignedCards(unassignedPage);
       }
-    }, [page]);
+    }, [unassignedPage]);
 
 
-  const detachCard=(e,item)=>{
-    setModal(false, ()=>setModal(<DetachCard cardID={item.card_id} cardNumber={item.card_number} g={props.g} page={page} i={props.i} j={props.j} k={props.k} isOpen={true}/>))
+  const attachCard=(e,item)=>{
+    setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} getAllCards={getCards} getAssignedCards={getAssignedCards} getInactiveCards={getInactiveCards} 
+      getUnassignedCards={getUnassignedCards} page={page} assignedPage={assignedPage} inactivePage={inactivePage} unassignedPage={unassignedPage} countAssignedCards={countAssignedCards} 
+      countInactiveCards={countInactiveCards} countUnassignedCards={countUnassignedCards} isOpen={true}/>))
   }
   const cardOn=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={props.g} page={page} i={props.i} j={props.j} isOpen={true}/>))
-  }
-  const cardOff=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={props.g} page={page} i={props.i} j={props.j} isOpen={true}/>))
-  }
-  const updateCard=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} g={props.g} page={page} isOpen={true}/>))
+    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} countInactiveCards={countInactiveCards} page={page} inactivePage={inactivePage} getAllCards={getCards} getInactiveCards={getInactiveCards} isOpen={true}/>))
   }
 
-  const refreshData = () =>{
-    getCards(1);
+  const cardOff=(e,item)=>{
+    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} countInactiveCards={countInactiveCards} page={page} inactivePage={inactivePage} getAllCards={getCards} getInactiveCards={getInactiveCards} isOpen={true}/>))
+  }
+  const updateCard=(e,item)=>{
+    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} getAllCards={getCards} page={page} isOpen={true}/>))
   }
 
     return (
@@ -95,13 +60,13 @@ function AssignedCards(props) {
               <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
                 <input
                   type="text"
-                  value={query} onChange={(e) => {
-                    setQuery(e.target.value);
+                  value={unassignedQuery} onChange={(e) => {
+                    setUnassignedQuery(e.target.value);
                     if (e.target.value === '') {
                       setCards(e);
                     }
                   }}
-                  placeholder="Search for card name or student name..."
+                  placeholder="Search for card name..."
                   style={{border: "1px solid grey"}}
 
                   className="form-control"
@@ -110,7 +75,7 @@ function AssignedCards(props) {
               <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                 <button
                   type="submit"
-                  onClick={(e) => searchCard(e)}
+                  onClick={(e) => searchUnassignedCard(e)}
                   className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
                   SEARCH
                 </button>
@@ -127,19 +92,17 @@ function AssignedCards(props) {
 <tr>
 <th scope="col" className="wd-10p">No.</th>
 <th>Card Number</th>
-<th>Student Name</th>
 <th>Status</th>
 <th>Actions</th>
 </tr>
 </thead>
 <tbody>
-{cardList.length > 0 ? (
-cardList.map((item, index) => (
+{unassignedCardList.length > 0 ? (
+unassignedCardList.map((item, index) => (
   <tr key={index}>
-    <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
+    <th scope='row' style={{width:"5px"}}>{index + unassignedFirst + 1}</th>
     <td>{item.card_number}</td>
-          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-          <td><span class="badge badge-success">Assigned</span></td>
+          <td><span class="badge badge-warning">Unassigned</span></td>
           <td>
             <div className="dropdown">
               <Link
@@ -161,9 +124,9 @@ cardList.map((item, index) => (
                 <Link
                 className="dropdown-item"
                 to="#"
-                onClick={(e) => detachCard(e,item)}>
+                onClick={(e) => attachCard(e,item)}>
                 <i className="fa fa-square-plus mr-1"></i>
-                 Detach Card
+                 Attach Card
               </Link>
               {item.status==="1"?<Link
                 className="dropdown-item"
@@ -194,20 +157,20 @@ cardList.map((item, index) => (
 )}
         </div>
         <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={unassignedPage === 1} onClick={() => handlePagination(unassignedPage - 1)}>
           <i className="fa fa-angle-left mr-2"></i> Prev
         </button>
-        {Array.isArray(meta) && meta.map((item) => (
+        {Array.isArray(unassignedMeta) && unassignedMeta.map((item) => (
           <button
             key={item}
             style={{borderRight: "1px solid yellow"}}
-            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
+            className={`btn ${unassignedPage === item ? "btn-primary" : "btn-dark"}`}
             onClick={() => handlePagination(item)}
           >
             {item}
           </button>
         ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={unassignedPage === unassignedMeta.length} onClick={() => handlePagination(unassignedPage + 1)}>
           Next <i className="fa fa-angle-right ml-2"></i>
         </button>
         </div>
@@ -215,4 +178,4 @@ cardList.map((item, index) => (
   );
 }
 
-export default AssignedCards;
+export default UnassignedCards;

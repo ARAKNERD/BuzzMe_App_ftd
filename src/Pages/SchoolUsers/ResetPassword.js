@@ -10,7 +10,7 @@ const ResetPassword=(props)=>{
     const [loading, setLoading] = useState(false)
     const data = {
         account_id: props.accountID,
-      };
+    };
 
     const handleUpdate = async(e) =>{
         e.preventDefault()

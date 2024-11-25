@@ -27,7 +27,6 @@ import ActivateAccount from "./Pages/ActivateAccount";
 import ViewSchool from "./Pages/Schools/ViewSchool";
 import District from "./Pages/RegionDistrict/District";
 import Regions from "./Pages/RegionDistrict/Regions";
-import AdminViewSchoolUsers from "./Pages/SchoolUsers/AdminViewSchoolUsers";
 import ImportStudents from "./Pages/students/ImportStudents";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import StudentProfile from "./Pages/students/StudentProfile";
@@ -37,24 +36,25 @@ import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
 import ParentProfile from "./Pages/Parents/ParentProfile";
 import Settings from "./Pages/Settings";
-import ListAdmins from "./Pages/SchoolUsers/ListAdmins";
 import ViewAllStudents from "./Pages/students/ViewAllStudents";
 import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
 import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
 import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
 import AdminImportStudents from "./Pages/students/AdminImportStudents";
-import ListBoothAssistants from "./Pages/SchoolUsers/ListBoothAssistants";
+import ListBoothAssistants from "./Pages/SchoolUsers/AdminPanel/ListBoothAssistantsPage";
 import SchoolDashboard from "./Pages/SchoolDashboard";
-import ListCards from "./Pages/StudentCard/ListCards";
 import TransferStudent from "./Pages/students/TransferStudent";
 import TransactionsPage from "./Pages/Transactions/TransactionsPage";
 import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
 import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
-import StatisticsPage from "./Pages/Statistics/StatisticsPage";
 import ListSchoolStations from "./Pages/Stations/ListSchoolStations";
 import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
 import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
 import ImportStudentsandContacts from "./Pages/students/ImportStudentsandContacts";
+import CardsPage from "./Pages/CardsPage";
+import StatisticsPage from "./Pages/StatisticsPage";
+import ListAdminsPage from "./Pages/SchoolUsers/AdminPanel/ListAdminsPage";
+import ListSchoolAdminsPage from "./Pages/SchoolUsers/AdminPanel/ListSchoolAdminsPage";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -161,10 +161,10 @@ function App(props) {
               />
               {/* End school routes */}
               {/* School User routes */}
-              <Route path="/admin/view" element={<ListAdmins />} />
+              <Route path="/admin/view" element={<ListAdminsPage />} />
               <Route
                 path="/school_admin/view"
-                element={<AdminViewSchoolUsers />}
+                element={<ListSchoolAdminsPage />}
               />
               {/* End School User routes */}
               {/* Charge rate routes */}
@@ -226,7 +226,7 @@ function App(props) {
               <Route path="/settings" element={<Settings />} />
               <Route path="/transactions/all" element={<TransactionsPage />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
-              <Route path="/buzz-cards" element={<ListCards />} />
+              <Route path="/buzz-cards" element={<CardsPage/>} />
               <Route path="/students/transfer" element={<TransferStudent />} />
               <Route path="/statistics" element={<StatisticsPage />} />
               <Route path="/deleted-users" element={<ViewDeletedUsers />} />

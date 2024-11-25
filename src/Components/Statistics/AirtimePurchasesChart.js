@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Chart from "react-apexcharts";
-import Loader from '../../Components/Common/Loader';
+import Loader from '../Common/Loader';
 import ajaxBank from '../../util/remote/ajaxBank';
 
 class AirtimePurchasesChart extends Component {

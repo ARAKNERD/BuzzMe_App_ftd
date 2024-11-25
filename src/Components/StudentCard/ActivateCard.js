@@ -19,9 +19,9 @@ const ActivateCard=(props)=>{
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);
-            props.g(props.page)
-            props.i()
-            props.j()
+            props.countInactiveCards()
+            props.getAllCards(props.page)
+            props.getInactiveCards(props.inactivePage)
         }
         else{
             toast.error(server_response.message); 

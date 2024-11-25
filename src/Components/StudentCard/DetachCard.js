@@ -19,9 +19,13 @@ const DetachCard=(props)=>{
         setLoading(false);
         if(server_response.status==="OK"){
             toast.success(server_response.message);
-            props.g(props.page)
-            props.i()
-            props.j()
+            props.getAllCards(props.page);
+            props.getAssignedCards(props.assignedPage);
+            props.getInactiveCards(props.inactivePage);
+            props.getUnassignedCards(props.unassignedPage);
+            props.countAssignedCards()
+            props.countUnassignedCards()
+            props.countInactiveCards()
         }
         else{
             toast.error(server_response.message); 
