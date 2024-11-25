@@ -1,51 +1,18 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect} from "react";
 import {Link} from "react-router-dom";
-import Loader from "../../Components/Common/Loader";
+import Loader from "../Common/Loader";
 import useStateCallback from "../../util/customHooks/useStateCallback";
-import ajaxCard from "../../util/remote/ajaxCard";
 import ActivateCard from "./ActivateCard";
 import DeActivateCard from "./DeActivateCard";
 import UpdateCardNumber from "./UpdateCardNumber";
+import CardContext from "../../Context/CardContext";
+import AttachCard from "./AttachCard";
 import DetachCard from "./DetachCard";
 
-function InactiveCards(props) {
-    const [cardList, setCardList] = useState([]);
+function AllCards(props) {
+    const {cardList, meta, page, assignedPage, inactivePage, unassignedPage, query, first, loading, loading2, setPage, getCards,
+        getAssignedCards, getInactiveCards, getUnassignedCards, searchCard, setQuery, countAssignedCards, countInactiveCards, countUnassignedCards} = useContext(CardContext);
     const [modal, setModal] = useStateCallback(false);
-    const [loading, setLoading] = useState(false);
-    const [loading2, setLoading2] = useState(false);
-    const [query, setQuery] = useState("");
-    const [page,setPage] = useState(1)
-    const [meta,setMeta] = useState([])
-    const [first, setFirst] = useState("");
-
-    const getCards = async (currentPage) => {
-      setLoading(true);
-      const server_response = await ajaxCard.fetchInactiveCardList(currentPage);
-      setLoading(false);
-      if (server_response.status === "OK") {
-        setFirst(server_response.details.meta.offset_count);
-        setMeta(server_response.details.meta.list_of_pages);
-        setCardList(server_response.details.list || []);
-      } else {
-        setCardList([]);
-      }
-    };
-
-    const searchCard = async (e) => {
-      if (e) {
-        e.preventDefault();
-      }
-        setLoading2(true);
-        const server_response = await ajaxCard.searchInactiveCard(query,page);
-        setLoading2(false);
-        if (server_response.status === "OK") {
-          setFirst(server_response.details.meta.offset_count);
-          setMeta(server_response.details.meta.list_of_pages);
-          setCardList(server_response.details.list || []);
-        } else {
-          setCardList([]);
-        }
-    };
   
     const handlePagination = (newPage) => {
       if (newPage > 0 && newPage <= meta.length) {
@@ -59,32 +26,36 @@ function InactiveCards(props) {
       setPage(1);
       getCards(1);
     };
-  
+
+    const assignCard=(e,item)=>{
+        setModal(false, ()=>setModal(<AttachCard cardID={item.card_id} cardNumber={item.card_number} getAllCards={getCards} getAssignedCards={getAssignedCards} getInactiveCards={getInactiveCards} 
+            getUnassignedCards={getUnassignedCards} page={page} assignedPage={assignedPage} inactivePage={inactivePage} unassignedPage={unassignedPage} countAssignedCards={countAssignedCards} 
+            countInactiveCards={countInactiveCards} countUnassignedCards={countUnassignedCards} isOpen={true}/>))
+    }
+
+    const detachCard=(e,item)=>{
+        setModal(false, ()=>setModal(<DetachCard cardID={item.card_id} getAllCards={getCards} getAssignedCards={getAssignedCards} getInactiveCards={getInactiveCards} 
+            getUnassignedCards={getUnassignedCards} page={page} assignedPage={assignedPage} inactivePage={inactivePage} unassignedPage={unassignedPage} countAssignedCards={countAssignedCards} 
+            countInactiveCards={countInactiveCards} countUnassignedCards={countUnassignedCards} isOpen={true}/>))
+    }
+
+    const cardOn=(e,item)=>{
+        setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} countInactiveCards={countInactiveCards} page={page} inactivePage={inactivePage} getAllCards={getCards} getInactiveCards={getInactiveCards} isOpen={true}/>))
+    }
+    const cardOff=(e,item)=>{
+        setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} countInactiveCards={countInactiveCards} page={page} inactivePage={inactivePage} getAllCards={getCards} getInactiveCards={getInactiveCards} isOpen={true}/>))
+    }
+    const updateCard=(e,item)=>{
+        setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} getAllCards={getCards} page={page} isOpen={true}/>))
+    }
+
     useEffect(() => {
-      if (query) {
-        searchCard();
-      } else {
-        getCards(page);
-      }
+        if (query) {
+          searchCard();
+        } else {
+          getCards(page);
+        }
     }, [page]);
-
-
-  const detachCard=(e,item)=>{
-    setModal(false, ()=>setModal(<DetachCard cardID={item.card_id} cardNumber={item.card_number} g={props.g} page={page} i={props.i} j={props.j} k={props.k} isOpen={true}/>))
-  }
-  const cardOn=(e,item)=>{
-    setModal(false, ()=>setModal(<ActivateCard cardID={item.card_id} g={props.g} page={page} i={props.i} j={props.j} isOpen={true}/>))
-  }
-  const cardOff=(e,item)=>{
-    setModal(false, ()=>setModal(<DeActivateCard cardID={item.card_id} g={props.g} page={page} i={props.i} j={props.j} isOpen={true}/>))
-  }
-  const updateCard=(e,item)=>{
-    setModal(false, ()=>setModal(<UpdateCardNumber cardID={item.card_id} cardNumber={item.card_number} g={props.g} page={page} isOpen={true}/>))
-  }
-
-  const refreshData = () =>{
-    getCards(1);
-  }
 
     return (
         <>
@@ -122,7 +93,7 @@ function InactiveCards(props) {
 {loading || loading2 ? (
 <Loader /> // Show loader when loading or searching
 ) : (
-<table className="table display data-table text-nowrap">
+    <table className="table display data-table text-nowrap">
 <thead>
 <tr>
 <th scope="col" className="wd-10p">No.</th>
@@ -139,7 +110,10 @@ cardList.map((item, index) => (
     <th scope='row' style={{width:"5px"}}>{index + first + 1}</th>
     <td>{item.card_number}</td>
           <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-          <td><span class="badge badge-danger">Inactive</span></td>
+          <td>{item.status==="1"?<span class="badge badge-success">Activated</span>
+          :item.status==="0"?<span class="badge badge-warning">Unassigned</span>
+          :<span class="badge badge-danger">De-activated</span>}</td>
+
           <td>
             <div className="dropdown">
               <Link
@@ -158,13 +132,19 @@ cardList.map((item, index) => (
                 <i className="fa fa-edit mr-1"></i>
                  Change Card Number
               </Link>
-                <Link
+              {item.student?<Link
                 className="dropdown-item"
                 to="#"
                 onClick={(e) => detachCard(e,item)}>
-                <i className="fa fa-square-plus mr-1"></i>
-                 Detach Card
-              </Link>
+                <i className="fa fa-square-plus mr-1" style={{color:"red"}}></i>
+                 De-Attach Card
+              </Link>:<Link
+                className="dropdown-item"
+                to="#"
+                onClick={(e) => assignCard(e,item)}>
+                <i className="fa fa-square-plus mr-1" style={{color:"green"}}></i>
+                Attach Card
+              </Link>}
               {item.status==="1"?<Link
                 className="dropdown-item"
                 to="#"
@@ -194,7 +174,7 @@ cardList.map((item, index) => (
 )}
         </div>
         <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === 1} onClick={() => handlePagination(page - 1)}>
           <i className="fa fa-angle-left mr-2"></i> Prev
         </button>
         {Array.isArray(meta) && meta.map((item) => (
@@ -207,7 +187,7 @@ cardList.map((item, index) => (
             {item}
           </button>
         ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === meta.length} onClick={() => handlePagination(page + 1)}>
           Next <i className="fa fa-angle-right ml-2"></i>
         </button>
         </div>
@@ -215,4 +195,4 @@ cardList.map((item, index) => (
   );
 }
 
-export default InactiveCards;
+export default AllCards;

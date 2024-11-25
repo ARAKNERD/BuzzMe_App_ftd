@@ -20,9 +20,10 @@ function RegisterCard(props) {
       setLoading(false)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
-        props.g(props.page)
-        props.h()
-        props.i()
+        props.countAllCards()
+        props.countUnassignedCards()
+        props.getAllCards(props.page)
+        props.getUnassignedCards(props.unassignedPage)
 
         resetForm();
       } else {

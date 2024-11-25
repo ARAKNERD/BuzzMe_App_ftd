@@ -13,6 +13,8 @@ import { StudentProvider } from './StudentContext';
 import ContactContext from './ContactContext';
 import { ContactProvider } from './ContactContext';
 import { StationProvider } from './StationContext';
+import { CardProvider } from './CardContext';
+import { StatisticsProvider } from './StatisticsContext';
 
 
 const SuperProvider=(props)=>{
@@ -31,14 +33,18 @@ const SuperProvider=(props)=>{
                                       <StudentProvider>
                                         <ContactProvider>
                                           <StationProvider>
+                                            <CardProvider>
+                                              <StatisticsProvider>
                  
-                                  {props.children}
-                                  </StationProvider>
-                                  </ContactProvider>
-                                  </StudentProvider>
-                                  </LanguageProvider>
-                                  </RelationshipProvider>
-                                </WalletAccountProvider>
+                                                {props.children}
+                                              </StatisticsProvider>
+                                            </CardProvider>
+                                          </StationProvider>
+                                          </ContactProvider>
+                                          </StudentProvider>
+                                          </LanguageProvider>
+                                          </RelationshipProvider>
+                                        </WalletAccountProvider>
                               </RateProvider>
                             </AdminProvider>
                           </RegionProvider>

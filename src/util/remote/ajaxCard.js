@@ -13,10 +13,9 @@ export default {
   async fetchAssignedCardList(page) 
   {
     let data = {
-      page: page,
-      status:"1"
+      page: page
     };
-    let response = await apiCall("card/list", data);
+    let response = await apiCall("card/list/assigned", data);
     return response;
   },
   async fetchInactiveCardList(page) 
@@ -76,10 +75,9 @@ export default {
   {
     let data = {
       search: search,
-      page: page,
-      status:"1"
+      page: page
     };
-    let response = await apiCall("card/list", data);
+    let response = await apiCall("card/list/assigned", data);
     return response;
   },
   async searchInactiveCard(search, page) 
@@ -102,9 +100,9 @@ export default {
     let response = await apiCall("card/count", data);
     return response;
   },
-  async countActiveCards(data) 
+  async countAssignedCards(data) 
   {
-    let response = await apiCall("card/count/active", data);
+    let response = await apiCall("card/count/assigned", data);
     return response;
   },
   async countInactiveCards(data) 

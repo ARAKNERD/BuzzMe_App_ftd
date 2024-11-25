@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Chart from "react-apexcharts";
-import Loader from '../../Components/Common/Loader';
-import ajaxBank from '../../util/remote/ajaxBank';
+import Loader from '../Common/Loader';
+import ajaxCallStation from '../../util/remote/ajaxCallStation';
 
-class AccountActivationsChart extends Component {
+class CallsCostChart extends Component {
 
     constructor(props) {
         super(props);
@@ -52,8 +52,8 @@ class AccountActivationsChart extends Component {
         };
     }
 
-    getAccountActivationsMonthly = async () => {
-        const server_response = await ajaxBank.fetchAccountActivationsEachMonth();
+    getCallsCostMonthly = async () => {
+        const server_response = await ajaxCallStation.callCostEachMonth();
         if (server_response.status === 'OK') {
             const data = server_response.details;
             const months = [];
@@ -84,7 +84,7 @@ class AccountActivationsChart extends Component {
     };
 
     componentDidMount() {
-        this.getAccountActivationsMonthly()
+        this.getCallsCostMonthly()
     }
 
     render() {
@@ -96,7 +96,7 @@ class AccountActivationsChart extends Component {
                     <div className="card-body">
                         <div className="card-option d-flex">
                             <div>
-                                <h6 className="card-title mb-1">Account Activations</h6>
+                                <h6 className="card-title mb-1">Call Charges</h6>
                             </div>
                             <div className="card-option-title ml-auto">
                                 <div className="btn-group p-0">
@@ -107,7 +107,7 @@ class AccountActivationsChart extends Component {
                         <div style={{ width: '100%', height: '100%' }}>
                         {isDataEmpty ? (
                                 <div className="no-data-message">
-                                    <p>No account activations this year.</p>
+                                    <p>No calls made this year.</p>
                                 </div>
                             ) : statData ? (
                                 <Chart options={options} series={series} type="donut" width="100%" height="400px" />
@@ -122,4 +122,4 @@ class AccountActivationsChart extends Component {
     }
 }
 
-export default AccountActivationsChart;
+export default CallsCostChart;
