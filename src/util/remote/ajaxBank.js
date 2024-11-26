@@ -11,42 +11,7 @@ export default {
     let response = await apiCall("invoice/list", data);
     return response;
   },
-  async fetchMMTransactions(page) {
-    let data = {
-      page: page
-    };
-    let response = await apiCall("mm/report", data);
-    return response;
-  },
-  async searchMMTransactions(page, from, to, search) {
-    let data = {
-      page: page,
-      from: from,
-      to: to,
-      search: search
-    };
-    let response = await apiCall("mm/report", data);
-    return response;
-  },
-  async fetchAccountTransactions(page,account) {
-    let data = {
-      page: page,
-      account_id: account
-    };
-    let response = await apiCall("wallet/list", data);
-    return response;
-  },
-  async searchBankTransactions(search, from, to, page, account) {
-    let data = {
-      search: search,
-      from: from,
-      to: to,
-      page: page,
-      account_id: account
-    };
-    let response = await apiCall("wallet/list", data);
-    return response;
-  },
+
   async searchAllInvoices(page, from, to, search) {
     let data = {
       page: page,
@@ -57,6 +22,89 @@ export default {
     let response = await apiCall("invoice/list", data);
     return response;
   },
+
+  async fetchMMTransactions(page) {
+    let data = {
+      page: page
+    };
+    let response = await apiCall("mm/report", data);
+    return response;
+  },
+
+  async searchMMTransactions(page, from, to, search) {
+    let data = {
+      page: page,
+      from: from,
+      to: to,
+      search: search
+    };
+    let response = await apiCall("mm/report", data);
+    return response;
+  },
+
+  async fetchBuzztimeTransactions(page) {
+    let data = {
+      page: page,
+      account_id: "1"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+
+  async searchBuzztimeTransactions(search, from, to, page) {
+    let data = {
+      search: search,
+      from: from,
+      to: to,
+      page: page,
+      account_id: "1"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+
+  async fetchCallTransactions(page) {
+    let data = {
+      page: page,
+      account_id: "3"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+
+  async searchCallTransactions(search, from, to, page) {
+    let data = {
+      search: search,
+      from: from,
+      to: to,
+      page: page,
+      account_id: "3"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+
+  async fetchMessageTransactions(page) {
+    let data = {
+      page: page,
+      account_id: "2"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+
+  async searchMessageTransactions(search, from, to, page) {
+    let data = {
+      search: search,
+      from: from,
+      to: to,
+      page: page,
+      account_id: "2"
+    };
+    let response = await apiCall("wallet/list", data);
+    return response;
+  },
+  
   async fetchRecentMMTransactions(data) {
     let response = await apiCall("bank/mm/recent", data);
     return response;
@@ -109,15 +157,22 @@ export default {
     let response = await apiCall("school_rate/activation/get", data);
     return response;
   },
-  async fetchAccountInvoices(page,account) {
+  async fetchAccountActivationInvoices(page) {
     let data = {
       page: page,
-      account_id: account
+      account_id: "4"
     };
     let response = await apiCall("invoice/list", data);
     return response;
   },
-  async searchAccountInvoices(data) {
+  async searchAccountActivationInvoices(searchTerm, startDate, endDate, page) {
+    let data = {
+      search: searchTerm,
+      from: startDate,
+      to: endDate,
+      page: page,
+      account_id: "4"
+    };
     let response = await apiCall("invoice/list", data);
     return response;
   },

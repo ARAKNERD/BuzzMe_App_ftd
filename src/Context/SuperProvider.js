@@ -10,11 +10,11 @@ import { WalletAccountProvider } from './WalletAccountContext';
 import { RelationshipProvider } from './RelationshipContext';
 import { LanguageProvider } from './LanguageContext';
 import { StudentProvider } from './StudentContext';
-import ContactContext from './ContactContext';
 import { ContactProvider } from './ContactContext';
 import { StationProvider } from './StationContext';
 import { CardProvider } from './CardContext';
 import { StatisticsProvider } from './StatisticsContext';
+import { TransactionsProvider } from './TransactionsContext';
 
 
 const SuperProvider=(props)=>{
@@ -35,8 +35,10 @@ const SuperProvider=(props)=>{
                                           <StationProvider>
                                             <CardProvider>
                                               <StatisticsProvider>
+                                                <TransactionsProvider>
                  
                                                 {props.children}
+                                                </TransactionsProvider>
                                               </StatisticsProvider>
                                             </CardProvider>
                                           </StationProvider>

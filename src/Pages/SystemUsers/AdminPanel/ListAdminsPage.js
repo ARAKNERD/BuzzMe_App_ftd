@@ -4,13 +4,19 @@ import AppContainer from "../../../Components/Structure/AppContainer";
 import AdminContext from "../../../Context/AdminContext";
 import useStateCallback from "../../../util/customHooks/useStateCallback";
 import TableHeader from "../../../Components/Common/TableHeader";
+<<<<<<<< HEAD:src/Pages/SystemUsers/AdminPanel/ListAdminsPage.js
+========
 import ResetPassword from "../ResetPassword";
+>>>>>>>> main:src/Pages/SchoolUsers/AdminPanel/ListAdminsPage.js
 import toast, {Toaster} from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import RemoteLogOut from "../../RemoteLogOut";
 import AddAdmin from "../../../Components/SystemUsers/AddAdmin";
+<<<<<<<< HEAD:src/Pages/SystemUsers/AdminPanel/ListAdminsPage.js
 import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
+========
+>>>>>>>> main:src/Pages/SchoolUsers/AdminPanel/ListAdminsPage.js
 
 function ListAdminsPage() {
 

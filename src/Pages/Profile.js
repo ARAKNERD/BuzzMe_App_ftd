@@ -4,7 +4,7 @@ import AuthContext from '../Context/AuthContext';
 import useStateCallback from '../util/customHooks/useStateCallback';
 import AppContainer from '../Components/Structure/AppContainer';
 import Loader from '../Components/Common/Loader';
-import ChangePassword from './ChangePassword';
+import ChangePassword from '../Components/SystemUsers/ChangePassword';
 
 const Profile = props => {
     const [modal, setModal] = useStateCallback(false);

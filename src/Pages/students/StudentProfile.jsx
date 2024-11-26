@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Select from "react-select";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
 import AppContainer from "../../Components/Structure/AppContainer";
 import ajaxStudent from "../../util/remote/ajaxStudent";
@@ -9,7 +9,6 @@ import useStateCallback from "../../util/customHooks/useStateCallback";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import AuthContext from "../../Context/AuthContext";
 import TableHeader from "../../Components/Common/TableHeader";
-import AttachParent from "./AddStudentContact";
 import { RenderSecure } from "../../util/script/RenderSecure";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
@@ -23,8 +22,8 @@ import SchoolContext from "../../Context/SchoolContext";
 import RemoteLogOut from "../RemoteLogOut";
 import ActivateAccount from "./ActivateAccount";
 import AssignCard from "./AssignCard";
-import AdminRefund from "../Transactions/AdminRefund";
 import AddStudentContact from "./AddStudentContact";
+import AdminRefund from "../../Components/Transactions/AdminRefund";
 
 const StudentProfile = (props) => {
   const [studentProfile, setStudentProfile] = useState(false);
@@ -43,7 +42,6 @@ const StudentProfile = (props) => {
   const [meta, setMeta] = useState([]);
   const [page1, setPage1] = useState(1);
   const [meta1, setMeta1] = useState([]);
-  const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
   const [groupList, setGroupList] = useState(false);
@@ -122,7 +120,6 @@ const StudentProfile = (props) => {
   const getStudentProfile = async () => {
     setLoading(true);
     const server_response = await ajaxStudent.fetchStudentData(student_id);
-    console.log(server_response)
     setLoading(false);
     if (server_response.status === "OK") {
       //store results
