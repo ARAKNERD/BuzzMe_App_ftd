@@ -2,10 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AppContainer from "../../../Components/Structure/AppContainer";
 import { Toaster } from "react-hot-toast";
-<<<<<<<< HEAD:src/Pages/SystemUsers/AdminPanel/ListSchoolAdminsPage.js
-========
-import ResetPassword from "../ResetPassword";
->>>>>>>> main:src/Pages/SchoolUsers/AdminPanel/ListSchoolAdminsPage.js
 import AddSchoolAdmin from "../../../Components/SystemUsers/AddSchoolAdmin";
 import RemoteLogOut from "../../RemoteLogOut";
 import { useContext } from "react";
@@ -14,10 +10,7 @@ import useStateCallback from "../../../util/customHooks/useStateCallback";
 import TableHeader from "../../../Components/Common/TableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-<<<<<<<< HEAD:src/Pages/SystemUsers/AdminPanel/ListSchoolAdminsPage.js
 import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
-========
->>>>>>>> main:src/Pages/SchoolUsers/AdminPanel/ListSchoolAdminsPage.js
 
 function ListSchoolAdminsPage() {
   const {schoolAdminList, getSchoolAdminList} = useContext(AdminContext);
