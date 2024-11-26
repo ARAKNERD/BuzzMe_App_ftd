@@ -4,12 +4,12 @@ import AppContainer from "../../../Components/Structure/AppContainer";
 import AdminContext from "../../../Context/AdminContext";
 import useStateCallback from "../../../util/customHooks/useStateCallback";
 import TableHeader from "../../../Components/Common/TableHeader";
-import ResetPassword from "../ResetPassword";
 import toast, {Toaster} from "react-hot-toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import RemoteLogOut from "../../RemoteLogOut";
 import AddAdmin from "../../../Components/SystemUsers/AddAdmin";
+import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
 
 function ListAdminsPage() {
 
@@ -17,7 +17,7 @@ function ListAdminsPage() {
     const [modal, setModal] = useStateCallback(false);
 
     const handleAdd=()=>{
-        setModal(false, ()=>setModal(<AddAdmin g={getAdminList}  isOpen={true}/>))
+      setModal(false, ()=>setModal(<AddAdmin g={getAdminList}  isOpen={true}/>))
     }
 
     const remoteLogout = (e, item) => {

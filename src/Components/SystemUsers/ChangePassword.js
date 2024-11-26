@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { toast } from 'react-hot-toast';
-import ajaxUser from "../util/remote/ajaxUser";
-import SystemModal from "../Components/Common/SystemModal";
-import Loader from "../Components/Common/Loader";
+import Loader from "../Common/Loader";
+import SystemModal from "../Common/SystemModal";
+import ajaxUser from "../../util/remote/ajaxUser";
 
 const ChangePassword=(props)=>{
 

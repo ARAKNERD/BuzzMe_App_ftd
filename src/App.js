@@ -31,7 +31,6 @@ import ImportStudents from "./Pages/students/ImportStudents";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import StudentProfile from "./Pages/students/StudentProfile";
 import StudentCards from "./Pages/students/StudentCards";
-import ListStations from "./Pages/Stations/ListStations";
 import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
 import ParentProfile from "./Pages/Parents/ParentProfile";
@@ -41,20 +40,21 @@ import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
 import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
 import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
 import AdminImportStudents from "./Pages/students/AdminImportStudents";
-import ListBoothAssistants from "./Pages/SchoolUsers/AdminPanel/ListBoothAssistantsPage";
 import SchoolDashboard from "./Pages/SchoolDashboard";
 import TransferStudent from "./Pages/students/TransferStudent";
-import TransactionsPage from "./Pages/Transactions/TransactionsPage";
+import TransactionsPage from "./Pages/TransactionsPage";
 import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
 import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
-import ListSchoolStations from "./Pages/Stations/ListSchoolStations";
 import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
 import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
 import ImportStudentsandContacts from "./Pages/students/ImportStudentsandContacts";
 import CardsPage from "./Pages/CardsPage";
 import StatisticsPage from "./Pages/StatisticsPage";
-import ListAdminsPage from "./Pages/SchoolUsers/AdminPanel/ListAdminsPage";
-import ListSchoolAdminsPage from "./Pages/SchoolUsers/AdminPanel/ListSchoolAdminsPage";
+import ListAdminsPage from "./Pages/SystemUsers/AdminPanel/ListAdminsPage";
+import ListSchoolAdminsPage from "./Pages/SystemUsers/AdminPanel/ListSchoolAdminsPage";
+import ListBoothAssistants from "./Pages/SystemUsers/AdminPanel/ListBoothAssistantsPage";
+import CallStationsPage from "./Pages/CallingStation/AdminPanel/CallStationsPage";
+import SchoolStationsPage from "./Pages/CallingStation/SchoolAdminPanel/SchoolStationsPage";
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -109,7 +109,7 @@ function App(props) {
               <Route path="/students" element={<ViewAllStudents />} />
               <Route path="/contacts" element={<ViewParents />} />
               <Route path="/call-logs" element={<CallLogsPage />} />
-              <Route path="/stations" element={<ListStations />} />
+              <Route path="/stations" element={<CallStationsPage />} />
               <Route path="/students_contacts/upload" element={<AdminImportStudentsandContacts />} />
 
               <Route
@@ -133,7 +133,7 @@ function App(props) {
               <Route path="/students" element={<ViewStudents />} />
               <Route path="/contacts" element={<ViewSchoolParents />} />
               <Route path="/call-logs" element={<SchoolLogsPage />} />
-              <Route path="/stations" element={<ListSchoolStations />} />
+              <Route path="/stations" element={<SchoolStationsPage />} />
               <Route path="/students_contacts/upload" element={<ImportStudentsandContacts />} />
 
               <Route
@@ -221,7 +221,6 @@ function App(props) {
               <Route path="/districts" element={<District />} />
               <Route path="/regions" element={<Regions />} />
               {/* End class groups */}
-              <Route path="/stations" element={<ListStations />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/transactions/all" element={<TransactionsPage />} />

@@ -1,86 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
+import AppContainer from "../../../Components/Structure/AppContainer";
 import { Link } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import TableHeader from "../../Components/Common/TableHeader";
-import Loader from "../../Components/Common/Loader";
-import ajaxStation from "../../util/remote/ajaxStation";
-import AddStation from "./AddStation";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import { RenderSecure } from "../../util/script/RenderSecure";
-import UpdateStation from "./UpdateStation";
+import TableHeader from "../../../Components/Common/TableHeader";
+import Loader from "../../../Components/Common/Loader";
+import useStateCallback from "../../../util/customHooks/useStateCallback";
+import { RenderSecure } from "../../../util/script/RenderSecure";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock } from "@fortawesome/free-solid-svg-icons";
-import TurnOnStation from "./TurnOnStation";
-import TurnOffStation from "./TurnOffStation";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import AddWorkingHours from "./AddWorkingHours";
-import UpdateTimeRangeHours from "./UpdateTimeRangeHours";
+import UpdateStation from "../../../Components/CallingStation/UpdateStation";
+import AddWorkingHours from "../../../Components/CallingStation/AddWorkingHours";
+import UpdateTimeRangeHours from "../../../Components/CallingStation/UpdateTimeRangeHours";
+import TurnOnStation from "../../../Components/CallingStation/TurnOnStation";
+import TurnOffStation from "../../../Components/CallingStation/TurnOffStation";
+import StationContext from "../../../Context/StationContext";
 
-function ListStations() {
-  const [stationList, setStationList] = useState([]);
+function SchoolStationsPage() {
+
   const [modal, setModal] = useStateCallback(false);
-  const [stationTimeRanges, setStationTimeRanges] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [loading2, setLoading2] = useState(false);
-  const [query, setQuery] = useState("");
-  const [page, setPage] = useState(1);
-  const [meta, setMeta] = useState([]);
-
-  const getStations = async (currentPage) => {
-    setLoading(true);
-    const server_response = await ajaxStation.listAllStations(currentPage);
-    setLoading(false);
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages);
-      const stations = server_response.details.list || [];
-      setStationList(stations);
-      stations.forEach(station => {
-        getStationTimeRanges(station.station_id); // Fetch time ranges for each station
-      });
-    } else {
-      setStationList([]);
-    }
-  };
-  const getStationTimeRanges = async (stationId) => {
-    const server_response = await ajaxStation.fetchStationTimeRanges(stationId);
-    if (server_response.status === "OK") {
-      setStationTimeRanges(prevState => ({
-        ...prevState,
-        [stationId]: server_response.details || [],
-      }));
-    } else {
-      setStationTimeRanges(prevState => ({
-        ...prevState,
-        [stationId]: [],
-      }));
-    }
-  };
-
-  const searchStations = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
-    setLoading2(true);
-    const server_response = await ajaxStation.searchAllStations(
-      query,
-      page
-    );
-    setLoading2(false);
-    if (server_response.status === "OK") {
-      setMeta(server_response.details.meta.list_of_pages);
-      setStationList(server_response.details.list || []);
-    } else {
-      setStationList([]);
-    }
-  };
+  const {schoolID, stationList, meta, page, query, loading, loading2, setQuery, setPage, stationTimeRanges, getSchoolStations, searchSchoolStations } = useContext(StationContext);
 
   const setStations = (e) => {
     e.preventDefault();
     setQuery("");
     setPage(1);
-    getStations(1);
+    getSchoolStations(1);
   };
 
   const updateStation = (e, item) => {
@@ -89,8 +33,8 @@ function ListStations() {
         <UpdateStation
           stationID={item.station_id}
           stationName={item.station_name}
-          schoolName={item.school.school_id}
-          g={getStations}
+          school={item.school.school_name}
+          g={getSchoolStations}
           page={page}
           isOpen={true}
         />
@@ -102,7 +46,7 @@ function ListStations() {
       setModal(
         <AddWorkingHours
           stationID={item.station_id}
-          g={getStations}
+          g={getSchoolStations}
           page={page}
           isOpen={true}
         />
@@ -115,7 +59,7 @@ function ListStations() {
       setModal(
         <UpdateTimeRangeHours
           timeID={timeRange.time_id}
-          g={getStations}
+          g={getSchoolStations}
           page={page}
           startTime={timeRange.start_time}
           endTime={timeRange.end_time}
@@ -129,7 +73,7 @@ function ListStations() {
       setModal(
         <TurnOnStation
           stationID={item.station_id}
-          g={getStations}
+          g={getSchoolStations}
           page={page}
           isOpen={true}
         />
@@ -141,42 +85,12 @@ function ListStations() {
       setModal(
         <TurnOffStation
           stationID={item.station_id}
-          g={getStations}
+          g={getSchoolStations}
           page={page}
           isOpen={true}
         />
       )
     );
-  };
-  const stationAdd = (e, item) => {
-    setModal(false, () =>
-      setModal(
-        <AddStation
-          g={getStations}
-          page={page}
-          isOpen={true}
-        />
-      )
-    );
-  };
-
-  const refreshData = () => {
-    getStations(1);
-  };
-
-  const exportToPDF = () => {
-    const pdf = new jsPDF("p", "pt", "a4");
-    const columns = ["Station Name", "Station Code", "School Name", "Active Hours"];
-    const data = stationList.map(item => [
-      item.station_name,
-      item.station_code,
-      item.school ? item.school.school_name: "Not installed",
-      item.start_time ? `${item.start_time} - ${item.end_time}`: "Not set"
-
-    ]);
-
-    pdf.autoTable({ head: [columns], body: data });
-    pdf.save("station_list.pdf");
   };
 
   const handlePagination = (newPage) => {
@@ -185,31 +99,23 @@ function ListStations() {
     }
   };
 
+  const refreshData = () => {
+    getSchoolStations(1);
+  };
+
   useEffect(() => {
     if (query) {
-      searchStations();
+      searchSchoolStations();
     } else {
-      getStations(page);
+      getSchoolStations(page);
     }
-  }, [page]);
+  }, [schoolID, page]);
 
   return (
     <AppContainer title="Calling Stations">
       <Toaster position="top-center" reverseOrder={false} />
       {modal}
       <div className="row">
-      <div className="col-lg-12 col-md-12">
-          <div className="pl-20" style={{ float: "right" }}>
-            <Link onClick={stationAdd}>
-              <button
-                type="button"
-                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue"
-              >
-                <i className="fa-solid fa-plus" /> Add New Station
-              </button>
-            </Link>
-          </div>
-        </div>
 
       <div className="col-lg-12">
           <div className="card custom-card">
@@ -234,8 +140,6 @@ function ListStations() {
                     <Link class="dropdown-item" onClick={refreshData}>
                       <i class="fas fa-redo-alt text-orange-peel"></i>Refresh
                     </Link>
-                    <Link class="dropdown-item" onClick={exportToPDF} ><i class="fas fa-file-export"></i>Export</Link>
-
                   </div>
                 </div>
               </div>
@@ -258,7 +162,7 @@ function ListStations() {
                   <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
                     <button
                       type="submit"
-                      onClick={(e) => searchStations(e)}
+                      onClick={(e) => searchSchoolStations(e)}
                       className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue"
                     >
                       SEARCH
@@ -277,8 +181,7 @@ function ListStations() {
               <th>No.</th>
               <th>Station Name</th>
               <th>Station Code</th>
-              <th>School</th>
-              <th>Working Hours</th>
+              <th>Active Hours</th>
               <th>Status</th>
               <th>Actions</th>
               </tr>
@@ -291,12 +194,7 @@ function ListStations() {
                           <td>{item.station_name}</td>
                           <td>{item.station_code}</td>
                           <td>
-                              {item.school
-                                ? item.school.school_name
-                                : "Not installed"}
-                            </td>
-                            <td>
-                  {stationTimeRanges[item.station_id] && stationTimeRanges[item.station_id].length > 0 ? (
+                          {stationTimeRanges[item.station_id] && stationTimeRanges[item.station_id].length > 0 ? (
                     <ul>
                       {stationTimeRanges[item.station_id].map((timeRange, idx) => (
                         <li key={idx}>
@@ -313,7 +211,7 @@ function ListStations() {
                   ) : (
                     "No working hours set"
                   )}
-                </td>
+                          </td>
                           <td>
                             {item.status === "300" ? (
                               <span class="badge badge-success">Active</span>
@@ -347,7 +245,7 @@ function ListStations() {
                                       marginRight: "3px",
                                     }}
                                   />
-                                  Add Station Hours
+                                  Change Active Hours
                                 </Link>
                                 <RenderSecure code="ADMIN-VIEW">
                                   <Link
@@ -395,7 +293,7 @@ function ListStations() {
               ) : (
                 <tr>
                   <td colSpan="7" style={{ textAlign: "center" }}>
-                    No stations / calling booths registered yet.
+                    No stations / calling booths attached to this school yet.
                   </td>
                 </tr>
               )}
@@ -405,7 +303,7 @@ function ListStations() {
       </div>
 
       <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page - 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === 1} onClick={() => handlePagination(page - 1)}>
           <i className="fa fa-angle-left mr-2"></i> Prev
         </button>
         {Array.isArray(meta) && meta.map((item) => (
@@ -418,7 +316,7 @@ function ListStations() {
             {item}
           </button>
         ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} onClick={() => handlePagination(page + 1)}>
+        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === meta.length}  onClick={() => handlePagination(page + 1)}>
           Next <i className="fa fa-angle-right ml-2"></i>
         </button>
       </div>
@@ -430,4 +328,4 @@ function ListStations() {
   );
 }
 
-export default ListStations;
+export default SchoolStationsPage;

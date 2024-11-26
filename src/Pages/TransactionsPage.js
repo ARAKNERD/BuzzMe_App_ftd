@@ -1,15 +1,15 @@
 import React from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
+import AppContainer from "../Components/Structure/AppContainer";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
-import AllTransactions from "./AllTransactions";
-import AccountActivations from "./AccountActivations";
-import BuzztimeLoadTransactions from "./BuzztimeLoadTransactions";
-import CallTransactions from "./CallTransactions";
-import MessageTransactions from "./MessageTransactions";
-import MMTransactions from "./MMTransactions";
+import AllTransactions from "../Components/Transactions/AllTransactions";
+import MMTransactions from "../Components/Transactions/MMTransactions";
+import AccountActivations from "../Components/Transactions/AccountActivations";
+import BuzztimeLoadTransactions from "../Components/Transactions/BuzztimeLoadTransactions";
+import CallTransactions from "../Components/Transactions/CallTransactions";
+import MessageTransactions from "../Components/Transactions/MessageTransactions";
 
 function TransactionsPage() {
  

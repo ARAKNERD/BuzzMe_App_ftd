@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import AppContainer from "../../../Components/Structure/AppContainer";
 import { Toaster } from "react-hot-toast";
-import ResetPassword from "../ResetPassword";
 import AddSchoolAdmin from "../../../Components/SystemUsers/AddSchoolAdmin";
 import RemoteLogOut from "../../RemoteLogOut";
 import { useContext } from "react";
@@ -11,6 +10,7 @@ import useStateCallback from "../../../util/customHooks/useStateCallback";
 import TableHeader from "../../../Components/Common/TableHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
 
 function ListSchoolAdminsPage() {
   const {schoolAdminList, getSchoolAdminList} = useContext(AdminContext);

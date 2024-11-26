@@ -4,9 +4,9 @@ import AppContainer from "../../../Components/Structure/AppContainer";
 import { Toaster } from "react-hot-toast";
 import useStateCallback from "../../../util/customHooks/useStateCallback";
 import TableHeader from "../../../Components/Common/TableHeader";
-import ResetPassword from "../ResetPassword";
 import AdminContext from "../../../Context/AdminContext";
 import AddBoothAssistant from "../../../Components/SystemUsers/AddBoothAssistant";
+import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
 
 function ListBoothAssistants() {
   const {boothAssistantList, getBoothAssistantList} = useContext(AdminContext);
