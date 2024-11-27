@@ -15,6 +15,7 @@ import { StationProvider } from './StationContext';
 import { CardProvider } from './CardContext';
 import { StatisticsProvider } from './StatisticsContext';
 import { TransactionsProvider } from './TransactionsContext';
+import { CallProvider } from './CallContext';
 
 
 const SuperProvider=(props)=>{
@@ -36,8 +37,10 @@ const SuperProvider=(props)=>{
                                             <CardProvider>
                                               <StatisticsProvider>
                                                 <TransactionsProvider>
+                                                  <CallProvider>
                  
                                                 {props.children}
+                                                </CallProvider>
                                                 </TransactionsProvider>
                                               </StatisticsProvider>
                                             </CardProvider>

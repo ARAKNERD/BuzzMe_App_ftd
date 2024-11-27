@@ -7,6 +7,7 @@ import Loader from "../../Components/Common/Loader";
 import TransactionsContext from "../../Context/TransactionsContext";
 import TransactionsTable from "../Common/Transactions/TransactionsTable";
 import Pagination from "../Common/Pagination";
+import TransactionsSearchForm from "../Common/Transactions/TransactionsSearchForm";
 
 function MMTransactions() {
   const {mmTransactions, mmMeta, mmPage, mmSearchTerm, mmStartDate, mmEndDate, loading,
@@ -73,7 +74,27 @@ function MMTransactions() {
         </div>
       </div>
 
-      <form className="mg-t-20" onSubmit={searchMMTransactions}>
+      <TransactionsSearchForm searchTerm={mmSearchTerm} setSearchTerm={setMmSearchTerm} startDate={mmStartDate}
+         setStartDate={setMmStartDate} endDate={mmEndDate} setEndDate={setMmEndDate} searchTransactions={searchMMTransactions}
+         setTransactions={resetFilters} setPage={setMmPage}/>
+
+      <div className="border-top mt-3"></div>
+      <div className="table-responsive">
+        {loading || loading2 ? (
+          <Loader />
+        ) : (
+          <TransactionsTable headers={headers} data={mmTransactions} isMMTransaction={true}/>
+        )}
+      </div>
+
+      <Pagination currentPage={mmPage} totalPages={mmMeta.length} onPageChange={handlePagination}/>
+
+    </>
+  );
+}
+
+export default MMTransactions;
+{/* <form className="mg-t-20" onSubmit={searchMMTransactions}>
         <div className="row gutters-8">
           <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
             <div className="row">
@@ -128,21 +149,4 @@ function MMTransactions() {
             </button>
           </div>
         </div>
-      </form>
-
-      <div className="border-top mt-3"></div>
-      <div className="table-responsive">
-        {loading || loading2 ? (
-          <Loader /> // Show loader when loading or searching
-        ) : (
-          <TransactionsTable headers={headers} data={mmTransactions} isMMTransaction={true}/>
-        )}
-      </div>
-
-      <Pagination currentPage={mmPage} totalPages={mmMeta.length} onPageChange={handlePagination}/>
-
-    </>
-  );
-}
-
-export default MMTransactions;
+      </form> */}

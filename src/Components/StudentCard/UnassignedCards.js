@@ -7,6 +7,8 @@ import DeActivateCard from "./DeActivateCard";
 import AttachCard from "./AttachCard";
 import UpdateCardNumber from "./UpdateCardNumber";
 import CardContext from "../../Context/CardContext";
+import Pagination from "../Common/Pagination";
+import StudentCardSearchForm from "../Common/StudentCard/StudentCardSearchForm";
 
 function UnassignedCards(props) {
   const [modal, setModal] = useStateCallback(false);
@@ -55,34 +57,7 @@ function UnassignedCards(props) {
         <>
       {modal}
       
-        <form className="mg-t-10">
-            <div className="row gutters-8">
-              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <input
-                  type="text"
-                  value={unassignedQuery} onChange={(e) => {
-                    setUnassignedQuery(e.target.value);
-                    if (e.target.value === '') {
-                      setCards(e);
-                    }
-                  }}
-                  placeholder="Search for card name..."
-                  style={{border: "1px solid grey"}}
-
-                  className="form-control"
-                />
-              </div>
-              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <button
-                  type="submit"
-                  onClick={(e) => searchUnassignedCard(e)}
-                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  SEARCH
-                </button>
-               
-              </div>
-            </div>
-        </form>
+      <StudentCardSearchForm searchTerm={unassignedQuery} setSearchTerm={setUnassignedQuery} placeholder="Enter card number..." searchCards={searchUnassignedCard} setCards={setCards} setPage={setUnassignedPage}/>
         <div className="table-responsive">
 {loading || loading2 ? (
 <Loader /> // Show loader when loading or searching
@@ -156,24 +131,8 @@ unassignedCardList.map((item, index) => (
 </table>
 )}
         </div>
-        <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={unassignedPage === 1} onClick={() => handlePagination(unassignedPage - 1)}>
-          <i className="fa fa-angle-left mr-2"></i> Prev
-        </button>
-        {Array.isArray(unassignedMeta) && unassignedMeta.map((item) => (
-          <button
-            key={item}
-            style={{borderRight: "1px solid yellow"}}
-            className={`btn ${unassignedPage === item ? "btn-primary" : "btn-dark"}`}
-            onClick={() => handlePagination(item)}
-          >
-            {item}
-          </button>
-        ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={unassignedPage === unassignedMeta.length} onClick={() => handlePagination(unassignedPage + 1)}>
-          Next <i className="fa fa-angle-right ml-2"></i>
-        </button>
-        </div>
+        <Pagination currentPage={unassignedPage} totalPages={unassignedMeta.length} onPageChange={handlePagination}/>
+
          </>
   );
 }

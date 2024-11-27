@@ -26,10 +26,19 @@ export default {
     let response = await apiCall("account/update", data);
     return response;
   },
-  async listTypeCallLogs(page, provider) {
+  async listZegoCallLogs(page) {
     let data = {
       page: page,
-      provider: provider
+      provider: "BUZZ"
+    };
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
+  
+  async listTwilioCallLogs(page) {
+    let data = {
+      page: page,
+      provider: "GSM"
     };
     let response = await apiCall("call_log/list", data);
     return response;
@@ -87,9 +96,21 @@ export default {
     let response = await apiCall("call_log/count", data);
     return response;
   },
-  async searchTypeLogs(provider,page,searchStudent,searchContact,startDate,endDate) {
+  async searchTwilioLogs(page,searchStudent,searchContact,startDate,endDate) {
     let data = {
-      provider: provider,
+      provider: "GSM",
+      page: page,
+      search_caller: searchStudent,
+      search_callee: searchContact,
+      from: startDate,
+      to: endDate,
+    };
+    let response = await apiCall("call_log/list", data);
+    return response;
+  },
+  async searchZegoLogs(page,searchStudent,searchContact,startDate,endDate) {
+    let data = {
+      provider: "BUZZ",
       page: page,
       search_caller: searchStudent,
       search_callee: searchContact,

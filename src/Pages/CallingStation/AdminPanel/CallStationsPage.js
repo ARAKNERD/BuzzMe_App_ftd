@@ -17,6 +17,7 @@ import TurnOffStation from "../../../Components/CallingStation/TurnOffStation";
 import AddStation from "../../../Components/CallingStation/AddStation";
 import AddWorkingHours from "../../../Components/CallingStation/AddWorkingHours";
 import UpdateTimeRangeHours from "../../../Components/CallingStation/UpdateTimeRangeHours";
+import Pagination from "../../../Components/Common/Pagination";
 
 function CallStationsPage() {
   const [modal, setModal] = useStateCallback(false);
@@ -351,24 +352,8 @@ function CallStationsPage() {
         )}
       </div>
 
-      <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === 1} onClick={() => handlePagination(page - 1)}>
-          <i className="fa fa-angle-left mr-2"></i> Prev
-        </button>
-        {Array.isArray(meta) && meta.map((item) => (
-          <button
-            key={item}
-            style={{borderRight: "1px solid yellow"}}
-            className={`btn ${page === item ? "btn-primary" : "btn-dark"}`}
-            onClick={() => handlePagination(item)}
-          >
-            {item}
-          </button>
-        ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={page === meta.length} onClick={() => handlePagination(page + 1)}>
-          Next <i className="fa fa-angle-right ml-2"></i>
-        </button>
-      </div>
+      <Pagination currentPage={page} totalPages={meta.length} onPageChange={handlePagination}/>
+
             </div>
           </div>
         </div>

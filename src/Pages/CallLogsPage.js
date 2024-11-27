@@ -3,11 +3,10 @@ import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
-import AppContainer from "../../Components/Structure/AppContainer";
-import ZegoLogs from "./ZegoLogs";
-import TwilioLogs from "./TwilioLogs";
-import { Toaster, toast } from "react-hot-toast";
-
+import AppContainer from "../Components/Structure/AppContainer";
+import ZegoLogs from "../Components/CallLogs/ZegoLogs";
+import TwilioLogs from "../Components/CallLogs/TwilioLogs";
+import { Toaster } from "react-hot-toast";
 
 function CallLogsPage() {
 
