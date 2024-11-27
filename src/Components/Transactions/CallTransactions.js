@@ -7,6 +7,7 @@ import Loader from "../../Components/Common/Loader";
 import TransactionsContext from "../../Context/TransactionsContext";
 import TransactionsTable from "../Common/Transactions/TransactionsTable";
 import Pagination from "../Common/Pagination";
+import TransactionsSearchForm from "../Common/Transactions/TransactionsSearchForm";
 
 function CallTransactions() {
 
@@ -69,57 +70,15 @@ function CallTransactions() {
           </div>
         </div>
       </div>
-      <form className="mg-t-20">
-        <div className="row gutters-8">
-          <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-          <div className="row">
-          <div className="col-lg-4">
-            <input
-              type="text"
-              placeholder="Enter first or last name of user..."
-              style={{border: "1px solid grey"}}
-              value={callSearchTerm} onChange={(e) => {
-                setCallSearchTerm(e.target.value);
-                if (e.target.value === '') {
-                  setCall(e);
-                }
-              }}
-              className="form-control"
-            /></div>
-            <div className="col-lg-8">
-              <div class="flex-fill position-relative">
-                <div class="input-group input-daterange" id="datepicker">
-                  <input type="date" style={{border: "1px solid grey"}} class="form-control" value={callStartDate}
-              onChange={(e) => setCallStartDate(e.target.value)} placeholder="start date"/>
-                  <span class="input-group-text" style={{marginLeft: "-1px", borderTopLeftRadius:"0", borderTopRightRadius:"0", borderBottomLeftRadius:"0", borderBottomRightRadius:"0"}}>to</span>
-                  <input type="date" style={{border: "1px solid grey"}} value={callEndDate}
-              onChange={(e) => setCallEndDate(e.target.value)} class="form-control" placeholder="end date"/>
-                </div>
-              </div>
-            </div>
-            </div>
-          </div>
 
-          <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-            <button
-              type="submit"
-              onClick={(e) => searchCallTransactions(e)}
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue ml-3">
-              SEARCH
-            </button>
-            <button
-              type="submit"
-              onClick={(e) => setCall(e)}
-              className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-martini ml-3">
-              RESET
-            </button>
-          </div>
-        </div>
-      </form>
+      <TransactionsSearchForm searchTerm={callSearchTerm} setSearchTerm={setCallSearchTerm} startDate={callStartDate}
+         setStartDate={setCallStartDate} endDate={callEndDate} setEndDate={setCallEndDate} searchTransactions={searchCallTransactions}
+         setTransactions={setCall} setPage={setCallPage}/>
+
       <div className="border-top mt-3"></div>
       <div className="table-responsive">
         {loading || loading2 ? (
-          <Loader /> // Show loader when loading or searching
+          <Loader />
         ) : (
           <TransactionsTable headers={headers} data={callTransactions}/>
         )}

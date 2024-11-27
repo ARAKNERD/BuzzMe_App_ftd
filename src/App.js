@@ -14,14 +14,11 @@ import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
 import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
-
 import AddSchool from "./Pages/Schools/AddSchool";
 import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
-import ListAccount from "./Pages/Accounts/ListAccount";
-import AddAccount from "./Pages/Accounts/AddAccount";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
 import ViewSchool from "./Pages/Schools/ViewSchool";
@@ -43,7 +40,7 @@ import AdminImportStudents from "./Pages/students/AdminImportStudents";
 import SchoolDashboard from "./Pages/SchoolDashboard";
 import TransferStudent from "./Pages/students/TransferStudent";
 import TransactionsPage from "./Pages/TransactionsPage";
-import CallLogsPage from "./Pages/CallLogs/CallLogsPage";
+import CallLogsPage from "./Pages/CallLogsPage";
 import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
 import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
 import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
@@ -173,10 +170,6 @@ function App(props) {
               {/* MM Payments routes */}
               <Route path="/payments/mm/view" element={<ListMMPayments />} />
               {/* End MM Payments routes */}
-              {/* Account routes */}
-              <Route path="/accounts/view" element={<ListAccount />} />
-              <Route path="/accounts/add" element={<AddAccount />} />
-              {/* End Account routes */}
               {/* Parents */}
              
               

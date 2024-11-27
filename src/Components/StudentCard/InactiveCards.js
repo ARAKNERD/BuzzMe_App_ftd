@@ -7,6 +7,8 @@ import ActivateCard from "./ActivateCard";
 import UpdateCardNumber from "./UpdateCardNumber";
 import CardContext from "../../Context/CardContext";
 import AttachCard from "./AttachCard";
+import Pagination from "../Common/Pagination";
+import StudentCardSearchForm from "../Common/StudentCard/StudentCardSearchForm";
 
 function InactiveCards(props) {
   const [modal, setModal] = useStateCallback(false);
@@ -58,37 +60,10 @@ function InactiveCards(props) {
         <>
       {modal}
       
-        <form className="mg-t-10">
-            <div className="row gutters-8">
-              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <input
-                  type="text"
-                  value={inactiveQuery} onChange={(e) => {
-                    setInactiveQuery(e.target.value);
-                    if (e.target.value === '') {
-                      setCards(e);
-                    }
-                  }}
-                  placeholder="Search for card name or student name..."
-                  style={{border: "1px solid grey"}}
-
-                  className="form-control"
-                />
-              </div>
-              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <button
-                  type="submit"
-                  onClick={(e) => searchInactiveCard(e)}
-                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  SEARCH
-                </button>
-               
-              </div>
-            </div>
-        </form>
+        <StudentCardSearchForm searchTerm={inactiveQuery} setSearchTerm={setInactiveQuery} searchCards={searchInactiveCard} setCards={setCards} setPage={setInactivePage} placeholder="Enter card number or name of student..."/>
         <div className="table-responsive">
 {loading || loading2 ? (
-<Loader /> // Show loader when loading or searching
+<Loader /> 
 ) : (
 <table className="table display data-table text-nowrap">
 <thead>
@@ -161,24 +136,8 @@ inactiveCardList.map((item, index) => (
 </table>
 )}
         </div>
-        <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={inactivePage === 1} onClick={() => handlePagination(inactivePage - 1)}>
-          <i className="fa fa-angle-left mr-2"></i> Prev
-        </button>
-        {Array.isArray(inactiveMeta) && inactiveMeta.map((item) => (
-          <button
-            key={item}
-            style={{borderRight: "1px solid yellow"}}
-            className={`btn ${inactivePage === item ? "btn-primary" : "btn-dark"}`}
-            onClick={() => handlePagination(item)}
-          >
-            {item}
-          </button>
-        ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={inactivePage === inactiveMeta.length} onClick={() => handlePagination(inactivePage + 1)}>
-          Next <i className="fa fa-angle-right ml-2"></i>
-        </button>
-        </div>
+        <Pagination currentPage={inactivePage} totalPages={inactiveMeta.length} onPageChange={handlePagination}/>
+
          </>
   );
 }

@@ -7,6 +7,8 @@ import DetachCard from "./DetachCard";
 import DeActivateCard from "./DeActivateCard";
 import UpdateCardNumber from "./UpdateCardNumber";
 import CardContext from "../../Context/CardContext";
+import Pagination from "../Common/Pagination";
+import StudentCardSearchForm from "../Common/StudentCard/StudentCardSearchForm";
 
 function AssignedCards(props) {
     const [modal, setModal] = useStateCallback(false);
@@ -57,128 +59,85 @@ function AssignedCards(props) {
         <>
       {modal}
       
-        <form className="mg-t-10">
-            <div className="row gutters-8">
-              <div className="col-9-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <input
-                  type="text"
-                  value={assignedQuery} onChange={(e) => {
-                    setAssignedQuery(e.target.value);
-                    if (e.target.value === '') {
-                      setCards(e);
-                    }
-                  }}
-                  placeholder="Search for card name or student name..."
-                  style={{border: "1px solid grey"}}
-
-                  className="form-control"
-                />
-              </div>
-              <div className="col-3-xxxl col-xl-6 col-lg-6 col-6 form-group">
-                <button
-                  type="submit"
-                  onClick={(e) => searchAssignedCard(e)}
-                  className="btn-fill-lmd radius-30 text-light shadow-dodger-blue bg-dodger-blue">
-                  SEARCH
-                </button>
-               
-              </div>
-            </div>
-        </form>
+        <StudentCardSearchForm searchTerm={assignedQuery} setSearchTerm={setAssignedQuery} searchCards={searchAssignedCard} setCards={setCards} setPage={setAssignedPage} placeholder="Enter card number or name of student..."/>
         <div className="table-responsive">
-{loading || loading2 ? (
-<Loader /> // Show loader when loading or searching
-) : (
-<table className="table display data-table text-nowrap">
-<thead>
-<tr>
-<th scope="col" className="wd-10p">No.</th>
-<th>Card Number</th>
-<th>Student Name</th>
-<th>Status</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
-{assignedCardList.length > 0 ? (
-assignedCardList.map((item, index) => (
-  <tr key={index}>
-    <th scope='row' style={{width:"5px"}}>{index + assignedFirst + 1}</th>
-    <td>{item.card_number}</td>
-          <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
-          <td>{item.status==="1"?<span class="badge badge-success">Assigned</span>
-          :<span class="badge badge-danger">De-activated</span>}</td>
-          <td>
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="dropdown-toggle"
-                data-toggle="dropdown"
-                aria-expanded="false">
-                <span className="flaticon-more-button-of-three-dots"></span>
-              </Link>
-              <div className="dropdown-menu dropdown-menu-right">
-               
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => updateCard(e,item)}>
-                <i className="fa fa-edit mr-1"></i>
-                 Change Card Number
-              </Link>
-                <Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => detachCard(e,item)}>
-                <i className="fa fa-square-plus mr-1"></i>
-                 Detach Card
-              </Link>
-              {item.status==="1"?<Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => cardOff(e,item)}>
-                <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
-                 De-Activate Card
-              </Link>:<Link
-                className="dropdown-item"
-                to="#"
-                onClick={(e) => cardOn(e,item)}>
-                <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
-                Activate Card
-              </Link>}</div>
-            </div>
-          </td>
-  </tr>
-))
-) : (
-<tr>
-  <td colSpan="6" style={{ textAlign: "center" }}>
-    No cards registered yet.
-  </td>
-</tr>
-)}
-</tbody>
-</table>
-)}
+          {loading || loading2 ? (
+            <Loader /> // Show loader when loading or searching
+          ) : (
+            <table className="table display data-table text-nowrap">
+            <thead>
+            <tr>
+            <th scope="col" className="wd-10p">No.</th>
+            <th>Card Number</th>
+            <th>Student Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {assignedCardList.length > 0 ? (
+            assignedCardList.map((item, index) => (
+              <tr key={index}>
+                <th scope='row' style={{width:"5px"}}>{index + assignedFirst + 1}</th>
+                <td>{item.card_number}</td>
+                      <td>{item.student?.full_name?item.student.full_name:"Not assigned"}</td>
+                      <td>{item.status==="1"?<span class="badge badge-success">Assigned</span>
+                      :<span class="badge badge-danger">De-activated</span>}</td>
+                      <td>
+                        <div className="dropdown">
+                          <Link
+                            to="#"
+                            className="dropdown-toggle"
+                            data-toggle="dropdown"
+                            aria-expanded="false">
+                            <span className="flaticon-more-button-of-three-dots"></span>
+                          </Link>
+                          <div className="dropdown-menu dropdown-menu-right">
+                          
+                          <Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={(e) => updateCard(e,item)}>
+                            <i className="fa fa-edit mr-1"></i>
+                            Change Card Number
+                          </Link>
+                            <Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={(e) => detachCard(e,item)}>
+                            <i className="fa fa-square-plus mr-1"></i>
+                            Detach Card
+                          </Link>
+                          {item.status==="1"?<Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={(e) => cardOff(e,item)}>
+                            <i className="fa fa-power-off mr-1" style={{color:"red"}}></i>
+                            De-Activate Card
+                          </Link>:<Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={(e) => cardOn(e,item)}>
+                            <i className="fa fa-power-off mr-1" style={{color:"green"}}></i>
+                            Activate Card
+                          </Link>}</div>
+                        </div>
+                      </td>
+              </tr>
+            ))
+            ) : (
+            <tr>
+              <td colSpan="6" style={{ textAlign: "center" }}>
+                No cards registered yet.
+              </td>
+            </tr>
+            )}
+            </tbody>
+            </table>
+          )}
         </div>
-        <div className="pagination">
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={assignedPage === 1} onClick={() => handlePagination(assignedPage - 1)}>
-          <i className="fa fa-angle-left mr-2"></i> Prev
-        </button>
-        {Array.isArray(assignedMeta) && assignedMeta.map((item) => (
-          <button
-            key={item}
-            style={{borderRight: "1px solid yellow"}}
-            className={`btn ${assignedPage === item ? "btn-primary" : "btn-dark"}`}
-            onClick={() => handlePagination(item)}
-          >
-            {item}
-          </button>
-        ))}
-        <button className="btn btn-dark" style={{borderRight: "1px solid yellow"}} disabled={assignedPage === assignedMeta.length} onClick={() => handlePagination(assignedPage + 1)}>
-          Next <i className="fa fa-angle-right ml-2"></i>
-        </button>
-        </div>
+        <Pagination currentPage={assignedPage} totalPages={assignedMeta.length} onPageChange={handlePagination}/>
+
          </>
   );
 }
