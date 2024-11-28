@@ -1,19 +1,23 @@
 import React, {useContext, useEffect, useState} from "react";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
-import RateContext from "../../Context/RateContext";
 import {toast} from "react-hot-toast";
-import SchoolContext from "../../Context/SchoolContext";
 import Select from "react-select";
+import RateContext from "../../../Context/RateContext";
+import SchoolContext from "../../../Context/SchoolContext";
+import ajaxChargeRate from "../../../util/remote/ajaxChargeRate";
 
 function AddChargeRate(props) {
   const [rate, setRate] = useState("");
   const [type, setType] = useState("");
   const [school, setSchool] = useState("");
   const [category, setCategory] = useState("");
-  const {getRateList, typeList} = useContext(RateContext);
+  const {getRateList, typeList, getSchoolRates, getTypeList} = useContext(RateContext);
   const {schoolList} = useContext(SchoolContext);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+
+  useEffect(() => {
+    getTypeList();
+}, []);
 
   const data = {
     rate: rate,
@@ -50,7 +54,7 @@ function AddChargeRate(props) {
         setLoading2(false)
         if (server_response.status === "OK") {
           toast.success(server_response.message);
-          props.g()
+          getSchoolRates();
           resetForm();
         } else {
           toast.error(server_response.message);

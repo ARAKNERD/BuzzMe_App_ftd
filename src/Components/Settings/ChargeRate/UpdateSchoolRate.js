@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { toast } from 'react-hot-toast';
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
+import ajaxChargeRate from "../../../util/remote/ajaxChargeRate";
+import Loader from "../../Common/Loader";
+import SystemModal from "../../Common/SystemModal";
 
 
-const UpdateChargeRate=(props)=>
+const UpdateSchoolRate=(props)=>
 {
 
   const [loading, setLoading] = useState(false)
@@ -23,7 +23,7 @@ const UpdateChargeRate=(props)=>
   {
     e.preventDefault()
     setLoading(true)
-    const server_response = await ajaxChargeRate.updateChargeRate(data);
+    const server_response = await ajaxChargeRate.updateSchoolRate(data);
     setLoading(false);
     if(server_response.status==="OK"){
       toast.success(server_response.message);
@@ -52,8 +52,8 @@ const UpdateChargeRate=(props)=>
 
   return(
     <SystemModal
-      title="Update Charge Rate"
-      id="model-update-ratee"
+      title="Update School Rate"
+      id="model-update-sch-rate"
       size="md"
       footer={RenderFooter}
     >
@@ -73,4 +73,4 @@ const UpdateChargeRate=(props)=>
     )
 }
 
-export default UpdateChargeRate
+export default UpdateSchoolRate

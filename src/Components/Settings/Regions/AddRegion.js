@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
 import {Toaster, toast} from "react-hot-toast";
-import RegionContext from "../../Context/RegionContext";
-import ajaxRegion from "../../util/remote/ajaxRegion";
+import RegionContext from "../../../Context/RegionContext";
+import ajaxRegion from "../../../util/remote/ajaxRegion";
 
 function AddRegion() {
   const {getRegionList} = useContext(RegionContext);
