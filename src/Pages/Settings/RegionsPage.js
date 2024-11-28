@@ -1,12 +1,13 @@
 import React, {useContext} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import RegionContext from "../../Context/RegionContext";
-import AddRegion from "../../Components/DistrictRegion/AddRegion";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { Link } from "react-router-dom";
+import RegionContext from "../../Context/RegionContext";
+import AddRegion from "../../Components/Settings/Regions/AddRegion";
 
-function Regions() {
+
+function RegionsPage() {
   const {regionList, getRegionList} = useContext(RegionContext);
 
   const refreshData = () =>{
@@ -69,4 +70,4 @@ function Regions() {
   );
 }
 
-export default Regions;
+export default RegionsPage;

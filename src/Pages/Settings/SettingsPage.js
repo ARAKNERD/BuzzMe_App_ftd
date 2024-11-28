@@ -1,8 +1,8 @@
 import React from 'react'
-import AppContainer from '../Components/Structure/AppContainer';
+import AppContainer from '../../Components/Structure/AppContainer';
 import { Link } from 'react-router-dom';
 
-const Settings = props => {
+const SettingsPage = props => {
 
     return (
         <AppContainer title={"Settings"} >
@@ -74,4 +74,4 @@ const Settings = props => {
     )
 }
 
-export default Settings;
+export default SettingsPage;

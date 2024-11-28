@@ -1,9 +1,9 @@
 import React, {useContext, useState} from "react";
 import {Toaster, toast} from "react-hot-toast";
 import Select from "react-select";
-import RegionContext from "../../Context/RegionContext";
-import ajaxDistrict from "../../util/remote/ajaxDistrict";
-import DistrictContext from "../../Context/DistrictContext";
+import RegionContext from "../../../Context/RegionContext";
+import DistrictContext from "../../../Context/DistrictContext";
+import ajaxDistrict from "../../../util/remote/ajaxDistrict";
 
 function AddDistrict() {
   const {regionList} = useContext(RegionContext);

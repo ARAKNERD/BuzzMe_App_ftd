@@ -14,24 +14,17 @@ import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
 import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
-import AddSchool from "./Pages/Schools/AddSchool";
-import ChargeRates from "./Pages/ChargeRate/ChargeRates";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
 import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
-import ViewSchool from "./Pages/Schools/ViewSchool";
-import District from "./Pages/RegionDistrict/District";
-import Regions from "./Pages/RegionDistrict/Regions";
 import ImportStudents from "./Pages/students/ImportStudents";
 import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import StudentProfile from "./Pages/students/StudentProfile";
 import StudentCards from "./Pages/students/StudentCards";
-import SchoolProfile from "./Pages/Schools/SchoolProfile";
 import Profile from "./Pages/Profile";
 import ParentProfile from "./Pages/Parents/ParentProfile";
-import Settings from "./Pages/Settings";
 import ViewAllStudents from "./Pages/students/ViewAllStudents";
 import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
 import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
@@ -52,6 +45,14 @@ import ListSchoolAdminsPage from "./Pages/SystemUsers/AdminPanel/ListSchoolAdmin
 import ListBoothAssistants from "./Pages/SystemUsers/AdminPanel/ListBoothAssistantsPage";
 import CallStationsPage from "./Pages/CallingStation/AdminPanel/CallStationsPage";
 import SchoolStationsPage from "./Pages/CallingStation/SchoolAdminPanel/SchoolStationsPage";
+import SettingsPage from "./Pages/Settings/SettingsPage";
+import ChargeRatesPage from "./Pages/Settings/ChargeRatesPage";
+import DistrictsPage from "./Pages/Settings/DistrictsPage";
+import RegionsPage from "./Pages/Settings/RegionsPage";
+import ViewSchoolsPage from "./Pages/Schools/ViewSchoolsPage";
+import RegisterSchoolPage from "./Pages/Schools/RegisterSchoolPage";
+import SchoolProfilePage from "./Pages/Schools/SchoolProfilePage";
+
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
@@ -150,11 +151,11 @@ function App(props) {
             <>
               
               {/* School routes */}
-              <Route path="/schools/view" element={<ViewSchool />} />
-              <Route path="/schools/add" element={<AddSchool />} />
+              <Route path="/schools/view" element={<ViewSchoolsPage />} />
+              <Route path="/schools/add" element={<RegisterSchoolPage />} />
               <Route
                 path="/schools/view/profile/:id"
-                element={<SchoolProfile />}
+                element={<SchoolProfilePage />}
               />
               {/* End school routes */}
               {/* School User routes */}
@@ -165,7 +166,7 @@ function App(props) {
               />
               {/* End School User routes */}
               {/* Charge rate routes */}
-              <Route path="/rates" element={<ChargeRates />} />
+              <Route path="/rates" element={<ChargeRatesPage />} />
               {/* End Charge rate routes */}
               {/* MM Payments routes */}
               <Route path="/payments/mm/view" element={<ListMMPayments />} />
@@ -211,11 +212,11 @@ function App(props) {
               />
               {/* End class groups */}
               {/* districts and regions*/}
-              <Route path="/districts" element={<District />} />
-              <Route path="/regions" element={<Regions />} />
+              <Route path="/districts" element={<DistrictsPage />} />
+              <Route path="/regions" element={<RegionsPage />} />
               {/* End class groups */}
               <Route path="/profile" element={<Profile />} />
-              <Route path="/settings" element={<Settings />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/transactions/all" element={<TransactionsPage />} />
               <Route path="/booth-assistants" element={<ListBoothAssistants />} />
               <Route path="/buzz-cards" element={<CardsPage/>} />

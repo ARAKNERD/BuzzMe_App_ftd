@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { toast } from 'react-hot-toast';
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
-import ajaxChargeRate from "../../util/remote/ajaxChargeRate";
+import ajaxChargeRate from "../../../util/remote/ajaxChargeRate";
+import Loader from "../../Common/Loader";
+import SystemModal from "../../Common/SystemModal";
 
 const AddChargeType=(props)=>{
 

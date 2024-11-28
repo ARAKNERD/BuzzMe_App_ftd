@@ -32,7 +32,11 @@ export default {
     return response;
   },
 
-  async searchSchoolList(data) {
+  async searchSchoolList(search, page) {
+    let data = {
+      search: search,
+      page: page
+    };
     let response = await apiCall("school/page", data);
     return response;
   },
@@ -148,7 +152,10 @@ export default {
     return response;
   },
 
-  async fetchSchoolProfile(data) {
+  async fetchSchoolProfile(school_id) {
+    let data = {
+      school_id: school_id
+    };
     let response = await apiCall("school/profile", data);
     return response;
   },

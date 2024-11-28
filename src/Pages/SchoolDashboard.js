@@ -9,10 +9,10 @@ import { Link } from "react-router-dom";
 import ajaxCallStation from "../util/remote/ajaxCallStation";
 import SchoolContext from "../Context/SchoolContext";
 import ajaxStation from "../util/remote/ajaxStation";
-import TurnOnCallRestrictions from "./Schools/TurnOnCallRestrictions";
-import TurnOffCallRestrictions from "./Schools/TurnOffCallRestrictions";
 import useStateCallback from "../util/customHooks/useStateCallback";
 import ajaxSchool from "../util/remote/ajaxSchool";
+import TurnOnCallRestrictions from "../Components/Schools/TurnOnCallRestrictions";
+import TurnOffCallRestrictions from "../Components/Schools/TurnOffCallRestrictions";
 
 function SchoolDashboard() {
   const [studentsNumber, setStudentsNumber] = useState(false);

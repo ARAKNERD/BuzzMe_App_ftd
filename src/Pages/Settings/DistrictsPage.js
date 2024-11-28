@@ -1,12 +1,12 @@
 import React, {useContext} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
-import AddDistrict from "../../Components/DistrictRegion/AddDistrict";
 import DistrictContext from "../../Context/DistrictContext";
 import TableHeader from "../../Components/Common/TableHeader";
 import Loader from "../../Components/Common/Loader";
 import { Link } from "react-router-dom";
+import AddDistrict from "../../Components/Settings/Districts/AddDistrict";
 
-function District() {
+function DistrictsPage() {
   const {districtList, getDistrictList} = useContext(DistrictContext);
 
   const refreshData = () =>{
@@ -71,4 +71,4 @@ function District() {
   );
 }
 
-export default District;
+export default DistrictsPage;

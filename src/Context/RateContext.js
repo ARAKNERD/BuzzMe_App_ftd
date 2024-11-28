@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import ajaxChargeRate from '../util/remote/ajaxChargeRate';
 
 const RateContext = React.createContext();
@@ -10,17 +10,12 @@ export const RateProvider = (props)=> {
    
    const [rateList, setRateList] = useState(false);
    const [typeList, setTypeList] = useState(false);
-
-   const [data, setData]= useState({page:"1"})
-
-   useEffect(()=>{
-         getRateList();
-         getTypeList();
-   }, [data])
+   const [schoolRates, setSchoolRates] = useState(false);
+   const [loading, setLoading] = useState(false);
   
    const getRateList =async()=>{
 
-      const server_response = await ajaxChargeRate.fetchChargeRateList(data);
+      const server_response = await ajaxChargeRate.fetchChargeRateList();
       if(server_response.status==="OK"){
          //store results
          setRateList(server_response.details);
@@ -32,7 +27,7 @@ export const RateProvider = (props)=> {
 
    const getTypeList =async()=>{
 
-      const server_response = await ajaxChargeRate.fetchChargeTypeList(data);
+      const server_response = await ajaxChargeRate.fetchChargeTypeList();
       if(server_response.status==="OK"){
          //store results
          setTypeList(server_response.details);
@@ -41,15 +36,29 @@ export const RateProvider = (props)=> {
          setTypeList("404");
       }
    }
+
+   const getSchoolRates = async () => {
+      setLoading(true)
+      const server_response = await ajaxChargeRate.fetchSchoolRateList();
+      console.log(server_response)
+      setLoading(false)
+      if (server_response.status === "OK") {
+        setSchoolRates(server_response.details);
+      }else {
+        setSchoolRates("404");
+      }
+    };
     
     return (
            <RateContext.Provider value={
                {
                     rateList,
                     typeList,
-                  setData,
+                    schoolRates,
+                    loading,
                   getRateList,
-                  getTypeList
+                  getTypeList,
+                  getSchoolRates
                }
                }>
                {props.children}
