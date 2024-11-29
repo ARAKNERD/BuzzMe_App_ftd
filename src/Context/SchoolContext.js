@@ -73,13 +73,16 @@ export const SchoolProvider = (props) => {
   }, [schoolId, stationPage]);
 
   const countSchoolStations = async () => {
+    if (!schoolId) return;
+
     const server_response = await ajaxCallStation.callStation_count(schoolId);
     if (server_response.status === "OK") {
         setStationCount(server_response.details);
     } else {
         setStationCount("404");
     }
-};
+  };
+
 
   const getSchoolList = async () => {
     const server_response = await ajaxSchool.fetchSchoolList(data);
