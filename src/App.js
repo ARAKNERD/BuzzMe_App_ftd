@@ -7,8 +7,6 @@ import {
 } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.css";
 
-import ViewParents from "./Pages/Parents/ViewParents";
-import AddParent from "./Pages/Parents/AddParent";
 import SuperProvider from "./Context/SuperProvider";
 import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
@@ -16,7 +14,6 @@ import ViewStudents from "./Pages/students/ViewStudents";
 import AddStudent from "./Pages/students/AddStudent";
 import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
 import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
-import ListMMPayments from "./Pages/MMPayments/ListMMPayments";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
 import ImportStudents from "./Pages/students/ImportStudents";
@@ -24,10 +21,6 @@ import GroupStudents from "./Pages/StudentGroups/GroupStudents";
 import StudentProfile from "./Pages/students/StudentProfile";
 import StudentCards from "./Pages/students/StudentCards";
 import Profile from "./Pages/Profile";
-import ParentProfile from "./Pages/Parents/ParentProfile";
-import ViewAllStudents from "./Pages/students/ViewAllStudents";
-import ViewSchoolParents from "./Pages/Parents/ViewSchoolParents";
-import SchoolParentProfile from "./Pages/Parents/SchoolParentProfile";
 import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
 import AdminImportStudents from "./Pages/students/AdminImportStudents";
 import SchoolDashboard from "./Pages/SchoolDashboard";
@@ -35,7 +28,6 @@ import TransferStudent from "./Pages/students/TransferStudent";
 import TransactionsPage from "./Pages/TransactionsPage";
 import CallLogsPage from "./Pages/CallLogsPage";
 import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
-import ViewDeletedUsers from "./Pages/Parents/ViewDeletedUsers";
 import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
 import ImportStudentsandContacts from "./Pages/students/ImportStudentsandContacts";
 import CardsPage from "./Pages/CardsPage";
@@ -52,6 +44,12 @@ import RegionsPage from "./Pages/Settings/RegionsPage";
 import ViewSchoolsPage from "./Pages/Schools/ViewSchoolsPage";
 import RegisterSchoolPage from "./Pages/Schools/RegisterSchoolPage";
 import SchoolProfilePage from "./Pages/Schools/SchoolProfilePage";
+import DeletedUsersPage from "./Pages/Parents/AdminProfile/DeletedUsersPage";
+import SchoolParentProfilePage from "./Pages/Parents/SchoolAdminProfile/SchoolParentProfilePage";
+import ParentProfilePage from "./Pages/Parents/AdminProfile/ParentProfilePage";
+import ViewSchoolParentsPage from "./Pages/Parents/SchoolAdminProfile/ViewSchoolParentsPage";
+import ViewParentsPage from "./Pages/Parents/AdminProfile/ViewParentsPage";
+import ViewStudentsPage from "./Pages/Students/AdminProfile/ViewStudentsPage";
 
 
 function App(props) {
@@ -104,8 +102,8 @@ function App(props) {
               <Route path="*" element={<Dashboard />} />
               <Route path="/" element={<Dashboard />} />
               <Route path="/students/register" element={<AdminRegisterStudent />} />
-              <Route path="/students" element={<ViewAllStudents />} />
-              <Route path="/contacts" element={<ViewParents />} />
+              <Route path="/students" element={<ViewStudentsPage />} />
+              <Route path="/contacts" element={<ViewParentsPage />} />
               <Route path="/call-logs" element={<CallLogsPage />} />
               <Route path="/stations" element={<CallStationsPage />} />
               <Route path="/students_contacts/upload" element={<AdminImportStudentsandContacts />} />
@@ -129,7 +127,7 @@ function App(props) {
               <Route path="/" element={<SchoolDashboard />} />
               <Route path="/students/register" element={<AddStudent />} />
               <Route path="/students" element={<ViewStudents />} />
-              <Route path="/contacts" element={<ViewSchoolParents />} />
+              <Route path="/contacts" element={<ViewSchoolParentsPage />} />
               <Route path="/call-logs" element={<SchoolLogsPage />} />
               <Route path="/stations" element={<SchoolStationsPage />} />
               <Route path="/students_contacts/upload" element={<ImportStudentsandContacts />} />
@@ -168,15 +166,11 @@ function App(props) {
               {/* Charge rate routes */}
               <Route path="/rates" element={<ChargeRatesPage />} />
               {/* End Charge rate routes */}
-              {/* MM Payments routes */}
-              <Route path="/payments/mm/view" element={<ListMMPayments />} />
-              {/* End MM Payments routes */}
               {/* Parents */}
              
               
-              <Route path="/parents/add" element={<AddParent />} />
-              <Route path="/parents/profile/:id/:user_id" element={<ParentProfile />} />
-              <Route path="/school-parents/profile/:parent/:user_id" element={<SchoolParentProfile />} />
+              <Route path="/parents/profile/:id/:user_id" element={<ParentProfilePage />} />
+              <Route path="/school-parents/profile/:parent/:user_id" element={<SchoolParentProfilePage />} />
               {/* End parent */}
               {/* Students */}
               
@@ -222,7 +216,7 @@ function App(props) {
               <Route path="/buzz-cards" element={<CardsPage/>} />
               <Route path="/students/transfer" element={<TransferStudent />} />
               <Route path="/statistics" element={<StatisticsPage />} />
-              <Route path="/deleted-users" element={<ViewDeletedUsers />} />
+              <Route path="/deleted-users" element={<DeletedUsersPage />} />
 
 
 

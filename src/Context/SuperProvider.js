@@ -6,7 +6,6 @@ import { DistrictProvider } from './DistrictContext';
 import { RegionProvider } from './RegionContext';
 import { AdminProvider } from './AdminContext';
 import { RateProvider } from './RateContext';
-import { WalletAccountProvider } from './WalletAccountContext';
 import { RelationshipProvider } from './RelationshipContext';
 import { LanguageProvider } from './LanguageContext';
 import { StudentProvider } from './StudentContext';
@@ -28,7 +27,6 @@ const SuperProvider=(props)=>{
                           <RegionProvider>
                             <AdminProvider>
                               <RateProvider>
-                                <WalletAccountProvider>
                                   <RelationshipProvider>
                                     <LanguageProvider>
                                       <StudentProvider>
@@ -49,7 +47,6 @@ const SuperProvider=(props)=>{
                                           </StudentProvider>
                                           </LanguageProvider>
                                           </RelationshipProvider>
-                                        </WalletAccountProvider>
                               </RateProvider>
                             </AdminProvider>
                           </RegionProvider>

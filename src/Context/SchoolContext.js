@@ -62,6 +62,7 @@ export const SchoolProvider = (props) => {
       getSchoolProfile();
       countSchoolStudents();
       countSchoolStations();
+      getGroups();
     }
   }, [schoolId]);
 
@@ -71,18 +72,17 @@ export const SchoolProvider = (props) => {
     }
   }, [schoolId, stationPage]);
 
-  useEffect(() => {
-    getGroups();
-  }, [schoolDetails.school_id]);
-
   const countSchoolStations = async () => {
+    if (!schoolId) return;
+
     const server_response = await ajaxCallStation.callStation_count(schoolId);
     if (server_response.status === "OK") {
         setStationCount(server_response.details);
     } else {
         setStationCount("404");
     }
-};
+  };
+
 
   const getSchoolList = async () => {
     const server_response = await ajaxSchool.fetchSchoolList(data);
@@ -185,10 +185,8 @@ export const SchoolProvider = (props) => {
   };
 
   const getGroups = async () => {
-    setSchoolGroups(false);
-    const server_response = await ajaxStudentGroup.fetchGroupList(
-      schoolDetails.school_id
-    );
+    if (!schoolId) return;
+    const server_response = await ajaxStudentGroup.fetchGroupList(schoolId);
     if (server_response.status === "OK") {
       setSchoolGroups(server_response.details);
     } else {

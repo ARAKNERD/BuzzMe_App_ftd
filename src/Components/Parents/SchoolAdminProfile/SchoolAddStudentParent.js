@@ -1,13 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import ajaxStudent from "../../util/remote/ajaxStudent";
-import ajaxParent from "../../util/remote/ajaxParent";
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
 import Select from "react-select";
-import RelationshipContext from "../../Context/RelationshipContext";
-import TableHeader from "../../Components/Common/TableHeader";
-import AuthContext from "../../Context/AuthContext";
+import AuthContext from "../../../Context/AuthContext";
+import RelationshipContext from "../../../Context/RelationshipContext";
+import ajaxStudent from "../../../util/remote/ajaxStudent";
+import ajaxParent from "../../../util/remote/ajaxParent";
+import TableHeader from "../../Common/TableHeader";
+import Loader from "../../Common/Loader";
+import SystemModal from "../../Common/SystemModal";
 
 const SchoolAddStudentParent = (props) => {
   const [loading, setLoading] = useState(false);

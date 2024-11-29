@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
-import TableHeader from "../../Components/Common/TableHeader";
-import Loader from "../../Components/Common/Loader";
+import AppContainer from "../../../Components/Structure/AppContainer";
+import TableHeader from "../../../Components/Common/TableHeader";
+import Loader from "../../../Components/Common/Loader";
 import { Link, useParams } from "react-router-dom";
-import ajaxParent from "../../util/remote/ajaxParent";
+import ajaxParent from "../../../util/remote/ajaxParent";
 import { Toaster } from "react-hot-toast";
-import AuthContext from "../../Context/AuthContext";
+import AuthContext from "../../../Context/AuthContext";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import SchoolContext from "../../Context/SchoolContext";
+import SchoolContext from "../../../Context/SchoolContext";
 
-function ViewSchoolParents() {
+function ViewSchoolParentsPage() {
   const { user, userId } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
@@ -294,4 +294,4 @@ function ViewSchoolParents() {
   );
 }
 
-export default ViewSchoolParents;
+export default ViewSchoolParentsPage;
