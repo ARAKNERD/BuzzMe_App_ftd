@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Toaster, toast } from "react-hot-toast";
-import AppContainer from "../../Components/Structure/AppContainer";
-import Loader from "../../Components/Common/Loader";
-import TableHeader from "../../Components/Common/TableHeader";
-import ajaxParent from "../../util/remote/ajaxParent";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import ajaxStudent from "../../util/remote/ajaxStudent";
-import SchoolAddStudentParent from "./SchoolAddStudentParent";
-import SchoolContext from "../../Context/SchoolContext";
+import AppContainer from "../../../Components/Structure/AppContainer";
+import Loader from "../../../Components/Common/Loader";
+import TableHeader from "../../../Components/Common/TableHeader";
+import ajaxParent from "../../../util/remote/ajaxParent";
+import useStateCallback from "../../../util/customHooks/useStateCallback";
+import ajaxStudent from "../../../util/remote/ajaxStudent";
+import SchoolContext from "../../../Context/SchoolContext";
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";
 import Tab from "react-bootstrap/Tab";
-import ajaxBank from "../../util/remote/ajaxBank";
+import ajaxBank from "../../../util/remote/ajaxBank";
+import SchoolAddStudentParent from "../../../Components/Parents/SchoolAdminProfile/SchoolAddStudentParent";
 
-const SchoolParentProfile = (props) => {
+const SchoolParentProfilePage = (props) => {
   const [parentProfile, setParentProfile] = useState(false);
   const { parent, user_id} = useParams();
   const [children, setChildren] = useState(false);
@@ -411,4 +411,4 @@ const getParentBalance = async () => {
   );
 };
 
-export default SchoolParentProfile;
+export default SchoolParentProfilePage;

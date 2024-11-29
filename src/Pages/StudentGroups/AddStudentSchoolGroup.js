@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
-import AuthContext from "../../Context/AuthContext";
-import SchoolContext from "../../Context/SchoolContext";
 
 function AddStudentSchoolGroup(props) {
-  const { user } = useContext(AuthContext);
 
   const [groupName, setGroupName] = useState("");
   const [loading, setLoading] = useState(false);
