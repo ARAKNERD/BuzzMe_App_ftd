@@ -49,7 +49,7 @@ import SchoolParentProfilePage from "./Pages/Parents/SchoolAdminProfile/SchoolPa
 import ParentProfilePage from "./Pages/Parents/AdminProfile/ParentProfilePage";
 import ViewSchoolParentsPage from "./Pages/Parents/SchoolAdminProfile/ViewSchoolParentsPage";
 import ViewParentsPage from "./Pages/Parents/AdminProfile/ViewParentsPage";
-import ViewStudentsPage from "./Pages/Students/AdminProfile/ViewStudentsPage";
+import ViewStudentsPage from "./Pages/students/AdminProfile/ViewStudentsPage";
 
 
 function App(props) {
