@@ -7,6 +7,8 @@ export const CardConsumer = CardContext.Consumer;
 
 export const CardProvider = (props)=> {
   const [cardList, setCardList] = useState([]);
+  const [printableCards, setPrintableCards] = useState([]);
+
   const [assignedCardList, setAssignedCardList] = useState([]);
   const [unassignedCardList, setUnassignedCardList] = useState([]);
   const [inactiveCardList, setInactiveCardList] = useState([]);
@@ -195,12 +197,22 @@ export const CardProvider = (props)=> {
     }
   };
 
+  const getPrintableCards = async () => {
+    const server_response = await ajaxCard.listAllCards();
+    if (server_response.status === "OK") {
+      setPrintableCards(server_response.details);
+    } else {
+      setPrintableCards("404");
+    }
+  };
+
 
     
   return (
     <CardContext.Provider value={
       {
         cardList,
+        printableCards,
         first,
         assignedFirst,
         unassignedFirst,
@@ -261,7 +273,8 @@ export const CardProvider = (props)=> {
         getUnassignedCards,
         searchUnassignedCard,
         getInactiveCards,
-        searchInactiveCard
+        searchInactiveCard,
+        getPrintableCards
 
       }
     }>

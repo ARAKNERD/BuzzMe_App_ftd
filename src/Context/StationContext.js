@@ -10,9 +10,10 @@ export const StationProvider = (props)=> {
 
    
     const [stationNumber, setStationNumber] = useState(false);
+    const [schoolDashboardStations, setSchoolDashboardStations] = useState([]);
+
     const [stationList, setStationList] = useState([]);
     const [stationTimeRanges, setStationTimeRanges] = useState([]);
-    const [schoolStationList, setSchoolStationList] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loading2, setLoading2] = useState(false);
     const [query, setQuery] = useState("");
@@ -119,6 +120,15 @@ export const StationProvider = (props)=> {
       setStationList([]);
     }
   };
+
+  const getSchoolDashboardStations = async () => {
+    const server_response = await ajaxStation.fetchFewStations(schoolID);
+    if (server_response.status === "OK") {
+      setSchoolDashboardStations(server_response.details);
+    } else {
+      setSchoolDashboardStations("404");
+    }
+  };
     
     return (
            <StationContext.Provider value={
@@ -132,6 +142,7 @@ export const StationProvider = (props)=> {
                     loading,
                     loading2,
                     schoolID,
+                    schoolDashboardStations,
                     setQuery,
                     setPage,
                     setMeta,
@@ -139,7 +150,8 @@ export const StationProvider = (props)=> {
                   getStations,
                   getSchoolStations,
                   searchStations,
-                  searchSchoolStations
+                  searchSchoolStations,
+                  getSchoolDashboardStations
                }
                }>
                {props.children}

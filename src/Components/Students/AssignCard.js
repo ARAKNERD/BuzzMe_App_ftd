@@ -1,11 +1,9 @@
 import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
-import ajaxStudent from "../../util/remote/ajaxStudent";
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
-import TableHeader from "../../Components/Common/TableHeader";
 import ajaxCard from "../../util/remote/ajaxCard";
-import {Link} from "react-router-dom";
+import Loader from "../Common/Loader";
+import SystemModal from "../Common/SystemModal";
+import TableHeader from "../Common/TableHeader";
 
 
 const AssignCard=(props)=>{
@@ -118,9 +116,7 @@ const AssignCard=(props)=>{
 			                    <span class="rfid_card__digit-group">{cardNumber}</span>
 		                    </div>
 		                    <div class="rfid_card__name">{props.fullName}</div>
-		                    {/* <div class="rfid_card__vendor" role="img" aria-labelledby="card-vendor">
-			                    <span id="card-vendor" class="card__vendor-sr">Mastercard</span>
-		                    </div> */}
+		                   
 	</div>
 	
 </div>

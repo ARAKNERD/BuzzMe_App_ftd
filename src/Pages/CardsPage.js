@@ -11,6 +11,7 @@ import UnassignedCards from "../Components/StudentCard/UnassignedCards.js";
 import InactiveCards from "../Components/StudentCard/InactiveCards.js";
 import CardContext from "../Context/CardContext.js";
 import AllCards from "../Components/StudentCard/AllCards.js";
+import { Link } from "react-router-dom";
 
 function CardsPage() {
   const {page, unassignedPage, allCardsCount, inactiveCardsCount, unassignedCardsCount, assignedCardsCount, getCards, getUnassignedCards, countAllCards, 
@@ -27,6 +28,18 @@ function CardsPage() {
     <AppContainer title="Buzz Cards">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="row">
+        <div className="col-lg-12 col-md-12">
+                  <div className="pl-20" style={{float: "right"}}>
+                      <Link to={`/cards/print`}>
+                      <button
+                          type="button"
+                          className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
+                          <i className="fa-solid fa-qrcode" /> Generate QR Codes
+                      </button>
+                      </Link>
+                     
+                  </div>
+        </div>
         <div className="col-lg-4">
           <RegisterCard getAllCards={getCards} page={page} countAllCards={countAllCards} countUnassignedCards={countUnassignedCards} 
                         getUnassignedCards={getUnassignedCards} unassignedPage={unassignedPage}/>

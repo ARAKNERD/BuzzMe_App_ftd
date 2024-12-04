@@ -125,5 +125,11 @@ export default {
     let response = await apiCall("card/detach", data);
     return response;
   },
+
+  async listAllCards(data) 
+  {
+    let response = await apiCall("card/list/all", data);
+    return response;
+  },
   
 };

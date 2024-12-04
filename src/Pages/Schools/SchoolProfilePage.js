@@ -5,7 +5,7 @@ import AppContainer from "../../Components/Structure/AppContainer";
 import Loader from '../../Components/Common/Loader';
 import useStateCallback from '../../util/customHooks/useStateCallback';
 import TableHeader from '../../Components/Common/TableHeader';
-import AddGroup from '../StudentGroups/AddGroup';
+import AddGroup from '../../Components/Schools/SchoolProfile/AddGroup';
 import Col from "react-bootstrap/Col";
 import Nav from "react-bootstrap/Nav";
 import Row from "react-bootstrap/Row";

@@ -2,18 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
-import ajaxStudent from "../../util/remote/ajaxStudent";
+import { useNavigate} from "react-router-dom";
 import { useContext } from "react";
-import Loader from "../../Components/Common/Loader";
-import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
-import SchoolContext from "../../Context/SchoolContext";
-import Alert from "../../Components/Common/Alert";
+import SchoolContext from "../../../Context/SchoolContext";
+import ajaxStudent from "../../../util/remote/ajaxStudent";
+import ajaxStudentGroup from "../../../util/remote/ajaxStudentGroup";
+import AppContainer from "../../../Components/Structure/AppContainer";
+import Loader from "../../../Components/Common/Loader";
 
-
-
-const AdminImportStudentsandContacts = () => {
+const ImportStudentsPage = () => {
   const [excelData, setExcelData] = useState([]);
   const [excelCols, setExcelCols] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -22,9 +20,8 @@ const AdminImportStudentsandContacts = () => {
   const [group, setGroup] = useState("");
   const [school, setSchool] = useState("");
   const {schoolList} = useContext(SchoolContext);
-  const [showButton, setShowButton] = useState(false);
 
-  const [info, setInfo] = useState("");
+  const navigation = useNavigate();
 
   const schoolData = {
     school_id: school,
@@ -76,44 +73,23 @@ const AdminImportStudentsandContacts = () => {
 
   const saveData = async () => {
     let confirm = window.confirm(
-      "Are you sure you want to the save the list above"
+      "Are you sure you want to the save the students List Above"
     );
     if (!confirm) {
       return;
     }
     setLoading(true);
-    const server_response = await ajaxStudent.importStudentsandContacts(schoolData);
+    const server_response = await ajaxStudent.importStudents(schoolData);
     setLoading(false);
     if (server_response.status === "OK") {
-      
+      toast.success(server_response.message);
       setSaved(true);
-      setInfo(<Alert message={server_response.details.message} type="success"/>);
-      server_response.details.results.forEach(result => {
-        setInfo(prevInfo => (
-            <>
-                {prevInfo}
-                <Alert
-                    message={`Excel sheet row ${result.row}: ${result.message}`}
-                    type={result.status === "success" ? "success" : "danger"}
-                />
-            </>
-        ));
-    });
-    setShowButton(true);
+      setTimeout(() => {
+        navigation(-1);
+      }, 1000);
     } else {
-      setInfo(<Alert message={server_response.message} type="danger"/>);
-      
+      toast.error(server_response.message);
     }
-  };
-
-  const handleButton = () => {
-    setInfo(false);
-    setSaved(false);
-    setSchool("");
-    setGroup("");
-    setExcelData([]);
-    setShowButton(false);
-    
   };
 
   const getGroups = async () => {
@@ -131,21 +107,10 @@ const AdminImportStudentsandContacts = () => {
   }, [school]);
 
   return (
-    <AppContainer title="Import Students and Contacts">
+    <AppContainer title="Import Students">
       <div className="row">
-      <div className="col-lg-12 col-md-12">
-          <div className="pl-20" style={{float: "right"}}>
-              {showButton?<button
-                type="button"
-                onClick={handleButton}
-                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
-                <i className="fa-solid fa-plus" /> Import New List
-              </button>:""}
-          </div>
-        </div>
     <div className="col-12 col-xl-12">
       <Toaster position="top-center" reverseOrder={false} />
-
       <div
         className="box user-pro-list overflow-hidden mb-30"
         style={{
@@ -158,14 +123,12 @@ const AdminImportStudentsandContacts = () => {
       >
         <div {...getRootProps()} style={dropzoneStyles}>
           <input {...getInputProps()} />
-          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 8 </b>columns in this order;</p>
-          <p> First Name, Last Name, Registration Number, Gender, Fathers Name, Fathers Contact, Mothers Name, Mothers Contact. </p>
+          <p>Note: To import an Excel file successfully, it should contain students of the same group with only<b> 4 </b>columns in this order; First Name, Last Name, Registration Number and Gender. </p>
           <p>Drag & drop an Excel file here, or click to select one</p>
          
 
         </div>
         {loading && <Loader />}
-        {info}
         {excelData.length > 0 && (
           <div>
             <h3
@@ -236,7 +199,7 @@ const AdminImportStudentsandContacts = () => {
                 onClick={() => saveData()}
                 className="btn-fill-md text-light bg-dodger-blue"
               >
-                Save List
+                Save Student List
               </button></>
             )}
 
@@ -279,4 +242,4 @@ const dropzoneStyles = {
   cursor: "pointer",
 };
 
-export default AdminImportStudentsandContacts;
+export default ImportStudentsPage;
