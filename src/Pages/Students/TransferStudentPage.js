@@ -1,23 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
+import useStateCallback from "../../util/customHooks/useStateCallback";
+import CreateTransfer from "../../Components/Students/CreateTransfer";
+import AuthContext from "../../Context/AuthContext";
+import SchoolContext from "../../Context/SchoolContext";
+import ajaxStudent from "../../util/remote/ajaxStudent";
 import AppContainer from "../../Components/Structure/AppContainer";
 import Loader from "../../Components/Common/Loader";
-import { Link } from "react-router-dom";
-import AuthContext from "../../Context/AuthContext";
-import TableHeader from "../../Components/Common/TableHeader";
-import { RenderSecure } from "../../util/script/RenderSecure";
-import ajaxStudent from "../../util/remote/ajaxStudent";
-import CreateTransfer from "./CreateTransfer";
-import useStateCallback from "../../util/customHooks/useStateCallback";
-import SchoolContext from "../../Context/SchoolContext";
 
-function TransferStudent() {
+function TransferStudentPage() {
   const [searchedBuzzNo, setSearchedBuzzNo] = useState("");
   const [numberSearch, setNumberSearch] = useState(null);
   const [loading, setLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
-
   const [modal, setModal] = useStateCallback(false);
 
   const searchNumber = async (e) => {
@@ -198,4 +195,4 @@ function TransferStudent() {
   );
 }
 
-export default TransferStudent;
+export default TransferStudentPage;

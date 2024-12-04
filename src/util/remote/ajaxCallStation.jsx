@@ -175,4 +175,12 @@ export default {
     let response = await apiCall("chat_categories/each_month/report", data);
     return response;
   },
+
+  async callsSumForSchool(school_id) {
+    let data = {
+      school_id: school_id
+    };
+    let response = await apiCall("call_number/category/each_month/school", data);
+    return response;
+  },
 };

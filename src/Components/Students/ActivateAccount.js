@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
-import ajaxStudent from "../../util/remote/ajaxStudent";
+import Loader from "../Common/Loader";
+import SystemModal from "../Common/SystemModal";
 import ajaxBank from "../../util/remote/ajaxBank";
+import ajaxStudent from "../../util/remote/ajaxStudent";
 
 const ActivateAccount=(props)=>{
 

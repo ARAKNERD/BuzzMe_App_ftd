@@ -3,30 +3,33 @@ import { Toaster, toast } from "react-hot-toast";
 import { useDropzone } from "react-dropzone";
 import * as XLSX from "xlsx";
 import { useNavigate } from "react-router-dom";
-import ajaxStudent from "../../util/remote/ajaxStudent";
 import { useContext } from "react";
-import AuthContext from "../../Context/AuthContext";
-import Loader from "../../Components/Common/Loader";
-import AppContainer from "../../Components/Structure/AppContainer";
-import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
 import Select from "react-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
-import SchoolContext from "../../Context/SchoolContext";
+import SchoolContext from "../../../Context/SchoolContext";
+import ajaxStudent from "../../../util/remote/ajaxStudent";
+import ajaxStudentGroup from "../../../util/remote/ajaxStudentGroup";
+import Loader from "../../../Components/Common/Loader";
+import AppContainer from "../../../Components/Structure/AppContainer";
 
-const ImportStudents = () => {
+const ImportSchoolStudentsPage = () => {
   const [excelData, setExcelData] = useState([]);
   const [excelCols, setExcelCols] = useState([]);
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(false);
   const [groupList, setGroupList] = useState(false);
   const [group, setGroup] = useState("");
-  const { user } = useContext(AuthContext);
   const { schoolDetails } = useContext(SchoolContext);
 
   const navigation = useNavigate();
 
+
+  useEffect(() => {
+    getGroups();
+  }, [schoolDetails.school_id]);
+  
   const AddGroupOption = {
     group_id: "add_new",
     group_name: "- - - Register New Student Group - - -",
@@ -109,9 +112,7 @@ const ImportStudents = () => {
     }
   };
 
-  useEffect(() => {
-    getGroups();
-  }, [schoolDetails.school_id]);
+  
 
   return (
     <AppContainer title="Import Students">
@@ -244,9 +245,7 @@ const ImportStudents = () => {
                 </button>
               )}
 
-              {/* <pre>{JSON.stringify(excelCols, null, 2)}</pre>
-            <pre>{JSON.stringify(excelData, null, 2)}</pre> */}
-              {/* You can now send 'excelData' to your PHP backend via an API. */}
+              
             </div>
           )}
         </div>
@@ -263,4 +262,4 @@ const dropzoneStyles = {
   cursor: "pointer",
 };
 
-export default ImportStudents;
+export default ImportSchoolStudentsPage;

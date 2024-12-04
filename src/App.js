@@ -10,31 +10,17 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import SuperProvider from "./Context/SuperProvider";
 import Dashboard from "./Pages/Dashboard";
 import LoginPage from "./Pages/LoginPage";
-import ViewStudents from "./Pages/students/ViewStudents";
-import AddStudent from "./Pages/students/AddStudent";
-import AddGroup from "./Pages/StudentGroups/AddStudentSchoolGroup";
-import SchoolStudentGroups from "./Pages/StudentGroups/SchoolStudentGroups";
+import AddGroup from "./Components/StudentGroups/AddStudentSchoolGroup";
 import functions from "./util/functions";
 import ActivateAccount from "./Pages/ActivateAccount";
-import ImportStudents from "./Pages/students/ImportStudents";
-import GroupStudents from "./Pages/StudentGroups/GroupStudents";
-import StudentProfile from "./Pages/students/StudentProfile";
-import StudentCards from "./Pages/students/StudentCards";
 import Profile from "./Pages/Profile";
-import AdminRegisterStudent from "./Pages/students/AdminRegisterStudent";
-import AdminImportStudents from "./Pages/students/AdminImportStudents";
 import SchoolDashboard from "./Pages/SchoolDashboard";
-import TransferStudent from "./Pages/students/TransferStudent";
 import TransactionsPage from "./Pages/TransactionsPage";
 import CallLogsPage from "./Pages/CallLogsPage";
-import SchoolLogsPage from "./Pages/SchoolLogs/SchoolLogsPage";
-import AdminImportStudentsandContacts from "./Pages/students/AdminImportStudentsandContacts";
-import ImportStudentsandContacts from "./Pages/students/ImportStudentsandContacts";
 import CardsPage from "./Pages/CardsPage";
 import StatisticsPage from "./Pages/StatisticsPage";
 import ListAdminsPage from "./Pages/SystemUsers/AdminPanel/ListAdminsPage";
 import ListSchoolAdminsPage from "./Pages/SystemUsers/AdminPanel/ListSchoolAdminsPage";
-import ListBoothAssistants from "./Pages/SystemUsers/AdminPanel/ListBoothAssistantsPage";
 import CallStationsPage from "./Pages/CallingStation/AdminPanel/CallStationsPage";
 import SchoolStationsPage from "./Pages/CallingStation/SchoolAdminPanel/SchoolStationsPage";
 import SettingsPage from "./Pages/Settings/SettingsPage";
@@ -50,10 +36,26 @@ import ParentProfilePage from "./Pages/Parents/AdminProfile/ParentProfilePage";
 import ViewSchoolParentsPage from "./Pages/Parents/SchoolAdminProfile/ViewSchoolParentsPage";
 import ViewParentsPage from "./Pages/Parents/AdminProfile/ViewParentsPage";
 import ViewStudentsPage from "./Pages/Students/AdminProfile/ViewStudentsPage";
+import RegisterStudentPage from "./Pages/Students/AdminProfile/RegisterStudentPage";
+import TransferStudentPage from "./Pages/Students/TransferStudentPage";
+import ImportStudentsPage from "./Pages/Students/AdminProfile/ImportStudentsPage";
+import ImportStudentsandContactsPage from "./Pages/Students/AdminProfile/ImportStudentsandContactsPage";
+import StudentProfilePage from "./Pages/Students/StudentProfilePage";
+import ViewSchoolStudentsPage from "./Pages/Students/SchoolAdminProfile/ViewSchoolStudentsPage";
+import RegisterSchoolStudentPage from "./Pages/Students/SchoolAdminProfile/RegisterSchoolStudentPage";
+import ImportSchoolStudentsPage from "./Pages/Students/SchoolAdminProfile/ImportSchoolStudentsPage";
+import ListBoothAssistantsPage from "./Pages/SystemUsers/AdminPanel/ListBoothAssistantsPage";
+import ListGroupsPage from "./Pages/StudentGroups/ListGroupsPage";
+import StudentsInGroupPage from "./Pages/StudentGroups/StudentsInGroupPage";
+import GenerateQRCodesPage from "./Pages/GenerateQRCodesPage";
 
 
 function App(props) {
   const [loggedIn, setLoggedIn] = useState(true);
+
+  useEffect(() => {
+    checkLogin();
+  }, []);
 
   function checkLogin() {
     if (!window.localStorage.getItem("buzzMe@user")) {
@@ -62,10 +64,6 @@ function App(props) {
       setLoggedIn(true);
     }
   }
-
-  useEffect(() => {
-    checkLogin();
-  }, []);
 
   const role = functions.checkRole();
   const secure = functions.checkSecureAccount();
@@ -101,12 +99,14 @@ function App(props) {
             <>
               <Route path="*" element={<Dashboard />} />
               <Route path="/" element={<Dashboard />} />
-              <Route path="/students/register" element={<AdminRegisterStudent />} />
+              <Route path="/students/register" element={<RegisterStudentPage/>} />
               <Route path="/students" element={<ViewStudentsPage />} />
               <Route path="/contacts" element={<ViewParentsPage />} />
               <Route path="/call-logs" element={<CallLogsPage />} />
               <Route path="/stations" element={<CallStationsPage />} />
-              <Route path="/students_contacts/upload" element={<AdminImportStudentsandContacts />} />
+              <Route path="/students_contacts/upload" element={<ImportStudentsandContactsPage />} />
+              <Route path="/students/upload" element={<ImportStudentsPage />} />
+
 
               <Route
                 path="/"
@@ -125,12 +125,10 @@ function App(props) {
             <>
               <Route path="*" element={<SchoolDashboard />} />
               <Route path="/" element={<SchoolDashboard />} />
-              <Route path="/students/register" element={<AddStudent />} />
-              <Route path="/students" element={<ViewStudents />} />
+              <Route path="/students/register" element={<RegisterSchoolStudentPage />} />
+              <Route path="/students" element={<ViewSchoolStudentsPage />} />
               <Route path="/contacts" element={<ViewSchoolParentsPage />} />
-              <Route path="/call-logs" element={<SchoolLogsPage />} />
               <Route path="/stations" element={<SchoolStationsPage />} />
-              <Route path="/students_contacts/upload" element={<ImportStudentsandContacts />} />
 
               <Route
                 path="/"
@@ -175,34 +173,23 @@ function App(props) {
               {/* Students */}
               
               
-              
-              <Route
-                path="/students/student_card/:student_id?/:group_id?/:school_id?"
-                element={<StudentCards />}
-              />
-              
-              
-              <Route path="/students/import" element={<ImportStudents />} />
-              <Route path="/students/upload" element={<AdminImportStudents />} />
+              <Route path="/students/import" element={<ImportSchoolStudentsPage />} />
               <Route
                 path="/students/profile/:student_id/:user_id"
-                element={<StudentProfile />}
+                element={<StudentProfilePage />}
               />
               <Route
                 path="/school-students/profile/:student_id/:user_id"
-                element={<StudentProfile />}
+                element={<StudentProfilePage />}
               />
               {/* End student */}
               {/* Class Groups */}
-              <Route path="/class-groups" element={<SchoolStudentGroups />} />
-              <Route
-                path="/class-groups/view/:id"
-                element={<GroupStudents />}
-              />
+              <Route path="/class-groups" element={<ListGroupsPage />} />
+              
               <Route path="/class-groups/add" element={<AddGroup />} />
               <Route
                 path="/class-groups/view/:id"
-                element={<GroupStudents />}
+                element={<StudentsInGroupPage />}
               />
               {/* End class groups */}
               {/* districts and regions*/}
@@ -212,12 +199,13 @@ function App(props) {
               <Route path="/profile" element={<Profile />} />
               <Route path="/settings" element={<SettingsPage />} />
               <Route path="/transactions/all" element={<TransactionsPage />} />
-              <Route path="/booth-assistants" element={<ListBoothAssistants />} />
+              <Route path="/booth-assistants" element={<ListBoothAssistantsPage />} />
               <Route path="/buzz-cards" element={<CardsPage/>} />
-              <Route path="/students/transfer" element={<TransferStudent />} />
+              <Route path="/students/transfer" element={<TransferStudentPage />} />
               <Route path="/statistics" element={<StatisticsPage />} />
               <Route path="/deleted-users" element={<DeletedUsersPage />} />
 
+              <Route path="/cards/print" element={<GenerateQRCodesPage />} />
 
 
 

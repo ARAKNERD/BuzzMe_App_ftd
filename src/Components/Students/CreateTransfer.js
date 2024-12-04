@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxStudent from "../../util/remote/ajaxStudent";
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
+import Loader from "../Common/Loader";
+import SystemModal from "../Common/SystemModal";
 import Select from "react-select";
 import SchoolContext from "../../Context/SchoolContext";
 import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
@@ -12,7 +12,7 @@ const CreateTransfer=(props)=>{
     const [loading, setLoading] = useState(false)
     const [school,setSchool] =useState("")
     const [group,setGroup] =useState("")
-  const {schoolList} = useContext(SchoolContext);
+    const {schoolList} = useContext(SchoolContext);
 
     const [groupList, setGroupList] = useState(false);
 

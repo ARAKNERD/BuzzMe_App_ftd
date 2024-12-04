@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { toast } from 'react-hot-toast';
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
-import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
+import Loader from "../../Common/Loader";
+import SystemModal from "../../Common/SystemModal";
+import ajaxStudentGroup from "../../../util/remote/ajaxStudentGroup";
 
 const AddGroup=(props)=>{
 

@@ -16,6 +16,8 @@ export const SchoolProvider = (props) => {
   const [schoolListByPage, setSchoolListByPage] = useState(false);
   const [schoolId, setSchoolId] = useState(null);
   const [schoolProfile, setSchoolProfile] = useState(false);
+  const [schoolContactsCount, setSchoolContactsCount] = useState(false);
+
   const [studentCount, setStudentCount] = useState(false);
   const [schoolStudents, setSchoolStudents] = useState([]);
   const [stationCount, setStationCount] = useState(false);
@@ -45,6 +47,10 @@ export const SchoolProvider = (props) => {
   const [loading3,setLoading3] = useState(false)
   const [loading4,setLoading4] = useState(false)
 
+  const [schoolLogsToday, setSchoolLogsToday] = useState(false);
+  const [schoolLogsThisWeek, setSchoolLogsThisWeek] = useState(false);
+  const [schoolLogsThisMonth, setSchoolLogsThisMonth] = useState(false);
+
   useEffect(() => {
     getSchoolList();
     getRecentSchools();
@@ -63,6 +69,10 @@ export const SchoolProvider = (props) => {
       countSchoolStudents();
       countSchoolStations();
       getGroups();
+      countSchoolLogsThisMonth();
+      countSchoolLogsThisWeek();
+      countSchoolLogsToday();
+      countSchoolContacts()
     }
   }, [schoolId]);
 
@@ -126,7 +136,7 @@ export const SchoolProvider = (props) => {
       e.preventDefault();
     }
       setLoading4(true);
-      const server_response = await ajaxStudent.searchSchoolStudents(studentsQuery, schoolId, studentsPage);
+      const server_response = await ajaxStudent.searchSchoolStudents(studentsPage, schoolId, studentsQuery);
       setLoading4(false);
       if (server_response.status === "OK") {
         setStudentsFirst(server_response.details.meta.offset_count);
@@ -228,6 +238,42 @@ export const SchoolProvider = (props) => {
     }
   }
 
+  const countSchoolLogsToday = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsToday(schoolId);
+    if (server_response.status === "OK") {
+      setSchoolLogsToday(server_response.details);
+    } else {
+      setSchoolLogsToday("404");
+    }
+  };
+
+  const countSchoolLogsThisMonth = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsThisMonth(schoolId);
+    if (server_response.status === "OK") {
+      setSchoolLogsThisMonth(server_response.details);
+    } else {
+      setSchoolLogsThisMonth("404");
+    }
+  };
+
+  const countSchoolLogsThisWeek = async () => {
+    const server_response = await ajaxCallStation.countSchoolLogsThisWeek(schoolId);
+    if (server_response.status === "OK") {
+      setSchoolLogsThisWeek(server_response.details);
+    } else {
+      setSchoolLogsThisWeek("404");
+    }
+  };
+
+  const countSchoolContacts = async () => {
+    const server_response = await ajaxSchool.countSchoolContacts(schoolId);
+    if (server_response.status === "OK") {
+      setSchoolContactsCount(server_response.details);
+    } else {
+      setSchoolContactsCount("404");
+    }
+  };
+
   return (
     <SchoolContext.Provider
       value={{
@@ -241,6 +287,7 @@ export const SchoolProvider = (props) => {
         schoolListByPage,
         studentCount,
         stationCount,
+        schoolContactsCount,
         loading,
         loading2,
         loading3,
@@ -248,6 +295,9 @@ export const SchoolProvider = (props) => {
         stationFirst,
         stationMeta,
         stationPage,
+        schoolLogsThisMonth,
+        schoolLogsThisWeek,
+        schoolLogsToday,
         page,
         meta,
         first,
@@ -280,7 +330,10 @@ export const SchoolProvider = (props) => {
         searchSchools,
         getSchoolStudents,
         searchSchoolStudents,
-        getSchoolStations
+        getSchoolStations,
+        countSchoolLogsThisMonth,
+        countSchoolLogsThisWeek,
+        countSchoolLogsToday
       }}
     >
       {props.children}

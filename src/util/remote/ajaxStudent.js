@@ -34,11 +34,12 @@ export default {
     return response;
   },
 
-  async fetchGroupStudents(group_id, page) 
+  async fetchGroupStudents(page, group_id) 
   {
     let data = {
+      "page": page,
       "group_id":group_id,
-      "page": page
+      
     };
     let response = await apiCall("student/list", data);
 
@@ -100,7 +101,10 @@ export default {
 
     return response;
   },
-  async fetchStudentContacts(data) {
+  async fetchStudentContacts(student_user_id) {
+    let data = {
+      student_user_id: student_user_id
+    };
     let response = await apiCall("admin/list_student_contacts", data);
 
     return response;
@@ -113,20 +117,22 @@ export default {
     let response = await apiCall("student/list", data);
     return response;
   },
-  async searchSchoolStudents(search, school_id, page) {
+  async searchSchoolStudents(page, school_id, search) {
     let data = {
-      search: search,
+      
+      page: page,
       school_id: school_id,
-      page: page
+      search: search
     };
     let response = await apiCall("student/list", data);
     return response;
   },
-  async searchGroupStudent(search, group_id, page) {
+  async searchGroupStudent(page, group_id, search) {
     let data = {
-      search: search,
+      page: page,
       group_id: group_id,
-      page: page
+      search: search
+      
     };
     let response = await apiCall("student/list", data);
     return response;

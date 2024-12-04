@@ -1,23 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
-import AppContainer from "../../Components/Structure/AppContainer";
 import { Toaster, toast } from "react-hot-toast";
-import AuthContext from "../../Context/AuthContext";
-import ajaxStudent from "../../util/remote/ajaxStudent";
-import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
-import TableHeader from "../../Components/Common/TableHeader";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRefresh } from "@fortawesome/free-solid-svg-icons";
-import SchoolContext from "../../Context/SchoolContext";
+import SchoolContext from "../../../Context/SchoolContext";
+import ajaxStudent from "../../../util/remote/ajaxStudent";
+import StudentContext from "../../../Context/StudentContext";
+import ajaxStudentGroup from "../../../util/remote/ajaxStudentGroup";
+import StudentsRegisteredToday from "../../../Components/Students/AdminProfile/StudentsRegisteredToday";
+import AppContainer from "../../../Components/Structure/AppContainer";
 
-function AddStudent(props) {
-  const { user } = useContext(AuthContext);
+function RegisterSchoolStudentPage(props) {
   const { schoolDetails } = useContext(SchoolContext);
-
+  const { setSchoolId, schoolStudentsToday, getSchoolStudentsToday } = useContext(StudentContext);
   const [groupList, setGroupList] = useState(false);
-  const [studentsToday, setStudentsToday] = useState(false);
   const [group, setGroup] = useState("");
   const [regNo, setRegNo] = useState("");
   const [gender, setGender] = useState("");
@@ -25,14 +23,13 @@ function AddStudent(props) {
   const [lastName, setLastName] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const getStudentsToday = async () => {
-    const server_response = await ajaxStudent.fetchStudentsToday(schoolDetails.school_id);
-    if (server_response.status === "OK") {
-      setStudentsToday(server_response.details);
-    } else {
-      setStudentsToday("404");
-    }
-  };
+  useEffect(() => {
+    setSchoolId(schoolDetails.school_id);
+  }, [schoolDetails.school_id, setSchoolId]);
+  
+  useEffect(() => {
+    getGroups();
+  }, [schoolDetails.school_id]);
 
   const AddGroupOption = {
     group_id: "add_new",
@@ -54,10 +51,9 @@ function AddStudent(props) {
       setLoading(true);
       const server_response = await ajaxStudent.createStudent(data);
       setLoading(false);
-      console.log(server_response)
       if (server_response.status === "OK") {
         toast.success(server_response.message);
-        getStudentsToday();
+        getSchoolStudentsToday(1);
         resetForm();
       } else {
         toast.error(server_response.message);
@@ -84,10 +80,7 @@ function AddStudent(props) {
     }
   };
 
-  useEffect(() => {
-    getGroups();
-    getStudentsToday();
-  }, [schoolDetails.school_id]);
+  
   return (
     <AppContainer title="Add Student">
       <Toaster position="top-center" reverseOrder={false} />
@@ -96,21 +89,11 @@ function AddStudent(props) {
         <div className="col-lg-12 col-md-12">
           <div className="pl-20" style={{ float: "right" }}>
             <Link to={`/students/import`}>
-              <button
-                type="button"
-                className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue"
-              >
+              <button type="button" className="btn-fill-lmd radius-30 mb-5 text-light shadow-dodger-blue bg-dodger-blue">
                 <i className="fa-solid fa-plus" /> Import Students
               </button>
             </Link>
-            {/* <Link to={`/students_contacts/upload`}>
-              <button
-                type="button"
-                className="btn-fill-lmd radius-30 mb-5 ml-2 text-light shadow-dodger-blue bg-dodger-blue"
-              >
-                <i className="fa-solid fa-plus" /> Import Students and Contacts
-              </button>
-            </Link> */}
+            
           </div>
         </div>
         <div className="col-lg-12 col-md-12">
@@ -122,8 +105,7 @@ function AddStudent(props) {
                 </h5>
                 <p>
                   <small>
-                    <i>
-                      Note: All fields marked{" "}
+                    <i>Note: All fields marked{" "}
                       <span style={{ color: "red" }}>*</span> are required.
                     </i>
                   </small>
@@ -253,72 +235,11 @@ function AddStudent(props) {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-lg-12 col-md-12">
-          <div className="card height-auto">
-            <div className="card-body">
-              <div className="heading-layout1">
-                <TableHeader
-                  title="Recently Registered Students"
-                  subtitle="List of the students registered today"
-                />
-              </div>
 
-              <div className="table-responsive">
-                <table className="table display data-table text-nowrap">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Names</th>
-                      <th>Student Code</th>
-                      <th>Student Group</th>
-                      <th>Account Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Array.isArray(studentsToday) &&
-                      studentsToday.map((student, key) => (
-                        <tr key={key}>
-                          <th scope="row">{key + 1}</th>
-                          <td>{student.full_name}</td>
-                          <td>{student.username}</td>
-                          <td>{student.group}</td>
-                          <td>
-                            {student.is_secure === "1" ? (
-                              <span class="badge badge-success">SECURED</span>
-                            ) : (
-                              <OverlayTrigger
-                                placement="top"
-                                overlay={
-                                  <Tooltip id="refresh-tooltip">
-                                    Default pin is {student.default_pin}
-                                  </Tooltip>
-                                }
-                              >
-                                <span class="badge badge-danger">
-                                  NOT SECURE
-                                </span>
-                              </OverlayTrigger>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    {studentsToday === "404" && (
-                      <tr>
-                        <td colSpan="5" style={{ textAlign: "center" }}>
-                          No students registered today.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <StudentsRegisteredToday studentsToday={schoolStudentsToday} adminType="school_admin"/>
+
     </AppContainer>
   );
 }
 
-export default AddStudent;
+export default RegisterSchoolStudentPage;

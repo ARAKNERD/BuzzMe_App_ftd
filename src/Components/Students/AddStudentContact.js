@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
 import { toast } from 'react-hot-toast';
 import ajaxParent from "../../util/remote/ajaxParent";
-import Loader from "../../Components/Common/Loader";
-import SystemModal from "../../Components/Common/SystemModal";
+import Loader from "../Common/Loader";
+import SystemModal from "../Common/SystemModal";
 import Select from "react-select";
 import RelationshipContext from "../../Context/RelationshipContext";
 

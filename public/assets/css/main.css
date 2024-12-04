@@ -284,4 +284,24 @@ textarea {
     h3 {
         page-break-after: avoid;
     }
+
+    body * {
+        visibility: hidden; /* Hide everything by default */
+    }
+    
+    .content, .content * {
+        visibility: visible; /* Show only the content we want to print */
+    }
+    
+    .content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+    }
+    
+    button, .AppContainer {
+        display: none; /* Hide print button and container */
+    }
 }

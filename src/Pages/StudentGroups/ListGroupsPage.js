@@ -1,19 +1,19 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect} from "react";
 import AppContainer from "../../Components/Structure/AppContainer";
 import TableHeader from "../../Components/Common/TableHeader";
 import { Link } from "react-router-dom";
-import AddStudentSchoolGroup from "./AddStudentSchoolGroup";
-import AuthContext from "../../Context/AuthContext";
-import ajaxStudentGroup from "../../util/remote/ajaxStudentGroup";
-import Loader from "../../Components/Common/Loader";
+import AddStudentSchoolGroup from "../../Components/StudentGroups/AddStudentSchoolGroup";
 import SchoolContext from "../../Context/SchoolContext";
-import UpdateGroupName from "./UpdateGroupName";
 import useStateCallback from "../../util/customHooks/useStateCallback";
+import UpdateGroupName from "../../Components/StudentGroups/UpdateGroupName";
 
-function SchoolStudentGroups() {
-  const { schoolGroups, getGroups, schoolDetails } = useContext(SchoolContext);
-  const { user } = useContext(AuthContext);
+function ListGroupsPage() {
+  const { schoolGroups, getGroups, schoolDetails, setSchoolId } = useContext(SchoolContext);
   const [modal, setModal] = useStateCallback(false);
+
+  useEffect(() => {
+    setSchoolId(schoolDetails.school_id);
+  }, [schoolDetails.school_id, setSchoolId]);
 
   const updateName = (e, item) => {
     setModal(false, () =>
@@ -36,10 +36,7 @@ function SchoolStudentGroups() {
           <AddStudentSchoolGroup g={getGroups} schoolID={schoolDetails.school_id} />
         </div>
         <div className="col-lg-8">
-          <div
-            className="card custom-card"
-            // style={{marginTop: "25px", borderRadius: "10px"}}
-          >
+          <div className="card custom-card">
             <div className="card-body map-card">
               <div class="heading-layout1 mg-b-25">
                 <TableHeader
@@ -47,13 +44,7 @@ function SchoolStudentGroups() {
                   subtitle="List of all the student groups sorted according to the recently added"
                 />
                 <div class="dropdown">
-                  <a
-                    class="dropdown-toggle"
-                    href="#"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-expanded="false"
-                  >
+                  <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
                     ...
                   </a>
 
@@ -74,7 +65,6 @@ function SchoolStudentGroups() {
                       </th>
                       <th scope="col">Names</th>
                       <th scope="col">Students List</th>
-                      {/* <th scope="col">BuzzTime Cards</th> */}
                       <th scope="col">Actions</th>
                     </tr>
                   </thead>
@@ -92,15 +82,6 @@ function SchoolStudentGroups() {
                               View Students
                             </Link>
                           </td>
-
-                          {/* <td>
-                            <Link
-                              className="btn btn-info"
-                              to={`/students/student_card/null/${item.group_id}/${schoolDetails.school_id}`}
-                            >
-                              View Cards
-                            </Link>
-                          </td> */}
                           <td>
                             <div className="dropdown">
                               <Link
@@ -143,4 +124,4 @@ function SchoolStudentGroups() {
   );
 }
 
-export default SchoolStudentGroups;
+export default ListGroupsPage;

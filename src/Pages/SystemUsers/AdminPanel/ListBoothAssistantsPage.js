@@ -8,7 +8,7 @@ import AdminContext from "../../../Context/AdminContext";
 import AddBoothAssistant from "../../../Components/SystemUsers/AddBoothAssistant";
 import ResetPassword from "../../../Components/SystemUsers/ResetPassword";
 
-function ListBoothAssistants() {
+function ListBoothAssistantsPage() {
   const {boothAssistantList, getBoothAssistantList} = useContext(AdminContext);
   const [modal, setModal] = useStateCallback(false);
     
@@ -102,4 +102,4 @@ function ListBoothAssistants() {
   );
 }
 
-export default ListBoothAssistants;
+export default ListBoothAssistantsPage;
